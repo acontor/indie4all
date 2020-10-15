@@ -15,6 +15,10 @@ class CreateCampaniasTable extends Migration
     {
         Schema::create('campanias', function (Blueprint $table) {
             $table->id();
+            $table->double('meta');
+            $table->double('recaudado');
+            $table->date('fecha_fin');
+            $table->bigInteger('juego_id')->unsigned();
             $table->timestamps();
         });
     }

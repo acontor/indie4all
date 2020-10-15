@@ -13,8 +13,11 @@ class CreateOpcionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('opcions', function (Blueprint $table) {
+        Schema::create('opciones', function (Blueprint $table) {
             $table->id();
+            $table->string('descripcion');
+            $table->bigInteger('encuesta_id');
+            $table->boolean('ganadora')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateOpcionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('opcions');
+        Schema::dropIfExists('opciones');
     }
 }

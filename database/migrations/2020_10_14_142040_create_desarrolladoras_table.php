@@ -15,6 +15,12 @@ class CreateDesarrolladorasTable extends Migration
     {
         Schema::create('desarrolladoras', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre')->unique();
+            $table->string('email')->unique();
+            $table->string('direccion');
+            $table->string('telefono');
+            $table->string('url');
+            $table->string('imagen_logo');
             $table->timestamps();
         });
     }

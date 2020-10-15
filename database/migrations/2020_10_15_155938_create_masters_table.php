@@ -15,6 +15,9 @@ class CreateMastersTable extends Migration
     {
         Schema::create('masters', function (Blueprint $table) {
             $table->id();
+            $table->string('email');
+            $table->string('imagen');
+            $table->bigInteger('user_id')->nullable();
             $table->timestamps();
         });
     }

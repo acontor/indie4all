@@ -15,6 +15,9 @@ class CreateLogrosTable extends Migration
     {
         Schema::create('logros', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('descripcion');
+            $table->string('icono');
             $table->timestamps();
         });
     }
