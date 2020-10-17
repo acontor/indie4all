@@ -19,4 +19,14 @@ class Master extends Model
         'imagen',
         'user_id',
     ];
+
+    public function fans()
+    {
+        return $this->belongsToMany("App\Models\Fan");
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany("App\Models\Juego")->withPivot('titulo', 'contenido', 'calificacion', 'fecha_publicacion');
+    }
 }

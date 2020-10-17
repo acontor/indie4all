@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Fan extends Model
+class Genero extends Model
 {
     use HasFactory;
 
@@ -15,11 +15,6 @@ class Fan extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'nombre',
     ];
-
-    public function masters()
-    {
-        return $this->belongsToMany("App\Models\Master")->withPivot('notificacion');
-    }
 }

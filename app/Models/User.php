@@ -40,4 +40,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function logros()
+    {
+        return $this->belongsToMany("App\Models\Logro");
+    }
+
+    public function generos()
+    {
+        return $this->belongsToMany("App\Models\Genero");
+    }
+
+    public function sorteos()
+    {
+        return $this->belongsToMany("App\Models\Sorteo");
+    }
 }
