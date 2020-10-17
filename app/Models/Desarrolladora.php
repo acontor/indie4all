@@ -22,4 +22,9 @@ class Desarrolladora extends Model
         'url',
         'imagen_logo',
     ];
+
+    public function Users()
+    {
+        return $this->belongsToMany("App\Models\User");
+    }
 }

@@ -55,4 +55,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany("App\Models\Sorteo");
     }
+
+    public function desarrolladoras()
+    {
+        return $this->belongsToMany("App\Models\Desarrolladora")->withPivot('notificacion');
+    }
+
+    public function campania()
+    {
+        return $this->belongsToMany("App\Models\User")->withPivot('precio', 'fecha_pago');
+    }
 }
