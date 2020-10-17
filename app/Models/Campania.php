@@ -20,4 +20,8 @@ class Campania extends Model
         'fecha_fin',
         'juego_id',
     ];
+    public function User()
+    {
+        return $this->belongsToMany("App\Models\Campania");
+    }
 }
