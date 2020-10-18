@@ -23,8 +23,25 @@ class Desarrolladora extends Model
         'imagen_logo',
     ];
 
-    public function Users()
+    public function users()
     {
         return $this->belongsToMany("App\Models\User");
     }
+    public function juegos()
+    {
+        return $this->hasMany("App\Models\Juego");
+    }
+    public function encuesta()
+    {
+        return $this->belongsTo("App\Models\Desarrolladora");
+    }
+    public function sorteo()
+    {
+        return $this->belongsTo("App\Models\Desarrolladora");
+    }
+    public function desarrolladora()
+    {
+        return $this->belongsTo("App\Models\Desarrolladora");
+    }
+    
 }

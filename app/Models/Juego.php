@@ -23,4 +23,8 @@ class Juego extends Model
         'precio',
         'desarrolladora_id',
     ];
+    public function desarrolladora()
+    {
+        return $this->belongsTo("App\Models\Desarrolladora");
+    }
 }

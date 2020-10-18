@@ -19,4 +19,8 @@ class Opcion extends Model
         'encuesta_id',
         'ganadora',
     ];
+    public function encuesta()
+    {
+        return $this->belongsTo("App\Models\Encuesta");
+    }
 }
