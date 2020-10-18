@@ -19,4 +19,14 @@ class CM extends Model
         'desarrolladora_id',
         'user_id',
     ];
+
+    /**
+     * Relationships
+     */
+
+    // Desarrolladoras - 1:N - CM
+    public function desarrolladora()
+    {
+        return $this->belongsTo("App\Models\Desarrolladora");
+    }
 }

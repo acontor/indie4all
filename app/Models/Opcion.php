@@ -19,6 +19,12 @@ class Opcion extends Model
         'encuesta_id',
         'ganadora',
     ];
+
+    /**
+     * Relationships
+     */
+
+    // Encuesta - 1:N - Opción
     public function encuesta()
     {
         return $this->belongsTo("App\Models\Encuesta");

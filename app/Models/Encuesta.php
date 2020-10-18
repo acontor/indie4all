@@ -19,11 +19,20 @@ class Encuesta extends Model
         'fecha_fin',
         'desarrolladora_id',
     ];
+
+    /**
+     * Relationships
+     */
+
+    // Desarrolladoras - 1:N - Encuestas
     public function desarrolladora()
     {
         return $this->belongsTo("App\Models\Desarrolladora");
     }
-    public function opcion(){
+
+    // Opciones - 1:N - Encuestas
+    public function opciones()
+    {
         return $this->hasMany('\App\Models\Opcion');
     }
 }

@@ -23,8 +23,26 @@ class Juego extends Model
         'precio',
         'desarrolladora_id',
     ];
+
+    /**
+     * Relationships
+     */
+
+    // Desarrolladoras - 1:N - Juegos
     public function desarrolladora()
     {
         return $this->belongsTo("App\Models\Desarrolladora");
+    }
+
+    // Genero - 1:N - Juegos
+    public function genero()
+    {
+        return $this->belongsTo("App\Models\Genero");
+    }
+
+    // Campañas - 1:N - Juegos
+    public function campania()
+    {
+        return $this->hasOne("App\Models\Campania");
     }
 }

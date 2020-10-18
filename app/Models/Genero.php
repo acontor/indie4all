@@ -17,4 +17,14 @@ class Genero extends Model
     protected $fillable = [
         'nombre',
     ];
+
+    /**
+     * Relationships
+     */
+
+    // Generos - 1:N - Juegos
+    public function juegos()
+    {
+        return $this->hasMany("App\Models\Juego");
+    }
 }

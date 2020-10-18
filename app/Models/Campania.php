@@ -20,8 +20,20 @@ class Campania extends Model
         'fecha_fin',
         'juego_id',
     ];
-    public function user()
+
+    /**
+     * Relationships
+     */
+
+    // Campanias - N:M - Users
+    public function users()
     {
         return $this->belongsToMany("App\Models\Campania");
+    }
+
+    // Campanias - N:M - Juegos
+    public function juego()
+    {
+        return $this->belongsTo('App\Models\Juego');
     }
 }

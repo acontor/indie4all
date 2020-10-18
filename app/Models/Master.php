@@ -20,11 +20,17 @@ class Master extends Model
         'user_id',
     ];
 
+    /**
+     * Relationships
+     */
+
+    // Fans - N:M - Masters
     public function fans()
     {
         return $this->belongsToMany("App\Models\Fan");
     }
 
+    // Masters - N:M - Juegos
     public function posts()
     {
         return $this->belongsToMany("App\Models\Juego")->withPivot('titulo', 'contenido', 'calificacion', 'fecha_publicacion');

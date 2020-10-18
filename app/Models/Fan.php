@@ -18,6 +18,11 @@ class Fan extends Model
         'user_id',
     ];
 
+    /**
+     * Relationships
+     */
+
+    // Fans - N:M - Masters
     public function masters()
     {
         return $this->belongsToMany("App\Models\Master")->withPivot('notificacion');
