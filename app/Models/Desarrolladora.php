@@ -33,15 +33,12 @@ class Desarrolladora extends Model
     }
     public function encuesta()
     {
-        return $this->belongsTo("App\Models\Desarrolladora");
+        return $this->belongsTo("App\Models\Encuesta");
     }
     public function sorteo()
     {
-        return $this->belongsTo("App\Models\Desarrolladora");
+        return $this->belongsTo("App\Models\Sorteo");
     }
-    public function desarrolladora()
-    {
-        return $this->belongsTo("App\Models\Desarrolladora");
-    }
+  
     
 }
