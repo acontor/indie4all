@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genero;
 use Illuminate\Http\Request;
 
 class GenerosController extends Controller
@@ -14,17 +15,7 @@ class GenerosController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('admin.generos');
     }
 
     /**
@@ -35,29 +26,17 @@ class GenerosController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'nombre' => 'required',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $genero = new Genero([
+            'nombre' => $request->get('nombre'),
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $genero->save();
+
+        return redirect('/admin/generos')->with('success', '¡Género guardado!');
     }
 
     /**
