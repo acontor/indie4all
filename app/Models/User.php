@@ -74,4 +74,22 @@ class User extends Authenticatable
     {
         return $this->belongsToMany("App\Models\User")->withPivot('precio', 'fecha_pago');
     }
+
+    // Users - 1:N - Mensajes
+    public function mensajes()
+    {
+        return $this->hasMany("App\Models\Mensaje");
+    }
+
+    // Usuario - N:M - Masters
+    public function masters()
+    {
+        return $this->belongsToMany("App\Models\Master")->withPivot('notificacion');
+    }
+
+    // Usuario - N:M - Juego
+    public function juegos()
+    {
+        return $this->belongsToMany("App\Models\Juego")->withPivot('notificacion', 'calificacion');
+    }
 }

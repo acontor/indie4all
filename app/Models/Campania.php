@@ -31,7 +31,7 @@ class Campania extends Model
         return $this->belongsToMany("App\Models\Campania");
     }
 
-    // Campanias - N:M - Juegos
+    // Campanias - 1:1 - Juegos
     public function juego()
     {
         return $this->belongsTo('App\Models\Juego');

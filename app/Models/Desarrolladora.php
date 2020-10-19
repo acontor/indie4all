@@ -56,4 +56,10 @@ class Desarrolladora extends Model
     {
         return $this->hasMany("App\Models\CM");
     }
+
+    // Desarrolladoras - 1:N - Posts
+    public function posts()
+    {
+        return $this->hasMany("App\Models\Post");
+    }
 }

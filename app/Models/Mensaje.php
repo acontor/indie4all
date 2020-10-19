@@ -20,4 +20,20 @@ class Mensaje extends Model
         'analisis_id',
         'user_id',
     ];
+
+    /**
+     * Relationships
+     */
+
+    // Users - N:M - Mensajes
+    public function user()
+    {
+        return $this->belongsTo("App\Models\User");
+    }
+
+    // Posts - 1:N - Mensajes
+    public function post()
+    {
+        return $this->belongsTo("App\Models\Post");
+    }
 }

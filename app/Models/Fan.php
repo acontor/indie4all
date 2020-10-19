@@ -17,14 +17,4 @@ class Fan extends Model
     protected $fillable = [
         'user_id',
     ];
-
-    /**
-     * Relationships
-     */
-
-    // Fans - N:M - Masters
-    public function masters()
-    {
-        return $this->belongsToMany("App\Models\Master")->withPivot('notificacion');
-    }
 }

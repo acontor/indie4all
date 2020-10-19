@@ -25,14 +25,14 @@ class Master extends Model
      */
 
     // Fans - N:M - Masters
-    public function fans()
+    public function usuario()
     {
-        return $this->belongsToMany("App\Models\Fan");
+        return $this->belongsToMany("App\Models\User");
     }
 
-    // Masters - N:M - Juegos
+    // Masters - 1:N - Posts
     public function posts()
     {
-        return $this->belongsToMany("App\Models\Juego")->withPivot('titulo', 'contenido', 'calificacion', 'fecha_publicacion');
+        return $this->hasMany("App\Models\Post");
     }
 }

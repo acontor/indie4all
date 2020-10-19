@@ -40,9 +40,21 @@ class Juego extends Model
         return $this->belongsTo("App\Models\Genero");
     }
 
-    // Campañas - 1:N - Juegos
+    // Campañas - 1:1 - Juegos
     public function campania()
     {
         return $this->hasOne("App\Models\Campania");
+    }
+
+    // Juegos - 1:N - Posts
+    public function posts()
+    {
+        return $this->hasMany("App\Models\Post");
+    }
+
+    // Juegos - N:N - Usuarios
+    public function usuario()
+    {
+        return $this->belongsToMany("App\Models\User");
     }
 }
