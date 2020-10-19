@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use App\Models\Logro;
 use Illuminate\Http\Request;
 
 class LogrosController extends Controller
@@ -14,17 +15,7 @@ class LogrosController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('admin.logros');
     }
 
     /**
@@ -35,7 +26,21 @@ class LogrosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'icono' => 'required',
+        ]);
+
+        $logro = new Logro([
+            'nombre' => $request->get('nombre'),
+            'descripcion' => $request->get('descripcion'),
+            'icono' => $request->get('icono'),
+        ]);
+
+        $logro->save();
+
+        return redirect('/admin/logros')->with('success', '¡Logro guardado!');
     }
 
     /**
