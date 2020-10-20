@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Administrador;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Genero;
 use Illuminate\Http\Request;
