@@ -32,11 +32,7 @@ class GenerosController extends Controller
             'nombre' => 'required',
         ]);
 
-        $genero = new Genero([
-            'nombre' => $request->get('nombre'),
-        ]);
-
-        $genero->save();
+        Genero::create($request->all());
 
         return redirect('/admin/generos')->with('success', '¡Género guardado!');
     }
@@ -54,9 +50,7 @@ class GenerosController extends Controller
             'nombre' => 'required',
         ]);
 
-        $genero = Genero::find($id);
-        $genero->nombre = $request->nombre;
-        $genero->save();
+        Genero::find($id)->update($request->all());
 
         return redirect('/admin/generos')->with('success', '¡Género actualizado!');
     }
@@ -69,8 +63,7 @@ class GenerosController extends Controller
      */
     public function destroy($id)
     {
-        $genero = Genero::find($id);
-        $genero->delete();
+        Genero::find($id)->delete();
         return redirect('/admin/generos')->with('success', '¡Género borrado!');
     }
 }
