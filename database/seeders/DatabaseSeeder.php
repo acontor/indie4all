@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             DesarrolladoraSeeder::class,
             DesarrolladoraUserSeeder::class,
+            LogroSeeder::class,
         ]);
     }
 }
