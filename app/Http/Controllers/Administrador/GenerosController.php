@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Administrador;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Genero;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ class GenerosController extends Controller
      */
     public function index()
     {
-        return view('admin.generos');
+        $generos = Genero::all();
+        return view('admin.generos', compact('generos', $generos));
     }
 
     /**
@@ -48,7 +50,15 @@ class GenerosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+        ]);
+
+        $genero = Genero::find($id);
+        $genero->nombre = $request->nombre;
+        $genero->save();
+
+        return redirect('/admin/generos')->with('success', '¡Género actualizado!');
     }
 
     /**
@@ -59,6 +69,8 @@ class GenerosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $genero = Genero::find($id);
+        $genero->delete();
+        return redirect('/admin/generos')->with('success', '¡Género borrado!');
     }
 }

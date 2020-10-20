@@ -16,7 +16,13 @@
                         </div>
                         <br />
                     @endif
-                    <form method='post' action="{{ route('logros.store') }}">
+                    @if (session()->get('success'))
+                        <div class='alert alert-success'>
+                            {{ session()->get('success') }}
+                        </div>
+                    @endif
+
+                    <form method='post' action="{{ route('generos.store') }}">
                         @csrf
                         <div class='form-group'>
                             <label for='nombre'>Nombre:</label>
@@ -24,6 +30,25 @@
                         </div>
                         <button type='submit' class='btn btn-primary'>Añadir</button>
                     </form>
+                    @foreach ($generos as $genero)
+                        <li> {{ $genero->nombre }}</li>
+
+                        <form method='post' action="{{ route('generos.update', $genero->id) }}">
+                            @method('PATCH')
+                            @csrf
+                            <input type='text' placeholder={{ $genero->nombre }} name='nombre'>
+                            <button type='submit' class='btn btn-primary'>Actualizar</button>
+                        </form>
+
+                        <form action="{{ route('generos.destroy', $genero->id) }}" method='post'>
+                            @csrf
+                            @method('DELETE')
+                            <button class='btn btn-danger' type='submit'>Borrar</button>
+                        </form>
+
+                    @endforeach
+
+
                 </div>
             </div>
         </div>
