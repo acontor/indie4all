@@ -30,25 +30,43 @@
                         </div>
                         <button type='submit' class='btn btn-primary'>Añadir</button>
                     </form>
-                    @foreach ($generos as $genero)
-                        <li> {{ $genero->nombre }}</li>
+                    <div class="container">
+                        <div class='row'>
 
-                        <form method='post' action="{{ route('generos.update', $genero->id) }}">
-                            @method('PATCH')
-                            @csrf
-                            <input type='text' placeholder={{ $genero->nombre }} name='nombre'>
-                            <button type='submit' class='btn btn-primary'>Actualizar</button>
-                        </form>
+                            <table class="table table-striped">
+                                <thead>
+                                    </tr>
+                                    <td class="align-middle">Nombre</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($generos as $genero)
+                                        <tr>
+                                            <td class="align-middle">
+                                                <form method='post' action="{{ route('generos.update', $genero->id) }}">
+                                                    @method('PATCH')
+                                                    @csrf
+                                                    <input type='text' placeholder={{ $genero->nombre }} name='nombre'>
+                                                    <button type='submit' class='btn btn-primary'>Actualizar</button>
+                                                </form>
+                                            </td>
+                                            <td class="align-middle">
+                                                <form action="{{ route('generos.destroy', $genero->id) }}" method='post'>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class='btn btn-danger' type='submit'>Borrar</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            {{ $generos->links('pagination::bootstrap-4') }}
 
-                        <form action="{{ route('generos.destroy', $genero->id) }}" method='post'>
-                            @csrf
-                            @method('DELETE')
-                            <button class='btn btn-danger' type='submit'>Borrar</button>
-                        </form>
-
-                    @endforeach
+                        </div>
 
 
+                    </div>
                 </div>
             </div>
         </div>
