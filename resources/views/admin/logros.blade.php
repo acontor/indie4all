@@ -4,7 +4,7 @@
         <div class='row'>
             <div class='col-sm'>
 
-                <h1 class='display-3'>Logros</h1>
+                <h1 class='display-3'>Logros <a class='btn btn-success mb-3 button-crear'>+</a></h1>
 
                 @if ($errors->any())
                     <div class='alert alert-danger'>
@@ -22,9 +22,7 @@
                     </div>
                 @endif
 
-                <a href="#" class='btn btn-primary mb-3 nuevo-logro-button'>Nuevo logro</a>
-
-                <div class="d-none nuevo-logro-div">
+                <div class="d-none form-crear">
                     <form method='post' action="{{ route('logros.store') }}">
                         @csrf
                         <div class='form-group'>
@@ -91,4 +89,18 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $(".button-crear").click(function() {
+                $(".form-crear").toggleClass("d-none");
+                $(this).toggleClass("btn-danger");
+                if($(this).hasClass("btn-danger")) {
+                    $(this).text("-");
+                } else {
+                    $(this).text("+");
+                }
+            })
+        })
+    </script>
 @endsection
