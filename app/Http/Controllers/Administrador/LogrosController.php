@@ -15,7 +15,8 @@ class LogrosController extends Controller
      */
     public function index()
     {
-        return view('admin.logros');
+        $logros = Logro::paginate(10);
+        return view('admin.logros', compact('logros'));
     }
 
     /**
@@ -32,13 +33,7 @@ class LogrosController extends Controller
             'icono' => 'required',
         ]);
 
-        $logro = new Logro([
-            'nombre' => $request->get('nombre'),
-            'descripcion' => $request->get('descripcion'),
-            'icono' => $request->get('icono'),
-        ]);
-
-        $logro->save();
+        Logro::create($request->all());
 
         return redirect('/admin/logros')->with('success', '¡Logro guardado!');
     }
@@ -52,7 +47,15 @@ class LogrosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'icono' => 'required',
+        ]);
+
+        Logro::find($id)->update($request->all());
+
+        return redirect('/admin/logros')->with('success', '!Logro actualizado!');
     }
 
     /**
@@ -63,6 +66,8 @@ class LogrosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Logro::find($id)->delete();
+
+        return redirect('/admin/logros')->with('success', '¡Logro borrado!');
     }
 }

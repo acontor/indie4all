@@ -28,5 +28,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Logros
 Route::get('/admin/logros', [App\Http\Controllers\Administrador\LogrosController::class, 'index'])->name('logros.index');
 Route::post('/admin/logros', [App\Http\Controllers\Administrador\LogrosController::class, 'store'])->name('logros.store');
-Route::post('/admin/logros/{id}/update', [App\Http\Controllers\Administrador\LogrosController::class, 'update'])->name('logros.update');
-Route::get('/admin/logros/{id}/delete', [App\Http\Controllers\Administrador\LogrosController::class, 'destroy'])->name('logros.destroy');
+Route::patch('/admin/logros/{id}/update', [App\Http\Controllers\Administrador\LogrosController::class, 'update'])->name('logros.update');
+Route::delete('/admin/logros/{id}/delete', [App\Http\Controllers\Administrador\LogrosController::class, 'destroy'])->name('logros.destroy');
