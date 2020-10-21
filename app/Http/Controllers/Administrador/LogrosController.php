@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use App\Models\Logro;
 use Illuminate\Http\Request;
 
 class LogrosController extends Controller
@@ -14,17 +15,8 @@ class LogrosController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $logros = Logro::paginate(10);
+        return view('admin.logros', compact('logros'));
     }
 
     /**
@@ -35,29 +27,15 @@ class LogrosController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'icono' => 'required',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        Logro::create($request->all());
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return redirect('/admin/logros')->with('success', '¡Logro guardado!');
     }
 
     /**
@@ -69,7 +47,15 @@ class LogrosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'icono' => 'required',
+        ]);
+
+        Logro::find($id)->update($request->all());
+
+        return redirect('/admin/logros')->with('success', '!Logro actualizado!');
     }
 
     /**
@@ -80,6 +66,8 @@ class LogrosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Logro::find($id)->delete();
+
+        return redirect('/admin/logros')->with('success', '¡Logro borrado!');
     }
 }
