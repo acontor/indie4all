@@ -5,7 +5,7 @@
         <div class='row'>
             <div class='col-sm'>
 
-                <h1 class='display-3'>Géneros <a class='btn btn-success mb-3 button-crear'>+</a></h1>
+                <h1 class='display-5'>Géneros <a class='btn btn-success button-crear'>+</a></h1>
 
                 @if ($errors->any())
                     <div class='alert alert-danger'>
@@ -24,7 +24,7 @@
                 @endif
 
                 <div class="d-none form-crear">
-                    <form method='post' action="{{ route('generos.store') }}">
+                    <form method='post' action="{{ route('admin.generos.store') }}">
                         @csrf
                         <div class='form-group'>
                             <label for='nombre'>Nombre:</label>
@@ -34,7 +34,7 @@
                     </form>
                 </div>
 
-                <table class="table table-striped table-responsive-lg">
+                <table class="table table-striped table-responsive-sm">
                     <thead>
                         <tr>
                             <td>Nombre</td>
@@ -45,7 +45,7 @@
                     <tbody>
                         @foreach ($generos as $genero)
                             <tr>
-                                <form method='post' action="{{ route('generos.update', $genero->id) }}">
+                                <form method='post' action="{{ route('admin.generos.update', $genero->id) }}">
                                     @method('PATCH')
                                     @csrf
                                     <td class="align-middle">
@@ -56,7 +56,7 @@
                                     </td>
                                 </form>
                                 <td class="align-middle">
-                                    <form action="{{ route('generos.destroy', $genero->id) }}" method='post'>
+                                    <form action="{{ route('admin.generos.destroy', $genero->id) }}" method='post'>
                                         @csrf
                                         @method('DELETE')
                                         <button class='btn btn-danger' type='submit'>Borrar</button>

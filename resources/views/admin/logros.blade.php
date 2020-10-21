@@ -4,7 +4,7 @@
         <div class='row'>
             <div class='col-sm'>
 
-                <h1 class='display-3'>Logros <a class='btn btn-success mb-3 button-crear'>+</a></h1>
+                <h1 class='display-5'>Logros <a class='btn btn-success button-crear'>+</a></h1>
 
                 @if ($errors->any())
                     <div class='alert alert-danger'>
@@ -23,7 +23,7 @@
                 @endif
 
                 <div class="d-none form-crear">
-                    <form method='post' action="{{ route('logros.store') }}">
+                    <form method='post' action="{{ route('admin.logros.store') }}">
                         @csrf
                         <div class='form-group'>
                             <label for='nombre'>Nombre:</label>
@@ -42,7 +42,7 @@
                     </form>
                 </div>
 
-                <table class='table table-striped table-responsive-lg'>
+                <table class='table table-striped table-responsive-sm'>
                     <thead>
                         <tr>
                             <td>Nombre</td>
@@ -56,7 +56,7 @@
                         @foreach ($logros as $logro)
 
                             <tr>
-                                <form action="{{ route('logros.update', $logro->id) }}" method='post'>
+                                <form action="{{ route('admin.logros.update', $logro->id) }}" method='post'>
                                     @csrf
                                     @method('PATCH')
                                     <td class="align-middle"><input type="text" placeholder="Nombre"
@@ -73,7 +73,7 @@
 
                                 <td>
 
-                                    <form action="{{ route('logros.destroy', $logro->id) }}" method='post'>
+                                    <form action="{{ route('admin.logros.destroy', $logro->id) }}" method='post'>
                                         @csrf
                                         @method('DELETE')
                                         <button class='btn btn-danger' type='submit'>Borrar</button>
