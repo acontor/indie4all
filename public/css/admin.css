@@ -21,7 +21,7 @@ body {
     left: 0;
     top: 0;
     width: auto;
-    background: #1E4988;
+    background: #2E3647;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -43,19 +43,19 @@ body {
 }
 
 .sidebar ul li i {
-    color: white;
+    color: #FFF;
     font-size: 25px;
     display: block;
 }
 
 .sidebar ul li a {
-    color: white;
+    color: #FFF;
     font-weight: bold;
 }
 
 .sidebar ul li a:hover,
 .sidebar ul li a:hover>* {
-    color: #cdcdcd;
+    color: #E34E33;
     text-decoration: none;
     -webkit-transition: color 0.2s;
     transition: color 0.2s;
