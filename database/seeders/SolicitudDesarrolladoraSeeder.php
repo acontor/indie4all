@@ -23,7 +23,7 @@ class SolicitudDesarrolladoraSeeder extends Seeder
             'direccion' => 'Avenida Arroyo del Moro, s/n, 14011 Córdoba',
             'telefono' => '957 73 49 00',
             'url' => 'www.iestrassierra.com',
-            'user_id' => 1,
+            'user_id' => 2,
         ]);
     }
 }

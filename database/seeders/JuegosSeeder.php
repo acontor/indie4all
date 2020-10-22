@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class JuegoSeeder extends Seeder
+class JuegosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,13 +17,14 @@ class JuegoSeeder extends Seeder
     public function run()
     {
         DB::table('juegos')->insert([
-            'nombre' => 'Juego 2',
+            'nombre' => 'Juego 1',
             'imagen_portada' => '/imagenportada',
             'imagen_caratula' => '/imagencaratula',
             'sinopsis' => 'sipnosis',
             'fecha_lanzamiento' => '2012-11-05',
             'precio' =>43.44,
             'desarrolladora_id' => 1,
+            'genero_id' => 1,
         ]);
         DB::table('juegos')->insert([
             'nombre' => 'Juego 2',
@@ -33,6 +34,7 @@ class JuegoSeeder extends Seeder
             'fecha_lanzamiento' => '2015-11-05',
             'precio' =>43.44,
             'desarrolladora_id' => 2,
+            'genero_id' => 2,
         ]);
     }
 }

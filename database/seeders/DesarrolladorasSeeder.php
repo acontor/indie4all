@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class DesarrolladoraSeeder extends Seeder
+class DesarrolladorasSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -31,15 +31,6 @@ class DesarrolladoraSeeder extends Seeder
             'telefono' => '911 11 11 11',
             'url' => 'www.turismostudios.com',
             'imagen_logo' => '/turismostudios.png'
-        ]);
-        DB::table('desarrolladoras')->insert([
-            'id' => 2,
-            'nombre' => 'Desarrolladora 2',
-            'email' => Str::random(10) . '@gmail.com',
-            'direccion'=> 'direccion desarrolladora 2',
-            'telefono'=> 'telefono desarrolladora 2',
-            'url' => 'url desarrolladora 2',
-            'imagen_logo' => 'imagen_logo desarrolladora 2'         
         ]);
     }
 }
