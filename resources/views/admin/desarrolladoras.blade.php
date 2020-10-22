@@ -3,7 +3,7 @@
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-                <h1 class='display-5'>Desarrolladoras</h1>
+                <h1 class='display-5'>Desarrolladoras ({{ $desarrolladoras->count() }})</h1>
                 @if ($solicitudes->count() > 0)
                 <a class='btn btn-success button-crear mb-3'>Solicitudes ({{ $solicitudes->count() }})</a>
                 <div class="d-none form-crear table-responsive mb-3">
