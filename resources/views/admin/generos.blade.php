@@ -1,4 +1,4 @@
-@extends('../layouts.admin')
+@extends('layouts.admin.base')
 @section('content')
     <div class="container">
         <div class='row'>
@@ -47,7 +47,7 @@
                                         @method('PATCH')
                                         @csrf
                                         <td class="align-middle">
-                                            <input type='text' placeholder={{ $genero->nombre }} name='nombre'>
+                                            <input type='text' placeholder="Email" value="{{ $genero->nombre }}" name='nombre'>
                                         </td>
                                         <td>{{ $genero->usuarios->count() }}</td>
                                         <td>{{ $genero->juegos->count() }}</td>

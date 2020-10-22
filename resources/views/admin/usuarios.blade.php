@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin.base')
 @section('content')
     <div class="container">
         <div class='row'>
@@ -18,21 +18,21 @@
                             <tbody>
                                 @foreach ($usuarios as $usuario)
                                     <tr>
-                                        <form method='post' action="{{ route('admin.generos.update', $usuario->id) }}">
+                                        <form method='post' action="{{ route('admin.usuarios.update', $usuario->id) }}">
                                             @method('PATCH')
                                             @csrf
                                             <td class="align-middle">
-                                                <input type='text' placeholder={{ $usuario->name }} name='nombre'>
+                                                <input type='text' placeholder="Nombre" value="{{ $usuario->name }}" name='name'>
                                             </td>
                                             <td class="align-middle">
-                                                <input type='text' placeholder={{ $usuario->email }} name='email'>
+                                                <input type='text' placeholder="Email" value="{{ $usuario->email }}" name='email'>
                                             </td>
                                             <td class="align-middle">
                                                 <button type='submit' class='btn btn-primary'>Editar</button>
                                             </td>
                                         </form>
                                         <td class="align-middle">
-                                            <form action="{{ route('admin.generos.destroy', $usuario->id) }}" method='post'>
+                                            <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}" method='post'>
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class='btn btn-danger' type='submit'>Borrar</button>

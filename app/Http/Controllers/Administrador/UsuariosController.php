@@ -29,7 +29,7 @@ class UsuariosController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombre' => 'required',
+            'name' => 'required',
             'email' => 'required',
         ]);
 

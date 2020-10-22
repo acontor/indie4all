@@ -19,6 +19,9 @@ body {
 
 .navbar {
     background-color: #E34E33;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
 }
 
 /**
@@ -35,6 +38,7 @@ body {
     display: flex;
     justify-content: center;
     overflow: hidden;
+    z-index: 2;
 }
 
 .sidebar ul {
@@ -78,6 +82,7 @@ main {
     width: calc(100% - 160px);
     position: relative;
     left: 150px;
+    top: 100px;
     height: 96%;
     display: flex;
     justify-content: center;
@@ -108,14 +113,6 @@ nav ul.pagination {
 
 
 @media only screen and (max-width: 480px) {
-
-    /**
-     * NAV
-     */
-
-    nav.navbar div div {
-        text-align: right;
-    }
 
     /**
     * SIDEBAR
