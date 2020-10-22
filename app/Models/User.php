@@ -92,4 +92,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany("App\Models\Juego")->withPivot('notificacion', 'calificacion');
     }
+
+    // Usuario - 1:1 - Solicitud
+    public function solicitud()
+    {
+        return $this->hasOne('\App\Models\Solicitud');
+    }
 }
