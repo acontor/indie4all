@@ -3,7 +3,7 @@
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-                <h1 class='display-5'>Logros <a class='btn btn-success button-crear'>+</a></h1>
+                <h1 class='display-5'>Logros ({{ $logros->count() }}) <a class='btn btn-success button-crear'>+</a></h1>
                 @if ($errors->any())
                     <div class='alert alert-danger'>
                         <ul>

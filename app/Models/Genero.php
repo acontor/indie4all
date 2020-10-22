@@ -25,6 +25,6 @@ class Genero extends Model
     // Generos - 1:N - Juegos
     public function juegos()
     {
-        return $this->hasMany("App\Models\Juego");
+        return $this->hasMany("App\Models\Juego", 'id', 'juego_id');
     }
 }
