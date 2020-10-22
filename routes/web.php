@@ -39,3 +39,6 @@ Route::delete('/admin/generos/{id}/delete', [App\Http\Controllers\Administrador\
 
 // Desarrolladoras
 Route::get('/admin/desarrolladoras', [App\Http\Controllers\Administrador\DesarrolladorasController::class, 'index'])->name('admin.desarrolladoras.index');
+
+//Juegos
+Route::get('/admin/juegos', [App\Http\Controllers\Administrador\JuegosController::class, 'index'])->name('admin.juegos.index');

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             DesarrolladoraUserSeeder::class,
             LogroSeeder::class,
             SolicitudDesarrolladoraSeeder::class,
+            JuegoSeeder::class,
         ]);
     }
 }

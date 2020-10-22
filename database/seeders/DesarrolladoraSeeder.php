@@ -32,5 +32,14 @@ class DesarrolladoraSeeder extends Seeder
             'url' => 'www.turismostudios.com',
             'imagen_logo' => '/turismostudios.png'
         ]);
+        DB::table('desarrolladoras')->insert([
+            'id' => 2,
+            'nombre' => 'Desarrolladora 2',
+            'email' => Str::random(10) . '@gmail.com',
+            'direccion'=> 'direccion desarrolladora 2',
+            'telefono'=> 'telefono desarrolladora 2',
+            'url' => 'url desarrolladora 2',
+            'imagen_logo' => 'imagen_logo desarrolladora 2'         
+        ]);
     }
 }
