@@ -39,7 +39,7 @@
                     </form>
                 </div>
                 <div class="table-responsive">
-                    <table class='table table-striped table-responsive'>
+                    <table class='table table-striped'>
                         <thead>
                             <tr>
                                 <td>Nombre</td>
