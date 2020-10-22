@@ -16,19 +16,18 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -76,10 +75,24 @@
             </div>
         </nav>
 
+        <nav class="sidebar">
+            <ul>
+                {{--
+                <li><a href="{{ route('admin.index') }}">Resumen</a></li>
+                <li><a href="{{ route('admin.usuarios.index') }}">Usuarios</a></li>
+                <li><a href="{{ route('admin.desarrolladoras.index') }}">Desarrolladoras</a></li>
+                <li><a href="{{ route('admin.juegos.index') }}">Juegos</a></li>
+                --}}
+                <li><a href=""><i class="fas fa-home"></i>Inicio</a></li>
+                <li><a href=""><i class="fas fa-users"></i>Usuarios</a></li>
+                <li><a href=""><i class="fas fa-building"></i>Desarrolladoras</a></li>
+                <li><a href=""><i class="fas fa-gamepad"></i>Juegos</a></li>
+                <li><a href="{{ route('admin.generos.index') }}"><i class="fas fa-puzzle-piece"></i>Géneros</a></li>
+                <li><a href="{{ route('admin.logros.index') }}"><i class="fas fa-trophy"></i>Logros</a></li>
+            </ul>
+        </nav>
+
         <main class="py-4">
-
-            <!-- Crear Sidebar -->
-
             @yield('content')
         </main>
     </div>
