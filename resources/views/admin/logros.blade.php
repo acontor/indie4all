@@ -95,12 +95,13 @@
             $(".button-crear").click(function() {
                 $(".form-crear").toggleClass("d-none");
                 $(this).toggleClass("btn-danger");
-                if($(this).hasClass("btn-danger")) {
+                if ($(this).hasClass("btn-danger")) {
                     $(this).text("-");
                 } else {
                     $(this).text("+");
                 }
             })
         })
+
     </script>
 @endsection

@@ -36,3 +36,6 @@ Route::get('/admin/generos', [App\Http\Controllers\Administrador\GenerosControll
 Route::post('/admin/generos', [App\Http\Controllers\Administrador\GenerosController::class, 'store'])->name('generos.store');
 Route::PATCH('/admin/generos/{id}/update', [App\Http\Controllers\Administrador\GenerosController::class, 'update'])->name('generos.update');
 Route::delete('/admin/generos/{id}/delete', [App\Http\Controllers\Administrador\GenerosController::class, 'destroy'])->name('generos.destroy');
+
+//Juegos
+Route::get('/admin/juegos', [App\Http\Controllers\Administrador\JuegosController::class, 'index'])->name('juegos.index');
