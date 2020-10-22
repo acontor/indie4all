@@ -24,6 +24,32 @@ body {
     z-index: 1;
 }
 
+.nav-link i {
+    font-size: 20px;
+}
+
+.badge {
+    padding-top: 3px !important;
+    -webkit-border-radius: 9px !important;
+    -moz-border-radius: 9px !important;
+    border-radius: 9px !important;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+    background-color: #c67605;
+}
+
+#messages-count {
+    font-size: 10px;
+    background: #2E3647;
+    color: #FFF;
+    padding: 1px 4px;
+    vertical-align: top;
+    margin-left: -8px;
+    margin-top: 10px;
+}
+
 /**
  * SIDEBAR
  */
