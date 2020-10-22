@@ -9,12 +9,12 @@
                         <thead>
                             <tr>
                                 <td>Nombre</td>
-                                <td>imagen_portada</td>
-                                <td>imagen_caratula</td>
-                                <td>sinopsis</td>
-                                <td>fecha_lanzamiento</td>
-                                <td>precio</td>
-                                <td>desarrolladora_id</td>
+                                <td>Portada</td>
+                                <td>Carátula</td>
+                                <td>Sinopsis</td>
+                                <td>Fecha de lanzamiento</td>
+                                <td>Precio</td>
+                                <td>Desarrolladora</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,7 +26,7 @@
                                     <td class="align-middle">{{ $juego->sinopsis }}</td>
                                     <td class="align-middle">{{ $juego->fecha_lanzamiento }}</td>
                                     <td class="align-middle">{{ $juego->precio }}</td>
-                                    <td class="align-middle">{{ $juego->desarrolladora_id }}</td>
+                                    <td class="align-middle">{{ $juego->desarrolladora->nombre }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
