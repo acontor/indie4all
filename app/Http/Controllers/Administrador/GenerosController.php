@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
-use App\Models\Genero;
 use Illuminate\Http\Request;
 
 class GenerosController extends Controller
@@ -15,8 +14,17 @@ class GenerosController extends Controller
      */
     public function index()
     {
-        $generos = Genero::paginate(2);
-        return view('admin.generos', compact('generos', $generos));
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -27,13 +35,29 @@ class GenerosController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-        ]);
+        //
+    }
 
-        Genero::create($request->all());
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
 
-        return redirect('/admin/generos')->with('success', '¡Género guardado!');
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -45,13 +69,7 @@ class GenerosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required',
-        ]);
-
-        Genero::find($id)->update($request->all());
-
-        return redirect('/admin/generos')->with('success', '¡Género actualizado!');
+        //
     }
 
     /**
@@ -62,7 +80,6 @@ class GenerosController extends Controller
      */
     public function destroy($id)
     {
-        Genero::find($id)->delete();
-        return redirect('/admin/generos')->with('success', '¡Género borrado!');
+        //
     }
 }
