@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMastersUsersTable extends Migration
+class CreateFansMastersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateMastersUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('master_user', function (Blueprint $table) {
+        Schema::create('fan_master', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
+            $table->bigInteger('fan_id');
             $table->bigInteger('master_id');
             $table->boolean('notificacion');
             $table->timestamps();
@@ -29,6 +29,6 @@ class CreateMastersUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_user');
+        Schema::dropIfExists('fan_master');
     }
 }
