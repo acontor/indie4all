@@ -19,4 +19,14 @@ class Logro extends Model
         'descripcion',
         'icono',
     ];
+
+    /**
+     * Relationships
+     */
+
+    // Users - N:M - Logros
+    public function usuarios()
+    {
+        return $this->belongsToMany("App\Models\User");
+    }
 }

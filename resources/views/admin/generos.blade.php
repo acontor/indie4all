@@ -34,6 +34,7 @@
                         <thead>
                             <tr>
                                 <td>Nombre</td>
+                                <td>Seguidores</td>
                                 <td>Juegos</td>
                                 <td>Editar</td>
                                 <td>Borrar</td>
@@ -48,6 +49,7 @@
                                         <td class="align-middle">
                                             <input type='text' placeholder={{ $genero->nombre }} name='nombre'>
                                         </td>
+                                        <td>{{ $genero->usuarios->count() }}</td>
                                         <td>{{ $genero->juegos->count() }}</td>
                                         <td class="align-middle">
                                             <button type='submit' class='btn btn-primary'>Editar</button>
