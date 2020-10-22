@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             DesarrolladoraSeeder::class,
             DesarrolladoraUserSeeder::class,
             LogroSeeder::class,
+            SolicitudDesarrolladoraSeeder::class,
         ]);
     }
 }
