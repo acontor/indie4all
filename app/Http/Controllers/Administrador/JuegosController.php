@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
-use App\Models\Logro;
+use App\Models\Juego;
 use Illuminate\Http\Request;
 
-class LogrosController extends Controller
+class JuegosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class LogrosController extends Controller
      */
     public function index()
     {
-        $logros = Logro::paginate(10);
-        return view('admin.logros', compact('logros'));
+        $juegos = Juego::paginate(2);
+        return view('admin.juegos', compact('juegos', $juegos));
     }
 
     /**
@@ -27,15 +27,7 @@ class LogrosController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'descripcion' => 'required',
-            'icono' => 'required',
-        ]);
-
-        Logro::create($request->all());
-
-        return redirect('/admin/logros')->with('success', '¡Logro guardado!');
+       
     }
 
     /**
@@ -47,15 +39,7 @@ class LogrosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'descripcion' => 'required',
-            'icono' => 'required',
-        ]);
-
-        Logro::find($id)->update($request->all());
-
-        return redirect('/admin/logros')->with('success', '!Logro actualizado!');
+        
     }
 
     /**
@@ -66,8 +50,6 @@ class LogrosController extends Controller
      */
     public function destroy($id)
     {
-        Logro::find($id)->delete();
-
-        return redirect('/admin/logros')->with('success', '¡Logro borrado!');
+     
     }
 }
