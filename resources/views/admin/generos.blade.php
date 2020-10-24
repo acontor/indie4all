@@ -68,12 +68,24 @@
                     </table>
                     {{ $generos->links('pagination::bootstrap-4') }}
                 </div>
+                <canvas id="myChart" width="400" height="200"></canvas>
             </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script>
         $(function() {
+
+            var  generos = {!! json_encode($generosAll->toArray(), JSON_HEX_TAG) !!};
+            var  data = {!! json_encode($data, JSON_HEX_TAG) !!};
+            
+            var nombreGenero = [];
+
+            generos.forEach(element => {
+                nombreGenero.push(element['nombre'])
+            });
+
             $(".button-crear").click(function() {
                 $(".form-crear").toggleClass("d-none");
                 $(this).toggleClass("btn-danger");
@@ -83,7 +95,40 @@
                     $(this).text("+");
                 }
             });
+            graficaGeneros(nombreGenero, data)
         });
+
+        function graficaGeneros(generos, data) {
+            var ctx = document.getElementById("myChart").getContext("2d");
+
+            var data = {
+                labels: generos,
+                datasets: [{
+                    label: "Juegos",
+                    backgroundColor:'#ff6384',
+                    data: data[0]
+                }, {
+                    label: "Seguidores",
+                    backgroundColor: "#A086BE",
+                    data: data[1]
+                }, ]
+            };
+
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    barValueSpacing: 20,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                            }
+                        }]
+                    }
+                }
+            });
+        }
 
     </script>
 @endsection

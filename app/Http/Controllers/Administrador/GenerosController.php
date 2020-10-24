@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
 use App\Models\Genero;
+use App\Models\Juego;
 use Illuminate\Http\Request;
 
 class GenerosController extends Controller
@@ -16,7 +17,16 @@ class GenerosController extends Controller
     public function index()
     {
         $generos = Genero::paginate(2);
-        return view('admin.generos', compact('generos'));
+        $generosAll = Genero::all();
+        $generos2 = Genero::all();
+        $numJuegos = [];
+        $numSeguidores = [];
+        foreach ($generosAll as $genero) {
+            array_push($numJuegos,  $genero->juegos->count());
+            array_push($numSeguidores,  $genero->usuarios->count());
+        }
+        $data = [$numJuegos,$numSeguidores];
+        return view('admin.generos', compact('generos', 'generosAll', 'data'));
     }
 
     /**
