@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
 use App\Models\Genero;
-use App\Models\Juego;
 use Illuminate\Http\Request;
 
 class GenerosController extends Controller
