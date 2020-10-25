@@ -4,14 +4,16 @@
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto align-items-center">
             <!-- Según las solicitudes que tenga el usuario -->
-            <li class="nav-item">
-                <a class="nav-link" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                    <i class="fas fa-envelope"></i>
-                    <span class="badge badge-warning" id="messages-count">
-                        0
-                    </span>
-                </a>
-            </li>
+            @if ($solicitudes = \App\Models\Solicitud::all()->count() > 0)
+                <li class="nav-item">
+                    <a class="nav-link" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <i class="fas fa-envelope"></i>
+                        <span class="badge badge-warning" id="messages-count">
+                            {{ $solicitudes }}
+                        </span>
+                    </a>
+                </li>
+            @endif
 
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
