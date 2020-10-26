@@ -26,8 +26,6 @@ class DatabaseSeeder extends Seeder
             CmsSeeder::class,
             MastersSeeder::class,
             FansSeeder::class,
-            DesarrolladorasSeeder::class,
-            DesarrolladoraUserSeeder::class,
         ]);
     }
 }
