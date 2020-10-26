@@ -15,9 +15,8 @@ class GenerosController extends Controller
      */
     public function index()
     {
-        $generos = Genero::paginate(2);
+        $generos = Genero::paginate(4);
         $generosAll = Genero::all();
-        $generos2 = Genero::all();
         $numJuegos = [];
         $numSeguidores = [];
         foreach ($generosAll as $genero) {

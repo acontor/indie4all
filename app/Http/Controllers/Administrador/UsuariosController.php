@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Master;
+use App\Models\Fan;
+use App\Models\Cm;
 use Illuminate\Http\Request;
 
 class UsuariosController extends Controller
@@ -16,7 +19,10 @@ class UsuariosController extends Controller
     public function index()
     {
         $usuarios = User::paginate(5);
-        return view('admin.usuarios', compact('usuarios'));
+        $num_masters = Master::all()->count();
+        $num_fans = Fan::all()->count();
+        $num_cms = CM::all()->count();
+        return view('admin.usuarios', compact('usuarios', 'num_masters', 'num_fans', 'num_cms'));
     }
 
     /**
