@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+<<<<<<< HEAD
             UsuariosSeeder::class,
             DesarrolladorasSeeder::class,
             DesarrolladoraUsuarioSeeder::class,
@@ -26,6 +27,11 @@ class DatabaseSeeder extends Seeder
             CmsSeeder::class,
             MastersSeeder::class,
             FansSeeder::class,
+=======
+            UserSeeder::class,
+            DesarrolladoraSeeder::class,
+            DesarrolladoraUserSeeder::class,
+>>>>>>> 52796baaeab21bc29cd2a87ac161ad3947079819
         ]);
     }
 }
