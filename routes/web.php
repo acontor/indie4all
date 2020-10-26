@@ -21,11 +21,3 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get("/user/{id}/notificacion", function($id) {
-    $user = App\Models\User::find($id);
-
-    foreach ($user->desarrolladoras as $desarrolladora) {
-       
-        echo $desarrolladora->pivot->notificacion . ' ';
-    }
-});
