@@ -3,7 +3,7 @@
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-                <h1 class='display-5'>Usuarios ({{ $usuarios->count() }})</h1>
+                <h1 class='display-5'>Usuarios ({{ \App\Models\User::all()->count() }})</h1>
                 <canvas id="myChart" width="400" height="100"></canvas>
                 <div class="table-responsive mt-3">
                     <div class="table-responsive">
@@ -55,8 +55,8 @@
     $(function() {
 
         var masters = {!! $num_masters !!};
-        var fans = {!! $num_fans !!};
         var cms = {!! $num_cms !!};
+        var fans = {!! $num_fans !!} - masters - cms;
 
         graficaUsuarios(masters, fans, cms)
     });

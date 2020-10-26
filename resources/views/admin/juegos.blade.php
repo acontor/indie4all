@@ -25,7 +25,7 @@
                                     <td class="align-middle">{{ $juego->imagen_caratula }}</td>
                                     <td class="align-middle">{{ $juego->sinopsis }}</td>
                                     <td class="align-middle">{{ $juego->fecha_lanzamiento }}</td>
-                                    <td class="align-middle">{{ $juego->precio }}</td>
+                                    <td class="align-middle">{{ $juego->precio }} €</td>
                                     <td class="align-middle">{{ $juego->desarrolladora->nombre }}</td>
                                 </tr>
                             @endforeach

@@ -23,19 +23,18 @@
                             <tbody>
                                 @foreach ($desarrolladoras as $desarrolladora)
                                     <tr>
-                                        <form method='post' action="">
-                                            @method('PATCH')
+                                        <form method='post' action="{{ route('admin.solicitudes.aceptarDesarrolladora', [$desarrolladora->id, $desarrolladora->user_id]) }}">
                                             @csrf
-                                            <td class="align-middle">{{ $desarrolladora->nombre }}</td>
-                                            <td class="align-middle">{{ $desarrolladora->email }}</td>
-                                            <td class="align-middle">{{ $desarrolladora->direccion }}</td>
-                                            <td class="align-middle">{{ $desarrolladora->telefono }}</td>
-                                            <td class="align-middle">{{ $desarrolladora->url }}</td>
+                                            <td class="align-middle"><input type="text" value="{{ $desarrolladora->nombre }}" name="nombre"></td>
+                                            <td class="align-middle"><input type="text" value="{{ $desarrolladora->email }}" name="email"></td>
+                                            <td class="align-middle"><input type="text" value="{{ $desarrolladora->direccion }}" name="direccion"></td>
+                                            <td class="align-middle"><input type="text" value="{{ $desarrolladora->telefono }}" name="telefono"></td>
+                                            <td class="align-middle"><input type="text" value="{{ $desarrolladora->url }}" name="url"></td>
                                             <td class="align-middle">{{ $desarrolladora->usuario->name }}</td>
                                             <td class="align-middle"><button class='btn btn-success' type='submit'>Aceptar</button></td>
                                         </form>
-                                        <td class="align-middle">
-                                            <form action="" method='post'>
+                                        <td>
+                                            <form action="{{ route('admin.solicitudes.rechazarDesarrolladora', $desarrolladora->id) }}" method='post'>
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class='btn btn-danger' type='submit'>Rechazar</button>
