@@ -20,7 +20,7 @@ class CreateDesarrolladorasTable extends Migration
             $table->string('direccion');
             $table->string('telefono');
             $table->string('url');
-            $table->string('imagen_logo');
+            $table->string('imagen_logo')->nullable();
             $table->timestamps();
         });
     }

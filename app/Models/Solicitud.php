@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CM extends Model
+class Solicitud extends Model
 {
     use HasFactory;
 
@@ -15,8 +15,12 @@ class CM extends Model
      * @var array
      */
     protected $fillable = [
-        'rol',
-        'desarrolladora_id',
+        'nombre',
+        'tipo',
+        'email',
+        'direccion',
+        'telefono',
+        'url',
         'user_id',
     ];
 
@@ -24,9 +28,9 @@ class CM extends Model
      * Relationships
      */
 
-    // Desarrolladoras - 1:N - CM
-    public function desarrolladora()
+    // Usuario - 1:1 - Solicitud
+    public function usuario()
     {
-        return $this->belongsTo("App\Models\Desarrolladora");
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 }
