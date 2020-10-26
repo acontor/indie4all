@@ -6,7 +6,7 @@
             <!-- Según las solicitudes que tenga el usuario -->
             @if ($solicitudes = \App\Models\Solicitud::all()->count() > 0)
                 <li class="nav-item">
-                    <a class="nav-link" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a class="nav-link" href="{{ route('admin.solicitudes.index') }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                         <i class="fas fa-envelope"></i>
                         <span class="badge badge-warning" id="messages-count">
                             {{ $solicitudes }}
