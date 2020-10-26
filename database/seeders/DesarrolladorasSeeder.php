@@ -17,7 +17,6 @@ class DesarrolladorasSeeder extends Seeder
     public function run()
     {
         DB::table('desarrolladoras')->insert([
-<<<<<<< HEAD:database/seeders/DesarrolladorasSeeder.php
             'nombre' => '2D Trassierra',
             'email' => '2dtrassierra@mail.com',
             'direccion' => 'Avenida Arroyo del Moro, s/n, 14011 Córdoba',
@@ -32,15 +31,6 @@ class DesarrolladorasSeeder extends Seeder
             'telefono' => '911 11 11 11',
             'url' => 'www.turismostudios.com',
             'imagen_logo' => '/turismostudios.png'
-=======
-            'id' => 1,
-            'nombre' => 'Desarrolladora 1',
-            'email' => Str::random(10) . '@gmail.com',
-            'direccion'=> 'direccion desarrolladora 1',
-            'telefono'=> 'telefono desarrolladora 1',
-            'url' => 'url desarrolladora 1',
-            'imagen_logo' => 'imagen_logo desarrolladora 1'         
->>>>>>> 52796baaeab21bc29cd2a87ac161ad3947079819:database/seeders/DesarrolladoraSeeder.php
         ]);
     }
 }
