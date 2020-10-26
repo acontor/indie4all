@@ -4,9 +4,13 @@
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto align-items-center">
             <!-- Según las solicitudes que tenga el usuario -->
-            @if ($solicitudes = \App\Models\Solicitud::all()->count() > 0)
+            @php
+            $solicitudes = \App\Models\Solicitud::all()->count()
+            @endphp
+            @if ($solicitudes > 0)
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.solicitudes.index') }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a class="nav-link" href="{{ route('admin.solicitudes.index') }}" role="button" aria-haspopup="true"
+                        aria-expanded="false" v-pre>
                         <i class="fas fa-envelope"></i>
                         <span class="badge badge-warning" id="messages-count">
                             {{ $solicitudes }}
