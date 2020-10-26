@@ -3,7 +3,7 @@
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-                <h1 class='display-5'>Géneros ({{ $generos->count() }}) <a class='btn btn-success button-crear'>+</a></h1>
+                <h1 class='display-5'>Géneros ({{ $generosAll->count() }}) <a class='btn btn-success button-crear'>+</a></h1>
                 @if ($errors->any())
                     <div class='alert alert-danger'>
                         <ul>
@@ -29,7 +29,8 @@
                         <button type='submit' class='btn btn-success mb-3'>Añadir</button>
                     </form>
                 </div>
-                <div class="table-responsive">
+                <canvas id="myChart" width="400" height="100"></canvas>
+                <div class="table-responsive mt-3">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -68,7 +69,6 @@
                     </table>
                     {{ $generos->links('pagination::bootstrap-4') }}
                 </div>
-                <canvas id="myChart" width="400" height="200"></canvas>
             </div>
         </div>
     </div>
@@ -79,7 +79,7 @@
 
             var  generos = {!! json_encode($generosAll->toArray(), JSON_HEX_TAG) !!};
             var  data = {!! json_encode($data, JSON_HEX_TAG) !!};
-            
+
             var nombreGenero = [];
 
             generos.forEach(element => {
