@@ -38,7 +38,6 @@ class SolicitudesController extends Controller
             'direccion' => 'required',
             'telefono' => 'required',
             'url' => 'required',
-            'imagen_logo' => 'required',
         ]);
 
         Desarrolladora::create($request->all());
