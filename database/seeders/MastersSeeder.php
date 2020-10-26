@@ -19,7 +19,7 @@ class MastersSeeder extends Seeder
         DB::table('masters')->insert([
             'email' => 'email',
             'imagen' => '/imagen/master.png',
-            'user_id' => 2,
+            'user_id' => 3,
         ]);
     }
 }

@@ -17,13 +17,22 @@ class SolicitudDesarrolladoraSeeder extends Seeder
     public function run()
     {
         DB::table('solicituds')->insert([
-            'nombre' => '2D Trassierra',
+            'nombre' => 'Nueva desarrolladora',
             'tipo' => 'Desarrolladora',
-            'email' => '2dtrassierra@mail.com',
-            'direccion' => 'Avenida Arroyo del Moro, s/n, 14011 Córdoba',
-            'telefono' => '957 73 49 00',
-            'url' => 'www.iestrassierra.com',
-            'user_id' => 2,
+            'email' => 'nuevadesarrolladora@mail.com',
+            'direccion' => 'Direccion',
+            'telefono' => 'Telefono',
+            'url' => 'www.url.com',
+            'user_id' => 6,
+        ]);
+        DB::table('solicituds')->insert([
+            'nombre' => 'Nueva desarrolladora2',
+            'tipo' => 'Desarrolladora',
+            'email' => 'nuevadesarrolladora2@mail.com',
+            'direccion' => 'Direccion2',
+            'telefono' => 'Telefono2',
+            'url' => 'www.url2.com',
+            'user_id' => 7,
         ]);
     }
 }
