@@ -65,3 +65,7 @@ Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\DesarrolladorasCont
 Route::get('/desarrolladora/{id}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'show'])->name('usuario.desarrolladora.show');
 Route::get('/desarrolladora/solicitud', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'create'])->name('usuario.desarrolladora.create');
 Route::post('/desarrolladora/solicitud', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'store'])->name('usuario.desarrolladora.store');
+
+// Juegos
+Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index');
+Route::get('/desarrolladora/{id}', [App\Http\Controllers\Usuario\JuegosController::class, 'show'])->name('usuario.juego.show');
