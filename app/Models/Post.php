@@ -18,6 +18,9 @@ class Post extends Model
         'titulo',
         'contenido',
         'calificacion',
+        'desarrolladora_id',
+        'juego_id',
+        'master_id',
     ];
 
     /**
@@ -36,13 +39,13 @@ class Post extends Model
         return $this->hasMany("App\Models\Mensaje");
     }
 
-    // Posts - 1:N - Mensajes
+    // Posts - 1:N - Desarrolladora
     public function desarrolladora()
     {
         return $this->belongsTo("App\Models\Desarrolladora");
     }
 
-    // Posts - 1:N - Mensajes
+    // Posts - 1:N - Juegos
     public function juegos()
     {
         return $this->belongsTo("App\Models\Juego");

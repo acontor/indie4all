@@ -17,6 +17,11 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('titulo');
             $table->longText('contenido');
+            $table->double('calificacion')->nullable();
+            $table->bigInteger('desarrolladora_id')->nullable();
+            $table->bigInteger('juego_id')->nullable();
+            $table->bigInteger('master_id')->nullable();
+            $table->date('fecha_publicacion');
             $table->timestamps();
         });
     }
