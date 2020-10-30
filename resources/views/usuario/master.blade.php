@@ -28,6 +28,34 @@
                     <h2>Posts</h2>
                 </div>
 
+                <div class="col-md-3 offset-1">
+                    @if ($usuario == null)
+                        <form method='post' action="{{ route('usuario.master.follow', $master->id) }}">
+                            @csrf
+                            <button type="submit" class="btn"><i class="far fa-check-circle"></i></button>
+                        </form>
+                    @else
+                        <form method='post' action="{{ route('usuario.master.unfollow', $master->id) }}">
+                            @csrf
+                            <button type="submit" class="btn"><i class="far fa-times-circle"></i></button>
+                        </form>
+
+                        
+                        @if ($usuario->pivot->notificacion == 0)
+                            <form method='post' action="{{ route('usuario.master.notificacion', [$master->id, 1]) }}">
+                                @csrf
+                                <button type="submit" class="btn"><i class="far fa-bell"></i></i></button>
+                            </form>
+                        @else
+                            <form method='post' action="{{ route('usuario.master.notificacion', [$master->id, 0]) }}">
+                                @csrf
+                                <button type="submit" class=" btn"><i class="far fa-bell-slash"></i></button>
+                            </form>
+                        @endif
+                    @endif
+                    <hr>
+                </div>
+
             </div>
         </div>
     </main>
