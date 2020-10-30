@@ -25,9 +25,15 @@ class Master extends Model
      */
 
     // Fans - N:M - Masters
-    public function usuario()
+    public function usuarios()
     {
         return $this->belongsToMany("App\Models\User");
+    }
+
+    // user - 1:M - Masters
+    public function usuario()
+    {
+        return $this->belongsTo("App\Models\User","user_id","id");
     }
 
     // Masters - 1:N - Posts
