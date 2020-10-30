@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Models\Desarrolladora;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class DesarrolladorasController extends Controller
 {
@@ -49,7 +52,39 @@ class DesarrolladorasController extends Controller
      */
     public function show($id)
     {
+        $usuario = User::find(Auth::id())->desarrolladoras()->where('desarrolladora_id','=', $id)->first();
         $desarrolladora = Desarrolladora::find($id);
-        return view('usuario.desarrolladora', compact('desarrolladora'));
+        return view('usuario.desarrolladora', compact('desarrolladora', 'usuario'));
+    }
+
+    public function follow($id)
+    {
+        $user = User::find(Auth::id());
+
+        $user->desarrolladoras()->attach([
+            $id => ['notificacion' => true]
+        ]);
+
+        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+    }
+
+    public function unfollow($id)
+    {
+        $user = User::find(Auth::id());
+
+        $user->desarrolladoras()->detach($id);
+
+        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+    }
+
+    public function notificacion($id, $notificacion)
+    {
+        $user = User::find(Auth::id());
+
+        $user->desarrolladoras()->sync([
+            $id => ['notificacion' => $notificacion]
+        ], false);
+
+        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
     }
 }
