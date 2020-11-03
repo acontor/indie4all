@@ -27,4 +27,10 @@ class Genero extends Model
     {
         return $this->hasMany("App\Models\Juego");
     }
+
+    // Users - N:M - Generos
+    public function usuarios()
+    {
+        return $this->belongsToMany("App\Models\User");
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administrador;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Models\Logro;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LogrosController extends Controller
@@ -17,7 +18,8 @@ class LogrosController extends Controller
     public function index()
     {
         $logros = Logro::paginate(10);
-        return view('admin.logros', compact('logros'));
+        $users = User::all()->count();
+        return view('admin.logros', compact('logros', 'users'));
     }
 
     /**

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class DesarrolladoraUserSeeder extends Seeder
+class MastersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,10 +16,10 @@ class DesarrolladoraUserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('desarrolladora_user')->insert([
-            'desarrolladora_id' => 1,
-            'user_id' => 1,
-            'notificacion' => true,
+        DB::table('masters')->insert([
+            'email' => 'email',
+            'imagen' => '/imagen/master.png',
+            'user_id' => 3,
         ]);
-    } 
+    }
 }

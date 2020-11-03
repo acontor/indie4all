@@ -22,6 +22,7 @@ class CreateJuegosTable extends Migration
             $table->date('fecha_lanzamiento');
             $table->double('precio')->nullable();
             $table->bigInteger('desarrolladora_id')->unsigned();
+            $table->bigInteger('genero_id')->unsigned();
             $table->timestamps();
         });
     }

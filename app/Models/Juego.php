@@ -22,6 +22,7 @@ class Juego extends Model
         'fecha_lanzamiento',
         'precio',
         'desarrolladora_id',
+        'genero_id',
     ];
 
     /**
@@ -31,13 +32,13 @@ class Juego extends Model
     // Desarrolladoras - 1:N - Juegos
     public function desarrolladora()
     {
-        return $this->belongsTo("App\Models\Desarrolladora");
+        return $this->belongsTo("App\Models\Desarrolladora", 'desarrolladora_id', 'id');
     }
 
     // Genero - 1:N - Juegos
     public function genero()
     {
-        return $this->belongsTo("App\Models\Genero");
+        return $this->belongsTo("App\Models\Genero", 'genero_id', 'id');
     }
 
     // Campañas - 1:1 - Juegos

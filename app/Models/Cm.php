@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Logro extends Model
+class Cm extends Model
 {
     use HasFactory;
 
@@ -15,18 +15,18 @@ class Logro extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre',
-        'descripcion',
-        'icono',
+        'rol',
+        'desarrolladora_id',
+        'user_id',
     ];
 
     /**
      * Relationships
      */
 
-    // Users - N:M - Logros
-    public function usuarios()
+    // Desarrolladoras - 1:N - CM
+    public function desarrolladora()
     {
-        return $this->belongsToMany("App\Models\User");
+        return $this->belongsTo("App\Models\Desarrolladora");
     }
 }
