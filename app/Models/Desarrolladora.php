@@ -60,6 +60,6 @@ class Desarrolladora extends Model
     // Desarrolladoras - 1:N - Posts
     public function posts()
     {
-        return $this->hasMany("App\Models\Post", "id", "desarrolladora_id");
+        return $this->hasMany("App\Models\Post", "desarrolladora_id", "id");
     }
 }
