@@ -70,9 +70,9 @@ class User extends Authenticatable
     }
 
     // Users - N:M - Campañas
-    public function campania()
+    public function campanias()
     {
-        return $this->belongsToMany("App\Models\User")->withPivot('precio', 'fecha_pago');
+        return $this->belongsToMany("App\Models\Campania")->withPivot('precio', 'fecha_pago');
     }
 
     // Users - 1:N - Mensajes
