@@ -77,8 +77,8 @@
     <script>
         $(function() {
 
-            var  generos = {!! json_encode($generosAll->toArray(), JSON_HEX_TAG) !!};
-            var  data = {!! json_encode($data, JSON_HEX_TAG) !!};
+            var  generos = {!! json_encode($generosAll->toArray())!!};
+            var  data = {!! json_encode($data) !!};
 
             var nombreGenero = [];
 
