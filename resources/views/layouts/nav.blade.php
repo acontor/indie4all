@@ -9,9 +9,11 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Left Side Of Navbar -->
         <ul class="navbar-nav mr-auto">
+            @auth
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.desarrolladoras.index') }}">{{ __('Desarrolladoras') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.juegos.index') }}">{{ __('Juegos') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.masters.index') }}">{{ __('Masters') }}</a></li>
+            @endauth
         </ul>
 
         <!-- Right Side Of Navbar -->
@@ -34,6 +36,9 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('usuario.cuenta.index') }}">
+                            Mi cuenta
+                        </a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
