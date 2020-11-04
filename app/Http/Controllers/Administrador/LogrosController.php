@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Models\Logro;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,7 +36,14 @@ class LogrosController extends Controller
             'icono' => 'required',
         ]);
 
-        Logro::create($request->all());
+        $entrada = $request->all();
+        
+        if ($archivo = $request->file('icono')) {
+            $nombre = $archivo->getClientOriginalName();
+            $archivo->move('images/logros', $nombre);
+            $entrada['icono'] = $nombre;
+        }
+        Logro::create($entrada);
 
         return redirect('/admin/logros')->with('success', '¡Logro guardado!');
     }
@@ -54,9 +62,23 @@ class LogrosController extends Controller
             'descripcion' => 'required',
             'icono' => 'required',
         ]);
+        
+        $logro = Logro::find($id);
+        $image_path = public_path("images/logros/{$logro->icono}");
 
-        Logro::find($id)->update($request->all());
+        if (File::exists($image_path)) {
+            unlink($image_path);
+        }
 
+        $entrada = $request->all();
+
+        if ($archivo = $request->file('icono')) {
+            $nombre = $archivo->getClientOriginalName();
+            $archivo->move('images/logros', $nombre);
+            $entrada['icono'] = $nombre;
+        }
+
+        Logro::find($id)->update($entrada);
         return redirect('/admin/logros')->with('success', '!Logro actualizado!');
     }
 
@@ -68,7 +90,14 @@ class LogrosController extends Controller
      */
     public function destroy($id)
     {
-        Logro::find($id)->delete();
+        $logro = Logro::find($id);
+        $image_path = public_path("images/logros/{$logro->icono}");
+
+        if (File::exists($image_path)) {
+            unlink($image_path);
+        }
+
+        $logro->delete();
 
         return redirect('/admin/logros')->with('success', '¡Logro borrado!');
     }
