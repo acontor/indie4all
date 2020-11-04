@@ -23,7 +23,7 @@
             @endif
 
             <div class="d-none form-crear">
-                <form method='post' action="{{ route('logros.store') }}" enctype="multipart/form-data">
+                <form method='post' action="{{ route('admin.logros.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class='form-group'>
                         <label for='nombre'>Nombre:</label>
@@ -57,7 +57,7 @@
                     @foreach ($logros as $logro)
 
                     <tr>
-                        <form action="{{ route('logros.update', $logro->id) }}" method='post' enctype="multipart/form-data">
+                        <form action="{{ route('admin.logros.update', $logro->id) }}" method='post' enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             <td><img src="/images/logros/{{$logro->icono}}" width="50” height=" 50” /> </td>
@@ -70,7 +70,7 @@
 
                         <td>
 
-                            <form action="{{ route('logros.destroy', $logro->id) }}" method='post'>
+                            <form action="{{ route('admin.logros.destroy', $logro->id) }}" method='post'>
                                 @csrf
                                 @method('DELETE')
                                 <button class='btn btn-danger' type='submit'>Borrar</button>
