@@ -5,49 +5,7 @@
             <div class='col-sm'>
                 <h1 class='display-5'>Desarrolladoras ({{ $desarrolladoras->count() }})</h1>
                 @if ($solicitudes->count() > 0)
-                <a class='btn btn-success button-crear mb-3'>Solicitudes ({{ $solicitudes->count() }})</a>
-                <div class="d-none form-crear table-responsive mb-3">
-                    <!-- Tabla de solicitudes -->
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <td>Nombre</td>
-                                    <td>Email</td>
-                                    <td>Dirección</td>
-                                    <td>Teléfono</td>
-                                    <td>Url</td>
-                                    <td>Solicitante</td>
-                                    <td>Aceptar</td>
-                                    <td>Rechazar</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($solicitudes as $solicitud)
-                                    <tr>
-                                        <form method='post' action="">
-                                            @method('PATCH')
-                                            @csrf
-                                            <td class="align-middle">{{ $solicitud->nombre }}</td>
-                                            <td class="align-middle">{{ $solicitud->email }}</td>
-                                            <td class="align-middle">{{ $solicitud->direccion }}</td>
-                                            <td class="align-middle">{{ $solicitud->telefono }}</td>
-                                            <td class="align-middle">{{ $solicitud->url }}</td>
-                                            <td class="align-middle">{{ $solicitud->usuario->name }}</td>
-                                            <td class="align-middle"><button class='btn btn-success' type='submit'>Aceptar</button></td>
-                                        </form>
-                                        <td class="align-middle">
-                                            <form action="" method='post'>
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class='btn btn-danger' type='submit'>Rechazar</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{ $solicitudes->links('pagination::bootstrap-4') }}
-                </div>
+                <a href="{{ route('admin.solicitudes.index') }}" class='btn btn-success button-crear mb-3'>Solicitudes ({{ $solicitudes->count() }})</a>
                 @endif
                 <div class="table-responsive">
                     <table class='table table-striped table-responsive'>

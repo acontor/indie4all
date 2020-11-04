@@ -21,7 +21,6 @@ class CreatePostsTable extends Migration
             $table->bigInteger('desarrolladora_id')->nullable();
             $table->bigInteger('juego_id')->nullable();
             $table->bigInteger('master_id')->nullable();
-            $table->date('fecha_publicacion');
             $table->timestamps();
         });
     }
