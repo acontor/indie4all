@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Models\Desarrolladora;
+use App\Models\Solicitud;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
 
 class DesarrolladorasController extends Controller
 {
@@ -29,8 +29,7 @@ class DesarrolladorasController extends Controller
      */
     public function create()
     {
-        return view('usuario.solicitud.desarrolladora');
-        // Form para solicitar una desarrolladora
+        return view('usuario.solicitud_desarrolladora');
     }
 
     /**
@@ -41,7 +40,25 @@ class DesarrolladorasController extends Controller
      */
     public function store(Request $request)
     {
-        // Se crea una tupla en Solicitudes
+        $request->validate([
+            'nombre' => 'required',
+            'email' => 'required',
+            'direccion' => 'required',
+            'telefono' => 'required',
+            'url' => 'required',
+        ]);
+
+        Solicitud::create([
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'direccion' => $request->direccion,
+            'telefono' => $request->telefono,
+            'url' => $request->url,
+            'tipo' => 'Desarrolladora',
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect('/desarrolladoras');
     }
 
     /**

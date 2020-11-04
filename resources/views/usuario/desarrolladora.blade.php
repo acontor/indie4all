@@ -55,6 +55,17 @@
                     <div id="contenido">
                         <div class="general">
                             <h2>Posts</h2>
+                            <hr>
+                            @if ($desarrolladora->posts->count() != 0)
+                                @foreach ($desarrolladora->posts as $post)
+                                    <div>
+                                        <h4>{{ $post->titulo }}</h4>
+                                        <p>{{ $post->contenido }}</p>
+                                    </div>
+                                @endforeach
+                            @else
+                                La desarrolladora aún no ha publicado ningún post.
+                            @endif
                         </div>
                         <div class="sorteos d-none">
                             <h2>Sorteos</h2>
