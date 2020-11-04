@@ -22,9 +22,8 @@
                         <tbody>
                             @foreach ($noticias as $noticia)
                                 <tr>
-                                    <form action="{{ route('admin.noticias.update', $noticia->id) }}" method='post'>
+                                    <form action="{{ route('admin.noticias.edit', $noticia->id) }}" method='post'>
                                         @csrf
-                                        @method('PATCH')
                                         <td class="align-middle">{{ $noticia->titulo }}</td>
                                         <td class="align-middle">
                                             <button type="submit" class='btn btn-primary'>Editar</button>
