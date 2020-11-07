@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\Juego;
 use App\Models\Desarrolladora;
+use App\Models\Juego;
+use App\Models\Solicitud;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -16,9 +17,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $num_usuarios = User::all()->count();
-        $num_juegos = Juego::all()->count();
-        $num_desarrolladoras = Desarrolladora::all()->count();
-        return view('admin.home', compact('num_usuarios', 'num_juegos', 'num_desarrolladoras'));
+        $num_usuarios = User::count();
+        $num_juegos = Juego::count();
+        $num_desarrolladoras = Desarrolladora::count();
+        $num_solicitudes = Solicitud::count();
+        return view('admin.home', compact('num_usuarios', 'num_juegos', 'num_desarrolladoras', 'num_solicitudes'));
     }
 }
