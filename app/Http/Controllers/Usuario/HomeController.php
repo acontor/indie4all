@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Usuario;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $usuario = User::find(Auth::id());
+        return view('usuario.home', ['usuario' => $usuario]);
     }
 }

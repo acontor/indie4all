@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Desarrolladora;
+use App\Models\Juego;
+use App\Models\Master;
 use App\Models\Post;
 
 /*
@@ -16,12 +19,15 @@ use App\Models\Post;
 
 Route::get('/', function () {
     $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null]])->paginate(4);
-    return view('welcome', compact('noticias'));
+    $juegos = Juego::has('usuarios')->inRandomOrder()->take(5)->get();
+    $desarrolladoras = Desarrolladora::all()->take(5);
+    $masters = Master::all()->take(5);
+    return view('welcome', ['noticias' => $noticias, 'juegos' => $juegos, 'desarrolladoras' => $desarrolladoras, 'masters' => $masters]);
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home');
 
 /**
  * Admin Routes
