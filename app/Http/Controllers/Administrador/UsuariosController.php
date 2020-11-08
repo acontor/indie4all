@@ -55,4 +55,21 @@ class UsuariosController extends Controller
         User::find($id)->delete();
         return redirect('/admin/usuarios')->with('success', '¡Usuario borrado!');
     }
+
+    public function test()
+    {
+    	return view('admin.test');
+    }
+    public function selectSearch(Request $request)
+    {
+    	$usuarios = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            $usuarios =User::select("id", "name")
+            		->where('name', 'LIKE', "%$search%")
+            		->get();
+        }
+        return response()->json($usuarios);
+    }
 }

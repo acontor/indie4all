@@ -5,6 +5,10 @@
             <div class='col-sm'>
                 <h1 class='display-5'>Usuarios ({{ \App\Models\User::all()->count() }})</h1>
                 <canvas id="myChart" width="400" height="100"></canvas>
+                <div class="form-group col-sm-2">
+                    <h4>Buscar</h4>
+                    <select class="form-control" id="busqueda"></select>
+                </div>
                 <div class="table-responsive mt-3">
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -51,6 +55,8 @@
 @endsection
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script src="{{ asset('js/select2.min.js') }}" ></script>
+
 <script>
     $(function() {
 
@@ -79,5 +85,24 @@
             }
         });
     }
+    $('#busqueda').select2({
+        placeholder: 'Select movie',
+        ajax: {
+            url: '/autocomplete-user-search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
 
 </script>
