@@ -37,11 +37,19 @@ class LogrosController extends Controller
         ]);
 
         if ($archivo = $request->file('icono')) {
-            $nombre = $archivo->getClientOriginalName();
-            $archivo->move('images/logros', $nombre);
-            $request['icono'] = $nombre;
+            $originName = $request->file('icono')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('icono')->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+            $archivo->move('images/logros', $fileName);
+            $request['icono'] = $fileName;
         }
-        Logro::create($request->all());
+
+        Logro::create([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'icono' => $fileName,
+        ]);
 
         return redirect('/admin/logros')->with('success', '¡Logro guardado!');
     }
@@ -68,15 +76,20 @@ class LogrosController extends Controller
             unlink($image_path);
         }
 
-        $entrada = $request->all();
-
         if ($archivo = $request->file('icono')) {
-            $nombre = $archivo->getClientOriginalName();
-            $archivo->move('images/logros', $nombre);
-            $entrada['icono'] = $nombre;
+            $originName = $request->file('icono')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('icono')->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+            $archivo->move('images/logros', $fileName);
+            $request['icono'] = $fileName;
         }
 
-        Logro::find($id)->update($entrada);
+        Logro::find($id)->update([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'icono' => $fileName,
+        ]);
         return redirect('/admin/logros')->with('success', '!Logro actualizado!');
     }
 
