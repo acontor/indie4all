@@ -55,7 +55,7 @@
 @endsection
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-<script src="{{ asset('js/select2.min.js') }}" ></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js" ></script>
 
 <script>
     $(function() {
@@ -86,7 +86,7 @@
         });
     }
     $('#busqueda').select2({
-        placeholder: 'Select movie',
+        placeholder: 'Select Usuario',
         ajax: {
             url: '/autocomplete-user-search',
             dataType: 'json',
