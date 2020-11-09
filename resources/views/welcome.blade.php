@@ -36,13 +36,13 @@
                 </div>
             @endif
 
-            <div class="max-w-6xl sm:px-6 lg:px-8" style="color: white;">
+            <div class="max-w-6xl sm:px-6 lg:px-8" style="color: black;">
                 <div class="justify-center pt-8 sm:justify-start sm:pt-0">
                     <h1>Últimas noticias</h1>
                     @foreach($noticias as $noticia)
                         <div class="noticia">
                             <h2>{{ $noticia->titulo }}</h2>
-                            <p>{{ $noticia->contenido }}</p>
+                            {!! $noticia->contenido !!}
                         </div>
                     @endforeach
                 </div>

@@ -17,7 +17,6 @@ class CreateCampaniaUsersTable extends Migration
             $table->id();
             $table->timestamps();
             $table->double('precio');
-            $table->date('fecha_pago');
             $table->unsignedBigInteger('campania_id');
             $table->unsignedBigInteger('user_id');
         });

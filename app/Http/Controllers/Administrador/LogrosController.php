@@ -36,14 +36,12 @@ class LogrosController extends Controller
             'icono' => 'required',
         ]);
 
-        $entrada = $request->all();
-        
         if ($archivo = $request->file('icono')) {
             $nombre = $archivo->getClientOriginalName();
             $archivo->move('images/logros', $nombre);
-            $entrada['icono'] = $nombre;
+            $request['icono'] = $nombre;
         }
-        Logro::create($entrada);
+        Logro::create($request->all());
 
         return redirect('/admin/logros')->with('success', '¡Logro guardado!');
     }
@@ -62,7 +60,7 @@ class LogrosController extends Controller
             'descripcion' => 'required',
             'icono' => 'required',
         ]);
-        
+
         $logro = Logro::find($id);
         $image_path = public_path("images/logros/{$logro->icono}");
 

@@ -5,7 +5,7 @@
             <div class='col-sm'>
                 <h1 class='display-5'>Desarrolladoras ({{ $desarrolladoras->count() }})</h1>
                 @if ($solicitudes->count() > 0)
-                <a class='btn btn-success mb-3' href="{{ route('admin.solicitudes.index') }}">Solicitudes ({{ $solicitudes->count() }})</a>
+                <a href="{{ route('admin.solicitudes.index') }}" class='btn btn-success button-crear mb-3'>Solicitudes ({{ $solicitudes->count() }})</a>
                 @endif
                 <div class="table-responsive">
                     <table class='table table-striped'>
