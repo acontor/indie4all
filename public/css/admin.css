@@ -181,8 +181,8 @@ main {
  * TABLE STYLES
  */
 
-nav ul.pagination {
-    float: right;
+.table {
+    width: 100% !important;
 }
 
 /**

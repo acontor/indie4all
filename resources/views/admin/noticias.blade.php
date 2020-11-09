@@ -15,22 +15,14 @@
                         <thead>
                             <tr>
                                 <td>Título</td>
-                                <td>Editar</td>
-                                <td>Borrar</td>
+                                <td>Acciones</td>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($noticias as $noticia)
                                 <tr>
-                                    <form action="{{ route('admin.noticias.update', $noticia->id) }}" method='post'>
-                                        @csrf
-                                        @method('PATCH')
-                                        <td class="align-middle">{{ $noticia->titulo }}</td>
-                                        <td class="align-middle">
-                                            <button type="submit" class='btn btn-primary'>Editar</button>
-                                        </td>
-                                    </form>
-                                    <td>
+                                    <td class="align-middle">{{ $noticia->titulo }}</td>
+                                    <td class="align-middle">
                                         <form action="{{ route('admin.noticias.destroy', $noticia->id) }}" method='post'>
                                             @csrf
                                             @method('DELETE')
@@ -46,4 +38,32 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(function() {
+
+            var session_success = {!! json_encode(session()->get('success')) !!}
+
+            if(session_success != undefined) {
+                Swal.fire({
+                    position: 'top-end',
+                    title: session_success,
+                    timer: 3000,
+                    showConfirmButton: false,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    },
+                    allowOutsideClick: false,
+                    backdrop: false,
+                    width: 'auto',
+                });
+            }
+        });
+
+    </script>
 @endsection
