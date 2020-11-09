@@ -1,9 +1,13 @@
 @extends('layouts.admin.base')
+@section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+@endsection
 @section('content')
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-                <h1 class='display-5'>Géneros ({{ $generosAll->count() }}) <a class='btn btn-success button-crear'>+</a></h1>
+                <h1 class='display-5'>Géneros ({{ $generosAll->count() }}) <a class='btn btn-success button-crear'>+</a>
+                </h1>
                 @if ($errors->any())
                     <div class='alert alert-danger'>
                         <ul>
@@ -37,8 +41,7 @@
                                 <td>Nombre</td>
                                 <td>Seguidores</td>
                                 <td>Juegos</td>
-                                <td>Editar</td>
-                                <td>Borrar</td>
+                                <td>Acciones</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,21 +51,20 @@
                                         @method('PATCH')
                                         @csrf
                                         <td class="align-middle">
-                                            <input type='text' placeholder="Email" value="{{ $genero->nombre }}" name='nombre'>
+                                            <input type='text' placeholder="Email" value="{{ $genero->nombre }}"
+                                                name='nombre'>
                                         </td>
                                         <td>{{ $genero->usuarios->count() }}</td>
                                         <td>{{ $genero->juegos->count() }}</td>
                                         <td class="align-middle">
                                             <button type='submit' class='btn btn-primary'>Editar</button>
-                                        </td>
-                                    </form>
-                                    <td class="align-middle">
-                                        <form action="{{ route('admin.generos.destroy', $genero->id) }}" method='post'>
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class='btn btn-danger' type='submit'>Borrar</button>
                                         </form>
-                                    </td>
+                                            <form action="{{ route('admin.generos.destroy', $genero->id) }}" method='post'>
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class='btn btn-danger' type='submit'>Borrar</button>
+                                            </form>
+                                        </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -72,13 +74,17 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+@endsection
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script>
         $(function() {
 
-            var  generos = {!! json_encode($generosAll->toArray())!!};
-            var  data = {!! json_encode($data) !!};
+            var generos = {!! json_encode($generosAll->toArray()) !!};
+            var data = {!! json_encode($data) !!};
+
+            var session_success = {!! json_encode(session()->get('success')) !!}
 
             var nombreGenero = [];
 
@@ -95,7 +101,26 @@
                     $(this).text("+");
                 }
             });
-            graficaGeneros(nombreGenero, data)
+
+            graficaGeneros(nombreGenero, data);
+
+            if(session_success != undefined) {
+                Swal.fire({
+                    position: 'top-end',
+                    title: session_success,
+                    timer: 3000,
+                    showConfirmButton: false,
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    },
+                    allowOutsideClick: false,
+                    backdrop: false,
+                    width: 'auto',
+                });
+            }
         });
 
         function graficaGeneros(generos, data) {
@@ -105,7 +130,7 @@
                 labels: generos,
                 datasets: [{
                     label: "Juegos",
-                    backgroundColor:'#ff6384',
+                    backgroundColor: '#ff6384',
                     data: data[0]
                 }, {
                     label: "Seguidores",

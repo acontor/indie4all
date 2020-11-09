@@ -1,4 +1,7 @@
 @extends('layouts.admin.base')
+@section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+@endsection
 @section('content')
     <div class="container">
         <div class='row mt-5'>
@@ -42,4 +45,30 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(function() {
+
+            var solicitudes = {!! json_encode($num_solicitudes) !!};
+
+            Swal.fire({
+                position: 'top-end',
+                title: `Tienes ${solicitudes} solicitudes`,
+                timer: 3000,
+                showConfirmButton: false,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                allowOutsideClick: false,
+                backdrop: false,
+                width: 'auto',
+            });
+        });
+
+    </script>
 @endsection

@@ -18,7 +18,7 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-        $usuarios = User::paginate(5);
+        $usuarios = User::all();
         $num_masters = Master::all()->count();
         $num_fans = Fan::all()->count();
         $num_cms = CM::all()->count();
@@ -55,4 +55,23 @@ class UsuariosController extends Controller
         User::find($id)->delete();
         return redirect('/admin/usuarios')->with('success', '¡Usuario borrado!');
     }
+
+    public function test()
+    {
+        return view('admin.test');
+    }
+
+    public function selectSearch(Request $request)
+    {
+        $usuarios = [];
+
+        if ($request->has('q')) {
+            $search = $request->q;
+            $usuarios = User::select("id", "name")
+                ->where('name', 'LIKE', "%$search%")
+                ->get();
+        }
+        return response()->json($usuarios);
+    }
+
 }

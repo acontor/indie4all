@@ -8,7 +8,7 @@
                 <a href="{{ route('admin.solicitudes.index') }}" class='btn btn-success button-crear mb-3'>Solicitudes ({{ $solicitudes->count() }})</a>
                 @endif
                 <div class="table-responsive">
-                    <table class='table table-striped table-responsive'>
+                    <table class='table table-striped'>
                         <thead>
                             <tr>
                                 <td>Nombre</td>
@@ -37,13 +37,4 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(function() {
-            $(".button-crear").click(function() {
-                $(".form-crear").toggleClass("d-none");
-                $(this).toggleClass("btn-danger");
-            });
-        });
-    </script>
 @endsection

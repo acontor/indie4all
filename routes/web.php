@@ -96,3 +96,7 @@ Route::get('/master/{id}', [App\Http\Controllers\Usuario\MasterController::class
 Route::post('/master/{id}/follow', [App\Http\Controllers\Usuario\MasterController::class, 'follow'])->name('usuario.master.follow')->middleware('auth');
 Route::post('/master/{id}/unfollow', [App\Http\Controllers\Usuario\MasterController::class, 'unfollow'])->name('usuario.master.unfollow')->middleware('auth');
 Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterController::class, 'notificacion'])->name('usuario.master.notificacion')->middleware('auth');
+
+//Testing routes
+Route::get('/admin/test', [App\Http\Controllers\Administrador\UsuariosController::class, 'test'])->middleware('auth');
+Route::get('/autocomplete-user-search', [App\Http\Controllers\Administrador\UsuariosController::class, 'selectSearch'])->middleware('auth');

@@ -14,6 +14,19 @@ body {
 }
 
 /**
+ * SWEET ALERT
+ */
+
+.swal2-container {
+    margin-left: auto !important;
+    top: 56px !important;
+}
+
+.swal2-title {
+    font-size: 20px !important;
+}
+
+/**
  * NAVBAR
  */
 
@@ -168,8 +181,8 @@ main {
  * TABLE STYLES
  */
 
-nav ul.pagination {
-    float: right;
+.table {
+    width: 100% !important;
 }
 
 /**
