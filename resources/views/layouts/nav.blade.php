@@ -10,6 +10,7 @@
         <!-- Left Side Of Navbar -->
         <ul class="navbar-nav mr-auto">
             @auth
+            <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.desarrolladoras.index') }}">{{ __('Desarrolladoras') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.juegos.index') }}">{{ __('Juegos') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.masters.index') }}">{{ __('Masters') }}</a></li>

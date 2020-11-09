@@ -54,8 +54,8 @@ class Juego extends Model
     }
 
     // Juegos - N:N - Usuarios
-    public function usuario()
+    public function usuarios()
     {
-        return $this->belongsToMany("App\Models\User");
+        return $this->belongsToMany("App\Models\User")->withPivot('calificacion');
     }
 }
