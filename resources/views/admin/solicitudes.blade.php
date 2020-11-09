@@ -38,6 +38,7 @@
                                             <td class="align-middle">{{ $desarrolladora->usuario->name }}</td>
                                             <td class="align-middle">
                                                 <button class='btn btn-success' type='submit'>Aceptar</button>
+                                            </form>
                                                 <form
                                                     action="{{ route('admin.solicitudes.rechazarDesarrolladora', $desarrolladora->id) }}"
                                                     method='post'>
@@ -46,7 +47,7 @@
                                                     <button class='btn btn-danger' type='submit'>Rechazar</button>
                                                 </form>
                                             </td>
-                                        </form>
+                                       
                                     </tr>
                                 @endforeach
                             </tbody>

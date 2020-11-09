@@ -16,15 +16,6 @@ class CmsSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('cms')->insert([
-            'rol' => 'Jefe',
-            'desarrolladora_id' => 1,
-            'user_id' => 1,
-        ]);
-        DB::table('cms')->insert([
-            'rol' => 'Jefe',
-            'desarrolladora_id' => 2,
-            'user_id' => 2,
-        ]);
+    
     }
 }

@@ -16,10 +16,10 @@ class DesarrolladoraUsuarioSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('desarrolladora_user')->insert([
+      /*   DB::table('desarrolladora_user')->insert([
             'desarrolladora_id' => 1,
             'user_id' => 1,
             'notificacion' => true,
-        ]);
+        ]); */
     }
 }

@@ -15,10 +15,10 @@
             @foreach ($usuario->logros as $logro)
                 {{ $logro }}
             @endforeach
-
+{{-- 
             <h5>Solicitud</h5>
             {{ $usuario->solicitud->where('user_id', $usuario->id)->get()->count() }}
-
+ --}}
             <h5>Desarrolladoras</h5>
             @foreach ($usuario->desarrolladoras as $desarrolladora)
                 {{ $desarrolladora->nombre }}
@@ -86,10 +86,10 @@
                 @endif
             @endforeach
 
-            <h5>Camapañas</h5>
+        {{--     <h5>Camapañas</h5>
             @foreach ($usuario->campanias as $campania)
                 {{ $campania }}
-            @endforeach
+            @endforeach --}}
         </div>
     </main>
 @endsection
