@@ -3,7 +3,7 @@
 @section('content')
 
     <header>
-        <img class="h-50" src="https://i.pinimg.com/736x/38/2c/6a/382c6a6c057a298ea5aa9759d55f36f3.jpg">
+        <img class="img-fluid" src="{{ asset("/images/default.png") }}" style="height: 500px;">
         <div>
             <h1 class="font-weight-light">{{ $desarrolladora->nombre }}</h1>
             <ul class="lead">
@@ -55,7 +55,6 @@
                     <div id="contenido">
                         <div class="general">
                             <h2>Posts</h2>
-                            <hr>
                             @if ($desarrolladora->posts->count() != 0)
                                 @foreach ($desarrolladora->posts as $post)
                                     <div>

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             CmsSeeder::class,
             MastersSeeder::class,
             FansSeeder::class,
+            JuegoUsuario::class,
         ]);
     }
 }

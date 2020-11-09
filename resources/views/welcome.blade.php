@@ -7,6 +7,7 @@
                 <div class="card">
                     <div class="card-header">{{ __('Dashboard') }}</div>
                     <div class="card-body">
+                        <h3>Noticias</h3>
                         @foreach ($noticias as $noticia)
                             {{ $noticia->titulo }}
                             {!! $noticia->contenido !!}
