@@ -3,11 +3,13 @@
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-                <h1 class='display-5'>Desarrolladoras ({{ $desarrolladoras->count() }})</h1>
-                @if ($solicitudes->count() > 0)
-                <a href="{{ route('admin.solicitudes.index') }}" class='btn btn-success button-crear mb-3'>Solicitudes ({{ $solicitudes->count() }})</a>
-                @endif
-                <div class="table-responsive">
+                <div class="box-header">
+                    <h1 class="d-inline-block">Desarrolladoras ({{ $desarrolladoras->count() }})</h1>
+                    @if ($solicitudes->count() > 0)
+                    <a href="{{ route('admin.solicitudes.index') }}" class='btn btn-success float-right mt-2'>Solicitudes ({{ $solicitudes->count() }})</a>
+                    @endif
+                </div>
+                <div class="table-responsive box">
                     <table class='table table-striped'>
                         <thead>
                             <tr>

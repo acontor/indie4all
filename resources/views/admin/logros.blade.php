@@ -3,9 +3,10 @@
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-
-                <h1 class='display-3'>Logros <a class='btn btn-success mb-3 button-crear'>+</a></h1>
-
+                <div class="box-header">
+                    <h1 class="d-inline-block">Logros ({{ $logros->count() }})</h1>
+                    <a class='btn btn-success button-crear float-right mt-2'><i class="far fa-plus-square"></i></a>
+                </div>
                 @if ($errors->any())
                     <div class='alert alert-danger'>
                         <ul>
@@ -16,13 +17,9 @@
                     </div>
                     <br />
                 @endif
-                @if (session()->get('success'))
-                    <div class='alert alert-success'>
-                        {{ session()->get('success') }}
-                    </div>
-                @endif
 
-                <div class="d-none form-crear">
+
+                <div class="d-none form-crear box">
                     <form method='post' action="{{ route('admin.logros.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class='form-group'>
@@ -35,51 +32,63 @@
                         </div>
                         <!-- Cambiar por un input file -->
                         <div class='form-group'>
-                            <label for='icono'>Icono:</label>
-                            <input type='file' class='form-control' name='icono' />
+                            <span class="btn btn-file">
+                                <i class="fas fa-upload"></i> Icono
+                                <input type='file' class='inputfile' name='icono' id='icono' />
+                            </span>
                         </div>
                         <button type='submit' class='btn btn-success mb-3'>Añadir</button>
                     </form>
                 </div>
 
-                <table class='table table-striped table-responsive-lg'>
-                    <thead>
-                        <tr>
-                            <td>Icono:</td>
-                            <td>Nombre</td>
-                            <td>Descripción</td>
-                            <td>Icono</td>
-                            <td>Acciones</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($logros as $logro)
-
+                <div class="table-responsive box mt-4">
+                    <table class='table table-striped'>
+                        <thead>
                             <tr>
-                                <form action="{{ route('admin.logros.update', $logro->id) }}" method='post'
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PATCH')
-                                    <td><img src="/images/logros/{{ $logro->icono }}" width="50” height=" 50” /> </td>
-                                    <td class="align-middle"><input type="text" placeholder="Nombre"
-                                            value="{{ $logro->nombre }}" name="nombre"></td>
-                                    <td class="align-middle"><textarea id="descripcion" class="align-middle"
-                                            placeholder="Descripción" name="descripcion" rows="1"
-                                            cols="40">{{ $logro->descripcion }}</textarea></td>
-                                    <td><input type='file' class='form-control' name='icono' /></td>
-                                    <td class="align-middle">
-                                        <button type="submit" class='btn btn-primary'>Editar</button>
-                                    </form>
-                                        <form action="{{ route('admin.logros.destroy', $logro->id) }}" method='post'>
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class='btn btn-danger' type='submit'>Borrar</button>
-                                        </form>
-                                    </td>
+                                <td class="w-10 text-center">Icono:</td>
+                                <td class="w-30">Nombre</td>
+                                <td class="w-30">Descripción</td>
+                                <td class="w-20 text-center">Icono</td>
+                                <td class="w-10 text-center">Acciones</td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($logros as $logro)
+
+                                <tr>
+                                    <form action="{{ route('admin.logros.update', $logro->id) }}" method='post'
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PATCH')
+                                        <td class="align-middle w-10 text-center"><img src="/images/logros/{{ $logro->icono }}" width="50” height=" 50” /> </td>
+                                        <td class="align-middle w-30"><input type="text" placeholder="Nombre"
+                                                value="{{ $logro->nombre }}" name="nombre"></td>
+                                        <td class="align-middle w-30"><textarea id="descripcion" class="align-middle"
+                                                placeholder="Descripción" name="descripcion" rows="1"
+                                                cols="40">{{ $logro->descripcion }}</textarea></td>
+                                        <td class="align-middle w-20 text-center">
+                                            <span class="btn btn-file">
+                                                <i class="fas fa-upload"></i>
+                                                <input type='file' class='inputfile' name='icono' id='icono' />
+                                            </span>
+                                        </td>
+                                        <td class="align-middle w-10 text-center">
+                                            <div class="btn-group">
+                                                <button class='btn btn-primary mr-1' type='submit'><i
+                                                    class="far fa-edit"></i></button>
+                                        </form>
+                                            <form action="{{ route('admin.logros.destroy', $logro->id) }}" method='post'>
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class='btn btn-danger ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 {{ $logros->links('pagination::bootstrap-4') }}
             </div>
         </div>
@@ -96,9 +105,9 @@
                 $(".form-crear").toggleClass("d-none");
                 $(this).toggleClass("btn-danger");
                 if ($(this).hasClass("btn-danger")) {
-                    $(this).text("-");
+                    $(this).html("<i class='far fa-minus-square'></i>");
                 } else {
-                    $(this).text("+");
+                    $(this).html("<i class='far fa-plus-square'></i>");
                 }
             });
 

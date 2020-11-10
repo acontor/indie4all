@@ -3,8 +3,10 @@
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-                <h1 class='display-5'>Juegos ({{ $juegos->count() }})</h1>
-                <div class="table-responsive">
+                <div class="box-header">
+                    <h1>Juegos ({{ $juegos->count() }})</h1>
+                </div>
+                <div class="table-responsive box">
                     <table class="table table-striped">
                         <thead>
                             <tr>

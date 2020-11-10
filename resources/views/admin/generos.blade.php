@@ -6,8 +6,10 @@
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
-                <h1 class='display-5'>Géneros ({{ $generosAll->count() }}) <a class='btn btn-success button-crear'>+</a>
-                </h1>
+                <div class="box-header">
+                    <h1 class='d-inline-block'>Géneros ({{ $generosAll->count() }})</h1>
+                    <a class='btn btn-success button-crear float-right mt-2'><i class="far fa-plus-square"></i></a>
+                </div>
                 @if ($errors->any())
                     <div class='alert alert-danger'>
                         <ul>
@@ -18,12 +20,8 @@
                     </div>
                     <br />
                 @endif
-                @if (session()->get('success'))
-                    <div class='alert alert-success'>
-                        {{ session()->get('success') }}
-                    </div>
-                @endif
-                <div class="d-none form-crear">
+
+                <div class="d-none form-crear box">
                     <form method='post' action="{{ route('admin.generos.store') }}">
                         @csrf
                         <div class='form-group'>
@@ -33,15 +31,17 @@
                         <button type='submit' class='btn btn-success mb-3'>Añadir</button>
                     </form>
                 </div>
-                <canvas id="myChart" width="400" height="100"></canvas>
-                <div class="table-responsive mt-3">
+                <div class="box mt-4">
+                    <canvas id="myChart" width="400" height="100"></canvas>
+                </div>
+                <div class="table-responsive box mt-4">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <td>Nombre</td>
-                                <td>Seguidores</td>
-                                <td>Juegos</td>
-                                <td>Acciones</td>
+                                <td class="w-50">Nombre</td>
+                                <td class="w-20 text-center">Seguidores</td>
+                                <td class="w-20 text-center">Juegos</td>
+                                <td class="w-10 text-center">Acciones</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,20 +50,23 @@
                                     <form method='post' action="{{ route('admin.generos.update', $genero->id) }}">
                                         @method('PATCH')
                                         @csrf
-                                        <td class="align-middle">
-                                            <input type='text' placeholder="Email" value="{{ $genero->nombre }}"
+                                        <td class="align-middle w-50">
+                                            <input type='text' placeholder="Nombre" value="{{ $genero->nombre }}"
                                                 name='nombre'>
                                         </td>
-                                        <td>{{ $genero->usuarios->count() }}</td>
-                                        <td>{{ $genero->juegos->count() }}</td>
-                                        <td class="align-middle">
-                                            <button type='submit' class='btn btn-primary'>Editar</button>
+                                        <td class="w-20 text-center">{{ $genero->usuarios->count() }}</td>
+                                        <td class="w-20 text-center">{{ $genero->juegos->count() }}</td>
+                                        <td class="align-middle w-10 text-center">
+                                            <div class="btn-group">
+                                                <button class='btn btn-primary mr-1' type='submit'><i
+                                                    class="far fa-edit"></i></button>
                                         </form>
                                             <form action="{{ route('admin.generos.destroy', $genero->id) }}" method='post'>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class='btn btn-danger' type='submit'>Borrar</button>
+                                                <button class='btn btn-danger ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
                                             </form>
+                                        </div>
                                         </td>
                                 </tr>
                             @endforeach
@@ -84,6 +87,7 @@
             var generos = {!! json_encode($generosAll->toArray()) !!};
             var data = {!! json_encode($data) !!};
 
+            console.log(data)
             var session_success = {!! json_encode(session()->get('success')) !!}
 
             var nombreGenero = [];
@@ -96,9 +100,9 @@
                 $(".form-crear").toggleClass("d-none");
                 $(this).toggleClass("btn-danger");
                 if ($(this).hasClass("btn-danger")) {
-                    $(this).text("-");
+                    $(this).html("<i class='far fa-minus-square'></i>");
                 } else {
-                    $(this).text("+");
+                    $(this).html("<i class='far fa-plus-square'></i>");
                 }
             });
 

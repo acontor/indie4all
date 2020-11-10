@@ -127,6 +127,120 @@ main {
     justify-content: center;
 }
 
+.box {
+    background-color: #fff;
+    position: relative;
+    padding: 1.5rem;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 0 #2E3647;
+}
+
+.box-header {
+    background-color: #fff;
+    position: relative;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px 0 #2E3647;
+}
+
+/**
+ * FORM
+ */
+
+.form-control {
+    background-color: rgb(46, 54, 71, 0.05);
+    border: 0;
+    box-shadow: 1px 1px 1px 0 #2E3647;
+    border-radius: 0;
+}
+
+input:hover,
+input:active,
+input:focus {
+    outline: 0px !important;
+    -webkit-appearance: none;
+    background-color: rgb(46, 54, 71, 0.1) !important;
+    border: 0;
+    box-shadow: 0 0 0 0 !important;
+    border-radius: 0;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.btn-danger {
+    background-color: #E34E33;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 1px 1px 1px 0 #2E3647;
+}
+
+.btn-danger:hover,
+.btn-danger:active,
+.btn-danger:focus {
+    outline: 0px !important;
+    -webkit-appearance: none;
+    background-color: rgb(227, 78, 51, 0.9) !important;
+    border: 0;
+    box-shadow: 0 0 0 0 !important;
+    border-radius: 0;
+}
+
+.btn-primary {
+    background-color: #2E3647;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 1px 1px 1px 0 #2E3647;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+    outline: 0px !important;
+    -webkit-appearance: none;
+    background-color: rgb(46, 54, 71, 0.9) !important;
+    border: 0;
+    box-shadow: 0 0 0 0 !important;
+    border-radius: 0;
+}
+
+.btn-success {
+    background-color: #00825a;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 1px 1px 1px 0 #2E3647;
+}
+
+.btn-success:hover,
+.btn-success:active,
+.btn-success:focus {
+    outline: 0px !important;
+    -webkit-appearance: none;
+    background-color: rgb(0, 130, 90, 0.9) !important;
+    border: 0;
+    box-shadow: 0 0 0 0 !important;
+    border-radius: 0;
+}
+
 /**
  * HOME
  */
