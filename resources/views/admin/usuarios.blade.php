@@ -21,9 +21,10 @@
                         <table class="table table-striped" id="tabla">
                             <thead>
                                 <tr>
-                                    <td class="w-30">Nombre</td>
-                                    <td class="w-30">Email</td>
-                                    <td class="w-30 text-center">Tipo</td>
+                                    <td class="w-20">Nombre</td>
+                                    <td class="w-20">Email</td>
+                                    <td class="w-20">Última conexión</td>
+                                    <td class="w-30">Tipo</td>
                                     <td class="w-10 text-center">Acciones</td>
                                 </tr>
                             </thead>
@@ -33,14 +34,25 @@
                                         <form method='post' action="{{ route('admin.usuarios.update', $usuario->id) }}">
                                             @method('PATCH')
                                             @csrf
-                                            <td class="w-30">
+                                            <td class="w-20">
                                                 {{ $usuario->name }}
                                             </td>
-                                            <td class="w-30">
+                                            <td class="w-20">
                                                 {{ $usuario->email }}
                                             </td>
-                                            <td class="w-30 text-center">
-                                                {{ $usuario->name }}
+                                            <td class="w-20">
+                                                {{ $usuario->last_activity }}
+                                            </td>
+                                            <td class="w-30">
+                                                @if ($usuario->master)
+                                                    Master
+                                                @elseif($usuario->cm)
+                                                    CM
+                                                @elseif($usuario->administrador)
+                                                    Administrador
+                                                @else
+                                                    Fan
+                                                @endif
                                             </td>
                                             <td class="align-middle w-10 text-center">
                                                 <div class="btn-group">
