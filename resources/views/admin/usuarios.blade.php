@@ -94,9 +94,9 @@
 
             $('#tabla').dataTable();
 
-            var masters = {!!$num_masters!!};
-            var cms = {!!$num_cms!!};
-            var fans = {!!$num_fans!!} - masters - cms;
+            var masters = {!! $num_masters !!};
+            var cms = {!! $num_cms !!};
+            var fans = {!! $num_fans !!};
 
             graficaUsuarios(masters, fans, cms);
 
