@@ -98,4 +98,22 @@ class User extends Authenticatable
     {
         return $this->hasOne('\App\Models\Solicitud');
     }
+
+    // Usuario - 1:N - Masters
+    public function master()
+    {
+        return $this->belongsTo("App\Models\Master", 'id', 'user_id');
+    }
+
+    // Usuario - 1:N - Masters
+    public function cm()
+    {
+        return $this->belongsTo("App\Models\Cm", 'id', 'user_id');
+    }
+
+    // Usuario - 1:N - Masters
+    public function administrador()
+    {
+        return $this->belongsTo("App\Models\Administrador", 'id', 'user_id');
+    }
 }
