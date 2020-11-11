@@ -43,8 +43,20 @@
                         <a class="dropdown-item" href="{{ route('usuario.cuenta.index') }}">
                             Mi cuenta
                         </a>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                        @if(App\Models\Administrador::where('user_id', Auth::id())->count() == 1)
+                            <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                Panel de administración
+                            </a>
+                        @elseif(App\Models\Cm::where('user_id', Auth::id())->count() == 1)
+                            <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                Panel de desarrolladora
+                            </a>
+                        @elseif(App\Models\Master::where('user_id', Auth::id())->count() == 1)
+                            <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                Panel de master
+                            </a>
+                        @endif
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
 
