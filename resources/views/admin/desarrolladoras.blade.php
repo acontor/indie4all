@@ -6,7 +6,7 @@
                 <div class="box-header">
                     <h1 class="d-inline-block">Desarrolladoras ({{ $desarrolladoras->count() }})</h1>
                     @if ($solicitudes->count() > 0)
-                    <a href="{{ route('admin.solicitudes.index') }}" class='btn btn-success float-right mt-2'>Solicitudes ({{ $solicitudes->count() }})</a>
+                    <a href="{{ route('admin.solicitudes.index') }}" class='btn btn-success btn-sm float-right mt-2'>Solicitudes ({{ $solicitudes->count() }})</a>
                     @endif
                 </div>
                 <div class="table-responsive box">

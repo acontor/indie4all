@@ -41,14 +41,14 @@
                                                 <td class="align-middle">{{ $desarrolladora->usuario->name }}</td>
                                                 <td class="align-middle">
                                                     <div class="btn-group">
-                                                    <button class='btn btn-success ml-1' type='submit'><i class="far fa-check-square"></i></button>
+                                                    <button class='btn btn-success btn-sm round ml-1' type='submit'><i class="far fa-check-square"></i></button>
                                                     </form>
                                                     <form
                                                         action="{{ route('admin.solicitudes.rechazarDesarrolladora', $desarrolladora->id) }}"
                                                         method='post'>
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class='btn btn-danger ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
+                                                        <button class='btn btn-danger btn-sm round ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
                                                     </form>
                                                 </div>
                                                 </td>
@@ -83,11 +83,11 @@
                                                 <td class="align-middle">{{ $master->email }}</td>
                                                 <td class="align-middle">{{ $master->usuario->name }}</td>
                                                 <td class="align-middle">
-                                                    <button class='btn btn-success' type='submit'>Aceptar</button>
+                                                    <button class='btn btn-success btn-sm round' type='submit'>Aceptar</button>
                                                     <form action="" method='post'>
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class='btn btn-danger' type='submit'>Rechazar</button>
+                                                        <button class='btn btn-danger btn-sm round' type='submit'>Rechazar</button>
                                                     </form>
                                                 </td>
                                             </form>

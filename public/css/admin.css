@@ -190,7 +190,6 @@ input:focus {
 .btn-danger {
     background-color: #E34E33;
     border: 0;
-    border-radius: 0;
     box-shadow: 1px 1px 1px 0 #2E3647;
 }
 
@@ -202,13 +201,11 @@ input:focus {
     background-color: rgb(227, 78, 51, 0.9) !important;
     border: 0;
     box-shadow: 0 0 0 0 !important;
-    border-radius: 0;
 }
 
 .btn-primary {
     background-color: #2E3647;
     border: 0;
-    border-radius: 0;
     box-shadow: 1px 1px 1px 0 #2E3647;
 }
 
@@ -217,16 +214,14 @@ input:focus {
 .btn-primary:focus {
     outline: 0px !important;
     -webkit-appearance: none;
-    background-color: rgb(46, 54, 71, 0.9) !important;
+    background-color: rgb(46, 54, 71, 0.8) !important;
     border: 0;
     box-shadow: 0 0 0 0 !important;
-    border-radius: 0;
 }
 
 .btn-success {
     background-color: #00825a;
     border: 0;
-    border-radius: 0;
     box-shadow: 1px 1px 1px 0 #2E3647;
 }
 
@@ -238,7 +233,10 @@ input:focus {
     background-color: rgb(0, 130, 90, 0.9) !important;
     border: 0;
     box-shadow: 0 0 0 0 !important;
-    border-radius: 0;
+}
+
+.round {
+    border-radius: 50% !important;
 }
 
 /**

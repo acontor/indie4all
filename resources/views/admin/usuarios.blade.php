@@ -56,17 +56,17 @@
                                             </td>
                                             <td class="align-middle w-10 text-center">
                                                 <div class="btn-group">
-                                                    <button class='btn btn-primary mr-1' type='submit'><i
+                                                    <button class='btn btn-primary btn-sm round mr-1' type='submit'><i
                                                         class="far fa-edit"></i></button>
+                                                    </form>
                                                     <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}"
                                                         method='post'>
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class='btn btn-danger ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
+                                                        <button class='btn btn-danger btn-sm round ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
                                                     </form>
                                                 </div>
                                             </td>
-                                        </form>
                                     </tr>
                                 @endforeach
                             </tbody>

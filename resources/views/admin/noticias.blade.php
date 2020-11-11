@@ -5,7 +5,7 @@
             <div class='col-sm'>
                 <div class="box-header">
                     <h1 class="d-inline-block">Noticias ({{ $noticias->count() }})</h1>
-                    <a href="{{ route('admin.noticias.create') }}" class='btn btn-success button-crear float-right mt-2'><i class="far fa-plus-square"></i></a>
+                    <a href="{{ route('admin.noticias.create') }}" class='btn btn-success button-crear btn-sm round float-right mt-2'><i class="far fa-plus-square"></i></a>
                 </div>
                 <div class="table-responsive box">
                     <table class='table table-striped'>
@@ -23,14 +23,14 @@
                                         <div class="btn-group">
                                             <form action="{{ route('admin.noticias.edit', $noticia->id) }}" method='post'>
                                                 @csrf
-                                                <button class='btn btn-primary mr-1' type='submit'><i
+                                                <button class='btn btn-primary btn-sm round mr-1' type='submit'><i
                                                         class="far fa-edit"></i></button>
                                             </form>
                                             <form action="{{ route('admin.noticias.destroy', $noticia->id) }}"
                                                 method='post'>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class='btn btn-danger ml-1' type='submit'><i
+                                                <button class='btn btn-danger btn-sm round ml-1' type='submit'><i
                                                         class="far fa-trash-alt"></i></button>
                                             </form>
                                         </div>
