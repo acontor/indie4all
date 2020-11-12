@@ -48,7 +48,7 @@ class Desarrolladora extends Model
     // Desarrolladoras - 1:N - Sorteos
     public function sorteos()
     {
-        return $this->belongsTo("App\Models\Sorteo");
+        return $this->belongsTo("App\Models\Sorteo", "id", "desarrolladora_id");
     }
 
     // Desarrolladoras - 1:N - Cms
