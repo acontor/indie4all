@@ -7,7 +7,7 @@ use App\Models\Cm;
 use App\Models\Desarrolladora;
 use Illuminate\Support\Facades\Auth;
 
-class SorteosController extends Controller
+class CampaniasController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,8 +27,7 @@ class SorteosController extends Controller
      */
     public function index()
     {
-        $sorteos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->sorteos;
-
-        return view('cm.sorteos', ['sorteos' => $sorteos]);
+        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos;
+        return view('cm.campanias', ['juegos' => $juegos]);
     }
 }
