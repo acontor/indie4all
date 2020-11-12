@@ -82,6 +82,19 @@ Route::post('/admin/solicitudes/{id}/{cm}', [App\Http\Controllers\Administrador\
 Route::delete('/admin/solicitudes/{id}', [App\Http\Controllers\Administrador\SolicitudesController::class, 'rechazarDesarrolladora'])->name('admin.solicitudes.rechazarDesarrolladora');
 
 /**
+ * Cm Routes
+ */
+
+// Inicio
+Route::get('/cm', [App\Http\Controllers\Cm\HomeController::class, 'index'])->name('cm.index');
+
+// Inicio
+Route::get('/cm/desarrolladora', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'index'])->name('cm.desarrolladora.index');
+
+// Juegos
+Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
+
+/**
  * User Routes
  */
 
