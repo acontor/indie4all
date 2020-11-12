@@ -5,6 +5,6 @@
         <li class="@if(Request::is('cm/juegos*')){{ "menu-active" }}@endif"><a href="{{ route('cm.juegos.index') }}"><i class="fas fa-gamepad"></i>Juegos</a></li>
         <li><a><i class="fas fa-bullhorn"></i>Campañas</a></li>
         <li class="@if(Request::is('cm/sorteos*')){{ "menu-active" }}@endif"><a href="{{ route('cm.sorteos.index') }}"><i class="fas fa-gift"></i>Sorteos</a></li>
-        <li><a><i class="fas fa-poll"></i>Encuestas</a></li>
+        <li class="@if(Request::is('cm/encuestas*')){{ "menu-active" }}@endif"><a href="{{ route('cm.encuestas.index') }}"><i class="fas fa-poll"></i>Encuestas</a></li>
     </ul>
 </nav>
