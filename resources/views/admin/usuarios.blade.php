@@ -1,22 +1,16 @@
 @extends('layouts.admin.base')
-@section('styles')
-    <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet">
-@endsection
 @section('content')
     <div class="container">
         <div class='row'>
             <div class='col-sm'>
                 <div class="box-header">
-                    <h1>Usuarios ({{ \App\Models\User::all()->count() }})</h1>
+                    <h1 class="d-inline-block">Usuarios ({{ \App\Models\User::all()->count() }})</h1>
+                    <a href="{{ route('admin.usuarios.create') }}" class='btn btn-success btn-sm round float-right mt-2'><i class="far fa-plus-square"></i></a>
                 </div>
                 <div class="box mt-4">
                     <canvas id="myChart" width="400" height="100"></canvas>
                 </div>
                 <div class="box mt-4">
-                    <div class="form-group col-sm-2">
-                        <h4>Buscar</h4>
-                        <select class="form-control" id="busqueda"></select>
-                    </div>
                     <div class="table-responsive mt-3">
                         <table class="table table-striped" id="tabla">
                             <thead>
@@ -31,42 +25,36 @@
                             <tbody>
                                 @foreach ($usuarios as $usuario)
                                     <tr>
-                                        <form method='post' action="{{ route('admin.usuarios.update', $usuario->id) }}">
-                                            @method('PATCH')
-                                            @csrf
-                                            <td class="w-20">
-                                                {{ $usuario->name }}
-                                            </td>
-                                            <td class="w-20">
-                                                {{ $usuario->email }}
-                                            </td>
-                                            <td class="w-20">
-                                                {{ $usuario->last_activity }}
-                                            </td>
-                                            <td class="w-30">
-                                                @if ($usuario->master)
-                                                    Master
-                                                @elseif($usuario->cm)
-                                                    CM
-                                                @elseif($usuario->administrador)
-                                                    Administrador
-                                                @else
-                                                    Fan
-                                                @endif
-                                            </td>
-                                            <td class="align-middle w-10 text-center">
-                                                <div class="btn-group">
-                                                    <button class='btn btn-primary btn-sm round mr-1' type='submit'><i
-                                                        class="far fa-edit"></i></button>
-                                                    </form>
-                                                    <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}"
-                                                        method='post'>
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class='btn btn-danger btn-sm round ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
-                                                    </form>
-                                                </div>
-                                            </td>
+                                        <td class="w-20">{{ $usuario->name }}</td>
+                                        <td class="w-20">{{ $usuario->email }}</td>
+                                        <td class="w-20">{{ $usuario->last_activity }}</td>
+                                        <td class="w-30">
+                                            @if ($usuario->master)
+                                                Master
+                                            @elseif($usuario->cm)
+                                                CM
+                                            @elseif($usuario->administrador)
+                                                Administrador
+                                            @else
+                                                Fan
+                                            @endif
+                                        </td>
+                                        <td class="align-middle w-10 text-center">
+                                            <div class="btn-group">
+                                                <form method='post' action="{{ route('admin.usuarios.edit', $usuario->id) }}">
+                                                    @csrf
+                                                    <button class='btn btn-primary btn-sm round mr-1' type='submit'>
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}"
+                                                    method='post'>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class='btn btn-danger btn-sm round ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

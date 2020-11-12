@@ -5,61 +5,65 @@
 @section('content')
     <div class="container">
         <div class='row'>
-            <div class='col-sm'>
+            <div class='col-sm-12'>
                 <div class="box-header">
                     <h1>Vista general</h1>
                 </div>
-            </div>
-        </div>
-        <div class="row box mt-4">
-            <div class="col-sm-12">
-                <h2>Usuarios activos últimas 5 horas</h2>
-                <canvas id="active-users" width="400" height="150"></canvas>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-sm-5 box mt-4">
-                <h2>Posts últimos 5 días</h2>
-                <canvas id="posts" width="400" height="200"></canvas>
-            </div>
-            <div class="col-sm-5 box offset-sm-1 mt-4">
-                <h2>Mensajes últimos 5 días</h2>
-                <canvas id="mensajes" width="400" height="200"></canvas>
-            </div>
-        </div>
-        <div class="row box mt-4">
-            <div class="col-sm-6 col-md-4 mb-3 cards-link">
-                <a href="{{ route('admin.usuarios.index') }}">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Usuarios <i class="fas fa-link"></i></h5>
-                            <h6 class="card-subtitle mb-2">Número de usuarios totales.</h6>
-                            <p class="card-text text-center">{{ $num_usuarios }}</p>
+                <div class="box mt-4">
+                    <div class="col-sm-12">
+                        <h2>Usuarios activos últimas 5 horas</h2>
+                        <canvas id="active-users" width="400" height="150"></canvas>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="row box justify-content-center mt-4">
+                        <div class="col-sm-5 mt-4">
+                            <h2>Posts últimos 5 días</h2>
+                            <canvas id="posts" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-sm-5 offset-sm-1 mt-4">
+                            <h2>Mensajes últimos 5 días</h2>
+                            <canvas id="mensajes" width="400" height="200"></canvas>
                         </div>
                     </div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-md-4 mb-3 cards-link">
-                <a href="{{ route('admin.desarrolladoras.index') }}">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Desarrolladoras <i class="fas fa-link"></i></h5>
-                            <h6 class="card-subtitle mb-2">Número de desarrolladoras totales.</h6>
-                            <p class="card-text text-center">{{ $num_desarrolladoras }}</p>
+                </div>
+                <div class="col-sm-12">
+                    <div class="row box mt-4">
+                        <div class="col-sm-6 col-md-4 mb-3 cards-link">
+                            <a href="{{ route('admin.usuarios.index') }}">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Usuarios <i class="fas fa-link"></i></h5>
+                                        <h6 class="card-subtitle mb-2">Número de usuarios totales.</h6>
+                                        <p class="card-text text-center">{{ $num_usuarios }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-sm-6 col-md-4 mb-3 cards-link">
+                            <a href="{{ route('admin.desarrolladoras.index') }}">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Desarrolladoras <i class="fas fa-link"></i></h5>
+                                        <h6 class="card-subtitle mb-2">Número de desarrolladoras totales.</h6>
+                                        <p class="card-text text-center">{{ $num_desarrolladoras }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-sm-6 col-md-4 mb-3 cards-link">
+                            <a href="{{ route('admin.juegos.index') }}">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Juegos <i class="fas fa-link"></i></h5>
+                                        <h6 class="card-subtitle mb-2">Número de juegos totales.</h6>
+                                        <p class="card-text text-center">{{ $num_juegos }}</p>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
-                </a>
-            </div>
-            <div class="col-sm-6 col-md-4 mb-3 cards-link">
-                <a href="{{ route('admin.juegos.index') }}">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Juegos <i class="fas fa-link"></i></h5>
-                            <h6 class="card-subtitle mb-2">Número de juegos totales.</h6>
-                            <p class="card-text text-center">{{ $num_juegos }}</p>
-                        </div>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
     </div>
