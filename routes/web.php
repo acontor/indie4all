@@ -88,6 +88,9 @@ Route::delete('/admin/solicitudes/{id}', [App\Http\Controllers\Administrador\Sol
 // Inicio
 Route::get('/cm', [App\Http\Controllers\Cm\HomeController::class, 'index'])->name('cm.index');
 
+// Inicio
+Route::get('/cm/desarrolladora', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'index'])->name('cm.desarrolladora.index');
+
 /**
  * User Routes
  */
