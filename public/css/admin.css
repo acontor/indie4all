@@ -113,6 +113,10 @@ body {
     transition: color 0.2s;
 }
 
+.menu-active a, .menu-active a i {
+    color: #E34E33 !important;
+}
+
 /**
  * MAIN CONTENT
  */
