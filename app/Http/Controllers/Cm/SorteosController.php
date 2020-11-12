@@ -28,6 +28,7 @@ class SorteosController extends Controller
     public function index()
     {
         $sorteos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->sorteos;
+
         return view('cm.sorteos', ['sorteos' => $sorteos]);
     }
 }
