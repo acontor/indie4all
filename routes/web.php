@@ -97,6 +97,10 @@ Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'in
 // Juegos
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
 
+// Campañas
+Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
+
+
 /**
  * User Routes
  */
