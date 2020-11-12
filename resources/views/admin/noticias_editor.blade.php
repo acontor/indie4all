@@ -30,7 +30,7 @@
                                 @endif
                             </textarea>
                         </div>
-                        <button type="submit" class='btn btn-primary'>@if(isset($post)) Editar @else Crear @endif</button>
+                        <button type="submit" class='btn btn-success'>@if(isset($post)) Editar @else Crear @endif</button>
                     </form>
                 </div>
             </div>

@@ -20,14 +20,14 @@
                     <div class="box">
                         <form method='post' action="{{ route('admin.usuarios.update', $usuario->id) }}">
                         @method('PATCH')
-                    @else
-                        <div class="box-header">
-                            <h1 class='display-5'>Nuevo usuarios</h1>
-                        </div>
-                        <div class="box">
-                            <form method='post' action="{{ route('admin.usuarios.store') }}">
-                    @endif
-                        @csrf
+                @else
+                    <div class="box-header">
+                        <h1 class='display-5'>Nuevo usuarios</h1>
+                    </div>
+                    <div class="box">
+                        <form method='post' action="{{ route('admin.usuarios.store') }}">
+                @endif
+                            @csrf
                             <div class='form-group'>
                                 <label for='name'>Nombre:</label>
                                 <input type='text' class='form-control' name='name' @if(isset($usuario)) value="{{ $usuario->name }}" @endif />
@@ -43,8 +43,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="password-confirm">Confirmar contraseña</label>
-                                        <input type="password" class="form-control" name="password_confirmation">
-                                    </div>
+                                    <input type="password" class="form-control" name="password_confirmation">
                                 </div>
                             @endif
                             <button type='submit' class='btn btn-success mb-3'>
