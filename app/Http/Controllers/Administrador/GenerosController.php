@@ -23,8 +23,13 @@ class GenerosController extends Controller
             array_push($numJuegos,  $genero->juegos->count());
             array_push($numSeguidores,  $genero->usuarios->count());
         }
-        $data = [$numJuegos,$numSeguidores];
-        return view('admin.generos', compact('generos', 'generosAll', 'data'));
+        $data = [$numJuegos, $numSeguidores];
+        return view('admin.generos', ['generos' => $generos, 'generosAll' => $generosAll, 'data' => $data]);
+    }
+
+    public function create()
+    {
+        return view('admin.generos_editor');
     }
 
     /**
@@ -60,6 +65,12 @@ class GenerosController extends Controller
         Genero::find($id)->update($request->all());
 
         return redirect('/admin/generos')->with('success', '¡Género actualizado!');
+    }
+
+    public function edit($id)
+    {
+        $genero = Genero::find($id);
+        return view('admin.generos_editor', ['genero' => $genero]);
     }
 
     /**

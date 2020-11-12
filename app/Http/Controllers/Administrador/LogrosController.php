@@ -18,8 +18,13 @@ class LogrosController extends Controller
     public function index()
     {
         $logros = Logro::paginate(10);
-        $users = User::all()->count();
-        return view('admin.logros', compact('logros', 'users'));
+        $num_usuarios = User::all()->count();
+        return view('admin.logros', ['logros' => $logros, 'num_usuarios' => $num_usuarios]);
+    }
+
+    public function create()
+    {
+        return view('admin.logros_editor');
     }
 
     /**
@@ -91,6 +96,12 @@ class LogrosController extends Controller
             'icono' => $fileName,
         ]);
         return redirect('/admin/logros')->with('success', '!Logro actualizado!');
+    }
+
+    public function edit($id)
+    {
+        $logro = Logro::find($id);
+        return view('admin.logros_editor', ['logro' => $logro]);
     }
 
     /**

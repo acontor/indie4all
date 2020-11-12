@@ -8,19 +8,8 @@
             <div class='col-sm'>
                 <div class="box-header">
                     <h1 class='d-inline-block'>Géneros ({{ $generosAll->count() }})</h1>
-                    <a class='btn btn-success button-crear btn-sm round float-right mt-2'><i class="far fa-plus-square"></i></a>
+                    <a href="{{ route('admin.generos.create') }}" class='btn btn-success btn-sm round float-right mt-2'><i class="far fa-plus-square"></i></a>
                 </div>
-                @if ($errors->any())
-                    <div class='alert alert-danger'>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <br />
-                @endif
-
                 <div class="d-none form-crear box">
                     <form method='post' action="{{ route('admin.generos.store') }}">
                         @csrf
@@ -31,6 +20,9 @@
                         <button type='submit' class='btn btn-success mb-3'>Añadir</button>
                     </form>
                 </div>
+
+
+
                 <div class="box mt-4">
                     <canvas id="myChart" width="400" height="100"></canvas>
                 </div>
@@ -47,27 +39,24 @@
                         <tbody>
                             @foreach ($generos as $genero)
                                 <tr>
-                                    <form method='post' action="{{ route('admin.generos.update', $genero->id) }}">
-                                        @method('PATCH')
-                                        @csrf
-                                        <td class="align-middle w-50">
-                                            <input type='text' placeholder="Nombre" value="{{ $genero->nombre }}"
-                                                name='nombre'>
-                                        </td>
-                                        <td class="w-20 text-center">{{ $genero->usuarios->count() }}</td>
-                                        <td class="w-20 text-center">{{ $genero->juegos->count() }}</td>
-                                        <td class="align-middle w-10 text-center">
-                                            <div class="btn-group">
-                                                <button class='btn btn-primary btn-sm round mr-1' type='submit'><i
-                                                    class="far fa-edit"></i></button>
-                                        </form>
+                                    <td class="align-middle w-50">{{ $genero->nombre }}</td>
+                                    <td class="w-20 text-center">{{ $genero->usuarios->count() }}</td>
+                                    <td class="w-20 text-center">{{ $genero->juegos->count() }}</td>
+                                    <td class="align-middle w-10 text-center">
+                                        <div class="btn-group">
+                                            <form method='post' action="{{ route('admin.generos.edit', $genero->id) }}">
+                                                @csrf
+                                                <button class='btn btn-primary btn-sm round mr-1' type='submit'>
+                                                    <i class="far fa-edit"></i>
+                                                </button>
+                                            </form>
                                             <form action="{{ route('admin.generos.destroy', $genero->id) }}" method='post'>
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class='btn btn-danger btn-sm round ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
                                             </form>
                                         </div>
-                                        </td>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -94,16 +83,6 @@
 
             generos.forEach(element => {
                 nombreGenero.push(element['nombre'])
-            });
-
-            $(".button-crear").click(function() {
-                $(".form-crear").toggleClass("d-none");
-                $(this).toggleClass("btn-danger");
-                if ($(this).hasClass("btn-danger")) {
-                    $(this).html("<i class='far fa-minus-square'></i>");
-                } else {
-                    $(this).html("<i class='far fa-plus-square'></i>");
-                }
             });
 
             graficaGeneros(nombreGenero, data);
