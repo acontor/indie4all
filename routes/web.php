@@ -91,6 +91,9 @@ Route::get('/cm', [App\Http\Controllers\Cm\HomeController::class, 'index'])->nam
 // Inicio
 Route::get('/cm/desarrolladora', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'index'])->name('cm.desarrolladora.index');
 
+// Juegos
+Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
+
 /**
  * User Routes
  */
