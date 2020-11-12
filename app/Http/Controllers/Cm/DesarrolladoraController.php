@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Cm;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cm;
+use App\Models\Desarrolladora;
+use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+class DesarrolladoraController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -24,6 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('cm.home');
+        $desarrolladora = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id);
+        return view('cm.desarrolladora', ['desarrolladora' => $desarrolladora]);
     }
 }
