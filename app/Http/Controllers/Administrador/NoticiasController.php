@@ -9,6 +9,17 @@ use Illuminate\Http\Request;
 class NoticiasController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -66,14 +77,14 @@ class NoticiasController extends Controller
     public function upload(Request $request)
     {
         // Mover imagen a temp
-        if($request->hasFile('upload')) {
+        if ($request->hasFile('upload')) {
             $originName = $request->file('upload')->getClientOriginalName();
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
             $extension = $request->file('upload')->getClientOriginalExtension();
-            $fileName = $fileName.'_'.time().'.'.$extension;
+            $fileName = $fileName . '_' . time() . '.' . $extension;
             $request->file('upload')->move(public_path('images/posts'), $fileName);
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
-            $url = asset('images/posts/'.$fileName);
+            $url = asset('images/posts/' . $fileName);
             $msg = 'Image successfully uploaded';
             $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
             @header('Content-type: text/html; charset=utf-8');
