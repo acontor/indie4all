@@ -98,6 +98,15 @@ Route::get('/cm/sorteos/nuevo', [App\Http\Controllers\Cm\SorteosController::clas
 // Juegos
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
 
+// Campañas
+Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
+
+// Encuestas
+Route::get('/cm/encuestas', [App\Http\Controllers\Cm\EncuestasController::class, 'index'])->name('cm.encuestas.index');
+
+// Sorteos
+Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
+
 /**
  * User Routes
  */
