@@ -31,4 +31,9 @@ class SorteosController extends Controller
 
         return view('cm.sorteos', ['sorteos' => $sorteos]);
     }
+
+    public function create()
+    {
+        return view('cm.sorteos_crear');
+    }
 }
