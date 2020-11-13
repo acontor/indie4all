@@ -68,6 +68,16 @@
                         </div>
                         <div class="sorteos d-none">
                             <h2>Sorteos</h2>
+                            <div class="row">
+                                @foreach ($desarrolladora->sorteos as $sorteo)
+                                    <div class="col-6">
+                                        <h3>{{ $sorteo->titulo }}</h3>
+                                        <p>{{ $sorteo->descripcion }}</p>
+                                        <p>{{ $sorteo->fecha_fin }}</p>
+                                        <button class="btn btn-success">Participar</button>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="encuestas d-none">
                             <h2>Encuestas</h2>
