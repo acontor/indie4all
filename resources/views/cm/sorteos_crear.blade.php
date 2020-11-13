@@ -14,16 +14,24 @@
                     <br />
                 @endif
                 <div class="box-header">
-                    <h1 class='display-5'>Nuevo género</h1>
+                    <h1 class='display-5'>Nuevo sorteo</h1>
                 </div>
                 <div class="box">
-                    <form method='post' action="{{ route('admin.generos.store') }}">
+                    <form method='post' action="{{ route('cm.sorteos.store') }}">
                         @csrf
                         <div class='form-group'>
-                            <label for='nombre'>Nombre:</label>
-                            <input type='text' class='form-control' name='nombre' @if (isset($genero)) value="{{ $genero->nombre }}" @endif />
+                            <label for='titulo'>Título:</label>
+                            <input type='text' class='form-control' name='titulo' />
                         </div>
-                        <button type='submit' class='btn btn-success mb-3'>Añadir</button>
+                        <div class='form-group'>
+                            <label for='descripcion'>Descripción:</label>
+                            <textarea class="form-control" name="descripcion"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for='fecha_fin'>Fecha de finalización:</label>
+                            <input type="date" name="fecha_fin">
+                        </div>
+                        <button type='submit' class='btn btn-success mb-3'>Crear</button>
                     </form>
                 </div>
             </div>
