@@ -100,7 +100,7 @@
                     <h4>Juegos</h4>
                     <hr>
                     @foreach ($desarrolladora->juegos as $juego)
-                        <a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</p>
+                        <a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a>
                     @endforeach
                 </div>
             </div>
