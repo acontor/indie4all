@@ -91,6 +91,11 @@ Route::get('/cm', [App\Http\Controllers\Cm\HomeController::class, 'index'])->nam
 // Desarrolladora
 Route::get('/cm/desarrolladora', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'index'])->name('cm.desarrolladora.index');
 
+// Sorteos
+Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
+Route::get('/cm/sorteos/nuevo', [App\Http\Controllers\Cm\SorteosController::class, 'create'])->name('cm.sorteos.create');
+Route::post('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'store'])->name('cm.sorteos.store');
+
 // Juegos
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
 

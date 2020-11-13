@@ -42,13 +42,13 @@ class Desarrolladora extends Model
     // Desarrolladoras - 1:N - Encuestas
     public function encuestas()
     {
-        return $this->belongsTo("App\Models\Encuesta", "id", "desarrolladora_id");
+        return $this->hasMany("App\Models\Encuesta");
     }
 
     // Desarrolladoras - 1:N - Sorteos
     public function sorteos()
     {
-        return $this->belongsTo("App\Models\Sorteo", "id", "desarrolladora_id");
+        return $this->hasMany("App\Models\Sorteo");
     }
 
     // Desarrolladoras - 1:N - Cms
