@@ -98,6 +98,11 @@ Route::post('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 's
 
 // Juegos
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
+Route::get('/cm/juegos/nuevo', [App\Http\Controllers\Cm\JuegosController::class, 'create'])->name('cm.juegos.create');
+Route::post('/cm/juegos/store', [App\Http\Controllers\Cm\JuegosController::class, 'store'])->name('cm.juegos.store');
+Route::get('/cm/juegos/{id}/edit', [App\Http\Controllers\Cm\JuegosController::class, 'edit'])->name('cm.juegos.edit');
+Route::patch('/cm/juegos/{id}/update', [App\Http\Controllers\Cm\JuegosController::class, 'update'])->name('cm.juegos.update');
+Route::delete('/cm/juegos/{id}/delete', [App\Http\Controllers\Cm\JuegosController::class, 'destroy'])->name('cm.juegos.destroy');
 
 // Campañas
 Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
