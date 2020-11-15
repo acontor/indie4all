@@ -88,11 +88,38 @@ Route::delete('/admin/solicitudes/{id}', [App\Http\Controllers\Administrador\Sol
 // Inicio
 Route::get('/cm', [App\Http\Controllers\Cm\HomeController::class, 'index'])->name('cm.index');
 
-// Inicio
+// Desarrolladora
 Route::get('/cm/desarrolladora', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'index'])->name('cm.desarrolladora.index');
+
+// Sorteos
+Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
+Route::get('/cm/sorteos/nuevo', [App\Http\Controllers\Cm\SorteosController::class, 'create'])->name('cm.sorteos.create');
+Route::post('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'store'])->name('cm.sorteos.store');
 
 // Juegos
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
+Route::get('/cm/juegos/nuevo', [App\Http\Controllers\Cm\JuegosController::class, 'create'])->name('cm.juegos.create');
+Route::post('/cm/juegos/store', [App\Http\Controllers\Cm\JuegosController::class, 'store'])->name('cm.juegos.store');
+Route::get('/cm/juegos/{id}/edit', [App\Http\Controllers\Cm\JuegosController::class, 'edit'])->name('cm.juegos.edit');
+Route::patch('/cm/juegos/{id}/update', [App\Http\Controllers\Cm\JuegosController::class, 'update'])->name('cm.juegos.update');
+Route::delete('/cm/juegos/{id}/delete', [App\Http\Controllers\Cm\JuegosController::class, 'destroy'])->name('cm.juegos.destroy');
+
+// Campañas
+Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
+Route::get('/cm/juego/{id}/campania/nuevo', [App\Http\Controllers\Cm\CampaniasController::class, 'create'])->name('cm.campanias.create');
+Route::post('/cm/campanias/store/{id}', [App\Http\Controllers\Cm\CampaniasController::class, 'store'])->name('cm.campanias.store');
+Route::get('/cm/campanias/{idCampania}/{idJuego}/edit', [App\Http\Controllers\Cm\CampaniasController::class, 'edit'])->name('cm.campanias.edit');
+Route::patch('/cm/campanias/{id}/update', [App\Http\Controllers\Cm\CampaniasController::class, 'update'])->name('cm.campanias.update');
+Route::delete('/cm/campanias/{id}/delete', [App\Http\Controllers\Cm\CampaniasController::class, 'destroy'])->name('cm.campanias.destroy');
+
+// Encuestas
+Route::get('/cm/encuestas', [App\Http\Controllers\Cm\EncuestasController::class, 'index'])->name('cm.encuestas.index');
+Route::get('/cm/encuestas/nuevo', [App\Http\Controllers\Cm\EncuestasController::class, 'create'])->name('cm.encuestas.create');
+Route::post('/cm/encuestas', [App\Http\Controllers\Cm\EncuestasController::class, 'store'])->name('cm.encuestas.store');
+Route::delete('/admin/encuestas/{id}/delete', [App\Http\Controllers\Cm\EncuestasController::class, 'destroy'])->name('cm.encuestas.destroy');
+
+// Sorteos
+Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
 
 /**
  * User Routes
