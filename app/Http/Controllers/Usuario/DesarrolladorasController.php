@@ -69,9 +69,9 @@ class DesarrolladorasController extends Controller
      */
     public function show($id)
     {
-        $usuario = User::find(Auth::id())->desarrolladoras()->where('desarrolladora_id','=', $id)->first();
+        $usuario = User::find(Auth::id())->desarrolladoras()->where('desarrolladora_id', '=', $id)->first();
         $desarrolladora = Desarrolladora::find($id);
-        return view('usuario.desarrolladora', compact('desarrolladora', 'usuario'));
+        return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora, 'usuario' => $usuario]);
     }
 
     public function follow($id)

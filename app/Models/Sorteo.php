@@ -20,4 +20,10 @@ class Sorteo extends Model
         'fecha_fin',
         'desarrolladora_id',
     ];
+
+    // Users - N:M - Sorteos
+    public function usuarios()
+    {
+        return $this->belongsToMany("App\Models\User");
+    }
 }

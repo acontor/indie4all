@@ -15,7 +15,7 @@
             @foreach ($usuario->logros as $logro)
                 {{ $logro }}
             @endforeach
-{{-- 
+{{--
             <h5>Solicitud</h5>
             {{ $usuario->solicitud->where('user_id', $usuario->id)->get()->count() }}
  --}}
@@ -62,7 +62,6 @@
                     </form>
                 @endif
             @endforeach
-
 
             <h5>Masters</h5>
             @foreach ($usuario->masters as $master)
