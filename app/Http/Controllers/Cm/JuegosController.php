@@ -60,6 +60,7 @@ class JuegosController extends Controller
             $portada->move('images/juegos/portadas/', $fileNamePortada);
             $request['imagen_portada'] = $fileNamePortada;
         }
+
         if ($caratula = $request->file('imagen_caratula')) {
             $originNameCaratula = $request->file('imagen_caratula')->getClientOriginalName();
             $fileNameCaratula = pathinfo($originNameCaratula, PATHINFO_FILENAME);
@@ -68,6 +69,7 @@ class JuegosController extends Controller
             $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
             $request['imagen_caratula'] = $fileNamePortada;
         }
+
         Juego::create([
             'nombre' => $request->nombre,
             'imagen_portada' => $request->imagen_portada,
@@ -77,6 +79,7 @@ class JuegosController extends Controller
             'precio' => $request->precio,
             'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
             'genero_id' => $request->genero,
+            'genero_id' => $request->genero_id,
         ]);
 
         return redirect('/cm/juegos')->with('success', 'Juego creado!');
