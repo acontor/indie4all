@@ -78,6 +78,7 @@ class JuegosController extends Controller
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
+            'genero_id' => $request->genero,
             'genero_id' => $request->genero_id,
         ]);
 

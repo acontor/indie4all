@@ -27,6 +27,96 @@ class JuegosSeeder extends Seeder
             'genero_id' => 1,
         ]);
         DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
+            'nombre' => 'Juego 1',
+            'imagen_portada' => '/imagenportada',
+            'imagen_caratula' => '/imagencaratula',
+            'sinopsis' => 'sipnosis',
+            'fecha_lanzamiento' => '2012-11-05',
+            'precio' =>43.44,
+            'desarrolladora_id' => 1,
+            'genero_id' => 1,
+        ]);
+        DB::table('juegos')->insert([
             'nombre' => 'Juego 2',
             'imagen_portada' => '/imagenportada',
             'imagen_caratula' => '/imagencaratula',
