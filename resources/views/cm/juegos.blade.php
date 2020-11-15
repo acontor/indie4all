@@ -1,108 +1,8 @@
 @extends('layouts.cm.base')
+@section('styles')
+<link href="{{ asset('css/cm.css') }}" rel="stylesheet">
+@endsection
 @section('content')
-    <style>
-        .mt-5 {
-            margin-top: 5rem;
-        }
-
-        .our-games {
-            background-color: #f8f9fa;
-            padding: 100px 0;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-        }
-
-        .row {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .text-center {
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .text-center h2 {
-            font-weight: 500;
-            font-size: 1.6em;
-        }
-
-        .text-center h2 span {
-            font-weight: 800;
-        }
-
-        .text-center p {
-            max-width: 500px;
-            margin: 0 auto;
-            color: #6c757d;
-            line-height: 1.5;
-            font-size: 1em;
-        }
-
-        .col {
-            width: 33.3333333%;
-            overflow: hidden;
-            padding: 15px;
-        }
-
-        .col .card {
-            width: 100%;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .col img {
-            width: 100%;
-            height: auto;
-            border: 0;
-        }
-
-        .col .card-body {
-            padding: 0 15px 15px 15px;
-            background-color: #fff;
-            border-bottom-left-radius: 15px;
-            border-bottom-right-radius: 15px;
-        }
-
-        .card-body h5 {
-            font-size: 24px;
-            margin: 7px 0;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            transition: transform 0.3s ease;
-        }
-
-        .card p {
-            color: #6c757d;
-        }
-
-        .card-body .date-lanzamiento span {
-            color: #e74c3c;
-        }
-
-        .card-body h5 a {
-            color: #222;
-        }
-
-        @media(min-width: 577px) and (max-width: 768px) {
-            .col {
-                width: 50%;
-            }
-        }
-
-        @media(max-width: 576px) {
-            .col {
-                width: 100%;
-            }
-        }
-
-    </style>
 
     <div class="container">
         <div class='row'>
@@ -145,8 +45,8 @@
                                             <form action="{{ route('cm.juegos.destroy', $juego->id) }}" method='post'>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class='btn btn-danger btn-sm round ml-1' type='submit'><i
-                                                        class="far fa-trash-alt"></i></button>
+                                                <button class='btn btn-danger btn-sm round ml-1 btn-delete'
+                                                    type='submit'><i class="far fa-trash-alt"></i></button>
                                             </form>
 
                                         </div>
@@ -160,6 +60,31 @@
         </div>
         {{ $juegos->links('pagination::bootstrap-4') }}
     </div>
-    </div>
 
+@endsection
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(function() {
+
+            $('.btn-delete').on('click', function(e) {
+                e.preventDefault();
+                var form = $(this).parents('form');
+                Swal.fire({
+                    title: "seguro?",
+                    text: "No recuperarás el juego!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Sí, estoy seguro!",
+                    closeOnConfirm: false
+                }, function(isConfirm) {
+                    if (isConfirm) form.submit();
+                });
+            });
+
+
+        });
+
+    </script>
 @endsection
