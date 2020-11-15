@@ -78,7 +78,7 @@ Route::delete('/admin/generos/{id}/delete', [App\Http\Controllers\Administrador\
 
 // Solicitudes
 Route::get('/admin/solicitudes', [App\Http\Controllers\Administrador\SolicitudesController::class, 'index'])->name('admin.solicitudes.index');
-Route::post('/admin/solicitudes/{id}/{cm}', [App\Http\Controllers\Administrador\SolicitudesController::class, 'aceptarDesarrolladora'])->name('admin.solicitudes.aceptarDesarrolladora');
+Route::post('/admin/solicitudes/{id}', [App\Http\Controllers\Administrador\SolicitudesController::class, 'aceptarDesarrolladora'])->name('admin.solicitudes.aceptarDesarrolladora');
 Route::delete('/admin/solicitudes/{id}', [App\Http\Controllers\Administrador\SolicitudesController::class, 'rechazarDesarrolladora'])->name('admin.solicitudes.rechazarDesarrolladora');
 
 /**
@@ -114,6 +114,9 @@ Route::delete('/cm/campanias/{id}/delete', [App\Http\Controllers\Cm\CampaniasCon
 
 // Encuestas
 Route::get('/cm/encuestas', [App\Http\Controllers\Cm\EncuestasController::class, 'index'])->name('cm.encuestas.index');
+Route::get('/cm/encuestas/nuevo', [App\Http\Controllers\Cm\EncuestasController::class, 'create'])->name('cm.encuestas.create');
+Route::post('/cm/encuestas', [App\Http\Controllers\Cm\EncuestasController::class, 'store'])->name('cm.encuestas.store');
+Route::delete('/admin/encuestas/{id}/delete', [App\Http\Controllers\Cm\EncuestasController::class, 'destroy'])->name('cm.encuestas.destroy');
 
 // Sorteos
 Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');

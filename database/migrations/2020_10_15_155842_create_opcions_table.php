@@ -13,7 +13,7 @@ class CreateOpcionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('opciones', function (Blueprint $table) {
+        Schema::create('opcions', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
             $table->bigInteger('encuesta_id');
