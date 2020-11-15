@@ -41,22 +41,22 @@ class SolicitudesController extends Controller
      * @param  int  $cm
      * @return \Illuminate\Http\Response
      */
-    public function aceptarDesarrolladora(Request $request, $id, $cm)
+    public function aceptarDesarrolladora(Request $request, $id)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'email' => 'required',
-            'direccion' => 'required',
-            'telefono' => 'required',
-            'url' => 'required',
-        ]);
+        $solicitud = Solicitud::find($id);
 
-        Desarrolladora::create($request->all());
+        $desarrolladora = Desarrolladora::create([
+            'nombre' => $solicitud->nombre,
+            'email' => $solicitud->email,
+            'direccion' => $solicitud->direccion,
+            'telefono' => $solicitud->telefono,
+            'url' => $solicitud->url,
+        ]);
 
         Cm::create([
             'rol' => 'Jefe',
-            'desarrolladora_id' => $id,
-            'user_id' => $cm
+            'desarrolladora_id' => $desarrolladora->id,
+            'user_id' => $solicitud->user_id
         ]);
 
         Solicitud::find($id)->delete();

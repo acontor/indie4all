@@ -25,33 +25,25 @@
                                 <tbody>
                                     @foreach ($desarrolladoras as $desarrolladora)
                                         <tr>
-                                            <form method='post'
-                                                action="{{ route('admin.solicitudes.aceptarDesarrolladora', [$desarrolladora->id, $desarrolladora->user_id]) }}">
-                                                @csrf
-                                                <td class="align-middle"><input type="text"
-                                                        value="{{ $desarrolladora->nombre }}" name="nombre"></td>
-                                                <td class="align-middle"><input type="text" value="{{ $desarrolladora->email }}"
-                                                        name="email"></td>
-                                                <td class="align-middle"><input type="text"
-                                                        value="{{ $desarrolladora->direccion }}" name="direccion"></td>
-                                                <td class="align-middle"><input type="text"
-                                                        value="{{ $desarrolladora->telefono }}" name="telefono"></td>
-                                                <td class="align-middle"><input type="text" value="{{ $desarrolladora->url }}"
-                                                        name="url"></td>
-                                                <td class="align-middle">{{ $desarrolladora->usuario->name }}</td>
-                                                <td class="align-middle">
-                                                    <div class="btn-group">
-                                                    <button class='btn btn-success btn-sm round ml-1' type='submit'><i class="far fa-check-square"></i></button>
+                                            <td class="align-middle">{{ $desarrolladora->nombre }}</td>
+                                            <td class="align-middle">{{ $desarrolladora->email }}</td>
+                                            <td class="align-middle">{{ $desarrolladora->direccion }}</td>
+                                            <td class="align-middle">{{ $desarrolladora->telefono }}</td>
+                                            <td class="align-middle">{{ $desarrolladora->url }}</td>
+                                            <td class="align-middle">{{ $desarrolladora->usuario->name }}</td>
+                                            <td class="align-middle">
+                                                <div class="btn-group">
+                                                    <form method='post' action="{{ route('admin.solicitudes.aceptarDesarrolladora', [$desarrolladora->id]) }}">
+                                                        @csrf
+                                                        <button class='btn btn-success btn-sm round ml-1' type='submit'><i class="far fa-check-square"></i></button>
                                                     </form>
-                                                    <form
-                                                        action="{{ route('admin.solicitudes.rechazarDesarrolladora', $desarrolladora->id) }}"
-                                                        method='post'>
+                                                    <form action="{{ route('admin.solicitudes.rechazarDesarrolladora', $desarrolladora->id) }}" method='post'>
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class='btn btn-danger btn-sm round ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
                                                     </form>
                                                 </div>
-                                                </td>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -83,11 +75,13 @@
                                                 <td class="align-middle">{{ $master->email }}</td>
                                                 <td class="align-middle">{{ $master->usuario->name }}</td>
                                                 <td class="align-middle">
-                                                    <button class='btn btn-success btn-sm round' type='submit'>Aceptar</button>
+                                                    <button class='btn btn-success btn-sm round'
+                                                        type='submit'>Aceptar</button>
                                                     <form action="" method='post'>
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class='btn btn-danger btn-sm round' type='submit'>Rechazar</button>
+                                                        <button class='btn btn-danger btn-sm round'
+                                                            type='submit'>Rechazar</button>
                                                     </form>
                                                 </td>
                                             </form>
