@@ -26,7 +26,7 @@ Route::get('/', function () {
     return view('welcome', ['noticias' => $noticias, 'juegos' => $juegos, 'desarrolladoras' => $desarrolladoras, 'masters' => $masters]);
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 /**
  * Admin Routes

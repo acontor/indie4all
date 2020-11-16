@@ -1,16 +1,19 @@
-@extends('layouts.base')
+@extends("layouts.usuario.base")
 
-@section('content')
+@section("content")
     <main class="py-4">
         <div class="container">
-            <h5>Usuarios Masters</h5>
-            @foreach ($masters as $master)
-                <hr>
-                <div class="row">
-                    <a
-                        href="{{ route('usuario.master.show', $master->id) }}">{{ $master->usuario->name }}</a>
-                </div>
-            @endforeach
+            <div class="box-header">
+                <h1>Masters ({{ $masters->count() }})</h1>
+            </div>
+            <div class="box">
+                @foreach ($masters as $master)
+                    <hr>
+                    <div class="row">
+                        <a href="{{ route("usuario.master.show", $master->id) }}">{{ $master->usuario->name }}</a>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </main>
 @endsection

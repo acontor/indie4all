@@ -1,16 +1,19 @@
-@extends('layouts.admin.base')
-@section('content')
+@extends("layouts.admin.base")
+@section("styles")
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+@endsection
+@section("content")
     <div class="container">
-        <div class='row'>
-            <div class='col-sm'>
+        <div class="row">
+            <div class="col-sm">
                 <div class="box-header">
                     <h1 class="d-inline-block">Desarrolladoras ({{ $desarrolladoras->count() }})</h1>
-                    @if ($solicitudes->count() > 0)
-                    <a href="{{ route('admin.solicitudes.index') }}" class='btn btn-success btn-sm float-right mt-2'>Solicitudes ({{ $solicitudes->count() }})</a>
+                    @if ($numSolicitudes > 0)
+                        <a href="{{ route('admin.solicitudes.index') }}" class="btn btn-success btn-sm float-right mt-2">Solicitudes ({{ $numSolicitudes }})</a>
                     @endif
                 </div>
                 <div class="table-responsive box">
-                    <table class='table table-striped'>
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <td>Nombre</td>
@@ -34,9 +37,17 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $desarrolladoras->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
+@endsection
+@section("scripts")
+    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("table").dataTable();
+        });
+
+    </script>
 @endsection

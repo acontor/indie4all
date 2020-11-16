@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace("_", "-", app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -8,10 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config("app.name", "Laravel") }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset("js/app.js") }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -20,24 +20,23 @@
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/usuario.css') }}" rel="stylesheet">
-    @yield('styles')
+    <link href="{{ asset("css/app.css") }}" rel="stylesheet">
+    <link href="{{ asset("css/admin.css") }}" rel="stylesheet">
+    @yield("styles")
 </head>
 
 <body>
     <div id="app">
-        @include('layouts.cm.nav')
+        @include("layouts.cm.nav")
 
-        @include('layouts.cm.sidebar')
+        @include("layouts.cm.sidebar")
 
         <main class="py-4">
-            @yield('content')
+            @yield("content")
         </main>
     </div>
 
-    @yield('scripts')
+    @yield("scripts")
 </body>
 
 </html>

@@ -1,28 +1,17 @@
-@extends('layouts.admin.base')
-@section('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+@extends("layouts.admin.base")
+@section("styles")
+    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
 @endsection
-@section('content')
+@section("content")
     <div class="container">
-        <div class='row'>
-            <div class='col-sm'>
+        <div class="row">
+            <div class="col-sm">
                 <div class="box-header">
-                    <h1 class='d-inline-block'>Géneros ({{ $generosAll->count() }})</h1>
-                    <a href="{{ route('admin.generos.create') }}" class='btn btn-success btn-sm round float-right mt-2'><i class="far fa-plus-square"></i></a>
+                    <h1 class="d-inline-block">Géneros ({{ $generos->count() }})</h1>
+                    <a href="{{ route('admin.generos.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i
+                            class="far fa-plus-square"></i></a>
                 </div>
-                <div class="d-none form-crear box">
-                    <form method='post' action="{{ route('admin.generos.store') }}">
-                        @csrf
-                        <div class='form-group'>
-                            <label for='nombre'>Nombre:</label>
-                            <input type='text' class='form-control' name='nombre' />
-                        </div>
-                        <button type='submit' class='btn btn-success mb-3'>Añadir</button>
-                    </form>
-                </div>
-
-
-
                 <div class="box mt-4">
                     <canvas id="myChart" width="400" height="100"></canvas>
                 </div>
@@ -44,16 +33,18 @@
                                     <td class="w-20 text-center">{{ $genero->juegos->count() }}</td>
                                     <td class="align-middle w-10 text-center">
                                         <div class="btn-group">
-                                            <form method='post' action="{{ route('admin.generos.edit', $genero->id) }}">
+                                            <form method="post" action="{{ route('admin.generos.edit', $genero->id) }}">
                                                 @csrf
-                                                <button class='btn btn-primary btn-sm round mr-1' type='submit'>
+                                                <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                                     <i class="far fa-edit"></i>
                                                 </button>
                                             </form>
-                                            <form action="{{ route('admin.generos.destroy', $genero->id) }}" method='post'>
+                                            <form action="{{ route('admin.generos.destroy', $genero->id) }}" method="post">
                                                 @csrf
-                                                @method('DELETE')
-                                                <button class='btn btn-danger btn-sm round ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
+                                                @method("DELETE")
+                                                <button class="btn btn-danger btn-sm round ml-1" type="submit">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
                                             </form>
                                         </div>
                                     </td>
@@ -61,70 +52,84 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $generos->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+@section("scripts")
+    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/chart.min.js') }}"></script>
     <script>
         $(function() {
+            $("table").dataTable();
 
-            var generos = {!! json_encode($generosAll->toArray()) !!};
-            var data = {!! json_encode($data) !!};
-
-            console.log(data)
-            var session_success = {!! json_encode(session()->get('success')) !!}
+            var generos = {!! json_encode($generos) !!};
+            var datos = {!! json_encode($datos) !!};
 
             var nombreGenero = [];
 
             generos.forEach(element => {
-                nombreGenero.push(element['nombre'])
+                nombreGenero.push(element["nombre"])
             });
 
-            graficaGeneros(nombreGenero, data);
+            graficaGeneros(nombreGenero, datos);
 
-            if(session_success != undefined) {
+            let sessionSuccess = {!! json_encode(session()->get("success")) !!}
+
+            if (sessionSuccess != undefined) {
+                notificacion(sessionSuccess)
+            }
+
+            $('.btn-danger').click(function(e) {
+                e.preventDefault();
+                let form = $(this).parents('form');
                 Swal.fire({
-                    position: 'top-end',
-                    title: session_success,
-                    timer: 3000,
-                    showConfirmButton: false,
+                    position: "center",
+                    title: "Cuidado",
+                    text: "¡Tendrás que volver a crear el género para recuperarlo!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar",
                     showClass: {
-                        popup: 'animate__animated animate__fadeInDown'
+                        popup: "animate__animated animate__fadeInDown"
                     },
                     hideClass: {
-                        popup: 'animate__animated animate__fadeOutUp'
+                        popup: "animate__animated animate__fadeOutUp"
                     },
-                    allowOutsideClick: false,
-                    backdrop: false,
-                    width: 'auto',
+                    closeOnConfirm: false,
+                }).then((resultado) => {
+                    if (resultado.isConfirmed) {
+                        form.submit();
+                    }
                 });
-            }
+            });
         });
 
-        function graficaGeneros(generos, data) {
+        function graficaGeneros(generos, datos) {
             var ctx = document.getElementById("myChart").getContext("2d");
 
-            var data = {
+            var datos = {
                 labels: generos,
                 datasets: [{
-                    label: "Juegos",
-                    backgroundColor: '#ff6384',
-                    data: data[0]
-                }, {
-                    label: "Seguidores",
-                    backgroundColor: "#A086BE",
-                    data: data[1]
-                }, ]
+                        label: "Juegos",
+                        backgroundColor: "#ff6384",
+                        data: datos[0]
+                    },
+                    {
+                        label: "Seguidores",
+                        backgroundColor: "#A086BE",
+                        data: datos[1]
+                    },
+                ],
             };
 
             var myBarChart = new Chart(ctx, {
-                type: 'bar',
-                data: data,
+                type: "bar",
+                data: datos,
                 options: {
                     barValueSpacing: 20,
                     scales: {
@@ -135,6 +140,24 @@
                         }]
                     }
                 }
+            });
+        }
+
+        function notificacion(sessionSuccess) {
+            Swal.fire({
+                position: "top-end",
+                title: sessionSuccess,
+                timer: 3000,
+                showConfirmButton: false,
+                showClass: {
+                    popup: "animate__animated animate__fadeInDown"
+                },
+                hideClass: {
+                    popup: "animate__animated animate__fadeOutUp"
+                },
+                allowOutsideClick: false,
+                backdrop: false,
+                width: "auto",
             });
         }
 

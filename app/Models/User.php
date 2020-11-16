@@ -102,7 +102,7 @@ class User extends Authenticatable
     // Usuario - 1:N - Masters
     public function master()
     {
-        return $this->belongsTo("App\Models\Master", 'id', 'user_id');
+        return $this->belongsTo("App\Models\Master", 'user_id', 'id');
     }
 
     // Usuario - 1:N - Masters

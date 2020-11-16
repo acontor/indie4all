@@ -1,18 +1,18 @@
-@extends('layouts.admin.base')
-@section('content')
+@extends("layouts.admin.base")
+@section("content")
     <div class="container">
-        <div class='row'>
-            <div class='col-sm'>
+        <div class="row">
+            <div class="col-sm">
                 @if(isset($post))
                     <div class="box-header">
-                        <h1 class='display-5'>Editar noticia</h1>
+                        <h1>Editar noticia</h1>
                     </div>
                     <div class="box">
                         <form action="{{ route('admin.noticias.update', $post->id) }}" method='post' enctype="multipart/form-data">
-                        @method('PATCH')
+                        @method("PATCH")
                     @else
                         <div class="box-header">
-                            <h1 class='display-5'>Nueva noticia</h1>
+                            <h1>Nueva noticia</h1>
                         </div>
                         <div class="box">
                             <form action="{{ route('admin.noticias.create') }}" method='post' enctype="multipart/form-data">
@@ -30,19 +30,19 @@
                                 @endif
                             </textarea>
                         </div>
-                        <button type="submit" class='btn btn-success'>@if(isset($post)) Editar @else Crear @endif</button>
+                        <button type="submit" class="btn btn-success">@if(isset($post)) Editar @else Crear @endif</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-@section('scripts')
+@section("scripts")
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('contenido', {
+        CKEDITOR.replace("contenido", {
             filebrowserUploadUrl: "{{ route('admin.noticias.upload', ['_token' => csrf_token()]) }}",
-            filebrowserUploadMethod: 'form'
+            filebrowserUploadMethod: "form"
         });
     </script>
 @endsection

@@ -1,11 +1,15 @@
-@extends('layouts.admin.base')
-@section('content')
+@extends("layouts.admin.base")
+@section("styles")
+    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+@endsection
+@section("content")
     <div class="container">
-        <div class='row'>
-            <div class='col-sm'>
+        <div class="row">
+            <div class="col-sm">
                 <div class="box-header">
-                    <h1 class="d-inline-block">Usuarios ({{ \App\Models\User::all()->count() }})</h1>
-                    <a href="{{ route('admin.usuarios.create') }}" class='btn btn-success btn-sm round float-right mt-2'><i class="far fa-plus-square"></i></a>
+                    <h1 class="d-inline-block">Usuarios ({{ $usuarios->count() }})</h1>
+                    <a href="{{ route('admin.usuarios.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                 </div>
                 <div class="box mt-4">
                     <canvas id="myChart" width="400" height="100"></canvas>
@@ -41,17 +45,16 @@
                                         </td>
                                         <td class="align-middle w-10 text-center">
                                             <div class="btn-group">
-                                                <form method='post' action="{{ route('admin.usuarios.edit', $usuario->id) }}">
+                                                <form method="post" action="{{ route('admin.usuarios.edit', $usuario->id) }}">
                                                     @csrf
-                                                    <button class='btn btn-primary btn-sm round mr-1' type='submit'>
+                                                    <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                                         <i class="far fa-edit"></i>
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}"
-                                                    method='post'>
+                                                <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}" method="post">
                                                     @csrf
-                                                    @method('DELETE')
-                                                    <button class='btn btn-danger btn-sm round ml-1' type='submit'><i class="far fa-trash-alt"></i></button>
+                                                    @method("DELETE")
+                                                    <button class="btn btn-danger btn-sm round ml-1" type="submit"><i class="far fa-trash-alt"></i></button>
                                                 </form>
                                             </div>
                                         </td>
@@ -65,66 +68,40 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="{{ asset('js/select2.min.js') }}" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" defer></script>
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/af-2.3.5/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rg-1.1.2/rr-1.2.7/sc-2.0.3/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.css"/>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/af-2.3.5/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rg-1.1.2/rr-1.2.7/sc-2.0.3/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.js"></script>
-
-
-
-    <script type="text/javascript">
+@section("scripts")
+    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/chart.min.js') }}"></script>
+    <script>
         $(function() {
 
-            $('#tabla').dataTable();
+            $("table").dataTable();
 
-            var masters = {!! $num_masters !!};
-            var cms = {!! $num_cms !!};
-            var fans = {!! $num_fans !!};
+            let masters = {!! $numMasters !!};
+            let cms = {!! $numCms !!};
+            let usuarios = {!! $usuarios->count() !!};
 
-            graficaUsuarios(masters, fans, cms);
+            graficaUsuarios(masters, cms, usuarios);
 
-            $('#busqueda').select2({
-                placeholder: 'Seleccionar usuario',
-                ajax: {
-                    url: '/autocomplete-user-search',
-                    dataType: 'json',
-                    delay: 250,
-                    processResults: function (data) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
-                                    id: item.id
-                                }
-                            })
-                        };
-                    },
-                    cache: true
-                }
-            });
+            let sessionSuccess = {!! json_encode(session()->get("success")) !!}
 
+            if (sessionSuccess != undefined) {
+                notificacion(sessionSuccess)
+            }
         });
 
-        function graficaUsuarios(masters, fans, cms) {
+        function graficaUsuarios(masters, cms, usuarios) {
             var ctx = document.getElementById("myChart").getContext("2d");
             var data = {
                 datasets: [{
-                    backgroundColor: ['#ff6384', '#A086BE', '#333333'],
-                    data: [masters, fans, cms]
+                    backgroundColor: ["#ff6384", "#A086BE", "#333333"],
+                    data: [masters, usuarios, cms]
                 }],
-
-                // These labels appear in the legend and in the tooltips when hovering different arcs
-                labels: ['Masters', 'Fans', 'Cms']
+                labels: ["Masters", "Fans", "Cms"]
             };
             var myBarChart = new Chart(ctx, {
-                type: 'doughnut',
+                type: "doughnut",
                 data: data,
-                options: {}
             });
         }
 

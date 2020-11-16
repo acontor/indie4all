@@ -1,11 +1,11 @@
-@extends('layouts.admin.base')
-@section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+@extends("layouts.admin.base")
+@section("styles")
+    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
 @endsection
-@section('content')
+@section("content")
     <div class="container">
-        <div class='row'>
-            <div class='col-sm-12'>
+        <div class="row">
+            <div class="col-sm-12">
                 <div class="box-header">
                     <h1>Vista general</h1>
                 </div>
@@ -35,7 +35,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Usuarios <i class="fas fa-link"></i></h5>
                                         <h6 class="card-subtitle mb-2">Número de usuarios totales.</h6>
-                                        <p class="card-text text-center">{{ $num_usuarios }}</p>
+                                        <p class="card-text text-center">{{ $numUsuarios }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -46,7 +46,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Desarrolladoras <i class="fas fa-link"></i></h5>
                                         <h6 class="card-subtitle mb-2">Número de desarrolladoras totales.</h6>
-                                        <p class="card-text text-center">{{ $num_desarrolladoras }}</p>
+                                        <p class="card-text text-center">{{ $numDesarrolladoras }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -57,7 +57,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Juegos <i class="fas fa-link"></i></h5>
                                         <h6 class="card-subtitle mb-2">Número de juegos totales.</h6>
-                                        <p class="card-text text-center">{{ $num_juegos }}</p>
+                                        <p class="card-text text-center">{{ $numJuegos }}</p>
                                     </div>
                                 </div>
                             </a>
@@ -68,100 +68,110 @@
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+@section("scripts")
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/chart.min.js') }}"></script>
     <script>
         $(function() {
 
-            var solicitudes = {!! json_encode($num_solicitudes) !!};
+            let numSolicitudes = {!! json_encode($numSolicitudes) !!};
 
-            if (solicitudes > 0) {
-                Swal.fire({
-                    position: 'top-end',
-                    title: `Tienes ${solicitudes} solicitudes`,
-                    timer: 3000,
-                    showConfirmButton: false,
-                    showClass: {
-                        popup: 'animate__animated animate__fadeInDown'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__fadeOutUp'
-                    },
-                    allowOutsideClick: false,
-                    backdrop: false,
-                    width: 'auto',
-                });
+            if (numSolicitudes > 0) {
+                notificaciones(numSolicitudes);
             }
 
-            let current_hour = new Date().getHours();
+            let diaActual = new Date();
 
-            let hours = []
+            let dias = []
 
             for (let index = 4; index >= 0; index--) {
-                hours.push(`${current_hour - index}:00`)
+                diaActual.setDate(diaActual.getDate() - index);
+                dias.push(diaActual.getDate())
+                diaActual.setDate(diaActual.getDate() + index);
             }
 
-            let current_day = new Date();
-
-            let days = []
-
-            for (let index = 4; index >= 0; index--) {
-                current_day.setDate(current_day.getDate() - index);
-                days.push(current_day.getDate())
-                current_day.setDate(current_day.getDate() + index);
-            }
-
-
-
-
-            var ctx = document.getElementById('active-users').getContext('2d');
-
-            var myLineChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: hours,
-                    datasets: [{
-                        label: 'Usuarios activos',
-                        data: [12, 19, 3, 5, 2],
-                        borderColor: '#ff6384',
-                        backgroundColor: 'transparent',
-                        borderWidth: 1
-                    }]
-                },
-            });
-
-            var ctx2 = document.getElementById('posts').getContext('2d');
-
-            var myLineChart = new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: days,
-                    datasets: [{
-                        label: 'Posts',
-                        data: [12, 19, 3, 5, 2],
-                        backgroundColor: '#ff6384',
-                        borderWidth: 1
-                    }]
-                },
-            });
-
-            var ctx3 = document.getElementById('mensajes').getContext('2d');
-
-            var myLineChart = new Chart(ctx3, {
-                type: 'bar',
-                data: {
-                    labels: days,
-                    datasets: [{
-                        label: 'Mensajes',
-                        data: [12, 19, 3, 5, 2],
-                        backgroundColor: '#ff6384',
-                        borderWidth: 1
-                    }]
-                },
-            });
-
+            graficaUsuarios();
+            graficaPosts(dias);
+            graficaMensajes(dias);
         });
+
+        function graficaUsuarios() {
+            let ctx = document.getElementById("active-users").getContext("2d");
+
+            let horaActual = new Date().getHours();
+
+            let horas = []
+
+            for (let index = 4; index >= 0; index--) {
+                horas.push(`${horaActual - index}:00`)
+            }
+
+            let myLineChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: horas,
+                    datasets: [{
+                        label: "Usuarios activos",
+                        data: [12, 19, 3, 5, 2],
+                        borderColor: "#ff6384",
+                        backgroundColor: "transparent",
+                        borderWidth: 1
+                    }]
+                },
+            });
+        }
+
+        function graficaPosts(dias) {
+            let ctx = document.getElementById("posts").getContext("2d");
+
+            let myLineChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: dias,
+                    datasets: [{
+                        label: "Posts",
+                        data: [12, 19, 3, 5, 2],
+                        backgroundColor: "#ff6384",
+                        borderWidth: 1
+                    }]
+                },
+            });
+        }
+
+        function graficaMensajes(dias) {
+            let ctx = document.getElementById("mensajes").getContext("2d");
+
+            let myLineChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: dias,
+                    datasets: [{
+                        label: "Mensajes",
+                        data: [12, 19, 3, 5, 2],
+                        backgroundColor: "#ff6384",
+                        borderWidth: 1
+                    }]
+                },
+            });
+        }
+
+        function notificaciones(numSolicitudes) {
+            Swal.fire({
+                position: "top-end",
+                title: `Tienes ${numSolicitudes} solicitudes`,
+                timer: 3000,
+                showConfirmButton: false,
+                showClass: {
+                    popup: "animate__animated animate__fadeInDown"
+                },
+                hideClass: {
+                    popup: "animate__animated animate__fadeOutUp"
+                },
+                allowOutsideClick: false,
+                backdrop: false,
+                width: "auto",
+            });
+        }
 
     </script>
 @endsection

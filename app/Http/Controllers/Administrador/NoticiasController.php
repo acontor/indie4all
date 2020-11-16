@@ -26,8 +26,8 @@ class NoticiasController extends Controller
      */
     public function index()
     {
-        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null]])->paginate(4);
-        return view('admin.noticias', compact('noticias'));
+        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null]]);
+        return view('admin.noticias', ['noticias' => $noticias]);
     }
 
     public function create()
@@ -96,7 +96,7 @@ class NoticiasController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
-        return view('admin.noticias_editor', compact('post'));
+        return view('admin.noticias_editor', ['post' => $post]);
     }
 
     /**

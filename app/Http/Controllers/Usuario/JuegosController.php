@@ -18,7 +18,7 @@ class JuegosController extends Controller
     public function index()
     {
         $juegos = Juego::all();
-        return view('usuario.juegos', compact('juegos'));
+        return view('usuario.juegos', ['juegos' => $juegos]);
     }
 
     /**
@@ -31,7 +31,7 @@ class JuegosController extends Controller
     {
         $usuario = User::find(Auth::id())->juegos()->where('juego_id', '=', $id)->first();
         $juego = Juego::find($id);
-        return view('usuario.juego', compact('juego', 'usuario'));
+        return view('usuario.juego', ['juego' => $juego, 'usuario' => $usuario]);
     }
 
     public function follow($id)

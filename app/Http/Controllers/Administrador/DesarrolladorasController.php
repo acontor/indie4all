@@ -26,8 +26,8 @@ class DesarrolladorasController extends Controller
      */
     public function index()
     {
-        $desarrolladoras = Desarrolladora::paginate(10);
-        $solicitudes = Solicitud::where('tipo', 'Desarrolladora')->paginate(4);
-        return view('admin.desarrolladoras', compact('desarrolladoras', 'solicitudes'));
+        $desarrolladoras = Desarrolladora::all();
+        $numSolicitudes = Solicitud::where('tipo', 'Desarrolladora')->count();
+        return view('admin.desarrolladoras', ['desarrolladoras' => $desarrolladoras, 'numSolicitudes' => $numSolicitudes]);
     }
 }

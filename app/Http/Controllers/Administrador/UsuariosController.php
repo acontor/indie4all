@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Administrador;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Master;
-use App\Models\Fan;
 use App\Models\Cm;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -31,10 +30,9 @@ class UsuariosController extends Controller
     public function index()
     {
         $usuarios = User::all();
-        $num_masters = Master::all()->count();
-        $num_fans = Fan::all()->count();
-        $num_cms = CM::all()->count();
-        return view('admin.usuarios', ['usuarios' => $usuarios, 'num_masters' => $num_masters, 'num_fans' => $num_fans, 'num_cms' => $num_cms]);
+        $numMasters = Master::all()->count();
+        $numCms = CM::all()->count();
+        return view('admin.usuarios', ['usuarios' => $usuarios, 'numMasters' => $numMasters, 'numCms' => $numCms]);
     }
 
     public function create()
@@ -104,19 +102,4 @@ class UsuariosController extends Controller
         User::find($id)->delete();
         return redirect('/admin/usuarios')->with('success', '¡Usuario borrado!');
     }
-
-    /*
-    public function selectSearch(Request $request)
-    {
-        $usuarios = [];
-
-        if ($request->has('q')) {
-            $search = $request->q;
-            $usuarios = User::select("id", "name")
-                ->where('name', 'LIKE', "%$search%")
-                ->get();
-        }
-        return response()->json($usuarios);
-    }
-    */
 }

@@ -1,8 +1,8 @@
-@extends('layouts.cm.base')
-@section('content')
+@extends("layouts.cm.base")
+@section("content")
     <div class="container">
-        <div class='row'>
-            <div class='col-sm'>
+        <div class="row">
+            <div class="col-sm">
                 <div class="box-header">
                     <h1 class="d-inline-block">Desarrolladora {{ $desarrolladora->nombre }}</h1>
                 </div>
@@ -70,33 +70,29 @@
                         </div>
                     </div>
                     <div class="col-sm-5 offset-sm-1 mt-4">
-                        <form method='post' action="{{ route('usuario.desarrolladora.store') }}">
+                        <form method="post" action="{{ route('usuario.desarrolladora.store') }}">
                             @csrf
-                            <div class='form-group'>
-                                <label for='nombre'>Nombre:</label>
-                                <input type='text' class='form-control name' name='nombre'
-                                    value="{{ $desarrolladora->nombre }}" />
+                            <div class="form-group">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" class="form-control name" name="nombre" value="{{ $desarrolladora->nombre }}" />
                             </div>
-                            <div class='form-group'>
-                                <label for='email'>Email:</label>
-                                <input type='email' class='form-control email' name='email'
-                                    value="{{ $desarrolladora->email }}" />
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control email" name="email" value="{{ $desarrolladora->email }}" />
                             </div>
-                            <div class='form-group'>
-                                <label for='direccion'>Dirección:</label>
-                                <input type='text' class='form-control direccion' name='direccion'
-                                    value="{{ $desarrolladora->direccion }}" />
+                            <div class="form-group">
+                                <label for="direccion">Dirección:</label>
+                                <input type="text" class="form-control direccion" name="direccion" value="{{ $desarrolladora->direccion }}" />
                             </div>
-                            <div class='form-group'>
-                                <label for='telefono'>Teléfono:</label>
-                                <input type='text' class='form-control telefono' name='telefono'
-                                    value="{{ $desarrolladora->telefono }}" />
+                            <div class="form-group">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="text" class="form-control telefono" name="telefono" value="{{ $desarrolladora->telefono }}" />
                             </div>
-                            <div class='form-group'>
-                                <label for='url'>Url:</label>
-                                <input type='text' class='form-control url' name='url' value="{{ $desarrolladora->url }}" />
+                            <div class="form-group">
+                                <label for="url">Url:</label>
+                                <input type="text" class="form-control url" name="url" value="{{ $desarrolladora->url }}" />
                             </div>
-                            <button type='submit' class='btn btn-success mb-3'>Editar</button>
+                            <button type="submit" class="btn btn-success mb-3">Editar</button>
                         </form>
                     </div>
                 </div>
@@ -104,34 +100,34 @@
         </div>
     </div>
 @endsection
-@section('scripts')
+@section("scripts")
     <script>
         $(function() {
             $(".name").keyup(function() {
-                $('.desarrolladora_nombre').text($(this).val());
+                $(".desarrolladora_nombre").text($(this).val());
             });
 
             $(".email").keyup(function() {
-                $('.desarrolladora_email').text($(this).val());
+                $(".desarrolladora_email").text($(this).val());
             });
 
             $(".direccion").keyup(function() {
-                $('.desarrolladora_direccion').text($(this).val());
+                $(".desarrolladora_direccion").text($(this).val());
             });
 
             $(".url").keyup(function() {
-                $('.desarrolladora_url').text($(this).val());
+                $(".desarrolladora_url").text($(this).val());
             });
 
             $(".telefono").keyup(function() {
-                $('.desarrolladora_telefono').text($(this).val());
+                $(".desarrolladora_telefono").text($(this).val());
             });
 
-            $(".menu").children('div').children('a').click(function(e) {
+            $(".menu").children("div").children("a").click(function(e) {
                 e.preventDefault();
-                let item = $(this).attr('id');
-                $("#contenido").children('div').addClass('d-none');
-                $(`.${item}`).removeClass('d-none');
+                let item = $(this).attr("id");
+                $("#contenido").children("div").addClass("d-none");
+                $(`.${item}`).removeClass("d-none");
             });
         });
 

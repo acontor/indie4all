@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Desarrolladora;
 use App\Models\Cm;
 use App\Models\Solicitud;
-use Illuminate\Http\Request;
 
 class SolicitudesController extends Controller
 {
@@ -28,9 +27,9 @@ class SolicitudesController extends Controller
      */
     public function index()
     {
-        $desarrolladoras = Solicitud::where('tipo', 'Desarrolladora')->paginate(4);
-        $masters = Solicitud::where('tipo', 'Master')->paginate(4);
-        return view('admin.solicitudes', compact('desarrolladoras', 'masters'));
+        $desarrolladoras = Solicitud::where('tipo', 'Desarrolladora')->all();
+        $masters = Solicitud::where('tipo', 'Master')->all();
+        return view('admin.solicitudes', ['desarrolladoras' => $desarrolladoras, 'masters' => $masters]);
     }
 
     /**
@@ -41,7 +40,7 @@ class SolicitudesController extends Controller
      * @param  int  $cm
      * @return \Illuminate\Http\Response
      */
-    public function aceptarDesarrolladora(Request $request, $id)
+    public function aceptarDesarrolladora($id)
     {
         $solicitud = Solicitud::find($id);
 

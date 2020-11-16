@@ -28,9 +28,9 @@ class LogrosController extends Controller
      */
     public function index()
     {
-        $logros = Logro::paginate(10);
-        $num_usuarios = User::all()->count();
-        return view('admin.logros', ['logros' => $logros, 'num_usuarios' => $num_usuarios]);
+        $logros = Logro::all();
+        $numUsuarios = User::all()->count();
+        return view('admin.logros', ['logros' => $logros, 'numUsuarios' => $numUsuarios]);
     }
 
     public function create()

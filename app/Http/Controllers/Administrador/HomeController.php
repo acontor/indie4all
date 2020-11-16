@@ -28,10 +28,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $num_usuarios = User::count();
-        $num_juegos = Juego::count();
-        $num_desarrolladoras = Desarrolladora::count();
-        $num_solicitudes = Solicitud::count();
-        return view('admin.home', compact('num_usuarios', 'num_juegos', 'num_desarrolladoras', 'num_solicitudes'));
+        $numUsuarios = User::count();
+        $numJuegos = Juego::count();
+        $numDesarrolladoras = Desarrolladora::count();
+        $numSolicitudes = Solicitud::count();
+        return view('admin.home', ['numUsuarios' => $numUsuarios, 'numJuegos' => $numJuegos, 'numDesarrolladoras' => $numDesarrolladoras, 'numSolicitudes' => $numSolicitudes]);
     }
 }

@@ -26,16 +26,15 @@ class GenerosController extends Controller
      */
     public function index()
     {
-        $generos = Genero::paginate(4);
-        $generosAll = Genero::all();
+        $generos = Genero::all();
         $numJuegos = [];
         $numSeguidores = [];
-        foreach ($generosAll as $genero) {
+        foreach ($generos as $genero) {
             array_push($numJuegos,  $genero->juegos->count());
             array_push($numSeguidores,  $genero->usuarios->count());
         }
-        $data = [$numJuegos, $numSeguidores];
-        return view('admin.generos', ['generos' => $generos, 'generosAll' => $generosAll, 'data' => $data]);
+        $datos = [$numJuegos, $numSeguidores];
+        return view('admin.generos', ['generos' => $generos, 'datos' => $datos]);
     }
 
     public function create()

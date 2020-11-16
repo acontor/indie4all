@@ -1,11 +1,11 @@
-@extends('layouts.base')
+@extends("layouts.usuario.base")
 
-@section('content')
+@section("content")
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Dashboard') }}</div>
+                    <div class="card-header">{{ __("Dashboard") }}</div>
                     <div class="card-body">
                         <h3>Noticias</h3>
                         @foreach ($noticias as $noticia)
@@ -25,7 +25,7 @@
                         <ul>
                             @foreach ($juegos as $juego)
                                 <li>{{ $juego->nombre }} - Punt.
-                                    {{ $juego->usuarios->sum('pivot.calificacion') / $juego->usuarios->count() }}
+                                    {{ $juego->usuarios->sum("pivot.calificacion") / $juego->usuarios->count() }}
                                 </li>
                             @endforeach
                         </ul>

@@ -1,16 +1,19 @@
-@extends('layouts.base')
+@extends("layouts.usuario.base")
 
-@section('content')
+@section("content")
     <main class="py-4">
         <div class="container">
-            <h5>Juegos</h5>
-            @foreach ($juegos as $juego)
-                <hr>
-                <div class="row">
-                    <a
-                        href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a>
-                </div>
-            @endforeach
+            <div class="box-header">
+                <h1>Juegos ({{ $juegos->count() }})</h1>
+            </div>
+            <div class="box">
+                @foreach ($juegos as $juego)
+                    <hr>
+                    <div class="row">
+                        <a href="{{ route("usuario.juego.show", $juego->id) }}">{{ $juego->nombre }}</a>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </main>
 @endsection

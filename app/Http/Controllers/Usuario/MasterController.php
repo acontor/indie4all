@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Usuario;
 use App\Http\Controllers\Controller;
 use App\Models\Master;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MasterController extends Controller
@@ -19,7 +18,7 @@ class MasterController extends Controller
     {
         $masters = Master::all();
 
-        return view('usuario.masters', compact('masters'));
+        return view('usuario.masters', ['masters' => $masters]);
     }
 
     /**
@@ -32,7 +31,7 @@ class MasterController extends Controller
     {
         $usuario = User::find(Auth::id())->masters()->where('master_id', '=', $id)->first();
         $master = Master::find($id);
-        return view('usuario.master', compact('master', 'usuario'));
+        return view('usuario.master', ['master' => $master, 'usuario' => $usuario]);
     }
 
     public function follow($id)

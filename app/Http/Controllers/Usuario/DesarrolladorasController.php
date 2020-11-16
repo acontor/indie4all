@@ -19,7 +19,7 @@ class DesarrolladorasController extends Controller
     public function index()
     {
         $desarrolladoras = Desarrolladora::all();
-        return view('usuario.desarrolladoras', compact('desarrolladoras'));
+        return view('usuario.desarrolladoras', ['desarrolladoras' => $desarrolladoras]);
     }
 
     /**
@@ -71,7 +71,7 @@ class DesarrolladorasController extends Controller
     {
         $usuario = User::find(Auth::id())->desarrolladoras()->where('desarrolladora_id','=', $id)->first();
         $desarrolladora = Desarrolladora::find($id);
-        return view('usuario.desarrolladora', compact('desarrolladora', 'usuario'));
+        return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora, 'usuario' => $usuario]);
     }
 
     public function follow($id)

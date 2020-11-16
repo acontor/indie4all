@@ -1,8 +1,11 @@
-@extends('layouts.admin.base')
-@section('content')
+@extends("layouts.admin.base")
+@section("styles")
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+@endsection
+@section("content")
     <div class="container">
-        <div class='row'>
-            <div class='col-sm'>
+        <div class="row">
+            <div class="col-sm">
                 <div class="box-header">
                     <h1>Juegos ({{ $juegos->count() }})</h1>
                 </div>
@@ -33,9 +36,17 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $juegos->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
+@endsection
+@section("scripts")
+    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("table").dataTable();
+        });
+
+    </script>
 @endsection
