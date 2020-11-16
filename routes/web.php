@@ -28,8 +28,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home');
-
 /**
  * Admin Routes
  */
@@ -106,7 +104,7 @@ Route::delete('/cm/juegos/{id}/delete', [App\Http\Controllers\Cm\JuegosControlle
 
 // Campañas
 Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
-Route::get('/cm/juego/{id}/campania/nuevo', [App\Http\Controllers\Cm\CampaniasController::class, 'create'])->name('cm.campanias.create');
+Route::post('/cm/campanias/juego/{id}/nuevo', [App\Http\Controllers\Cm\CampaniasController::class, 'create'])->name('cm.campanias.create');
 Route::post('/cm/campanias/store/{id}', [App\Http\Controllers\Cm\CampaniasController::class, 'store'])->name('cm.campanias.store');
 Route::get('/cm/campanias/{idCampania}/{idJuego}/edit', [App\Http\Controllers\Cm\CampaniasController::class, 'edit'])->name('cm.campanias.edit');
 Route::patch('/cm/campanias/{id}/update', [App\Http\Controllers\Cm\CampaniasController::class, 'update'])->name('cm.campanias.update');
@@ -124,6 +122,11 @@ Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'in
 /**
  * User Routes
  */
+
+// Inicio
+
+Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home');
+Route::get('/busqueda', [App\Http\Controllers\Usuario\HomeController::class, 'busqueda'])->name('usuario.busqueda');
 
 // Mi cuenta
 Route::get('/cuenta', [App\Http\Controllers\Usuario\CuentaController::class, 'index'])->name('usuario.cuenta.index');

@@ -14,12 +14,11 @@
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.desarrolladoras.index') }}">{{ __('Desarrolladoras') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.juegos.index') }}">{{ __('Juegos') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('usuario.masters.index') }}">{{ __('Masters') }}</a></li>
-            @if(App\Models\Cm::where('user_id', Auth::id())->count() == 1)
-            <li class="nav-item"><a class="nav-link" href="{{ route('usuario.desarrolladora.show', App\Models\Cm::where('user_id', Auth::id())->first()->desarrolladora_id) }}">Mi desarrolladora</a></li>
-            @endif
             @endauth
         </ul>
-
+        <ul class="navbar-nav mx-auto">
+            <select class="form-control select2" name="busqueda" id="busqueda"></select>
+        </ul>
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto">
             <!-- Authentication Links -->
