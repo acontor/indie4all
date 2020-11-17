@@ -22,21 +22,21 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
-    @yield('styles')
+    @yield("styles")
 </head>
 
 <body>
     <div id="app">
-        @include('layouts.admin.nav')
+        @include("layouts.admin.nav")
 
-        @include('layouts.admin.sidebar')
+        @include("layouts.admin.sidebar")
 
         <main class="py-4">
-            @yield('content')
+            @yield("content")
         </main>
     </div>
 
-    @yield('scripts')
+    @yield("scripts")
 </body>
 
 </html>

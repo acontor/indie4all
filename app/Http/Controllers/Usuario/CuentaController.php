@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genero;
+use App\Models\Logro;
 use App\Models\User;
 
 class CuentaController extends Controller
@@ -25,6 +27,8 @@ class CuentaController extends Controller
     public function index()
     {
         $usuario = User::find(Auth()->id());
-        return view('usuario.cuenta', ['usuario' => $usuario]);
+        $logros = Logro::all();
+        $generos = Genero::all();
+        return view('usuario.cuenta', ['usuario' => $usuario, 'logros' => $logros, 'generos' => $generos]);
     }
 }

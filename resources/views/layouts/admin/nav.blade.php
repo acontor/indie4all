@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand navbar-dark">
     <div class="container">
-
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto align-items-center">
             <!-- Según las solicitudes que tenga el usuario -->

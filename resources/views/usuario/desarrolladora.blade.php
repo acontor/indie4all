@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12 p-0">
             <header>
-                <img class="img-fluid h-auto" src="{{ asset("/images/default.png") }}">
+                <img class="img-fluid h-auto" src="{{ asset('/images/default.png') }}">
                 <div>
                     <h1 class="font-weight-light">{{ $desarrolladora->nombre }}</h1>
                     <ul class="lead">
@@ -13,24 +13,24 @@
                         <li>
                             <div class="btn-group mt-3">
                                 @if ($usuario == null)
-                                    <form action="{{ route("usuario.desarrolladora.follow", $desarrolladora->id) }}" method="post">
+                                    <form action="{{ route('usuario.desarrolladora.follow', $desarrolladora->id) }}" method="post">
                                         @csrf
                                         <button type="submit" class="btn text-primary"><i class="far fa-check-circle"></i></button>
                                     </form>
                                 @else
-                                    <form action="{{ route("usuario.desarrolladora.unfollow", $desarrolladora->id) }}"
+                                    <form action="{{ route('usuario.desarrolladora.unfollow', $desarrolladora->id) }}"
                                         method="post">
                                         @csrf
                                         <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
                                     </form>
                                     @if ($usuario->pivot->notificacion == 0)
-                                        <form action="{{ route("usuario.desarrolladora.notificacion", [$desarrolladora->id, 1]) }}"
+                                        <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 1]) }}"
                                             method="post">
                                             @csrf
                                             <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
                                         </form>
                                     @else
-                                        <form action="{{ route("usuario.desarrolladora.notificacion", [$desarrolladora->id, 0]) }}"
+                                        <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 0]) }}"
                                             method="post">
                                             @csrf
                                             <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
@@ -104,21 +104,22 @@
             <hr>
             <ul>
                 @foreach ($desarrolladora->juegos as $juego)
-                    <li><a href="{{ route("usuario.juego.show", $juego->id) }}">{{ $juego->nombre }}</a></li>
+                    <li><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></li>
                 @endforeach
             </ul>
         </div>
     </div>
 @endsection
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(function() {
-        $(".menu").children("div").children("a").click(function(e) {
-            e.preventDefault();
-            let item = $(this).attr("id");
-            $("#contenido").children("div").addClass("d-none");
-            $(`.${item}`).removeClass("d-none");
+@section("scripts")
+    <script>
+        $(function() {
+            $(".menu").children("div").children("a").click(function(e) {
+                e.preventDefault();
+                let item = $(this).attr("id");
+                $("#contenido").children("div").addClass("d-none");
+                $(`.${item}`).removeClass("d-none");
+            });
         });
-    });
 
-</script>
+    </script>
+@endsection

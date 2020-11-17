@@ -16,13 +16,18 @@ class DesarrolladorasSeeder extends Seeder
      */
     public function run()
     {
-/*         DB::table('desarrolladoras')->insert([
+        DB::table('desarrolladoras')->insert([
             'nombre' => '2D Trassierra',
             'email' => '2dtrassierra@mail.com',
             'direccion' => 'Avenida Arroyo del Moro, s/n, 14011 Córdoba',
             'telefono' => '957 73 49 00',
             'url' => 'www.iestrassierra.com',
             'imagen_logo' => '/trasierra.png'
+        ]);
+        DB::table('cms')->insert([
+            'rol' => 'Jefe',
+            'desarrolladora_id' => 1,
+            'user_id' => 1,
         ]);
         DB::table('desarrolladoras')->insert([
             'nombre' => 'Turismo Studios',
@@ -31,6 +36,11 @@ class DesarrolladorasSeeder extends Seeder
             'telefono' => '911 11 11 11',
             'url' => 'www.turismostudios.com',
             'imagen_logo' => '/turismostudios.png'
-        ]); */
+        ]);
+        DB::table('cms')->insert([
+            'rol' => 'Jefe',
+            'desarrolladora_id' => 2,
+            'user_id' => 6,
+        ]);
     }
 }

@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand navbar-dark">
     <div class="container">
-
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto align-items-center">
             <li class="nav-item dropdown">
@@ -11,15 +10,15 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ route("home") }}">
+                    <a class="dropdown-item" href="{{ route('home') }}">
                         Página de inicio
                     </a>
-                    <a class="dropdown-item" href="{{ route("logout") }}"
+                    <a class="dropdown-item" href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Cerrar sesión
                     </a>
 
-                    <form id="logout-form" action="{{ route("logout") }}" method="POST" class="d-none">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
                 </div>

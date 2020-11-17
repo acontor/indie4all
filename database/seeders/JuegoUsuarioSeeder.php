@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class JuegoUsuario extends Seeder
+class JuegoUsuarioSeeder extends Seeder
 {
     /**
      * Run the database seeds.

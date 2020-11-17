@@ -10,7 +10,7 @@
                 @foreach ($masters as $master)
                     <hr>
                     <div class="row">
-                        <a href="{{ route("usuario.master.show", $master->id) }}">{{ $master->usuario->name }}</a>
+                        <a href="{{ route('usuario.master.show', $master->id) }}">{{ $master->usuario->name }}</a>
                     </div>
                 @endforeach
             </div>

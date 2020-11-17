@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12">
             <header>
-                <img class="img-fluid h-auto" src="{{ asset("/images/default.png") }}">
+                <img class="img-fluid h-auto" src="{{ asset('/images/default.png') }}">
                 <div>
                     <h1 class="font-weight-light">{{ $master->usuario->name }}</h1>
                     <ul class="lead">
@@ -14,22 +14,22 @@
                         <li>
                             <div class="btn-group mt-3">
                                 @if ($usuario == null)
-                                    <form method="post" action="{{ route("usuario.master.follow", $master->id) }}">
+                                    <form method="post" action="{{ route('usuario.master.follow', $master->id) }}">
                                         @csrf
                                         <button type="submit" class="btn text-primary"><i class="far fa-check-circle"></i></button>
                                     </form>
                                 @else
-                                    <form method="post" action="{{ route("usuario.master.unfollow", $master->id) }}">
+                                    <form method="post" action="{{ route('usuario.master.unfollow', $master->id) }}">
                                         @csrf
                                         <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
                                     </form>
                                     @if ($usuario->pivot->notificacion == 0)
-                                        <form method="post" action="{{ route("usuario.master.notificacion", [$master->id, 1]) }}">
+                                        <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 1]) }}">
                                             @csrf
                                             <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></i></button>
                                         </form>
                                     @else
-                                        <form method="post" action="{{ route("usuario.master.notificacion", [$master->id, 0]) }}">
+                                        <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 0]) }}">
                                             @csrf
                                             <button type="submit" class=" btn text-danger"><i class="far fa-bell-slash"></i></button>
                                         </form>
@@ -82,8 +82,7 @@
         </div>
     </div>
 @endsection
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+@section("scripts")
 <script>
     $(function() {
         $(".menu").children("div").children("a").click(function(e) {
@@ -95,3 +94,4 @@
     });
 
 </script>
+@endsection

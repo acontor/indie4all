@@ -10,7 +10,7 @@
                 @foreach ($juegos as $juego)
                     <hr>
                     <div class="row">
-                        <a href="{{ route("usuario.juego.show", $juego->id) }}">{{ $juego->nombre }}</a>
+                        <a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a>
                     </div>
                 @endforeach
             </div>

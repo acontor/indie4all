@@ -3,7 +3,7 @@
 @section("content")
     <main class="py-4">
         <div class="container">
-            <form method="post" action="{{ route("usuario.desarrolladora.store") }}">
+            <form method="post" action="{{ route('usuario.desarrolladora.store') }}">
                 @csrf
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>

@@ -5,24 +5,24 @@
         <div class="row">
             <div class="col-12 p-0">
                 <header>
-                    <img class="img-fluid h-auto" src="{{ asset("/images/default.png") }}">
+                    <img class="img-fluid h-auto" src="{{ asset('/images/default.png') }}">
                     <div>
                         <h1 class="font-weight-light">{{ $juego->nombre }}</h1>
                         <ul class="lead">
                             <li>
-                                <a href="{{ route("usuario.desarrolladora.show", $juego->desarrolladora->id) }}" target="blank">{{ $juego->desarrolladora->nombre }}</a>
+                                <a href="{{ route('usuario.desarrolladora.show', $juego->desarrolladora->id) }}" target="blank">{{ $juego->desarrolladora->nombre }}</a>
                             </li>
                             <li>
                                 <div class="btn-group mt-3">
                                     @if ($usuario == null)
-                                        <form method="post" action="{{ route("usuario.juego.follow", $juego->id) }}">
+                                        <form method="post" action="{{ route('usuario.juego.follow', $juego->id) }}">
                                             @csrf
                                             <button type="submit" class="btn text-primary">
                                                 <i class="far fa-check-circle"></i>
                                             </button>
                                         </form>
                                     @else
-                                        <form method="post" action="{{ route("usuario.juego.unfollow", $juego->id) }}">
+                                        <form method="post" action="{{ route('usuario.juego.unfollow', $juego->id) }}">
                                             @csrf
                                             <button type="submit" class="btn text-danger">
                                                 <i class="far fa-times-circle"></i>
@@ -30,7 +30,7 @@
                                         </form>
                                         @if ($usuario->pivot->notificacion == 0)
                                             <form method="post"
-                                                action="{{ route("usuario.juego.notificacion", [$juego->id, 1]) }}">
+                                                action="{{ route('usuario.juego.notificacion', [$juego->id, 1]) }}">
                                                 @csrf
                                                 <button type="submit" class="btn text-primary text-primary">
                                                     <i class="far fa-bell"></i></i>
@@ -38,7 +38,7 @@
                                             </form>
                                         @else
                                             <form method="post"
-                                                action="{{ route("usuario.juego.notificacion", [$juego->id, 0]) }}">
+                                                action="{{ route('usuario.juego.notificacion', [$juego->id, 0]) }}">
                                                 @csrf
                                                 <button type="submit" class="btn text-danger">
                                                     <i class="far fa-bell-slash"></i>

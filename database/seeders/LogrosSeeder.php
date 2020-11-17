@@ -17,34 +17,34 @@ class LogrosSeeder extends Seeder
     public function run()
     {
         DB::table('logros')->insert([
-            'nombre' => 'Gran mensajero',
+            'nombre' => 'El mensajero',
             'descripcion' => 'Participa con muuuuuchos mensajes',
-            'icono'=> '/logro/mensajes.png',
+            'icono'=> 'fas fa-sms',
         ]);
         DB::table('logros')->insert([
-            'nombre' => 'Logro 2',
-            'descripcion' => 'Logro 2',
-            'icono'=> '/logro/3.png',
+            'nombre' => 'El veterano',
+            'descripcion' => '¡Wow, llevas 1 año en Indie4all!',
+            'icono'=> 'far fa-calendar-check',
         ]);
         DB::table('logros')->insert([
-            'nombre' => 'Logro 3',
-            'descripcion' => 'Logro 3',
-            'icono'=> '/logro/3.png',
+            'nombre' => 'El comprador',
+            'descripcion' => '¡Oye, veo que te gustan los juegos!',
+            'icono'=> 'fas fa-piggy-bank',
         ]);
         DB::table('logros')->insert([
-            'nombre' => 'Logro 4',
-            'descripcion' => 'Logro 4',
-            'icono'=> '/logro/4.png',
+            'nombre' => 'El inversor',
+            'descripcion' => '¡Se nota que te gusta aportar a la industria!',
+            'icono'=> 'fas fa-bullhorn',
         ]);
         DB::table('logros')->insert([
-            'nombre' => 'Logro 5',
-            'descripcion' => 'Logro 5',
-            'icono'=> '/logro/5.png',
+            'nombre' => 'El seguidor',
+            'descripcion' => '¡Así me gusta, hay que darle cariño a nuestros masters, desarrolladora y sus videojeugos!',
+            'icono'=> 'far fa-heart',
         ]);
         DB::table('logros')->insert([
-            'nombre' => 'Logro 6',
-            'descripcion' => 'Logro 6',
-            'icono'=> '/logro/6.png',
+            'nombre' => 'El mejor',
+            'descripcion' => 'Ahora si estoy impresionado, ¡has conseguido todos los logros!',
+            'icono'=> 'fas fa-medal',
         ]);
     }
 }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace("_", "-", app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
     <title>{{ config("app.name", "Laravel") }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset("js/app.js") }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/es.js"></script>
 
@@ -22,8 +22,8 @@
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
     <!-- Styles -->
-    <link href="{{ asset("css/app.css") }}" rel="stylesheet">
-    <link href="{{ asset("css/usuario.css") }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/usuario.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     @yield("styles")
 </head>
@@ -42,7 +42,7 @@
                 width: "auto",
                 placeholder: "Búsqueda en la web",
                 ajax: {
-                    url: "{{ route("usuario.busqueda") }}",
+                    url: "{{ route('usuario.busqueda') }}",
                     datatype: "json",
                     processResults: function(data) {
                         return {

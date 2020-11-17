@@ -3,87 +3,123 @@
 @section("content")
     <main class="py-4">
         <div class="container">
-            <h5>Mi cuenta</h5>
-            <p>{{ $usuario->name }}</p>
+            <div class="box-header mt-4">
+                <h5>Mi cuenta</h5>
+            </div>
+            <div class="box">
+                <p>{{ $usuario->name }}</p>
+                Datos para poder editarlos
+            </div>
 
-            <h6>Géneros</h6>
-            @foreach ($usuario->generos as $genero)
-                {{ $genero }}
-            @endforeach
-
-            <h5>Logros</h5>
-            @foreach ($usuario->logros as $logro)
-                {{ $logro }}
-            @endforeach
+            <div class="box-header mt-4">
+                <h6>Géneros</h6>
+            </div>
+            <div class="box align-items-center">
+                @foreach ($generos as $genero)
+                    <input type="checkbox" name="generos[]"> {{ $genero->nombre }}
+                @endforeach
+            </div>
+            <div class="box-header mt-4">
+                <h5>Logros</h5>
+            </div>
+            <div class="box">
+                @foreach ($logros as $logro)
+                    @foreach ($usuario->logros as $conseguido)
+                    <p><i class="{{ $logro->icono }}"></i> {{ $logro->nombre }} - {{ $logro->descripcion }} @if ($conseguido->nombre == $logro->nombre) !Conseguido¡ @endif</p>
+                    @endforeach
+                @endforeach
+            </div>
 {{--
             <h5>Solicitud</h5>
             {{ $usuario->solicitud->where("user_id", $usuario->id)->get()->count() }}
  --}}
-            <h5>Desarrolladoras</h5>
-            @foreach ($usuario->desarrolladoras as $desarrolladora)
-                {{ $desarrolladora->nombre }}
-                <form action="{{ route("usuario.desarrolladora.unfollow", $desarrolladora->id) }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
-                </form>
-                @if ($desarrolladora->pivot->notificacion == 0)
-                    <form action="{{ route("usuario.desarrolladora.notificacion", [$desarrolladora->id, 1]) }}"
-                        method="post">
-                        @csrf
-                        <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
-                    </form>
+            <div class="box-header mt-4">
+                <h5>Desarrolladoras</h5>
+            </div>
+            <div class="box">
+                @if ($usuario->desarrolladoras->count() == 0)
+                    Date una vuelta por nuestras desarrolladoras y sigue a tus favortias.
                 @else
-                    <form action="{{ route("usuario.desarrolladora.notificacion", [$desarrolladora->id, 0]) }}"
-                        method="post">
-                        @csrf
-                        <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
-                    </form>
+                    @foreach ($usuario->desarrolladoras as $desarrolladora)
+                        {{ $desarrolladora->nombre }}
+                        <form action="{{ route('usuario.desarrolladora.unfollow', $desarrolladora->id) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
+                        </form>
+                        @if ($desarrolladora->pivot->notificacion == 0)
+                            <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 1]) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
+                            </form>
+                        @else
+                            <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 0]) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
+                            </form>
+                        @endif
+                    @endforeach
                 @endif
-            @endforeach
-
-            <h5>Juegos</h5>
-            @foreach ($usuario->juegos as $juego)
-                {{ $juego->nombre }}
-                <form action="{{ route("usuario.juego.unfollow", $juego->id) }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
-                </form>
-                @if ($juego->pivot->notificacion == 0)
-                    <form action="{{ route("usuario.juego.notificacion", [$juego->id, 1]) }}"
-                        method="post">
-                        @csrf
-                        <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
-                    </form>
+            </div>
+            <div class="box-header mt-4">
+                <h5>Juegos</h5>
+            </div>
+            <div class="box">
+                @if ($usuario->juegos->count() == 0)
+                    ¿No te gusta ningún juego?
                 @else
-                    <form action="{{ route("usuario.juego.notificacion", [$juego->id, 0]) }}"
-                        method="post">
-                        @csrf
-                        <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
-                    </form>
+                    @foreach ($usuario->juegos as $juego)
+                        {{ $juego->nombre }}
+                        <form action="{{ route('usuario.juego.unfollow', $juego->id) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
+                        </form>
+                        @if ($juego->pivot->notificacion == 0)
+                            <form action="{{ route('usuario.juego.notificacion', [$juego->id, 1]) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
+                            </form>
+                        @else
+                            <form action="{{ route('usuario.juego.notificacion', [$juego->id, 0]) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
+                            </form>
+                        @endif
+                    @endforeach
                 @endif
-            @endforeach
-
-            <h5>Masters</h5>
-            @foreach ($usuario->masters as $master)
-                {{ $master->nombre }}
-                <form action="{{ route("usuario.master.unfollow", $master->id) }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
-                </form>
-                @if ($master->pivot->notificacion == 0)
-                    <form action="{{ route("usuario.master.notificacion", [$master->id, 1]) }}"
-                        method="post">
-                        @csrf
-                        <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
-                    </form>
+            </div>
+            <div class="box-header mt-4">
+                <h5>Masters</h5>
+            </div>
+            <div class="box">
+                @if ($usuario->masters->count() == 0)
+                    ¡Te animamos a que descubras a nuestros masters!
                 @else
-                    <form action="{{ route("usuario.master.notificacion", [$master->id, 0]) }}"
-                        method="post">
-                        @csrf
-                        <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
-                    </form>
+                    @foreach ($usuario->masters as $master)
+                        {{ $master->nombre }}
+                        <form action="{{ route('usuario.master.unfollow', $master->id) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
+                        </form>
+                        @if ($master->pivot->notificacion == 0)
+                            <form action="{{ route('usuario.master.notificacion', [$master->id, 1]) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
+                            </form>
+                        @else
+                            <form action="{{ route('usuario.master.notificacion', [$master->id, 0]) }}"
+                                method="post">
+                                @csrf
+                                <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
+                            </form>
+                        @endif
+                    @endforeach
                 @endif
-            @endforeach
+            </div>
 
         {{--     <h5>Camapañas</h5>
             @foreach ($usuario->campanias as $campania)

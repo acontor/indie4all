@@ -18,7 +18,7 @@ class GeneroUsuarioSeeder extends Seeder
     {
         DB::table('genero_user')->insert([
             'genero_id' => 1,
-            'user_id' => 1,
+            'user_id' => 4,
         ]);
         DB::table('genero_user')->insert([
             'genero_id' => 2,
