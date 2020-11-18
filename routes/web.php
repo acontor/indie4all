@@ -130,6 +130,8 @@ Route::get('/busqueda', [App\Http\Controllers\Usuario\HomeController::class, 'bu
 
 // Mi cuenta
 Route::get('/cuenta', [App\Http\Controllers\Usuario\CuentaController::class, 'index'])->name('usuario.cuenta.index');
+Route::post('/cuenta/generos', [App\Http\Controllers\Usuario\CuentaController::class, 'generos'])->name('usuario.cuenta.generos');
+Route::patch('/cuenta/usuario', [App\Http\Controllers\Usuario\CuentaController::class, 'usuario'])->name('usuario.cuenta.usuario');
 
 // Desarrolladoras
 Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'index'])->name('usuario.desarrolladoras.index')->middleware('auth');

@@ -26,7 +26,7 @@ class NoticiasController extends Controller
      */
     public function index()
     {
-        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null]]);
+        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null]])->get();
         return view('admin.noticias', ['noticias' => $noticias]);
     }
 

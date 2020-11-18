@@ -19,9 +19,11 @@
             </ul>
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav align-items-md-center ml-auto">
+                @auth
                 <li class="nav-item mr-md-5">
                     <select class="form-control select2" name="busqueda" id="busqueda"></select>
                 </li>
+                @endauth
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">

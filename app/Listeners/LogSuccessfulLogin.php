@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Models\Logro;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -30,7 +31,19 @@ class LogSuccessfulLogin
     public function handle()
     {
         if (Auth::check()) {
-            User::where('id', Auth::User()->id)->update([ 'last_activity' => Carbon::now()->toDateTimeString() ]);
+            $usuario = User::find(Auth::id());
+
+            $date = Carbon::now();
+
+            $timestamp = $date->toDateTimeString();
+
+            $usuario->update(['last_activity' => $timestamp]);
+
+            if ($date->diffInDays($usuario->created_at) >= 365 && !$usuario->logros->find(2)) {
+                $usuario->logros()->attach([
+                    2
+                ]);
+            }
         }
     }
 }

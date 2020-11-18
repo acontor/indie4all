@@ -21,6 +21,11 @@ nav {
     background-color: #E34E33;
 }
 
+.nav-link {
+    color: white !important;
+}
+
+/*
 .select2-selection {
     border: 0 !important;
     border-bottom: 1px solid #FFFFFF !important;
@@ -64,6 +69,7 @@ nav {
     border: 0 !important;
     border-radius: 0 !important;
 }
+*/
 
 /**
  * MAIN CONTENT
@@ -74,7 +80,7 @@ nav {
     position: relative;
     padding: 1.5rem;
     border-radius: 2px;
-    box-shadow: 1px 1px 1px 0 #2E3647;
+    box-shadow: 3px 3px 3px 0 #999;
 }
 
 .box-header {
@@ -83,7 +89,7 @@ nav {
     padding: 1rem;
     margin-bottom: 1.5rem;
     border-radius: 2px;
-    box-shadow: 1px 1px 1px 0 #2E3647;
+    box-shadow: 3px 3px 3px 0 #999;
 }
 
 /**
@@ -95,7 +101,7 @@ header {
     color: white;
     position: relative;
     border-radius: 2px;
-    box-shadow: 1px 1px 1px 0 #2E3647;
+    box-shadow: 3px 3px 3px 0 #333;
 }
 
 header img {

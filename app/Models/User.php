@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'last_activity',
     ];
 
     /**
@@ -72,7 +73,7 @@ class User extends Authenticatable
     // Users - N:M - Campañas
     public function campanias()
     {
-        return $this->belongsToMany("App\Models\Campania")->withPivot('precio', 'fecha_pago');
+        return $this->belongsToMany("App\Models\Campania")->withPivot('precio');
     }
 
     // Users - 1:N - Mensajes

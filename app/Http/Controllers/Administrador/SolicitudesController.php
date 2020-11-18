@@ -27,8 +27,8 @@ class SolicitudesController extends Controller
      */
     public function index()
     {
-        $desarrolladoras = Solicitud::where('tipo', 'Desarrolladora')->all();
-        $masters = Solicitud::where('tipo', 'Master')->all();
+        $desarrolladoras = Solicitud::where('tipo', 'Desarrolladora')->get();
+        $masters = Solicitud::where('tipo', 'Master')->get();
         return view('admin.solicitudes', ['desarrolladoras' => $desarrolladoras, 'masters' => $masters]);
     }
 

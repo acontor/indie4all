@@ -25,7 +25,7 @@
                         <tbody>
                             @foreach ($logros as $logro)
                                 <tr>
-                                    <td class="align-middle w-10 text-center"><img src="/images/logros/{{ $logro->icono }}" width="50" height="50" /></td>
+                                    <td class="align-middle w-10 text-center"><i class="{{ $logro->icono }}"></i></td>
                                     <td class="align-middle w-30">{{ $logro->nombre }}</td>
                                     <td class="align-middle w-40">{{ $logro->descripcion }}</td>
                                     <td class="align-middle w-10 text-center">{{ $numUsuarios }}</td>

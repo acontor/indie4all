@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Genero;
 use App\Models\Logro;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class CuentaController extends Controller
 {
@@ -30,5 +33,45 @@ class CuentaController extends Controller
         $logros = Logro::all();
         $generos = Genero::all();
         return view('usuario.cuenta', ['usuario' => $usuario, 'logros' => $logros, 'generos' => $generos]);
+    }
+
+    public function usuario(Request $request)
+    {
+        $usuario = User::find(Auth::id());
+
+        if(Hash::check($request->verify, $usuario->password)) {
+            if(isset($request->password)) {
+                $usuario->update([
+                    'name' => $request->nombre,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+            } else {
+                $usuario->update([
+                    'name' => $request->nombre,
+                    'email' => $request->email,
+                ]);
+            }
+        } else {
+            return redirect('/cuenta')->with('danger', 'La contraseña no coincide');
+        }
+
+        return redirect('/cuenta');
+    }
+
+    public function generos(Request $request)
+    {
+        $usuario = User::find(Auth::id());
+
+
+        $usuario->generos()->wherePivot('user_id', $usuario->id)->detach();
+
+        foreach ($request->generos as $value) {
+            $usuario->generos()->attach([
+                $value
+            ]);
+        }
+
+        return redirect('/cuenta');
     }
 }
