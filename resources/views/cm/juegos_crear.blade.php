@@ -1,4 +1,21 @@
 @extends("layouts.cm.base")
+@section('styles')
+
+<style>
+    
+    input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+    </style>
+    
+    
+@endsection
 @section("content")
     <div class="container">
         <div class="row">
@@ -13,13 +30,13 @@
                     </div>
                     <br />
                 @endif
-                <div class="box-header">
+                <div class="box">
                     @if (isset($juego))
-                        <h1>Editar Juego</h1>
+                        <h1 class="mb-4">Editar Juego</h1>
                     @else
-                        <h1>Nuevo Juego</h1>
+                        <h1 class="mb-4">Nuevo Juego</h1>
                     @endif
-                </div>
+               
                 @if (isset($juego))
                     <form action="{{ route('cm.juegos.update', $juego->id) }}" method="post">
                     @method("PATCH")
@@ -27,7 +44,6 @@
                     <form action="{{ route('cm.juegos.store') }}" method="post">
                 @endif
                     @csrf
-                    <div class="box">
                         <div class="form-group">
                             <label for="nombre">Título:</label>
                             <input type="text" class="form-control" name="nombre" @if (isset($juego)) value="{{ $juego->nombre }}" @endif/>
@@ -61,19 +77,18 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <span class="btn btn-file">
-                                    <i class="fas fa-upload"></i>Portada:
-                                    <input type="file" class="inputfile" name="imagen_portada" id="imagen_portada"
-                                        @if (isset($juego)) value="{{ $juego->imagen_portada }}" @endif/>
-                                </span>
+                                <label id="btn-portada" class="btn btn-outline-dark mr-3">
+                                    <i class="fas fa-upload"></i> Portada:
+                                        <input type="file" id="imagen_portada" name="imagen_portada" @if(!isset($juego)) required="required" @endif onchange="readURL(this);">
+                                </label>                                                   
+                            <img src=""  height="100" width="100" id="blah" style="display: none"/>
                             </div>
                             <div class="form-group">
-                                <span class="btn btn-file">
+                                <label id="btn-caratula" class="btn btn-outline-dark">
                                     <i class="fas fa-upload"></i> Carátula:
-                                    <input type="file" class="inputfile" name="imagen_caratula" id="imagen_caratula"
-                                        @if (isset($juego))
-                                    value="{{ $juego->imagen_caratula }}" @endif />
-                                </span>
+                                    <input type="file" class="btn btn-primary" id="imagen_caratula" name="imagen_caratula" @if(!isset($juego)) required="required" @endif onchange="readURL2(this);">
+                                </label>
+                                <img src="" height="100" width="100" id="bloh" style="display: none"/>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success mb-3">Crear</button>
@@ -81,8 +96,9 @@
                 </div>
             </div>
         </div>
+        
     </div>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    @section("scripts")    
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/es.js"></script>
     <script>
@@ -93,6 +109,32 @@
             allowClear: true,
             dropdownAutoWidth: true
         });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#blah').attr('src', e.target.result);
+                    $('#blah').css('display','block'); 
+                    $('#btn-portada').removeClass("btn-outline-dark");
+                    $('#btn-portada').addClass('btn-primary')
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#bloh').attr('src', e.target.result);
+                    $('#bloh').css('display','block'); 
+                    $('#btn-caratula').removeClass("btn-outline-dark");
+                    $('#btn-caratula').addClass('btn-primary')
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
 
     </script>
+@endsection
 @endsection

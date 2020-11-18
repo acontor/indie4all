@@ -2,6 +2,28 @@
 @section("styles")
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+    <style>
+        .table-responsive thead {
+            background-color: #E34E33;
+            color: #FFF;
+        }
+        .page-link{
+            color:#E34E33;
+        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: rgb(227, 78,51, 0.54) !important;
+            color: white!important;
+            border-radius: 4px;
+            border: 1px solid #E34E33;
+        }        
+        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+            background: #E34E33;
+            color: black!important;
+        } 
+        .page-item.active .page-link{
+            background-color: #E34E33 !important;
+        }
+</style>
 @endsection
 @section("content")
     <div class="container">
@@ -86,7 +108,16 @@
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script>
         $(function() {
-            $("table").dataTable();
+            $("table").dataTable({
+                pageLength : 5,
+                lengthMenu: [[5, 10, 15, -1], [5, 10, 15, 'Todos']],
+                info : false,
+                language : {
+                    search : 'Buscar',
+                    lengthMenu: 'Mostrando _MENU_  por página',
+                    zeroRecords: 'Ninguna coincidencia'
+                }
+            });
 
             let sessionSuccess = {!! json_encode(session()->get("success")) !!}
 
