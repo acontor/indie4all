@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-12 p-0">
             <header>
-                <img class="img-fluid h-auto" src="{{ asset('/images/default.png') }}">
+                <img class="img-fluid h-auto" src="{{url('/images/desarrolladoras/'.$desarrolladora->imagen_logo)}}">
                 <div>
                     <h1 class="font-weight-light">{{ $desarrolladora->nombre }}</h1>
                     <ul class="lead">

@@ -33,8 +33,9 @@
                                             <td class="align-middle">{{ $desarrolladora->usuario->name }}</td>
                                             <td class="align-middle">
                                                 <div class="btn-group">
-                                                    <form method="" action="{{ route('admin.solicitudes.aceptarDesarrolladora', [$desarrolladora->id]) }}">
+                                                    <form method="post" action="{{ route('admin.solicitudes.aceptarDesarrolladora', [$desarrolladora->id]) }}">
                                                         @csrf
+                                                        @method("POST")
                                                         <button class="btn btn-success btn-sm round ml-1" type="submit"><i class="far fa-check-square"></i></button>
                                                     </form>
                                                     <form action="{{ route('admin.solicitudes.rechazarDesarrolladora', $desarrolladora->id) }}" method="post">
