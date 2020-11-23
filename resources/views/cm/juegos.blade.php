@@ -15,11 +15,11 @@
         <div class="row">
             <section>
                 <div class="container">
-                    <div class="row mt-5">
+                    <div class="row">
                         @foreach ($juegos as $juego)
-                            <div class="col">
+                            <div class="mt-4 mr-4">
                                 <div class="card">
-                                    <img src="{{ asset('/images/default.png') }}" />
+                                    <img src="{{url('/images/juegos/portadas/'.$juego->imagen_portada)}}"width="250" height="200" />
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             <a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a>

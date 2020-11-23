@@ -30,7 +30,7 @@ class JuegosController extends Controller
      */
     public function index()
     {
-        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->paginate(6);
+        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->get();
         return view('cm.juegos', ['juegos' => $juegos]);
     }
     public function create()
@@ -58,7 +58,6 @@ class JuegosController extends Controller
             $extensionPortada = $request->file('imagen_portada')->getClientOriginalExtension();
             $fileNamePortada = $fileNamePortada . '_' . time() . '.' . $extensionPortada;
             $portada->move('images/juegos/portadas/', $fileNamePortada);
-            $request['imagen_portada'] = $fileNamePortada;
         }
 
         if ($caratula = $request->file('imagen_caratula')) {
@@ -67,13 +66,12 @@ class JuegosController extends Controller
             $extensionCaratula = $request->file('imagen_caratula')->getClientOriginalExtension();
             $fileNameCaratula = $fileNameCaratula . '_' . time() . '.' . $extensionCaratula;
             $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
-            $request['imagen_caratula'] = $fileNamePortada;
         }
 
         Juego::create([
             'nombre' => $request->nombre,
-            'imagen_portada' => $request->imagen_portada,
-            'imagen_caratula' => $request->imagen_caratula,
+            'imagen_portada' => $fileNamePortada,
+            'imagen_caratula' => $fileNameCaratula,
             'sinopsis' => $request->sinopsis,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
@@ -93,6 +91,7 @@ class JuegosController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $juego = Juego::find($id);
         $request->validate([
             'nombre' => 'required',
             'sinopsis' => 'required',
@@ -104,14 +103,54 @@ class JuegosController extends Controller
             'genero_id' => 'required',
         ]);
 
-        Juego::find($id)->update($request->all());
+        $portada = public_path() . '/images/juegos/portadas/' . $juego->imagen_portada;
+        $caratula = public_path() . '/images/juegos/caratulas/' . $juego->imagen_caratula;
+        if (@getimagesize($portada) && @getimagesize($caratula)) {
+            unlink($portada);
+            unlink($caratula);
+        }
+        if ($portada = $request->file('imagen_portada')) {
+            $originNamePortada = $request->file('imagen_portada')->getClientOriginalName();
+            $fileNamePortada = pathinfo($originNamePortada, PATHINFO_FILENAME);
+            $extensionPortada = $request->file('imagen_portada')->getClientOriginalExtension();
+            $fileNamePortada = $fileNamePortada . '_' . time() . '.' . $extensionPortada;
+            $portada->move('images/juegos/portadas/', $fileNamePortada);
+        }
+
+        if ($caratula = $request->file('imagen_caratula')) {
+            $originNameCaratula = $request->file('imagen_caratula')->getClientOriginalName();
+            $fileNameCaratula = pathinfo($originNameCaratula, PATHINFO_FILENAME);
+            $extensionCaratula = $request->file('imagen_caratula')->getClientOriginalExtension();
+            $fileNameCaratula = $fileNameCaratula . '_' . time() . '.' . $extensionCaratula;
+            $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
+        }
+
+        Juego::find($id)->update([
+            'nombre' => $request->nombre,
+            'imagen_portada' => $fileNamePortada,
+            'imagen_caratula' => $fileNameCaratula,
+            'sinopsis' => $request->sinopsis,
+            'fecha_lanzamiento' => $request->fecha_lanzamiento,
+            'precio' => $request->precio,
+            'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
+            'genero_id' => $request->genero,
+            'genero_id' => $request->genero_id,
+        ]);
 
         return redirect('/cm/juegos')->with('success', 'Juego actualizado!');
     }
 
     public function destroy($id)
     {
+        $juego = Juego::find($id);
+        $portada = public_path() . '/images/juegos/portadas/' . $juego->imagen_portada;
+        $caratula = public_path() . '/images/juegos/caratulas/' . $juego->imagen_caratula;
+        if (@getimagesize($portada) && @getimagesize($caratula)) {
+            unlink($portada);
+            unlink($caratula);
+        }
         Juego::find($id)->delete();
+
         return redirect('/cm/juegos')->with('success', '¡Juego borrado!');
     }
 }

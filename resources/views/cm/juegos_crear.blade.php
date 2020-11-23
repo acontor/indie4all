@@ -38,10 +38,10 @@
                     @endif
                
                 @if (isset($juego))
-                    <form action="{{ route('cm.juegos.update', $juego->id) }}" method="post">
+                    <form action="{{ route('cm.juegos.update', $juego->id) }}" method="post" enctype="multipart/form-data">
                     @method("PATCH")
                 @else
-                    <form action="{{ route('cm.juegos.store') }}" method="post">
+                    <form action="{{ route('cm.juegos.store') }}" method="post" enctype="multipart/form-data">
                 @endif
                     @csrf
                         <div class="form-group">
@@ -80,15 +80,23 @@
                                 <label id="btn-portada" class="btn btn-outline-dark mr-3">
                                     <i class="fas fa-upload"></i> Portada:
                                         <input type="file" id="imagen_portada" name="imagen_portada" @if(!isset($juego)) required="required" @endif onchange="readURL(this);">
-                                </label>                                                   
-                            <img src=""  height="100" width="100" id="blah" style="display: none"/>
+                                </label>
+                                @if(isset($juego))
+                                <img  src="{{url('/images/juegos/portadas/'.$juego->imagen_portada)}}" height="100" width="100" id="blah" /> 
+                            @else
+                                <img src=""  height="100" width="100" id="blah" style="display: none"/>         
+                            @endif
                             </div>
                             <div class="form-group">
                                 <label id="btn-caratula" class="btn btn-outline-dark">
                                     <i class="fas fa-upload"></i> Carátula:
                                     <input type="file" class="btn btn-primary" id="imagen_caratula" name="imagen_caratula" @if(!isset($juego)) required="required" @endif onchange="readURL2(this);">
                                 </label>
-                                <img src="" height="100" width="100" id="bloh" style="display: none"/>
+                            @if(isset($juego))
+                                <img  src="{{url('/images/juegos/caratulas/'.$juego->imagen_caratula)}}" height="100" width="100" id="bloh" /> 
+                            @else
+                                <img src=""  height="100" width="100" id="bloh" style="display: none"/>         
+                            @endif
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success mb-3">Crear</button>
