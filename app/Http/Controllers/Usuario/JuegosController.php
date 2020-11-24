@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Usuario;
 use App\Http\Controllers\Controller;
 use App\Models\Juego;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Listeners\FollowListener;
 use Illuminate\Support\Facades\Auth;
 
 class JuegosController extends Controller
@@ -37,7 +37,9 @@ class JuegosController extends Controller
     public function follow($id)
     {
         $user = User::find(Auth::id());
-        $user->juegos()->sync([$id => ['notificacion' => true]]);
+        $user->juegos()->attach([$id => ['notificacion' => true]]);
+
+        event(new FollowListener($user));
 
         return redirect()->route('usuario.juego.show', ['id' => $id]);
     }

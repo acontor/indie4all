@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Listeners\FollowListener;
 use App\Models\Desarrolladora;
 use App\Models\Solicitud;
 use App\Models\User;
@@ -77,10 +78,9 @@ class DesarrolladorasController extends Controller
     public function follow($id)
     {
         $user = User::find(Auth::id());
+        $user->desarrolladoras()->attach([$id => ['notificacion' => true]]);
 
-        $user->desarrolladoras()->attach([
-            $id => ['notificacion' => true]
-        ]);
+        event(new FollowListener($user));
 
         return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
     }

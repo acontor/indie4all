@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Usuario;
 use App\Http\Controllers\Controller;
 use App\Models\Master;
 use App\Models\User;
+use App\Listeners\FollowListener;
 use Illuminate\Support\Facades\Auth;
 
 class MasterController extends Controller
@@ -37,7 +38,9 @@ class MasterController extends Controller
     public function follow($id)
     {
         $user = User::find(Auth::id());
-        $user->masters()->sync([$id => ['notificacion' => true]]);
+        $user->masters()->attach([$id => ['notificacion' => true]]);
+
+        event(new FollowListener($user));
 
         return redirect()->route('usuario.master.show', ['id' => $id]);
     }
