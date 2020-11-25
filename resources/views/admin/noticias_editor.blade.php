@@ -19,7 +19,7 @@
                     @endif
                         @csrf
                         <div class="form-group">
-                            <label> Título </label>
+                            <label>Título</label>
                             <input type="text" class="contenido form-control" name="titulo" value="@if(isset($post)) {{ $post->titulo }} @endif" />
                         </div>
                         <div class="form-group">

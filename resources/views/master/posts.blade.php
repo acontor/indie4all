@@ -15,7 +15,8 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <td class="w-75">Título</td>
+                                <td class="w-50">Título</td>
+                                <td class="w-25 text-center">Calificación</td>
                                 <td class="w-25 text-center">Acciones</td>
                             </tr>
                         </thead>
@@ -23,6 +24,7 @@
                             @foreach ($posts as $post)
                                 <tr>
                                     <td class="align-middle">{{ $post->titulo }}</td>
+                                    <td class="align-middle text-center">{{ $post->calificacion }}</td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
                                             <form action="{{ route('master.posts.edit', $post->id) }}" method="post">

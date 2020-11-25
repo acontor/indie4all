@@ -19,9 +19,14 @@
                     @endif
                         @csrf
                         <div class="form-group">
-                            <label> Título </label>
-                            <input type="text" class="contenido form-control" name="titulo" value="@if(isset($post)) {{ $post->titulo }} @endif" />
+                            <label>Título</label>
+                            <input type="text" class="form-control" name="titulo" value="@if(isset($post)) {{ $post->titulo }} @endif" />
                         </div>
+                        <div class="form-group">
+                            <label>Calificación</label>
+                            <input type="number" class="form-control" name="calificacion" value="@if(isset($post)) {{ $post->calificacion }} @endif" />
+                        </div>
+                        <!-- Poner botones en juegos para que master pueda crear análisis o post sobre ese juego. Incluir aquí un select de los juegos y el tipo de post. -->
                         <div class="form-group">
                             <label>Contenido</label>
                             <textarea class="form-control" name="contenido" id="editor">
