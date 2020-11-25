@@ -54,7 +54,7 @@
                                     Panel de desarrolladora
                                 </a>
                             @elseif(App\Models\Master::where("user_id", Auth::id())->count() == 1)
-                                <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                <a class="dropdown-item" href="{{ route('master.index') }}">
                                     Panel de master
                                 </a>
                             @endif

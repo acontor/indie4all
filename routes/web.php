@@ -121,6 +121,30 @@ Route::delete('/admin/encuestas/{id}/delete', [App\Http\Controllers\Cm\Encuestas
 Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
 
 /**
+ * Master Routes
+ */
+
+// Inicio
+Route::get('/master', [App\Http\Controllers\Master\HomeController::class, 'index'])->name('master.index');
+
+// Perfil
+Route::get('/master/perfil', [App\Http\Controllers\Master\PerfilController::class, 'index'])->name('master.perfil.index');
+Route::patch('/master/perfil/{id}/update', [App\Http\Controllers\Master\PerfilController::class, 'update'])->name('master.perfil.update');
+
+// Quitar id al update y encontrarlo en el controller
+
+// Posts
+Route::get('/master/posts', [App\Http\Controllers\Master\PostsController::class, 'index'])->name('master.posts.index');
+Route::get('/master/posts/nueva', [App\Http\Controllers\Master\PostsController::class, 'create'])->name('master.posts.create');
+Route::post('/master/posts/upload', [App\Http\Controllers\Master\PostsController::class, 'upload'])->name('master.posts.upload');
+Route::post('/master/posts/nueva', [App\Http\Controllers\Master\PostsController::class, 'store'])->name('master.posts.store');
+Route::post('/master/posts/{id}/edit', [App\Http\Controllers\Master\PostsController::class, 'edit'])->name('master.posts.edit');
+Route::patch('/master/posts/{id}/update', [App\Http\Controllers\Master\PostsController::class, 'update'])->name('master.posts.update');
+Route::delete('/master/posts/{id}/delete', [App\Http\Controllers\Master\PostsController::class, 'destroy'])->name('master.posts.destroy');
+
+// Añadir a la tabla posts un atributo que sea fecha de publicación para programar una publicación futura
+
+/**
  * User Routes
  */
 
