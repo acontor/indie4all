@@ -55,10 +55,12 @@
                                 <div>
                                     <h4>{{ $post->titulo }}</h4>
                                     <p>{!! $post->contenido !!}</p>
-                                    @foreach ($post->mensajes as $mensaje)
-                                        {{ $mensaje->contenido }}
-                                    @endforeach
                                 </div>
+                                <small>Comentarios: {{ $post->mensajes->count() }}</small>
+                                <form>
+                                    <input type="hidden" name="id" value="{{ $post->id }}" />
+                                    <a type="submit" class="more">Leer más</a>
+                                </form>
                             @endforeach
                         @else
                             Aún no ha publicado ningún post.
@@ -71,8 +73,9 @@
                                 <div>
                                     <h4>{{ $post->titulo }}</h4>
                                     <p>{!! $post->contenido !!}</p>
+                                    <small>Comentarios: {{ $post->mensajes->count() }}</small>
                                     <form>
-                                        <input type="hidden" name="id" value="{{ $post->id }}">
+                                        <input type="hidden" name="id" value="{{ $post->id }}" />
                                         <a type="submit" class="more">Leer más</a>
                                     </form>
                                 </div>
@@ -100,6 +103,7 @@
     </div>
 @endsection
 @section("scripts")
+<script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
 <script>
     $(function() {
         $(".menu").children("div").children("a").click(function(e) {
@@ -112,8 +116,27 @@
 
         $(".more").click(function () {
             $("#contenido").children("div").addClass("d-none");
-            // Ajax para obtener el post y mostrarlo en el div contenido.
-            $("#contenido").append("<div class='post'><h4>Análisis Bloodborne</h4><p>Prueba</p></div>");
+            $.ajax({
+                url: "{{ route('usuario.master.post') }}",
+                data: {
+                    id: $(this).prev().val(),
+                },
+                success: function(data) {
+                    let html = `<div class='post'><h4>${data.post.titulo}</h4><div class="contenido-post">${data.post.contenido}</p></div><hr><h4>Comentarios</h4><textarea class="form-control" name="mensaje" id="editor"></textarea>`;
+                    if(data.mensajes.length > 0) {
+                        data.mensajes.forEach(element => {
+                            html += `<div class="mensaje">${element.contenido}</div></div>`;
+                        });
+                    } else {
+                        html += '<div class="mensaje">No hay ningún mensaje</div></div>';
+                    }
+                    $("#contenido").append(html);
+                    CKEDITOR.replace("mensaje", {
+                        filebrowserUploadUrl: "{{ route('master.posts.upload', ['_token' => csrf_token()]) }}",
+                        filebrowserUploadMethod: "form"
+                    });
+                }
+            });
         });
     });
 

@@ -55,6 +55,8 @@
             <div id="contenido">
                 <div class="general">
                     <h3>Contenido</h3>
+                    Contenido que quiera la desarrolladora.
+                    Hay que crear un atributo en la tabla desarrolladoras llamado contenido.
                 </div>
                 <div class="noticias d-none">
                     <h3>Posts</h3>

@@ -57,22 +57,14 @@
                     <div class="col-3"><a id="general" href="">General</a></div>
                     <div class="col-3"><a id="comprar" href="">Comprar</a></div>
                     <div class="col-3"><a id="noticias" href="">Noticias</a></div>
-                    <div class="col-3"><a id="actualizaciones" href="">Actualizaciones</a></div>
+                    <div class="col-3"><a id="analisis" href="">Análisis</a></div>
                 </div>
                 <hr>
                 <div id="contenido">
                     <div class="general">
                         <h2>General</h2>
-                        @if ($juego->posts->count() != 0)
-                            @foreach ($juego->posts as $post)
-                                <div>
-                                    <h4>{{ $post->titulo }}</h4>
-                                    <p>{{ $post->contenido }}</p>
-                                </div>
-                            @endforeach
-                        @else
-                            Aún no ha publicado ningún post.
-                        @endif
+                        Contenido que quiera la desarrolladora.
+                        Hay que crear un atributo en la tabla juegos llamado contenido.
                     </div>
                     <div class="comprar d-none">
                         <h2>Comprar</h2>
@@ -90,8 +82,8 @@
                             Aún no ha publicado ninguna actualización.
                         @endif
                     </div>
-                    <div class="actualizaciones d-none">
-                        <h2>Actualizaciones</h2>
+                    <div class="analisis d-none">
+                        <h2>Análisis</h2>
                         @if ($juego->posts->count() != 0)
                             @foreach ($juego->posts as $post)
                                 <div>
@@ -100,7 +92,7 @@
                                 </div>
                             @endforeach
                         @else
-                            Aún no ha publicado ninguna actualización.
+                            Aún no se han creado análisis del juego.
                         @endif
                     </div>
                 </div>

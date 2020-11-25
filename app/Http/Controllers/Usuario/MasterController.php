@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Master;
 use App\Models\User;
 use App\Listeners\FollowListener;
+use App\Models\Post;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MasterController extends Controller
@@ -63,5 +65,12 @@ class MasterController extends Controller
         ], false);
 
         return redirect()->route('usuario.master.show', ['id' => $id]);
+    }
+
+    public function post(Request $request) {
+        $post = Post::find($request->id);
+        $mensajes = $post->mensajes;
+
+        return ['post' => $post, 'mensajes' => $mensajes];
     }
 }
