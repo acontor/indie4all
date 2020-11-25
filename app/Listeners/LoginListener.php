@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Carbon\Carbon;
 
-class LogSuccessfulLogin
+class LoginListener
 {
     /**
      * Create the event listener.

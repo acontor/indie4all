@@ -50,11 +50,14 @@
                 <div id="contenido">
                     <div class="general">
                         <h3>General</h3>
-                        @if ($master->posts->count() != 0)
-                            @foreach ($master->posts as $post)
+                        @if ($master->posts->where('tipo', 'General')->count() != 0)
+                            @foreach ($master->posts->where('tipo', 'General') as $post)
                                 <div>
                                     <h4>{{ $post->titulo }}</h4>
-                                    <p>{{ $post->contenido }}</p>
+                                    <p>{!! $post->contenido !!}</p>
+                                    @foreach ($post->mensajes as $mensaje)
+                                        {{ $mensaje->contenido }}
+                                    @endforeach
                                 </div>
                             @endforeach
                         @else
@@ -63,11 +66,15 @@
                     </div>
                     <div class="analisis d-none">
                         <h3>Análisis</h3>
-                        @if ($master->posts->count() != 0)
-                            @foreach ($master->posts as $post)
+                        @if ($master->posts->where('tipo', 'Análisis')->count() != 0)
+                            @foreach ($master->posts->where('tipo', 'Análisis') as $post)
                                 <div>
                                     <h4>{{ $post->titulo }}</h4>
-                                    <p>{{ $post->contenido }}</p>
+                                    <p>{!! $post->contenido !!}</p>
+                                    <form>
+                                        <input type="hidden" name="id" value="{{ $post->id }}">
+                                        <a type="submit" class="more">Leer más</a>
+                                    </form>
                                 </div>
                             @endforeach
                         @else
@@ -76,6 +83,16 @@
                     </div>
                     <div class="notas d-none">
                         <h3>Notas</h3>
+                        @if ($master->posts->where('tipo', 'Análisis')->count() != 0)
+                            @foreach ($master->posts->where('tipo', 'Análisis') as $post)
+                                <div>
+                                    <h4>{{ $post->titulo }}</h4>
+                                    <p>{!! $post->calificacion !!}</p>
+                                </div>
+                            @endforeach
+                        @else
+                            Aún no ha publicado ningún análisis.
+                        @endif
                     </div>
                 </div>
             </div>
@@ -88,8 +105,15 @@
         $(".menu").children("div").children("a").click(function(e) {
             e.preventDefault();
             let item = $(this).attr("id");
+            $(".post").remove();
             $("#contenido").children("div").addClass("d-none");
             $(`.${item}`).removeClass("d-none");
+        });
+
+        $(".more").click(function () {
+            $("#contenido").children("div").addClass("d-none");
+            // Ajax para obtener el post y mostrarlo en el div contenido.
+            $("#contenido").append("<div class='post'><h4>Análisis Bloodborne</h4><p>Prueba</p></div>");
         });
     });
 

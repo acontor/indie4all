@@ -15,16 +15,20 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <td class="w-50">Título</td>
-                                <td class="w-25 text-center">Calificación</td>
+                                <td class="w-30">Título</td>
+                                <td class="w-25">Tipo</td>
+                                <td class="w-10 text-center">Comentarios</td>
+                                <td class="w-10 text-center">Calificación</td>
                                 <td class="w-25 text-center">Acciones</td>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($posts as $post)
                                 <tr>
-                                    <td class="align-middle">{{ $post->titulo }}</td>
-                                    <td class="align-middle text-center">{{ $post->calificacion }}</td>
+                                    <td>{{ $post->titulo }}</td>
+                                    <td>{{ $post->tipo }}</td>
+                                    <td class="text-center">{{ $post->mensajes->count() }}</td>
+                                    <td class="text-center">{{ $post->calificacion }}</td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
                                             <form action="{{ route('master.posts.edit', $post->id) }}" method="post">

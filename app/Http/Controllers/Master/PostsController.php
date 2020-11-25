@@ -47,7 +47,7 @@ class PostsController extends Controller
     {
         $request->validate([
             'titulo' => 'required',
-            'calificacion' => 'required',
+            'tipo' => ['required', 'regex:/^(Análisis|General)$/i'],
             'contenido' => 'required',
         ]);
 
@@ -56,6 +56,7 @@ class PostsController extends Controller
         Post::create([
             'titulo' => $request->titulo,
             'calificacion' => $request->calificacion,
+            'tipo' => $request->tipo,
             'contenido' => $request->contenido,
             'master_id' => User::find(Auth::id())->master->id,
         ]);

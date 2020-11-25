@@ -26,6 +26,13 @@
                             <label>Calificación</label>
                             <input type="number" class="form-control" name="calificacion" value="@if(isset($post)) {{ $post->calificacion }} @endif" />
                         </div>
+                        <div class="form-group">
+                            <label>Tipo</label>
+                            <select name="tipo" class="custom-select">
+                                <option value="Análisis" selected>Análisis</option>
+                                <option value="General">General</option>
+                            </select>
+                        </div>
                         <!-- Poner botones en juegos para que master pueda crear análisis o post sobre ese juego. Incluir aquí un select de los juegos y el tipo de post. -->
                         <div class="form-group">
                             <label>Contenido</label>
