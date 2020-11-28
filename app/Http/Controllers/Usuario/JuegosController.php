@@ -20,7 +20,7 @@ class JuegosController extends Controller
      */
     public function index()
     {
-        $juegos = Juego::all();
+        $juegos = Juego::inRandomOrder()->limit(5)->get();
         return view('usuario.juegos', ['juegos' => $juegos]);
     }
 

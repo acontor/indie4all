@@ -18,6 +18,7 @@ class UsuariosSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'user1',
+            'username' => 'user1',
             'email' => 'user1@mail.com',
             'password' => Hash::make('password'),
         ]);
@@ -26,11 +27,13 @@ class UsuariosSeeder extends Seeder
         ]);
         DB::table('users')->insert([
             'name' => 'user2',
+            'username' => 'user2',
             'email' => 'user2@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('users')->insert([
             'name' => 'user3',
+            'username' => 'user3',
             'email' => 'user3@mail.com',
             'password' => Hash::make('password'),
         ]);
@@ -41,21 +44,25 @@ class UsuariosSeeder extends Seeder
         ]);
         DB::table('users')->insert([
             'name' => 'user4',
+            'username' => 'user4',
             'email' => 'user4@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('users')->insert([
             'name' => 'user5',
+            'username' => 'user5',
             'email' => 'user5@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('users')->insert([
             'name' => 'user6',
+            'username' => 'user6',
             'email' => 'user6@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('users')->insert([
             'name' => 'user7',
+            'username' => 'user7',
             'email' => 'user7@mail.com',
             'password' => Hash::make('password'),
         ]);
