@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('titulo');
             $table->longText('contenido');
+            $table->string('tipo')->nullable();
             $table->double('calificacion')->nullable();
             $table->bigInteger('desarrolladora_id')->nullable();
             $table->bigInteger('juego_id')->nullable();

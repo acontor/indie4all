@@ -20,8 +20,8 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav align-items-md-center ml-auto">
                 @auth
-                <li class="nav-item mr-md-5">
-                    <select class="form-control select2" name="busqueda" id="busqueda"></select>
+                <li class="nav-item mr-md-2">
+                    <button class="btn btn-warning search"><span class="badge badge-dark">ctrl + y</span><i class="fas fa-search ml-2"></i></button>
                 </li>
                 @endauth
                 <!-- Authentication Links -->
@@ -49,7 +49,7 @@
                                     Panel de desarrolladora
                                 </a>
                             @elseif(App\Models\Master::where("user_id", Auth::id())->count() == 1)
-                                <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                <a class="dropdown-item" href="{{ route('master.index') }}">
                                     Panel de master
                                 </a>
                             @endif

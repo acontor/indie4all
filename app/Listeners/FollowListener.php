@@ -19,6 +19,8 @@ class FollowListener
             $user->logros()->attach([
                 5
             ]);
+
+            event(new LogrosListener($user));
         }
     }
 }

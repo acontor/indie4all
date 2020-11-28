@@ -25,7 +25,7 @@ class Mensaje extends Model
      * Relationships
      */
 
-    // Users - N:M - Mensajes
+    // Users - 1:N - Mensajes
     public function user()
     {
         return $this->belongsTo("App\Models\User");

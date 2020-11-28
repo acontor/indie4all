@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Carbon\Carbon;
 
-class LogSuccessfulLogin
+class LoginListener
 {
     /**
      * Create the event listener.
@@ -37,6 +37,8 @@ class LogSuccessfulLogin
                 $usuario->logros()->attach([
                     2
                 ]);
+
+                event(new LogrosListener($usuario));
             }
         }
     }

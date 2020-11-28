@@ -17,6 +17,7 @@ class Post extends Model
     protected $fillable = [
         'titulo',
         'contenido',
+        'tipo',
         'calificacion',
         'desarrolladora_id',
         'juego_id',
