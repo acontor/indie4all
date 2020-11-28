@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Models\User;
 
-class FollowListener
+class MensajesListener
 {
     /**
      * Create the event listener.
@@ -13,11 +13,11 @@ class FollowListener
      */
     public function __construct(User $user)
     {
-        $follows = $user->desarrolladoras->count() + $user->juegos->count() + $user->masters->count();
+        $mensajes = $user->mensajes->count();
 
-        if($follows >= 5) {
+        if($mensajes >= 5) {
             $user->logros()->attach([
-                5
+                1
             ]);
 
             event(new LogrosListener($user));

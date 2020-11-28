@@ -88,9 +88,6 @@
                                 <h4>{{ $sorteo->titulo }}</h4>
                                 <p>{{ $sorteo->descripcion }}</p>
                                 <p>{{ $sorteo->fecha_fin }}</p>
-                                @if ($desarrolladora->id != App\Models\Cm::all()->where('user_id', Auth::id())->first()->desarrolladora_id)
-                                    <button class="btn btn-success">Participar</button>
-                                @endif
                             </div>
                         @endforeach
                     </div>

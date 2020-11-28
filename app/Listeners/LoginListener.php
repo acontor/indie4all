@@ -37,6 +37,8 @@ class LoginListener
                 $usuario->logros()->attach([
                     2
                 ]);
+
+                event(new LogrosListener($usuario));
             }
         }
     }

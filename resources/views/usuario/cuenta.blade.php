@@ -1,5 +1,4 @@
 @extends("layouts.usuario.base")
-
 @section("content")
     <main class="py-4">
         <div class="container">
@@ -13,6 +12,7 @@
                 <div class="col-4 col-md-2"><a id="masters" href="">Masters</a></div>
                 <div class="col-4 col-md-2"><a id="campanias" href="">Campañas</a></div>
             </div>
+            {{$usuario->mensajes->count()}}
             <div id="main">
                 <div class="preferencias">
                     <div class="box-header mt-4">

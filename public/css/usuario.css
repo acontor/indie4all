@@ -70,52 +70,6 @@ nav {
     color: white !important;
 }
 
-/*
-.select2-selection {
-    border: 0 !important;
-    border-bottom: 1px solid #FFFFFF !important;
-    border-radius: 0 !important;
-    background-color: #E34E33 !important;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-.select2-selection:focus {
-    outline: 0 !important;
-}
-
-.select2-selection__rendered {
-    margin: 0 10px !important;
-    padding: 0 !important;
-}
-
-.select2-selection__placeholder {
-    text-align: center !important;
-    color: #FFFFFF !important;
-}
-
-.select2-selection__arrow {
-    display: none !important;
-}
-
-.select2-search__field {
-    border: 0 !important;
-    border-bottom: 1px solid #2E3647 !important;
-}
-
-.select2-search__field {
-    outline: 0 !important;
-    border: 0 !important;
-    border-bottom: 1px solid #2E3647 !important;
-}
-
-.select2-dropdown {
-    border: 0 !important;
-    border-radius: 0 !important;
-}
-*/
-
 /**
  * MAIN CONTENT
  */

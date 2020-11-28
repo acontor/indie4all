@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Listeners\MensajesListener;
 use App\Models\Mensaje;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,11 +23,15 @@ class MensajesController extends Controller
 
     public function store(Request $request)
     {
+        $user = User::find(Auth::id());
+
         $mensaje = Mensaje::create([
             'contenido' => $request->mensaje,
             'post_id' => $request->id,
             'user_id' => Auth::id(),
         ]);
+
+        event(new MensajesListener($user));
 
         return $mensaje = [
             'contenido' => $mensaje->contenido,

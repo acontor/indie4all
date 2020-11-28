@@ -2,7 +2,7 @@
 @section('styles')
 
 <style>
-    
+
     input[type="file"] {
     display: none;
 }
@@ -13,8 +13,8 @@
     cursor: pointer;
 }
     </style>
-    
-    
+
+
 @endsection
 @section("content")
     <div class="container">
@@ -36,7 +36,7 @@
                     @else
                         <h1 class="mb-4">Nuevo Juego</h1>
                     @endif
-               
+
                 @if (isset($juego))
                     <form action="{{ route('cm.juegos.update', $juego->id) }}" method="post" enctype="multipart/form-data">
                     @method("PATCH")
@@ -82,9 +82,9 @@
                                         <input type="file" id="imagen_portada" name="imagen_portada" @if(!isset($juego)) required="required" @endif onchange="readURL(this);">
                                 </label>
                                 @if(isset($juego))
-                                <img  src="{{url('/images/juegos/portadas/'.$juego->imagen_portada)}}" height="100" width="100" id="blah" /> 
+                                <img  src="{{url('/images/juegos/portadas/'.$juego->imagen_portada)}}" height="100" width="100" id="blah" />
                             @else
-                                <img src=""  height="100" width="100" id="blah" style="display: none"/>         
+                                <img src=""  height="100" width="100" id="blah" style="display: none"/>
                             @endif
                             </div>
                             <div class="form-group">
@@ -93,9 +93,9 @@
                                     <input type="file" class="btn btn-primary" id="imagen_caratula" name="imagen_caratula" @if(!isset($juego)) required="required" @endif onchange="readURL2(this);">
                                 </label>
                             @if(isset($juego))
-                                <img  src="{{url('/images/juegos/caratulas/'.$juego->imagen_caratula)}}" height="100" width="100" id="bloh" /> 
+                                <img  src="{{url('/images/juegos/caratulas/'.$juego->imagen_caratula)}}" height="100" width="100" id="bloh" />
                             @else
-                                <img src=""  height="100" width="100" id="bloh" style="display: none"/>         
+                                <img src=""  height="100" width="100" id="bloh" style="display: none"/>
                             @endif
                             </div>
                         </div>
@@ -104,9 +104,9 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
-    @section("scripts")    
+    @section("scripts")
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/es.js"></script>
     <script>
@@ -122,7 +122,7 @@
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     $('#blah').attr('src', e.target.result);
-                    $('#blah').css('display','block'); 
+                    $('#blah').css('display','block');
                     $('#btn-portada').removeClass("btn-outline-dark");
                     $('#btn-portada').addClass('btn-primary')
                 }
@@ -134,14 +134,14 @@
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     $('#bloh').attr('src', e.target.result);
-                    $('#bloh').css('display','block'); 
+                    $('#bloh').css('display','block');
                     $('#btn-caratula').removeClass("btn-outline-dark");
                     $('#btn-caratula').addClass('btn-primary')
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        
+
 
     </script>
 @endsection
