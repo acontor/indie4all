@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Models\Juego;
+use App\Models\Post;
 use App\Models\User;
 use App\Listeners\FollowListener;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class JuegosController extends Controller
 {
@@ -62,5 +65,17 @@ class JuegosController extends Controller
         ], false);
 
         return redirect()->route('usuario.juego.show', ['id' => $id]);
+    }
+
+    public function post(Request $request)
+    {
+        $post = Post::find($request->id);
+
+        $mensajes = DB::table('mensajes')
+            ->join('users', 'users.id', '=', 'mensajes.user_id')
+            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name')
+            ->where('mensajes.post_id', $post->id)->get();
+
+        return ['post' => $post, 'mensajes' => $mensajes];
     }
 }

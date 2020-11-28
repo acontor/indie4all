@@ -9,6 +9,7 @@ use App\Listeners\FollowListener;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MasterController extends Controller
 {
@@ -67,9 +68,14 @@ class MasterController extends Controller
         return redirect()->route('usuario.master.show', ['id' => $id]);
     }
 
-    public function post(Request $request) {
+    public function post(Request $request)
+    {
         $post = Post::find($request->id);
-        $mensajes = $post->mensajes;
+
+        $mensajes = DB::table('mensajes')
+            ->join('users', 'users.id', '=', 'mensajes.user_id')
+            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name')
+            ->where('mensajes.post_id', $post->id)->get();
 
         return ['post' => $post, 'mensajes' => $mensajes];
     }

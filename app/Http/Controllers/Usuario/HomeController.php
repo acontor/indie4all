@@ -39,22 +39,21 @@ class HomeController extends Controller
         $data = [];
         if ($request->has('q')) {
             $search = $request->q;
-            $juegos = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->get();
-            $desarrolladoras = Desarrolladora::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->get();
-            //$usuarios = User::with('masters')->select("masters.id, users.name")->where('name', 'LIKE', "%$search%")->get();
+            $juegos = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->take(5)->get();
+            $desarrolladoras = Desarrolladora::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->take(5)->get();
             $masters = DB::table('users')
             ->join('masters', 'users.id', '=', 'masters.user_id')
-            ->select('masters.id', 'users.name')->where('users.name', 'LIKE', "%$search%")->get();
+            ->select('masters.id', 'users.name')->where('users.name', 'LIKE', "%$search%")->take(5)->get();
             foreach ($juegos as $juego) {
-                $temp = ["id" => $juego->id, "nombre" => "Juego > " . $juego->nombre];
+                $temp = ['id' => $juego->id, 'nombre' => $juego->nombre, 'tipo' => 'Juego'];
                 array_push($data, $temp);
             }
             foreach ($desarrolladoras as $desarrolladora) {
-                $temp = ["id" => $desarrolladora->id, "nombre" => "Desarrolladora > " . $desarrolladora->nombre];
+                $temp = ['id' => $desarrolladora->id, 'nombre' => $desarrolladora->nombre, 'tipo' => 'Desarrolladora'];
                 array_push($data, $temp);
             }
             foreach ($masters as $master) {
-                $temp = ["id" => $master->id, "nombre" => "Master > " . $master->name];
+                $temp = ['id' => $master->id, 'nombre' => $master->name, 'tipo' => 'Master'];
                 array_push($data, $temp);
             }
         }

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Usuario;
 use App\Http\Controllers\Controller;
 use App\Listeners\FollowListener;
 use App\Models\Desarrolladora;
+use App\Models\Post;
 use App\Models\Solicitud;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DesarrolladorasController extends Controller
 {
@@ -70,7 +72,7 @@ class DesarrolladorasController extends Controller
      */
     public function show($id)
     {
-        $usuario = User::find(Auth::id())->desarrolladoras()->where('desarrolladora_id','=', $id)->first();
+        $usuario = User::find(Auth::id())->desarrolladoras()->where('desarrolladora_id', '=', $id)->first();
         $desarrolladora = Desarrolladora::find($id);
         return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora, 'usuario' => $usuario]);
     }
@@ -103,5 +105,17 @@ class DesarrolladorasController extends Controller
         ], false);
 
         return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+    }
+
+    public function post(Request $request)
+    {
+        $post = Post::find($request->id);
+
+        $mensajes = DB::table('mensajes')
+            ->join('users', 'users.id', '=', 'mensajes.user_id')
+            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name')
+            ->where('mensajes.post_id', $post->id)->get();
+
+        return ['post' => $post, 'mensajes' => $mensajes];
     }
 }
