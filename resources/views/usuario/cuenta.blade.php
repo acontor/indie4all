@@ -15,10 +15,8 @@
             {{$usuario->mensajes->count()}}
             <div id="main">
                 <div class="preferencias">
-                    <div class="box-header mt-4">
-                        <h5>Mi cuenta</h5>
-                    </div>
                     <div class="box">
+                        <h5 class="mb-3">Mi cuenta</h5>
                         <form action="{{ route('usuario.cuenta.usuario') }}" method="post">
                             @method("PATCH")
                             @csrf
@@ -28,12 +26,22 @@
                                     <input type="text" name="nombre" class="form-control" id="nombre" value="{{ $usuario->name }}">
                                 </div>
                                 <div class="col-md-4 mt-3 mt-md-0">
+                                    <label for="username">Nombre de usuario:</label>
+                                    <input type="text" name="username" class="form-control" id="username">
+                                </div>
+                                <div class="col-md-4 mt-3 mt-md-0">
                                     <label for="email">Email:</label>
                                     <input type="email" name="email" class="form-control" id="email" value="{{ $usuario->email }}">
                                 </div>
+                            </div>
+                            <div class="row form-group">
                                 <div class="col-md-4 mt-3 mt-md-0">
-                                    <label for="password">Contraseña:</label>
+                                    <label for="password">Nueva contraseña:</label>
                                     <input type="password" name="password" class="form-control" id="password">
+                                </div>
+                                <div class="col-md-4 mt-3 mt-md-0">
+                                    <label for="password1">Repetir contraseña:</label>
+                                    <input type="password" name="password1" class="form-control" id="password1">
                                 </div>
                             </div>
                             <div class="row form-group align-items-end">
@@ -56,10 +64,8 @@
                             </div>
                         </form>
                     </div>
-                    <div class="box-header mt-4">
-                        <h6>Géneros</h6>
-                    </div>
-                    <div class="box align-items-center">
+                    <div class="box align-items-center mt-4">
+                        <h5 class="mb-3">Géneros</h5>
                         <form action="{{ route('usuario.cuenta.generos') }}" method="post">
                             @csrf
                             <select class="form-control select2" name="generos[]" id="generos" multiple>
@@ -70,10 +76,8 @@
                             <button type="submit" class="btn btn-success">Guardar</button>
                         </form>
                     </div>
-                    <div class="box-header mt-4">
-                        <h5>Logros</h5>
-                    </div>
-                    <div class="box">
+                    <div class="box mt-4">
+                        <h5 class="mb-3">Logros</h5>
                         <div class="row">
                             @foreach ($logros as $logro)
                                 <div class="col-2">
@@ -95,10 +99,8 @@
                 </div>
                 @endif
                 <div class="desarrolladoras d-none">
-                    <div class="box-header mt-4">
-                        <h5>Desarrolladoras</h5>
-                    </div>
-                    <div class="box">
+                    <div class="box mt-4">
+                        <h5 class="mb-3">Desarrolladoras</h5>
                         @if ($usuario->desarrolladoras->count() == 0)
                             Date una vuelta por nuestras <a href="{{ route('usuario.desarrolladoras.index') }}">desarrolladoras</a> y sigue a tus favortias.
                         @else
@@ -126,10 +128,8 @@
                     </div>
                 </div>
                 <div class="juegos d-none">
-                    <div class="box-header mt-4">
-                        <h5>Juegos</h5>
-                    </div>
-                    <div class="box">
+                    <div class="box mt-4">
+                        <h5 class="mb-3">Juegos</h5>
                         @if ($usuario->juegos->count() == 0)
                             ¿No te gusta ningún <a href="{{ route('usuario.juegos.index') }}">juego</a>?
                         @else
@@ -161,10 +161,8 @@
                     </div>
                 </div>
                 <div class="masters d-none">
-                    <div class="box-header mt-4">
-                        <h5>Masters</h5>
-                    </div>
-                    <div class="box">
+                    <div class="box mt-4">
+                        <h5 class="mb-3">Masters</h5>
                         @if ($usuario->masters->count() == 0)
                             ¡Te animamos a que descubras a nuestros <a href="{{ route('usuario.masters.index') }}">masters</a>!
                         @else
@@ -192,16 +190,14 @@
                     </div>
                 </div>
                 <div class="campanias d-none">
-                    <div class="box-header mt-4">
-                        <h5>Campañas</h5>
-                    </div>
-                    <div class="box">
+                    <div class="box mt-4">
+                        <h5 class="mb-3">Campañas</h5>
                         @if ($usuario->campanias->count() > 0)
                             @foreach ($usuario->campanias as $campania)
                                 {{ $campania }}
                             @endforeach
                         @else
-                            ¿A que esperas, ¡participa en alguna <a href="">campaña</a> que te guste!
+                            ¿A que esperas?, ¡participa en alguna <a href="">campaña</a> que te guste!
                         @endif
                     </div>
                 </div>
