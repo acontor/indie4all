@@ -25,6 +25,12 @@ class DesarrolladorasController extends Controller
         return view('usuario.desarrolladoras', ['desarrolladoras' => $desarrolladoras]);
     }
 
+    public function all()
+    {
+        $desarrolladoras = Desarrolladora::all();
+        return view('usuario.desarrolladoras_all', ['desarrolladoras' => $desarrolladoras]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

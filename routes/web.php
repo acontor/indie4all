@@ -169,6 +169,7 @@ Route::patch('/cuenta/usuario', [App\Http\Controllers\Usuario\CuentaController::
 
 // Desarrolladoras
 Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'index'])->name('usuario.desarrolladoras.index')->middleware('auth');
+Route::get('/desarrolladoras/lista', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'all'])->name('usuario.desarrolladoras.all')->middleware('auth');
 Route::get('/desarrolladora/{id}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'show'])->name('usuario.desarrolladora.show')->middleware('auth');
 Route::get('/desarrolladora/{id}/post', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'post'])->name('usuario.desarrolladora.post')->middleware('auth');
 Route::post('/desarrolladora/{id}/follow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'follow'])->name('usuario.desarrolladora.follow')->middleware('auth');
@@ -179,6 +180,7 @@ Route::post('/desarrolladoras/solicitud', [App\Http\Controllers\Usuario\Desarrol
 
 // Juegos
 Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index')->middleware('auth');
+Route::get('/juegos/lista', [App\Http\Controllers\Usuario\JuegosController::class, 'all'])->name('usuario.juegos.all')->middleware('auth');
 Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class, 'show'])->name('usuario.juego.show')->middleware('auth');
 Route::get('/juego/{id}/post', [App\Http\Controllers\Usuario\JuegosController::class, 'post'])->name('usuario.juego.post')->middleware('auth');
 Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController::class, 'follow'])->name('usuario.juego.follow')->middleware('auth');
@@ -187,6 +189,7 @@ Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosCo
 
 //master
 Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index')->middleware('auth');
+Route::get('/masters/lista', [App\Http\Controllers\Usuario\MasterController::class, 'all'])->name('usuario.masters.all')->middleware('auth');
 Route::get('/master/{id}', [App\Http\Controllers\Usuario\MasterController::class, 'show'])->name('usuario.master.show')->middleware('auth');
 Route::get('/master/{id}/post', [App\Http\Controllers\Usuario\MasterController::class, 'post'])->name('usuario.master.post')->middleware('auth');
 Route::post('/master/{id}/follow', [App\Http\Controllers\Usuario\MasterController::class, 'follow'])->name('usuario.master.follow')->middleware('auth');

@@ -24,6 +24,12 @@ class JuegosController extends Controller
         return view('usuario.juegos', ['juegos' => $juegos]);
     }
 
+    public function all()
+    {
+        $juegos = Juego::all();
+        return view('usuario.juegos_all', ['juegos' => $juegos]);
+    }
+
     /**
      * Display the specified resource.
      *
