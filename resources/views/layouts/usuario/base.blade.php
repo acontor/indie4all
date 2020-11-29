@@ -77,26 +77,26 @@
                         success: function(data) {
                             let html = '<div class="list-group mb-4 mt-2 mr-3">';
                             if(data.length == 0) {
-                                $(".swal2-html-container>div").append('No se ha encontrado ningún resultado');
+                                $(".swal2-html-container>div").append('<p class="mt-3">No se ha encontrado ningún resultado</p>');
                             } else {
                                 data.forEach(element => {
                                     if(element.tipo == "Juego") {
                                         if(html.indexOf("<h4 class='mt-2 mb-2'>Juegos</h4>") == -1) {
-                                            html += "<h4 class='mt-2 mb-2'>Juegos</h4>";
+                                            html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="{{ route('usuario.juegos.all') }}">Ver todos</a></small>`;
                                         }
                                         let url = '{{ route("usuario.juego.show", ":id") }}';
                                         url = url.replace(':id', element.id);
                                         html += `<a href="${url}" class="list-group-item list-group-item-action">${element.nombre}</a>`;
                                     } else if (element.tipo == "Desarrolladora") {
                                         if(html.indexOf("<h4 class='mt-2 mb-2'>Desarrolladoras</h4>") == -1) {
-                                            html += "<h4 class='mt-2 mb-2'>Desarrolladoras</h4>";
+                                            html += `<h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="{{ route('usuario.desarrolladoras.all') }}">Ver todas</a></small>`;
                                         }
                                         let url = '{{ route("usuario.desarrolladora.show", ":id") }}';
                                         url = url.replace(':id', element.id);
                                         html += `<a href="${url}" class="list-group-item list-group-item-action">${element.nombre}</a>`;
                                     } else if (element.tipo == "Master") {
                                         if(html.indexOf("<h4 class='mt-2 mb-2'>Masters</h4>") == -1) {
-                                            html += "<h4 class='mt-2 mb-2'>Masters</h4>";
+                                            html += `<h4 class='mt-2 mb-2'>Masters</h4><small><a href="{{ route('usuario.masters.all') }}">Ver todas</a></small>`;
                                         }
                                         let url = '{{ route("usuario.master.show", ":id") }}';
                                         url = url.replace(':id', element.id);
