@@ -4,6 +4,7 @@
         <div class="container">
             <div class="row box text-center menu">
                 <div class="col-4 col-md-2"><a id="preferencias" href="">Preferencias</a></div>
+                <div class="col-4 col-md-2"><a id="compras" href="">Compras</a></div>
                 @if ($usuario->solicitud)
                     <div class="col-4 col-md-2"><a id="solicitud" href="">Solicitud</a></div>
                 @endif
@@ -88,6 +89,16 @@
                         </div>
                     </div>
                 </div>
+                @if ($usuario->compras)
+                <div class="compras d-none">
+                    <div class="box-header mt-4">
+                        <h5>Compras</h5>
+                    </div>
+                    <div class="box">
+                        {{ $usuario->compras->count() }}
+                    </div>
+                </div>
+                @endif
                 @if ($usuario->solicitud)
                 <div class="solicitud d-none">
                     <div class="box-header mt-4">
@@ -192,12 +203,12 @@
                 <div class="campanias d-none">
                     <div class="box mt-4">
                         <h5 class="mb-3">Campañas</h5>
-                        @if ($usuario->campanias->count() > 0)
-                            @foreach ($usuario->campanias as $campania)
+                        @if ($usuario->compras->where("campania_id", '!=', null)->count() > 0)
+                            @foreach ($usuario->compras->where("campania_id", '!=', null) as $campania)
                                 {{ $campania }}
                             @endforeach
                         @else
-                            ¿A que esperas?, ¡participa en alguna <a href="">campaña</a> que te guste!
+                            ¿A que esperas?, ¡participa en alguna <a href="{{ route('usuario.campanias.index') }}">campaña</a> que te guste!
                         @endif
                     </div>
                 </div>

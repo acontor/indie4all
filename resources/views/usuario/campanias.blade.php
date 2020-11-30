@@ -4,7 +4,7 @@
     <main class="py-4">
         <div class="container">
             <div class="box-header">
-                <h1>Juegos ({{ $campanias->count() }})</h1>
+                <h1>Campañas ({{ $campanias->count() }})</h1>
             </div>
             <div class="table-responsive box">
                 <table class="table table-striped">
