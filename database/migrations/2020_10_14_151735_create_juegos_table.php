@@ -19,11 +19,17 @@ class CreateJuegosTable extends Migration
             $table->string('imagen_portada');
             $table->string('imagen_caratula');
             $table->longText('sinopsis');
+            $table->longText('contenido');
+            $table->integer('reportes')->default(0);
+            $table->boolean('ban')->default(false);
+            $table->longText('motivo')->nullable();
             $table->date('fecha_lanzamiento');
             $table->double('precio')->nullable();
+            $table->timestamps();
             $table->bigInteger('desarrolladora_id')->unsigned();
             $table->bigInteger('genero_id')->unsigned();
-            $table->timestamps();
+            $table->foreign('desarrolladora_id')->references('id')->on('desarrolladoras');
+            $table->foreign('genero_id')->references('id')->on('generos');
         });
     }
 

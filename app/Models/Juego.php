@@ -23,6 +23,10 @@ class Juego extends Model
         'precio',
         'desarrolladora_id',
         'genero_id',
+        'contenido',
+        'ban',
+        'motivo',
+        'reportes',
     ];
 
     /**

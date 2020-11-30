@@ -16,9 +16,10 @@ class CreateOpcionsTable extends Migration
         Schema::create('opcions', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
-            $table->bigInteger('encuesta_id');
             $table->boolean('ganadora')->nullable();
             $table->timestamps();
+            $table->bigInteger('encuesta_id')->unsigned();
+            $table->foreign('encuesta_id')->references('id')->on('encuestas');
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCampaniaUsersTable extends Migration
+class CreateClavesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCampaniaUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('campania_user', function (Blueprint $table) {
+        Schema::create('claves', function (Blueprint $table) {
             $table->id();
+            $table->string('key');
             $table->timestamps();
-            $table->double('precio');
-            $table->unsignedBigInteger('campania_id');
-            $table->unsignedBigInteger('user_id');
+            $table->bigInteger('juego_id')->unsigned();
+            $table->foreign('juego_id')->references('id')->on('juegos');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateCampaniaUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('campania_user');
+        Schema::dropIfExists('claves');
     }
 }

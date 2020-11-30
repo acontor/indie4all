@@ -11,7 +11,10 @@
                     <h1 class="d-inline-block">Logros ({{ $logros->count() }})</h1>
                     <a href="{{ route('admin.logros.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                 </div>
-                <div class="table-responsive box mt-4">
+                <div class="box mt-4">
+                    <canvas id="myChart" width="400" height="100"></canvas>
+                </div>
+                <div class="box mt-4">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -28,7 +31,7 @@
                                     <td class="align-middle w-10 text-center"><i class="{{ $logro->icono }}"></i></td>
                                     <td class="align-middle w-30">{{ $logro->nombre }}</td>
                                     <td class="align-middle w-40">{{ $logro->descripcion }}</td>
-                                    <td class="align-middle w-10 text-center">{{ $numUsuarios }}</td>
+                                    <td class="align-middle w-10 text-center">{{ Illuminate\Support\Facades\DB::table('logro_user')->where('logro_id', $logro->id)->count() }}</td>
                                     <td class="align-middle w-10 text-center">
                                         <div class="btn-group">
                                             <form action="{{ route('admin.logros.edit', $logro->id) }}" method="post">
@@ -56,16 +59,59 @@
 @section("scripts")
     <script src="{{ asset('js/datatable.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/chart.min.js') }}"></script>
     <script>
         $(function() {
-            $("table").dataTable();
+            $('table').DataTable({
+                "responsive": true
+            });
 
             let sessionSuccess = {!! json_encode(session()->get("success")) !!}
 
             if (sessionSuccess != undefined) {
                 notificacion(sessionSuccess)
             }
+
+            var logros = {!! json_encode($logros) !!};
+            var datos = {!! json_encode($datos) !!};
+
+            var nombreLogro = [];
+
+            logros.forEach(element => {
+                nombreLogro.push(element["nombre"])
+            });
+
+            graficaLogros(nombreLogro, datos);
         });
+
+        function graficaLogros(logros, datos) {
+            var ctx = document.getElementById("myChart").getContext("2d");
+
+            var datos = {
+                labels: logros,
+                datasets: [{
+                        label: "Usuarios que lo han conseguido",
+                        backgroundColor: "#ff6384",
+                        data: datos
+                    },
+                ],
+            };
+
+            var myBarChart = new Chart(ctx, {
+                type: "bar",
+                data: datos,
+                options: {
+                    barValueSpacing: 20,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                min: 0,
+                            }
+                        }]
+                    }
+                }
+            });
+        }
 
         function notificacion(sessionSuccess) {
             Swal.fire({

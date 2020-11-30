@@ -19,10 +19,19 @@ class CreatePostsTable extends Migration
             $table->longText('contenido');
             $table->string('tipo')->nullable();
             $table->double('calificacion')->nullable();
-            $table->bigInteger('desarrolladora_id')->nullable();
-            $table->bigInteger('juego_id')->nullable();
-            $table->bigInteger('master_id')->nullable();
+            $table->integer('reportes')->default(0);
+            $table->boolean('destacado')->default(false);
+            $table->boolean('ban')->default(false);
+            $table->longText('motivo')->nullable();
             $table->timestamps();
+            $table->bigInteger('desarrolladora_id')->unsigned()->nullable();
+            $table->bigInteger('juego_id')->unsigned()->nullable();
+            $table->bigInteger('master_id')->unsigned()->nullable();
+            $table->bigInteger('campania_id')->unsigned()->nullable();
+            $table->foreign('desarrolladora_id')->references('id')->on('desarrolladoras');
+            $table->foreign('campania_id')->references('id')->on('campanias');
+            $table->foreign('juego_id')->references('id')->on('juegos');
+            $table->foreign('master_id')->references('id')->on('masters');
         });
     }
 

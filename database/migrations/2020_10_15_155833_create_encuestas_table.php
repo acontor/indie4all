@@ -17,8 +17,9 @@ class CreateEncuestasTable extends Migration
             $table->id();
             $table->string('pregunta');
             $table->date('fecha_fin');
-            $table->bigInteger('desarrolladora_id')->unsigned();
             $table->timestamps();
+            $table->bigInteger('desarrolladora_id')->unsigned();
+            $table->foreign('desarrolladora_id')->references('id')->on('desarrolladoras');
         });
     }
 

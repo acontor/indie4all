@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMastersUsersTable extends Migration
+class CreateComprasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,18 @@ class CreateMastersUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('master_user', function (Blueprint $table) {
+        Schema::create('compras', function (Blueprint $table) {
             $table->id();
-            $table->boolean('notificacion');
             $table->timestamps();
+            $table->double('precio');
+            $table->date('fecha_compra');
+            $table->string('key');
+            $table->bigInteger('campania_id')->unsigned()->nullable();
+            $table->bigInteger('juego_id')->unsigned()->nullable();
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('master_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('master_id')->references('id')->on('masters');
+            $table->foreign('juego_id')->references('id')->on('juegos');
+            $table->foreign('campania_id')->references('id')->on('campanias');
         });
     }
 
@@ -31,6 +35,6 @@ class CreateMastersUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_user');
+        Schema::dropIfExists('compras');
     }
 }

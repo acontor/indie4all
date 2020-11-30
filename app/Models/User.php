@@ -22,6 +22,9 @@ class User extends Authenticatable
         'email',
         'password',
         'last_activity',
+        'reportes',
+        'ban',
+        'motivo',
     ];
 
     /**
@@ -71,10 +74,10 @@ class User extends Authenticatable
         return $this->belongsToMany("App\Models\Desarrolladora")->withPivot('notificacion');
     }
 
-    // Users - N:M - Campañas
-    public function campanias()
+    // Users - 1:N - Compras
+    public function compras()
     {
-        return $this->belongsToMany("App\Models\Campania")->withPivot('precio');
+        return $this->hasMany("App\Models\Compras");
     }
 
     // Users - 1:N - Mensajes

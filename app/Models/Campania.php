@@ -19,6 +19,11 @@ class Campania extends Model
         'recaudado',
         'fecha_fin',
         'juego_id',
+        'contenido',
+        'ban',
+        'motivo',
+        'reportes',
+        'faq',
     ];
 
     /**
