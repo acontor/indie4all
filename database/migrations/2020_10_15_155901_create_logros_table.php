@@ -18,6 +18,7 @@ class CreateLogrosTable extends Migration
             $table->string('nombre');
             $table->string('descripcion');
             $table->string('icono');
+            $table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Administrador;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Models\Logro;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class LogrosController extends Controller
@@ -29,8 +29,14 @@ class LogrosController extends Controller
     public function index()
     {
         $logros = Logro::all();
-        $numUsuarios = User::all()->count();
-        return view('admin.logros', ['logros' => $logros, 'numUsuarios' => $numUsuarios]);
+        $datos = [];
+        foreach ($logros as $logro) {
+            $dato = DB::table('logro_user')->where('logro_id', $logro->id)->count();
+
+            array_push($datos, $dato);
+        }
+
+        return view('admin.logros', ['logros' => $logros, 'datos' => $datos]);
     }
 
     public function create()

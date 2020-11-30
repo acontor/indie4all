@@ -12,7 +12,7 @@
                         <a href="{{ route('admin.solicitudes.index') }}" class="btn btn-success btn-sm float-right mt-2">Solicitudes ({{ $numSolicitudes }})</a>
                     @endif
                 </div>
-                <div class="table-responsive box">
+                <div class="box">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -46,7 +46,9 @@
     <script src="{{ asset('js/datatable.js') }}"></script>
     <script type="text/javascript">
         $(function() {
-            $("table").dataTable();
+            $('table').DataTable({
+                "responsive": true
+            });
         });
 
     </script>

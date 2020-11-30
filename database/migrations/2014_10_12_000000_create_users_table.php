@@ -23,6 +23,10 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('last_activity')->nullable();
+            $table->integer('reportes')->default(0);
+            $table->boolean('ban')->default(false);
+            $table->longText('motivo')->nullable();
+
         });
     }
 

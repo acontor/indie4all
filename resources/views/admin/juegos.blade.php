@@ -9,7 +9,7 @@
                 <div class="box-header">
                     <h1>Juegos ({{ $juegos->count() }})</h1>
                 </div>
-                <div class="table-responsive box">
+                <div class="box">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -45,7 +45,9 @@
     <script src="{{ asset('js/datatable.js') }}"></script>
     <script type="text/javascript">
         $(function() {
-            $("table").dataTable();
+            $('table').DataTable({
+                "responsive": true
+            });
         });
 
     </script>

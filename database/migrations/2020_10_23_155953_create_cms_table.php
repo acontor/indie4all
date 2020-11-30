@@ -16,9 +16,11 @@ class CreateCmsTable extends Migration
         Schema::create('cms', function (Blueprint $table) {
             $table->id();
             $table->string('rol')->nullable();
-            $table->bigInteger('desarrolladora_id');
-            $table->bigInteger('user_id');
             $table->timestamps();
+            $table->bigInteger('desarrolladora_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('desarrolladora_id')->references('id')->on('desarrolladoras');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

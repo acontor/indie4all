@@ -15,7 +15,7 @@
                 <div class="box mt-4">
                     <canvas id="myChart" width="400" height="100"></canvas>
                 </div>
-                <div class="table-responsive box mt-4">
+                <div class="box mt-4">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -63,7 +63,9 @@
     <script src="{{ asset('js/chart.min.js') }}"></script>
     <script>
         $(function() {
-            $("table").dataTable();
+            $('table').DataTable({
+                "responsive": true
+            });
 
             var generos = {!! json_encode($generos) !!};
             var datos = {!! json_encode($datos) !!};

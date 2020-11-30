@@ -15,9 +15,11 @@ class CreateGenerosUsersTable extends Migration
     {
         Schema::create('genero_user', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('genero_id');
-            $table->bigInteger('user_id');
             $table->timestamps();
+            $table->bigInteger('genero_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('genero_id')->references('id')->on('generos');
         });
     }
 

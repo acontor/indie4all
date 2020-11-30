@@ -21,6 +21,10 @@ class Desarrolladora extends Model
         'telefono',
         'url',
         'imagen_logo',
+        'contenido',
+        'ban',
+        'motivo',
+        'reportes',
     ];
 
     /**

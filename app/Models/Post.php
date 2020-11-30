@@ -22,6 +22,11 @@ class Post extends Model
         'desarrolladora_id',
         'juego_id',
         'master_id',
+        'reportes',
+        'destacado',
+        'ban',
+        'motivo',
+        'campania_id',
     ];
 
     /**

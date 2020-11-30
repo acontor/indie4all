@@ -15,10 +15,12 @@ class CreateDesarrolladoraUsersTable extends Migration
     {
         Schema::create('desarrolladora_user', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('desarrolladora_id');
-            $table->bigInteger('user_id');
             $table->boolean('notificacion');
             $table->timestamps();
+            $table->bigInteger('desarrolladora_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('desarrolladora_id')->references('id')->on('desarrolladoras');
         });
     }
 

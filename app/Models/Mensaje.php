@@ -19,6 +19,8 @@ class Mensaje extends Model
         'post_id',
         'analisis_id',
         'user_id',
+        'campania_id',
+        'reportes',
     ];
 
     /**

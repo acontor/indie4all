@@ -15,9 +15,11 @@ class CreateLogrosUsersTable extends Migration
     {
         Schema::create('logro_user', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('logro_id');
-            $table->bigInteger('user_id');
             $table->timestamps();
+            $table->bigInteger('logro_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('logro_id')->references('id')->on('logros');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

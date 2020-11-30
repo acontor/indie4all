@@ -21,6 +21,10 @@ class CreateDesarrolladorasTable extends Migration
             $table->string('telefono');
             $table->string('url');
             $table->string('imagen_logo')->nullable();
+            $table->longText('contenido')->nullable();
+            $table->integer('reportes')->default(0);
+            $table->boolean('ban')->default(false);
+            $table->longText('motivo')->nullable();
             $table->timestamps();
         });
     }

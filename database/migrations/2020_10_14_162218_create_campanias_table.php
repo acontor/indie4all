@@ -18,8 +18,14 @@ class CreateCampaniasTable extends Migration
             $table->double('meta');
             $table->double('recaudado')->default(0);
             $table->date('fecha_fin');
-            $table->bigInteger('juego_id')->unsigned();
+            $table->longText('contenido')->nullable();
+            $table->longText('faq')->nullable();
+            $table->integer('reportes')->default(0);
+            $table->boolean('ban')->default(false);
+            $table->longText('motivo')->nullable();
             $table->timestamps();
+            $table->bigInteger('juego_id')->unsigned();
+            $table->foreign('juego_id')->references('id')->on('juegos');
         });
     }
 
