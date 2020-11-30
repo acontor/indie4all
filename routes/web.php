@@ -116,7 +116,7 @@ Route::delete('/cm/juegos/{id}/delete', [App\Http\Controllers\Cm\JuegosControlle
 Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
 Route::post('/cm/campanias/juego/{id}/nuevo', [App\Http\Controllers\Cm\CampaniasController::class, 'create'])->name('cm.campanias.create');
 Route::post('/cm/campanias/store/{id}', [App\Http\Controllers\Cm\CampaniasController::class, 'store'])->name('cm.campanias.store');
-Route::get('/cm/campanias/{idCampania}/{idJuego}/edit', [App\Http\Controllers\Cm\CampaniasController::class, 'edit'])->name('cm.campanias.edit');
+Route::post('/cm/campanias/{idCampania}/{idJuego}/edit', [App\Http\Controllers\Cm\CampaniasController::class, 'edit'])->name('cm.campanias.edit');
 Route::patch('/cm/campanias/{id}/update', [App\Http\Controllers\Cm\CampaniasController::class, 'update'])->name('cm.campanias.update');
 Route::delete('/cm/campanias/{id}/delete', [App\Http\Controllers\Cm\CampaniasController::class, 'destroy'])->name('cm.campanias.destroy');
 
