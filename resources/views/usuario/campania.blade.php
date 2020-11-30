@@ -23,7 +23,7 @@
                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
                     aria-valuemin="0" aria-valuemax="100">
                     </div>
-                </div> 
+                </div>
                 <ul class="list-group list-group-flush mt-5">
                     <li class="list-group-item">Fecha de lanzamiento: {{ $campania->juego->fecha_lanzamiento }}</li>
                     <li class="list-group-item">Género: {{ $campania->juego->genero->nombre }}</li>
@@ -69,7 +69,7 @@
                     <li><a href="mailto:{{ $campania->juego->desarrolladora->email }}"
                             target="blank">{{ $campania->juego->desarrolladora->email }}</a></li>
                     <li>{{ $campania->juego->desarrolladora->direccion }}</li>
-                    <li>{{ $campania->juego->desarrolladora->telefono }}</li>  
+                    <li>{{ $campania->juego->desarrolladora->telefono }}</li>
                     </ul>
                 </div>
             </div>
@@ -78,13 +78,13 @@
 
 @endsection
 @section('scripts')
-<script src="http://momentjs.com/downloads/moment.min.js"></script> 
+<script src="http://momentjs.com/downloads/moment.min.js"></script>
 <script>
     $(function() {
         let recaudado = {{json_encode($campania->recaudado)}};
         let meta = {{json_encode($campania->meta)}};
         const fechaFin = @json($campania).fecha_fin;
-        let fechaHoy = moment(); 
+        let fechaHoy = moment();
         let fechaFinal =moment(fechaFin,);
         let porcentaje = (100*recaudado)/meta;
 

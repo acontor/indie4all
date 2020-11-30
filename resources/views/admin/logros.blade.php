@@ -31,7 +31,9 @@
                                     <td class="align-middle w-10 text-center"><i class="{{ $logro->icono }}"></i></td>
                                     <td class="align-middle w-30">{{ $logro->nombre }}</td>
                                     <td class="align-middle w-40">{{ $logro->descripcion }}</td>
-                                    <td class="align-middle w-10 text-center">{{ Illuminate\Support\Facades\DB::table('logro_user')->where('logro_id', $logro->id)->count() }}</td>
+
+
+                                    <td class="align-middle w-10 text-center">{{ round(Illuminate\Support\Facades\DB::table('logro_user')->where('logro_id', $logro->id)->count() * 100 / App\Models\User::count(), 2) }} %</td>
                                     <td class="align-middle w-10 text-center">
                                         <div class="btn-group">
                                             <form action="{{ route('admin.logros.edit', $logro->id) }}" method="post">
