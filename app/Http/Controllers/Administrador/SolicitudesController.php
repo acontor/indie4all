@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Desarrolladora;
 use App\Models\Cm;
 use App\Models\Solicitud;
+use App\Models\User;
+use App\Notifications\AceptarSolicitud;
+use App\Notifications\RechazarSolicitud;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SolicitudesController extends Controller
 {
@@ -60,6 +65,14 @@ class SolicitudesController extends Controller
 
         Solicitud::find($id)->delete();
 
+        $name = User::find($solicitud->user_id)->name;
+
+        $url = env('APP_URL') . '/cm';
+
+        $admin = Auth::user()->name;
+
+        $solicitud->notify(new AceptarSolicitud($url, $name, $admin));
+
         return redirect('/admin/solicitudes')->with('success', '¡Solicitud aceptada!');
     }
 
@@ -70,10 +83,18 @@ class SolicitudesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function rechazarDesarrolladora($id)
+    public function rechazarDesarrolladora(Request $request)
     {
-        Solicitud::find($id)->delete();
+        $solicitud = Solicitud::find($request->id);
 
-        return redirect('/admin/solicitudes')->with('success', '¡Solicitud rechazada!');
+        $name = User::find($solicitud->user_id)->name;
+
+        $motivo = $request->motivo;
+
+        $admin = Auth::user()->name;
+
+        $solicitud->notify(new RechazarSolicitud($name, $motivo, $admin));
+
+        $solicitud->delete();
     }
 }
