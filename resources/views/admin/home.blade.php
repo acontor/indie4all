@@ -11,17 +11,17 @@
             <div class="row">
                 <div class="col-sm-7 col-12">
                     <h2>Usuarios activos últimas 5 horas</h2>
-                    <canvas id="active-users" width="400" height="300"></canvas>
+                    <canvas id="active-users"></canvas>
                 </div>
                 <div class="col-sm-5 col-12">
                     <div class="row">
                         <div class="col-sm-12 col-12 mt-4 mt-sm-0">
                             <h2>Posts últimos 5 días</h2>
-                            <canvas id="posts" width="400" height="200"></canvas>
+                            <canvas id="posts"></canvas>
                         </div>
                         <div class="col-sm-12 col-12 mt-4 mt-sm-0">
                             <h2>Mensajes últimos 5 días</h2>
-                            <canvas id="mensajes" width="400" height="200"></canvas>
+                            <canvas id="mensajes"></canvas>
                         </div>
                     </div>
                 </div>
@@ -119,6 +119,7 @@
                         borderWidth: 1
                     }]
                 },
+                responsive: true,
             });
         }
 
@@ -136,6 +137,7 @@
                         borderWidth: 1
                     }]
                 },
+                responsive: true,
             });
         }
 
@@ -153,6 +155,7 @@
                         borderWidth: 1
                     }]
                 },
+                responsive: true,
             });
         }
 

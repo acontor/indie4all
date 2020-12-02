@@ -58,9 +58,7 @@
             <hr>
             <div id="contenido">
                 <div class="general">
-                    <h3>Contenido</h3>
-                    Contenido que quiera la desarrolladora.
-                    Hay que crear un atributo en la tabla desarrolladoras llamado contenido.
+                    {!! $desarrolladora->contenido !!}
                 </div>
                 <div class="noticias d-none">
                     <h3>Posts</h3>
@@ -84,16 +82,29 @@
                     <h3>Sorteos</h3>
                     <div class="row">
                         @foreach ($desarrolladora->sorteos as $sorteo)
-                            <div class="col-6">
+                            <div class="col-12 col-md-6">
                                 <h4>{{ $sorteo->titulo }}</h4>
                                 <p>{{ $sorteo->descripcion }}</p>
-                                <p>{{ $sorteo->fecha_fin }}</p>
+                                <a href="" class="btn btn-success">Participar</a>
+                                <p class="mt-3">{{ $sorteo->fecha_fin }}</p>
                             </div>
                         @endforeach
                     </div>
                 </div>
                 <div class="encuestas d-none">
                     <h3>Encuestas</h3>
+                    <div class="row">
+                        @foreach ($desarrolladora->encuestas as $encuesta)
+                            <div class="col-12 col-md-6">
+                                <h4>{{ $encuesta->pregunta }}</h4>
+                                @foreach ($encuesta->opciones as $opcion)
+                                    <label for="respuesta">{{ $opcion->descripcion }}</label>
+                                    <input type="radio" name="respuesta" id="respuesta" value="{{ $opcion->descripcion }}">
+                                @endforeach
+                                <p>{{ $sorteo->fecha_fin }}</p>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
                 <div class="contacto d-none">
                     <h3>Contacto</h3>

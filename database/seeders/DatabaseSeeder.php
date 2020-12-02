@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             LogrosSeeder::class,
             GeneroUsuarioSeeder::class,
             JuegoUsuarioSeeder::class,
+            PostsSeeders::class,
         ]);
     }
 }

@@ -13,7 +13,7 @@
                             class="far fa-plus-square"></i></a>
                 </div>
                 <div class="box mt-4">
-                    <canvas id="myChart" width="400" height="100"></canvas>
+                    <canvas id="myChart"></canvas>
                 </div>
                 <div class="box mt-4">
                     <table class="table table-striped">
@@ -141,7 +141,8 @@
                             }
                         }]
                     }
-                }
+                },
+                responsive: true,
             });
         }
 

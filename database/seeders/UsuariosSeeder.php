@@ -17,53 +17,73 @@ class UsuariosSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'user1',
-            'username' => 'user1',
-            'email' => 'user1@mail.com',
+            'name' => 'Alvaro',
+            'username' => 'Acontor',
+            'email' => 'alvaro@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('administradors')->insert([
             'user_id' => 1,
         ]);
         DB::table('users')->insert([
-            'name' => 'user2',
-            'username' => 'user2',
-            'email' => 'user2@mail.com',
+            'name' => 'Justo',
+            'username' => 'Jmedsol',
+            'email' => 'justo@mail.com',
             'password' => Hash::make('password'),
         ]);
+        DB::table('administradors')->insert([
+            'user_id' => 2,
+        ]);
         DB::table('users')->insert([
-            'name' => 'user3',
-            'username' => 'user3',
-            'email' => 'user3@mail.com',
+            'name' => 'pepe',
+            'username' => 'pepito',
+            'email' => 'pepe@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('masters')->insert([
-            'email' => 'email',
-            'imagen' => '/imagen/master.png',
+            'email' => 'master@email.com',
             'user_id' => 3,
         ]);
         DB::table('users')->insert([
-            'name' => 'user4',
-            'username' => 'user4',
-            'email' => 'user4@mail.com',
+            'name' => 'mengano',
+            'username' => 'menganito',
+            'email' => 'mengano@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('users')->insert([
-            'name' => 'user5',
-            'username' => 'user5',
-            'email' => 'user5@mail.com',
+            'name' => 'jaime',
+            'username' => 'jaimito',
+            'email' => 'jaime@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('users')->insert([
-            'name' => 'user6',
-            'username' => 'user6',
-            'email' => 'user6@mail.com',
+            'name' => 'soledad',
+            'username' => 'solecito',
+            'email' => 'soledad@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('users')->insert([
-            'name' => 'user7',
-            'username' => 'user7',
-            'email' => 'user7@mail.com',
+            'name' => 'pablo',
+            'username' => 'pablito',
+            'email' => 'pablo@mail.com',
+            'password' => Hash::make('password'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'miguel',
+            'username' => 'miguelito',
+            'email' => 'miguel@mail.com',
+            'password' => Hash::make('password'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'ana',
+            'username' => 'anita',
+            'email' => 'ana@mail.com',
+            'password' => Hash::make('password'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'paloma',
+            'username' => 'palomita',
+            'email' => 'paloma@mail.com',
             'password' => Hash::make('password'),
         ]);
     }

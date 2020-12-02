@@ -15,6 +15,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('usuario.desarrolladoras.index') }}">{{ __("Desarrolladoras") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('usuario.juegos.index') }}">{{ __("Juegos") }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('usuario.masters.index') }}">{{ __("Masters") }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('usuario.campanias.index') }}">{{ __("Campañas") }}</a></li>
                 @endauth
             </ul>
             <!-- Right Side Of Navbar -->

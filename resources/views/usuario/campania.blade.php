@@ -28,7 +28,7 @@
                     <li class="list-group-item">Fecha de lanzamiento: {{ $campania->juego->fecha_lanzamiento }}</li>
                     <li class="list-group-item">Género: {{ $campania->juego->genero->nombre }}</li>
                     <li class="list-group-item">Participantes: </li>
-                    <li id=diasRestantes class="list-group-item"></li>
+                    <li id="diasRestantes" class="list-group-item text-danger"></li>
                 </p>
                 <div class="row justify-content-center">
                     <a type="button" class="btn btn-primary" href=""> participar</a>

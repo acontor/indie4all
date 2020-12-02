@@ -18,7 +18,7 @@ class LogrosSeeder extends Seeder
     {
         DB::table('logros')->insert([
             'nombre' => 'El mensajero',
-            'descripcion' => 'Participa con muuuuuchos mensajes',
+            'descripcion' => '¡Has participado con muchos mensajes!',
             'icono'=> 'fas fa-sms',
         ]);
         DB::table('logros')->insert([

@@ -18,13 +18,13 @@ class JuegoUsuarioSeeder extends Seeder
     {
         DB::table('juego_user')->insert([
             'juego_id' => 1,
-            'user_id' => 1,
+            'user_id' => 3,
             'notificacion' => 1,
             'calificacion' => 8,
         ]);
         DB::table('juego_user')->insert([
             'juego_id' => 2,
-            'user_id' => 1,
+            'user_id' => 7,
             'notificacion' => 0,
             'calificacion' => 5,
         ]);
