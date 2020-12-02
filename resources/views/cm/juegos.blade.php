@@ -17,9 +17,9 @@
                 <div class="container">
                     <div class="row">
                         @foreach ($juegos as $juego)
-                            <div class="mt-4 mr-4">
+                            <div class="col-3 mt-4 mr-4">
                                 <div class="card">
-                                    <img src="{{url('/images/juegos/portadas/'.$juego->imagen_portada)}}"width="250" height="200" />
+                                    <img src="{{ asset('/images/default.png') }}" height="100" />
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             <a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a>

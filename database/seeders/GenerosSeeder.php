@@ -35,6 +35,9 @@ class GenerosSeeder extends Seeder
             'nombre' => 'Rol',
         ]);
         DB::table('generos')->insert([
+            'nombre' => 'Terror',
+        ]);
+        DB::table('generos')->insert([
             'nombre' => 'Shooter',
         ]);
         DB::table('generos')->insert([
