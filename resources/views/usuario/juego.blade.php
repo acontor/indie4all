@@ -72,6 +72,14 @@
                     </div>
                     <div class="comprar d-none">
                         <h2>Comprar</h2>
+                        <form action="{{ route('usuario.paypal.pagar') }}" method="post">
+                        @csrf
+                        @method('POST')
+                        El precio es de {{ $juego->precio }}
+                        <input type="hidden" name="precio" value="{{ $juego->precio }}">
+                        <input type="hidden" name="juegoId" value="{{ $juego->id }}">                        
+                        <button type="submit" class="btn btn-primary"> Pagar con Paypal</button>
+                        </form>
                     </div>
                     <div class="noticias d-none">
                         <h2>Noticias</h2>
