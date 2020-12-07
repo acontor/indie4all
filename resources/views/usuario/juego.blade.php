@@ -76,6 +76,7 @@
                         @csrf
                         @method('POST')
                         El precio es de {{ $juego->precio }}
+                        <input type="hidden" name="tipo" value="0" />
                         <input type="hidden" name="precio" value="{{ $juego->precio }}">
                         <input type="hidden" name="juegoId" value="{{ $juego->id }}">                        
                         <button type="submit" class="btn btn-primary"> Pagar con Paypal</button>

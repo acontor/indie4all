@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campania;
+use App\Models\Juego;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use PayPal\Api\Amount;
@@ -32,6 +34,20 @@ class PaymentController extends Controller
 
     public function payWithPaypal(Request $request)
     {
+        if ($request->tipo == 0) {
+            $objetoCompra = Juego::find($request->juegoId);
+            $precioCompra = $objetoCompra->precio;
+
+            if ($request->precio != $precioCompra) {
+                $status = 0;
+                return view('usuario.informePago', ['juego' => $objetoCompra, 'status' => $status]);
+            }
+            $descripcion = 'Compra del juego ' . $objetoCompra->nombre;
+        } else {
+            $objetoCompra = Campania::find($request->campaniaId);
+            $descripcion = 'Participación en la campaña de' . $objetoCompra->juego->nombre;
+        }
+        
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
 
@@ -40,7 +56,8 @@ class PaymentController extends Controller
         $amount->setCurrency('EUR');
 
         $transaction = new Transaction();
-        $transaction->setAmount($amount);
+        $transaction->setAmount($amount)
+            ->setDescription($descripcion);
 
         $url = route('usuario.paypal.status');
         $redirect = new RedirectUrls();
@@ -59,7 +76,7 @@ class PaymentController extends Controller
 
             return $ex->getData();
         }
-        
+
         return $request;
     }
     public function paypalStatus(Request $request)
@@ -69,8 +86,8 @@ class PaymentController extends Controller
         $payerID = $request->input('PayerID');
         $token = $request->input('token');
         if (!$paymentId || !$payerID || !$token) {
-            $mensaje = 'No se pudo procesar el pago, lo sentimos 1';
-            return redirect()->route('usuario.juegos.all', ['mensaje' => $mensaje]);
+            $status = 0;
+            return view('usuario.informePago', ['status' => $status]);
         }
         $payment = Payment::get($paymentId, $this->apiContext);
 
@@ -78,12 +95,12 @@ class PaymentController extends Controller
         $execution->setPayerId($payerID);
 
         $result = $payment->execute($execution, $this->apiContext);
-        //dd($result);
+        $mensaje = $result->getTransactions();
         if ($result->getState() === 'approved') {
-            $mensaje = 'Gracias, el pago ha sido procesado con éxito';
-            return redirect()->route('usuario.juegos.all', ['mensaje' => $mensaje]);
+            $status = 1;
+            return view('usuario.informePago', ['mensaje' => $mensaje, 'status' => $status]);
         }
-        $mensaje = 'No se pudo procesar el pago, lo sentimos 2';
-        return redirect()->route('usuario.juegos.all', ['mensaje' => $mensaje]);
+        $status = 0;;
+        return view('usuario.informePago', ['status' => $status]);
     }
 }
