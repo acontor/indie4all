@@ -200,6 +200,7 @@ Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterC
 Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index')->middleware('auth');
 Route::get('/campanias/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show')->middleware('auth');
 
+//reportes
+Route::patch('/reporte/{id}/{tipo}', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');
 //Mensajes
 Route::post('/mensaje/nuevo', [App\Http\Controllers\Usuario\MensajesController::class, 'store'])->name('usuario.mensaje.store');
-
