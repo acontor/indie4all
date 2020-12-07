@@ -34,10 +34,10 @@
                     <form action="{{ route('usuario.paypal.pagar') }}" method="post">
                         @csrf
                         @method('POST')
-                        <input type="text" name="precio">
-                        <input type="hidden" name="campaniaID" value="{{ $campania->id }}">
-                       
-                        <button type="submit" class="btn btn-primary"> participar</button>
+                        <input type="hidden" name="tipo" value="1" />
+                        <input type="hidden" name="campaniaId" value="{{ $campania->id }}">                          
+                        <input type="text" name="precio">                      
+                        <button type="submit" class="btn btn-primary"> Participar</button>
                         </form>
                 </div>
             </div>
