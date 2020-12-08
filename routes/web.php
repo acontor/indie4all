@@ -204,3 +204,12 @@ Route::get('/campanias/{i}', [App\Http\Controllers\Usuario\CampaniasController::
 Route::patch('/reporte/{id}/{tipo}', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');
 //Mensajes
 Route::post('/mensaje/nuevo', [App\Http\Controllers\Usuario\MensajesController::class, 'store'])->name('usuario.mensaje.store');
+<<<<<<< HEAD
+=======
+
+//Pagos
+Route::post('/pago',[App\Http\Controllers\Usuario\PaymentController::class, 'payWithPaypal'])->name('usuario.paypal.pagar');
+Route::get('/pago/status',[App\Http\Controllers\Usuario\PaymentController::class, 'paypalStatus'])->name('usuario.paypal.status');
+
+
+>>>>>>> d1fc1b780efb4a55fd0d57579278380509721958
