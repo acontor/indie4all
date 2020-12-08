@@ -203,3 +203,8 @@ Route::get('/campanias/{i}', [App\Http\Controllers\Usuario\CampaniasController::
 //Mensajes
 Route::post('/mensaje/nuevo', [App\Http\Controllers\Usuario\MensajesController::class, 'store'])->name('usuario.mensaje.store');
 
+//Pagos
+Route::post('/pago',[App\Http\Controllers\Usuario\PaymentController::class, 'payWithPaypal'])->name('usuario.paypal.pagar');
+Route::get('/pago/status',[App\Http\Controllers\Usuario\PaymentController::class, 'paypalStatus'])->name('usuario.paypal.status');
+
+

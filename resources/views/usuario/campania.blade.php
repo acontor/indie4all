@@ -31,7 +31,14 @@
                     <li id="diasRestantes" class="list-group-item text-danger"></li>
                 </p>
                 <div class="row justify-content-center">
-                    <a type="button" class="btn btn-primary" href=""> participar</a>
+                    <form action="{{ route('usuario.paypal.pagar') }}" method="post">
+                        @csrf
+                        @method('POST')
+                        <input type="hidden" name="tipo" value="1" />
+                        <input type="hidden" name="campaniaId" value="{{ $campania->id }}">                          
+                        <input type="text" name="precio">                      
+                        <button type="submit" class="btn btn-primary"> Participar</button>
+                        </form>
                 </div>
             </div>
         </div>
