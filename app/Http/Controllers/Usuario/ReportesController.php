@@ -3,43 +3,74 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
-use App\Models\Campania;
-use App\Models\Desarrolladora;
-use App\Models\Juego;
-use App\Models\Mensaje;
-use App\Models\Post;
-use App\Models\User;
+use App\Models\Reporte;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportesController extends Controller
 {
-    public function reporte($id, $tipo)
+    public function reporte($id, $tipo, Request $request)
     {
         switch ($tipo) {
             case 'campania':
-                $objectoReporte =  Campania::find($id);
+                Reporte::create([
+                    'campania_id' => $id,
+                    'user_id' => Auth::id(),
+                    'motivo' => $request->motivo,
+                ]);
                 break;
             case 'desarrolladora':
-                $objectoReporte = Desarrolladora::find($id);
+                Reporte::create([
+                    'desarrolladora_id' => $id,
+                    'user_id' => Auth::id(),
+                    'motivo' => $request->motivo,
+                ]);
                 break;
             case 'juego':
-                $objectoReporte = Juego::find($id);
+                Reporte::create([
+                    'juego_id' => $id,
+                    'user_id' => Auth::id(),
+                    'motivo' => $request->motivo,
+                ]);
                 break;
             case 'mensaje':
-                $objectoReporte = Mensaje::find($id);
+                Reporte::create([
+                    'mensaje_id' => $id,
+                    'user_id' => Auth::id(),
+                    'motivo' => $request->motivo,
+                ]);
                 break;
             case 'post':
-                $objectoReporte = Post::find($id);
+                Reporte::create([
+                    'post_id' => $id,
+                    'user_id' => Auth::id(),
+                    'motivo' => $request->motivo,
+                ]);
                 break;
-            case 'user':
-                $objectoReporte = User::find($id);
+            case 'master':
+                Reporte::create([
+                    'master_id' => $id,
+                    'user_id' => Auth::id(),
+                    'motivo' => $request->motivo,
+                ]);
+                break;
+            case 'encuesta':
+                Reporte::create([
+                    'encuesta_id' => $id,
+                    'user_id' => Auth::id(),
+                    'motivo' => $request->motivo,
+                ]);
+                break;
+            case 'sorteo':
+                Reporte::create([
+                    'sorteo_id' => $id,
+                    'user_id' => Auth::id(),
+                    'motivo' => $request->motivo,
+                ]);
                 break;
             default:
                 return 'No éxiste la entidad que quieres reportar.';
         }
-
-        $numReport = $objectoReporte->reportes;
-        $objectoReporte->reportes = $numReport + 1;
-        $objectoReporte->save();
 
         return 'El reporte se ha llevado a cabo con éxito';
     }

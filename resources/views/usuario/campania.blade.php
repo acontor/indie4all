@@ -49,6 +49,9 @@
                 <div class="col-4 col-md-2"><a id="foro" href="">Foro</a></div>
                 <div class="col-4 col-md-2"><a id="faq" href="">FAQ</a></div>
                 <div class="col-4 col-md-2"><a id="contacto" href="">Contacto</a></div>
+                <div class="float-right">
+                    <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteCampania'></i></a>
+                </div>
             </div>
             <div id="contenido">
                 <div class="general">
@@ -104,6 +107,31 @@
                 $("#contenido").children("div").addClass("d-none");
                 $(`.${item}`).removeClass("d-none");
             });
+
+        $('#reporteCampania').click(function(){
+            let campaniaId = {!! $campania->id !!}
+            let url = '{{ route("usuario.reporte", [":id" , "campania"]) }}';
+            url = url.replace(':id', campaniaId);
+            Swal.fire({
+            title: 'Estás seguro del reporte?',
+            showDenyButton: true,
+            confirmButtonText: `Sí`,
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                url: url,
+                type : 'PATCH',
+                headers:{
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },success: function(data){
+                    Swal.fire(data)
+                }
+            })
+            } else if (result.isDenied) {
+                Swal.fire('Reporte cancelado', '', 'info')
+            }
+            })
+        })
         });
 
 </script>
