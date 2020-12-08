@@ -61,8 +61,12 @@
                     <div class="col-3"><a id="general" href="">General</a></div>
                     <div class="col-3"><a id="comprar" href="">Comprar</a></div>
                     <div class="col-3"><a id="noticias" href="">Noticias</a></div>
-                    <div class="col-3"><a id="analisis" href="">Análisis</a></div>
+                    <div class="col-2"><a id="analisis" href="">Análisis</a></div>
+                    <div class="float-right">
+                        <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteJuego'></i></a>
+                    </div>
                 </div>
+                
                 <hr>
                 <div id="contenido">
                     <div class="general">
@@ -194,6 +198,31 @@
                     }
                 });
             });
+            $('#reporteJuego').click(function(){
+                let juegoId = {!! $juego->id !!}
+                let url = '{{ route("usuario.reporte", [":id" , "juego"]) }}';
+                url = url.replace(':id', juegoId);
+                Swal.fire({
+                title: 'Estás seguro del reporte?',
+                showDenyButton: true,
+                confirmButtonText: `Sí`,
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                    url: url,
+                    type : 'PATCH',
+                    headers:{
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },success: function(data){
+                        Swal.fire(data)
+                    }
+                })
+                } else if (result.isDenied) {
+                    Swal.fire('Reporte cancelado', '', 'info')
+                }
+                })
+            })
+        
         });
 
     </script>
