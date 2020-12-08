@@ -5,7 +5,7 @@
         <div class="container">
             <div class="box-header">
                 <h1>Juegos ({{ $juegos->count() }})</h1>
-            </div>
+            </div>            
             <div class="box">
                 @foreach ($juegos as $juego)
                     <hr>
