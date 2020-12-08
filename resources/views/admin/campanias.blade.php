@@ -7,16 +7,16 @@
         <div class="row">
             <div class="col-sm">
                 <div class="box-header">
-                    <h1>Juegos ({{ $juegos->count() }})</h1>
+                    <h1>Campañas ({{ $juegos->count() }})</h1>
                 </div>
                 <div class="box">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <td>Nombre</td>
-                                <td>Fecha de lanzamiento</td>
-                                <td>Precio</td>
-                                <td>Desarrolladora</td>
+                                <td>Fecha de fin</td>
+                                <td>Meta</td>
+                                <td>Recaudado</td>
                                 <td class="text-center">Acciones</td>
                             </tr>
                         </thead>
@@ -24,14 +24,12 @@
                             @foreach ($juegos as $juego)
                                 <tr>
                                     <td class="align-middle">{{ $juego->nombre }}</td>
-                                    <td class="align-middle">{{ $juego->fecha_lanzamiento }}</td>
-                                    <td class="align-middle">{{ $juego->precio }} €</td>
-                                    <td class="align-middle">{{ $juego->desarrolladora->nombre }}</td>
+                                    <td class="align-middle">{{ $juego->campania->fecha_fin }}</td>
+                                    <td class="align-middle">{{ $juego->campania->meta }} €</td>
+                                    <td class="align-middle">{{ $juego->campania->recaudado }} €</td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
-                                            <a href="{{ route('admin.juego.show', $juego->id) }}" class="btn btn-primary btn-sm round">
-                                                <i class="far fa-eye"></i>
-                                            </a>
+                                            <a href="{{ route('admin.campania.show', $juego->id) }}" class="btn btn-primary btn-sm round"><i class="far fa-eye"></i></a>
                                             <form action="">
                                                 <button class="btn btn-danger btn-sm round ml-1">
                                                     <i class="fas fa-eraser"></i>

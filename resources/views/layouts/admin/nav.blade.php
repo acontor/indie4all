@@ -4,8 +4,20 @@
         <ul class="navbar-nav ml-auto align-items-center">
             <!-- Según las solicitudes que tenga el usuario -->
             @php
-            $solicitudes = \App\Models\Solicitud::all()->count()
+            $solicitudes = \App\Models\Solicitud::all()->count();
+            $reportes = \App\Models\Desarrolladora::where('reportes', '>=', 3)->count() + \App\Models\Post::where('reportes', '>=', 3)->count() + \App\Models\Mensaje::where('reportes', '>=', 3)->count() + \App\Models\Juego::where('reportes', '>=', 3)->count() + \App\Models\Campania::where('reportes', '>=', 3)->count() + \App\Models\User::where('reportes', '>=', 3)->count();
             @endphp
+            @if ($reportes > 0)
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.reportes.index') }}" role="button" aria-haspopup="true"
+                        aria-expanded="false" v-pre>
+                        <i class="fas fa-flag"></i>
+                        <span class="badge badge-warning" id="messages-count">
+                            {{ $reportes }}
+                        </span>
+                    </a>
+                </li>
+            @endif
             @if ($solicitudes > 0)
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.solicitudes.index') }}" role="button" aria-haspopup="true"

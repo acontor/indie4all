@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Models\Campania;
-use App\Models\Master;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 class CampaniasController extends Controller
 {
@@ -32,5 +29,5 @@ class CampaniasController extends Controller
         $campania = Campania::find($id);
         return view('usuario.campania', ['campania' => $campania]);
     }
-    
+
 }

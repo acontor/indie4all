@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Administrador;
 use App\Http\Controllers\Controller;
 use App\Models\Juego;
 
-class JuegosController extends Controller
+class CampaniasController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -25,8 +25,8 @@ class JuegosController extends Controller
      */
     public function index()
     {
-        $juegos = Juego::doesnthave('campania')->get();
-        return view('admin.juegos', ['juegos' => $juegos]);
+        $juegos = Juego::has('campania')->get();
+        return view('admin.campanias', ['juegos' => $juegos]);
     }
 
     /**
@@ -38,6 +38,6 @@ class JuegosController extends Controller
     public function show($id)
     {
         $juego = Juego::find($id);
-        return view('admin.juego', ['juego' => $juego]);
+        return view('admin.campania', ['juego' => $juego]);
     }
 }
