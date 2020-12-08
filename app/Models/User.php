@@ -134,4 +134,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo("App\Models\Administrador", 'id', 'user_id');
     }
+
+    // Usuario - N:N - Encuestas
+    public function encuestas()
+    {
+        return $this->belongsToMany("App\Models\Encuesta")->wherePivot('opcion_id');
+    }
 }

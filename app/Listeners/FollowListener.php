@@ -15,7 +15,7 @@ class FollowListener
     {
         $follows = $user->desarrolladoras->count() + $user->juegos->count() + $user->masters->count();
 
-        if($follows >= 5) {
+        if ($follows >= 5) {
             $user->logros()->attach([
                 5
             ]);

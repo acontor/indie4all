@@ -69,10 +69,9 @@
                                 <p>{!! $post->contenido !!}</p>
                             </div>
                             <small>Comentarios: {{ $post->mensajes->count() }}</small>
-                            <form>
-                                <input type="hidden" name="id" value="{{ $post->id }}" />
-                                <a type="submit" class="more">Leer más</a>
-                            </form>
+                            <br>
+                            <input type="hidden" name="id" value="{{ $post->id }}" />
+                            <a type="submit" class="more">Leer más</a>
                         @endforeach
                     @else
                         La desarrolladora aún no ha publicado ningún post.
@@ -85,7 +84,8 @@
                             <div class="col-12 col-md-6">
                                 <h4>{{ $sorteo->titulo }}</h4>
                                 <p>{{ $sorteo->descripcion }}</p>
-                                <a href="" class="btn btn-success">Participar</a>
+                                <input type="hidden" name="id" value="{{ $sorteo->id }}">
+                                <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
                                 <p class="mt-3">{{ $sorteo->fecha_fin }}</p>
                             </div>
                         @endforeach
@@ -99,9 +99,11 @@
                                 <h4>{{ $encuesta->pregunta }}</h4>
                                 @foreach ($encuesta->opciones as $opcion)
                                     <label for="respuesta">{{ $opcion->descripcion }}</label>
-                                    <input type="radio" name="respuesta" id="respuesta" value="{{ $opcion->descripcion }}">
+                                    <input type="radio" name="respuesta" id="respuesta" value="{{ $opcion->id }}">
                                 @endforeach
-                                <p>{{ $sorteo->fecha_fin }}</p>
+                                <input type="hidden" name="id" value="{{ $encuesta->id }}">
+                                <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
+                                <p>{{ $encuesta->fecha_fin }}</p>
                             </div>
                         @endforeach
                     </div>
@@ -134,6 +136,7 @@
 @section("scripts")
     <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
             $(".menu").children("div").children("a").click(function(e) {
@@ -201,6 +204,66 @@
                         });
                     }
                 });
+            });
+            $(".participar-sorteo").click(function (e) {
+                e.preventDefault();
+                let id = $(this).prev().val();
+                Swal.fire({
+                    title: 'Confirmar Participación',
+                    html: '<div id="recaptcha" class="mb-3"></div>',
+                    didOpen: function() {
+                        grecaptcha.render('recaptcha', {
+                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                        });
+                    },
+                    preConfirm: function () {
+                        if (grecaptcha.getResponse().length === 0) {
+                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                        } else {
+                            $.ajax({
+                                url: '{{ route("usuario.desarrolladora.sorteo") }}',
+                                type: 'post',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                data: {
+                                    id: id,
+                                }
+                            });
+                        }
+                    }
+                })
+            });
+            $(".participar-encuesta").click(function (e) {
+                e.preventDefault();
+                let encuesta = $(this).prev().val();
+                let opcion = $(this).prev().prev().val();
+                Swal.fire({
+                    title: 'Confirmar Participación',
+                    html: '<div id="recaptcha" class="mb-3"></div>',
+                    didOpen: function() {
+                        grecaptcha.render('recaptcha', {
+                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                        });
+                    },
+                    preConfirm: function () {
+                        if (grecaptcha.getResponse().length === 0) {
+                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                        } else {
+                            $.ajax({
+                                url: '{{ route("usuario.desarrolladora.encuesta") }}',
+                                type: 'post',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                data: {
+                                    encuesta: encuesta,
+                                    opcion: opcion,
+                                }
+                            });
+                        }
+                    }
+                })
             });
         });
 

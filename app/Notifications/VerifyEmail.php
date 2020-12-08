@@ -50,11 +50,8 @@ class VerifyEmail extends Notification
             return call_user_func(static::$toMailCallback, $notifiable, $verificationUrl);
         }
 
-        return (new MailMessage)
-            ->subject(Lang::get('Verify Email Address'))
-            ->line(Lang::get('Please click the button below to verify your email address.'))
-            ->action(Lang::get('Verify Email Address'), $verificationUrl)
-            ->line(Lang::get('If you did not create an account, no further action is required.'));
+        return (new MailMessage)->subject('Indie4all - Verificar Email')
+            ->view('emails.cuenta.verify_email', ['url' => $verificationUrl]);
     }
 
     /**

@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Listeners\FollowListener;
+use App\Mail\Sorteos\SorteoConfirmacion;
 use App\Models\Desarrolladora;
 use App\Models\Post;
 use App\Models\Solicitud;
+use App\Models\Sorteo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class DesarrolladorasController extends Controller
 {
@@ -123,5 +126,26 @@ class DesarrolladorasController extends Controller
             ->where('mensajes.post_id', $post->id)->get();
 
         return ['post' => $post, 'mensajes' => $mensajes];
+    }
+
+    public function sorteo(Request $request)
+    {
+        $user = User::find(Auth::id());
+        $user->sorteos()->attach($request->id);
+
+        $sorteo = Sorteo::find($request->id);
+
+        $desarrolladora = $sorteo->desarrolladora->nombre;
+
+        Mail::to($user->email)->send(new SorteoConfirmacion($user->name, $sorteo, $desarrolladora));
+    }
+
+    public function encuesta(Request $request)
+    {
+        $user = User::find(Auth::id());
+
+        $user->encuestas()->attach([$request->encuesta => ['opcion_id' => $request->opcion]]);
+
+        //Mail::to($user->email)->send(new SorteoConfirmacion($user->name, $sorteo, $desarrolladora));
     }
 }
