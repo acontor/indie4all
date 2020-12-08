@@ -104,18 +104,22 @@ class PaymentController extends Controller
         $execution->setPayerId($payerID);
 
         $result = $payment->execute($execution, $this->apiContext);
-        $mensaje = $result->getTransactions();
 
         if ($result->getState() === 'approved') {
-            $status = 1;
-
             $user = User::find(Auth::id());
+            $status = 1;
+            $mensaje = $result->getTransactions();
+            $tipo = $mensaje[0]->description;
+            $tipo = explode(' ', $tipo);
+            if ($tipo[0] == 'Compra') {
 
-            //event(new ComprarListener($user));
-            //event(new InvertirListener($user));
+                event(new ComprarListener($user));
+                Mail::to($user->email)->send(new CompraRealizada());
+            } else {
 
-            //Mail::to($user->email)->send(new CompraRealizada());
-            //Mail::to($user->user()->email)->send(new InversionRealizada());
+                event(new InvertirListener($user));
+                Mail::to($user->user()->email)->send(new InversionRealizada());
+            }
 
             return view('usuario.informePago', ['mensaje' => $mensaje, 'status' => $status]);
         }
