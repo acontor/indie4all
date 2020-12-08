@@ -15,7 +15,7 @@ class MensajesListener
     {
         $mensajes = $user->mensajes->count();
 
-        if($mensajes >= 5) {
+        if ($mensajes >= 5) {
             $user->logros()->attach([
                 1
             ]);

@@ -26,4 +26,10 @@ class Sorteo extends Model
     {
         return $this->belongsToMany("App\Models\User");
     }
+
+    // Users - 1:N - Sorteos
+    public function desarrolladora()
+    {
+        return $this->belongsTo("App\Models\Desarrolladora");
+    }
 }

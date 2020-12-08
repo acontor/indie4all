@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Solicitudes\AceptarSolicitud;
+use App\Mail\Solicitudes\RechazarSolicitud;
 use App\Models\Desarrolladora;
 use App\Models\Cm;
 use App\Models\Solicitud;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class SolicitudesController extends Controller
 {
@@ -60,6 +66,14 @@ class SolicitudesController extends Controller
 
         Solicitud::find($id)->delete();
 
+        $user = User::find($solicitud->user_id);
+
+        $url = env('APP_URL') . '/cm';
+
+        $admin = Auth::user()->name;
+
+        Mail::to($user->email)->send(new AceptarSolicitud($url, $user->name, $admin));
+
         return redirect('/admin/solicitudes')->with('success', '¡Solicitud aceptada!');
     }
 
@@ -70,10 +84,18 @@ class SolicitudesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function rechazarDesarrolladora($id)
+    public function rechazarDesarrolladora(Request $request)
     {
-        Solicitud::find($id)->delete();
+        $solicitud = Solicitud::find($request->id);
 
-        return redirect('/admin/solicitudes')->with('success', '¡Solicitud rechazada!');
+        $user = User::find($solicitud->user_id);
+
+        $motivo = $request->motivo;
+
+        $admin = Auth::user()->name;
+
+        Mail::to($user->email)->send(new RechazarSolicitud($motivo, $user->name, $admin));
+
+        $solicitud->delete();
     }
 }

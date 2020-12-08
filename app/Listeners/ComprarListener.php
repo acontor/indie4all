@@ -4,7 +4,7 @@ namespace App\Listeners;
 
 use App\Models\User;
 
-class LogrosListener
+class ComprarListener
 {
     /**
      * Create the event listener.
@@ -13,12 +13,14 @@ class LogrosListener
      */
     public function __construct(User $user)
     {
-        $logros = $user->logros->count();
+        $compras = $user->compras->count();
 
-        if ($logros == 5) {
+        if ($compras >= 5) {
             $user->logros()->attach([
-                6
+                3
             ]);
+
+            event(new LogrosListener($user));
         }
     }
 }

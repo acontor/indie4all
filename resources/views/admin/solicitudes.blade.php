@@ -38,11 +38,8 @@
                                                         @method("POST")
                                                         <button class="btn btn-success btn-sm round ml-1" type="submit"><i class="far fa-check-square"></i></button>
                                                     </form>
-                                                    <form action="{{ route('admin.solicitudes.rechazarDesarrolladora', $desarrolladora->id) }}" method="post">
-                                                        @csrf
-                                                        @method("DELETE")
-                                                        <button class="btn btn-danger btn-sm round ml-1" type="submit"><i class="far fa-trash-alt"></i></button>
-                                                    </form>
+                                                    <input type="hidden" value="{{ $desarrolladora->id }}">
+                                                    <button class="btn btn-danger btn-sm round ml-1 rechazar-desarrolladora" type="submit"><i class="far fa-trash-alt"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -98,4 +95,38 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+<script src="{{ asset('js/sweetalert.min.js') }}"></script>
+<script>
+    $(function() {
+        $('.rechazar-desarrolladora').click(function(e) {
+            e.preventDefault();
+            let id = $(this).prev().val();
+            Swal.fire({
+                title: `Indica el motivo del rechazo`,
+                input: 'text',
+                showConfirmButton: true,
+                width: "auto",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route("admin.solicitudes.rechazarDesarrolladora") }}',
+                        type: 'delete',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            id: id,
+                            motivo: result.value
+                        }, success: function(data) {
+                            console.log(data)
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+</script>
 @endsection
