@@ -49,6 +49,9 @@
                         <div class="col-3"><a id="general" href="">General</a></div>
                         <div class="col-3"><a id="analisis" href="">Análisis</a></div>
                         <div class="col-3"><a id="notas" href="">Notas</a></div>
+                        <div class="float-right">
+                            <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteMaster'></i></a>
+                        </div>
                     </div>
                     <hr>
                     <div id="contenido">
@@ -111,6 +114,7 @@
 @section("scripts")
     <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
             $(".menu").children("div").children("a").click(function(e) {
@@ -130,10 +134,11 @@
                         id: $(this).prev().val(),
                     },
                     success: function(data) {
-                        let html = `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
+                        let html = `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p> <input id="idPost" type="hidden" value="${data.post.id}"><a class="text-danger"><i class="fas fa-exclamation-triangle" id='reportePost'></i></a></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
                         if(data.mensajes.length > 0) {
                             data.mensajes.forEach(element => {
-                                html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><p>${element.contenido}</p></div>`;
+                                console.log(element)
+                                html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><input type="hidden" value="${element.id}"><a name="${element.id}asd" class="text-danger float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p></div>`;
                             });
                         } else {
                             html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
@@ -157,7 +162,51 @@
                         CKEDITOR.replace("mensaje", {
                             customConfig: "{{ asset('js/ckeditor/config.js') }}"
                         });
-
+                        $('#reportePost').click(function(){
+                            let postId =  $('#idPost').val();
+                            console.log(postId)
+                            let url = '{{ route("usuario.reporte", [":id" , "post"]) }}';
+                            url = url.replace(':id', postId);
+                            Swal.fire({
+                                title: 'Indica el motivo del reporte',
+                                showCancelButton: true,
+                                cancelButtonText: 'Cancelar',
+                                confirmButtonText: `Reportar`,
+                                input: 'text',
+                                inputAttributes: {
+                                    autocapitalize: 'off'
+                                },
+                                html: '<div id="recaptcha" class="mb-3"></div>',
+                                didOpen: function() {
+                                    grecaptcha.render('recaptcha', {
+                                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                                    });
+                                },
+                                preConfirm: function (result) {
+                                    console.log(result)
+                                    if (grecaptcha.getResponse().length === 0) {
+                                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                                    } else if (result != '') {
+                                        let motivo = result;
+                                        $.ajax({
+                                            url: url,
+                                            type : 'POST',
+                                            headers:{
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                            },
+                                            data: {
+                                                motivo: motivo,
+                                            }
+                                            ,success: function(data){
+                                                Swal.fire(data)
+                                            }
+                                        })
+                                    }else{
+                                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
+                                    }
+                                }
+                            })
+                        })                          
                         $("#mensaje-form").click(function(e) {
 
                             e.preventDefault();
@@ -182,9 +231,98 @@
                                 }
                             });
                         });
+                        $('i[name ="reportarMensaje"]').click(function(){
+                            let mensajeId =  $(this).parent().prev().val();
+                            console.log(mensajeId)
+                            let url = '{{ route("usuario.reporte", [":id" , "mensaje"]) }}';
+                            url = url.replace(':id', mensajeId);
+                            Swal.fire({
+                                title: 'Indica el motivo del reporte',
+                                showCancelButton: true,
+                                cancelButtonText: 'Cancelar',
+                                confirmButtonText: `Reportar`,
+                                input: 'text',
+                                inputAttributes: {
+                                    autocapitalize: 'off'
+                                },
+                                html: '<div id="recaptcha" class="mb-3"></div>',
+                                didOpen: function() {
+                                    grecaptcha.render('recaptcha', {
+                                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                                    });
+                                },
+                                preConfirm: function (result) {
+                                    console.log(result)
+                                    if (grecaptcha.getResponse().length === 0) {
+                                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                                    } else if (result != '') {
+                                        let motivo = result;
+                                        $.ajax({
+                                            url: url,
+                                            type : 'POST',
+                                            headers:{
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                            },
+                                            data: {
+                                                motivo: motivo,
+                                            }
+                                            ,success: function(data){
+                                                Swal.fire(data)
+                                            }
+                                        })
+                                    }else{
+                                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
+                                    }
+                                }
+                            })
+                        })
                     }
                 });
             });
+            $('#reporteMaster').click(function(){
+                let masterId = {!! $master->id !!}
+                let url = '{{ route("usuario.reporte", [":id" , "master"]) }}';
+                url = url.replace(':id', masterId);
+                Swal.fire({
+                    title: 'Indica el motivo del reporte',
+                    showCancelButton: true,
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: `Reportar`,
+                    input: 'text',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    html: '<div id="recaptcha" class="mb-3"></div>',
+                    didOpen: function() {
+                        grecaptcha.render('recaptcha', {
+                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                        });
+                    },
+                    preConfirm: function (result) {
+                        console.log(result)
+                        if (grecaptcha.getResponse().length === 0) {
+                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                        } else if (result != '') {
+                            let motivo = result;
+                            $.ajax({
+                                url: url,
+                                type : 'POST',
+                                headers:{
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                },
+                                data: {
+                                    motivo: motivo,
+                                }
+                                ,success: function(data){
+                                    Swal.fire(data)
+                                }
+                            })
+                        }else{
+                            Swal.showValidationMessage(`Por favor, indica un motivo.`)
+                        }
+                    }
+                })
+            })  
         });
 
     </script>
