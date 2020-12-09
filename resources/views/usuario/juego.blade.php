@@ -129,6 +129,7 @@
 @section("scripts")
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
             $(".menu").children("div").children("a").click(function(e) {
@@ -199,31 +200,50 @@
                 });
             });
             $('#reporteJuego').click(function(){
-                let juegoId = {!! $juego->id !!}
-                let url = '{{ route("usuario.reporte", [":id" , "juego"]) }}';
-                url = url.replace(':id', juegoId);
-                Swal.fire({
-                title: 'Estás seguro del reporte?',
-                showDenyButton: true,
-                confirmButtonText: `Sí`,
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                    url: url,
-                    type : 'PATCH',
-                    headers:{
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },success: function(data){
-                        Swal.fire(data)
+            let juegoId = {!! $juego->id !!}
+            let url = '{{ route("usuario.reporte", [":id" , "juego"]) }}';
+            url = url.replace(':id', juegoId);
+            Swal.fire({
+                title: 'Indica el motivo del reporte',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: `Reportar`,
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                html: '<div id="recaptcha" class="mb-3"></div>',
+                didOpen: function() {
+                    grecaptcha.render('recaptcha', {
+                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                    });
+                },
+                preConfirm: function (result) {
+                    console.log(result)
+                    if (grecaptcha.getResponse().length === 0) {
+                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                    } else if (result != '') {
+                        let motivo = result;
+                        $.ajax({
+                            url: url,
+                            type : 'POST',
+                            headers:{
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: {
+                                motivo: motivo,
+                            }
+                            ,success: function(data){
+                                Swal.fire(data)
+                            }
+                        })
+                    }else{
+                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
                     }
-                })
-                } else if (result.isDenied) {
-                    Swal.fire('Reporte cancelado', '', 'info')
                 }
-                })
             })
-        
-        });
+        })            
+    });
 
     </script>
 @endsection
