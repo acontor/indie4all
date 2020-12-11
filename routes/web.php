@@ -86,6 +86,9 @@ Route::delete('/admin/solicitudes/rechazar', [App\Http\Controllers\Administrador
 
 // Reportes
 Route::get('/admin/reportes', [App\Http\Controllers\Administrador\ReportesController::class, 'index'])->name('admin.reportes.index');
+Route::get('/admin/reporte', [App\Http\Controllers\Administrador\ReportesController::class, 'show'])->name('admin.reporte.show');
+Route::get('/admin/reporte/cancelar', [App\Http\Controllers\Administrador\ReportesController::class, 'cancelar'])->name('admin.reporte.cancelar');
+Route::get('/admin/reporte/aceptar', [App\Http\Controllers\Administrador\ReportesController::class, 'aceptar'])->name('admin.reporte.aceptar');
 
 /**
  * Cm Routes

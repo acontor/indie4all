@@ -22,6 +22,7 @@
                                 <td>Teléfono</td>
                                 <td>Url</td>
                                 <td>Logo</td>
+                                <td>Strikes</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,6 +34,7 @@
                                     <td class="align-middle">{{ $desarrolladora->telefono }}</td>
                                     <td class="align-middle">{{ $desarrolladora->url }}</td>
                                     <td class="align-middle">{{ $desarrolladora->imagen_logo }}</td>
+                                    <td class="align-middle">{{ $desarrolladora->reportes }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

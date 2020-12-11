@@ -35,6 +35,9 @@
                                                     <i class="fas fa-eraser"></i>
                                                 </button>
                                             </form>
+                                            <button class="btn btn-danger btn-sm round ml-1">
+                                                <i class="fas fa-gavel"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

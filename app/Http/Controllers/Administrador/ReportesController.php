@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campania;
+use App\Models\Desarrolladora;
+use App\Models\Post;
 use App\Models\Reporte;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportesController extends Controller
 {
@@ -67,6 +72,25 @@ class ReportesController extends Controller
             ->get();
         $reportes = Reporte::all();
         return view('admin.reportes', ['desarrolladoras' => $desarrolladoras, 'posts' => $posts, 'mensajes' => $mensajes, 'juegos' => $juegos, 'campanias' => $campanias, 'reportes' => $reportes, 'sorteos' => $sorteos, 'encuestas' => $encuestas, 'masters' => $masters]);
+    }
+
+    public function show(Request $request)
+    {
+        $reportes = Reporte::join('users', 'users.id', 'reportes.user_id')->select('users.email', 'reportes.motivo')->where($request->tipo, $request->id)->get();
+
+        return $reportes;
+    }
+
+    public function aceptar(Request $request)
+    {
+        DB::table($request->tabla)->where('id', $request->id)->increment('reportes');
+
+        return Reporte::where($request->tipo, $request->id)->delete();
+    }
+
+    public function cancelar(Request $request)
+    {
+        return Reporte::where($request->tipo, $request->id)->delete();
     }
 }
 

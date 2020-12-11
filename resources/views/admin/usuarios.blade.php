@@ -52,6 +52,9 @@
                                                     <i class="far fa-edit"></i>
                                                 </button>
                                             </form>
+                                            <button class="btn btn-danger btn-sm round" type="submit">
+                                                <i class="fas fa-gavel"></i>
+                                            </button>
                                             <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}" method="post">
                                                 @csrf
                                                 @method("DELETE")
