@@ -165,7 +165,7 @@
                         $('#reportePost').click(function(){
                             let postId =  $('#idPost').val();
                             console.log(postId)
-                            let url = '{{ route("usuario.reporte", [":id" , "post"]) }}';
+                            let url = '{{ route("usuario.reporte", [":id" , "post_id"]) }}';
                             url = url.replace(':id', postId);
                             Swal.fire({
                                 title: 'Indica el motivo del reporte',
@@ -234,7 +234,7 @@
                         $('i[name ="reportarMensaje"]').click(function(){
                             let mensajeId =  $(this).parent().prev().val();
                             console.log(mensajeId)
-                            let url = '{{ route("usuario.reporte", [":id" , "mensaje"]) }}';
+                            let url = '{{ route("usuario.reporte", [":id" , "mensaje_id"]) }}';
                             url = url.replace(':id', mensajeId);
                             Swal.fire({
                                 title: 'Indica el motivo del reporte',
@@ -281,7 +281,7 @@
             });
             $('#reporteMaster').click(function(){
                 let masterId = {!! $master->id !!}
-                let url = '{{ route("usuario.reporte", [":id" , "master"]) }}';
+                let url = '{{ route("usuario.reporte", [":id" , "master_id"]) }}';
                 url = url.replace(':id', masterId);
                 Swal.fire({
                     title: 'Indica el motivo del reporte',

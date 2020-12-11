@@ -111,7 +111,7 @@
 
         $('#reporteCampania').click(function(){
             let campaniaId = {!! $campania->id !!}
-            let url = '{{ route("usuario.reporte", [":id" , "campania"]) }}';
+            let url = '{{ route("usuario.reporte", [":id" , "campania_id"]) }}';
             url = url.replace(':id', campaniaId);
             Swal.fire({
                 title: 'Indica el motivo del reporte',
