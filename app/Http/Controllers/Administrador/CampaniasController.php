@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campania;
 use App\Models\Juego;
+use Illuminate\Http\Request;
 
 class CampaniasController extends Controller
 {
@@ -39,5 +41,25 @@ class CampaniasController extends Controller
     {
         $juego = Juego::find($id);
         return view('admin.campania', ['juego' => $juego]);
+    }
+
+    public function ban($id, Request $request)
+    {
+        Campania::find($id)->update([
+            'ban' => true,
+            'motivo' => $request->motivo,
+        ]);
+
+        return $request->motivo;
+    }
+
+    public function unban($id)
+    {
+        Campania::find($id)->update([
+            'ban' => false,
+            'motivo' => null,
+        ]);
+
+        return "La campaña ya no está baneado";
     }
 }
