@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administrador;
 use App\Http\Controllers\Controller;
 use App\Models\Desarrolladora;
 use App\Models\Solicitud;
+use Illuminate\Http\Request;
 
 class DesarrolladorasController extends Controller
 {
@@ -29,5 +30,26 @@ class DesarrolladorasController extends Controller
         $desarrolladoras = Desarrolladora::all();
         $numSolicitudes = Solicitud::where('tipo', 'Desarrolladora')->count();
         return view('admin.desarrolladoras', ['desarrolladoras' => $desarrolladoras, 'numSolicitudes' => $numSolicitudes]);
+    }
+
+    public function ban($id, Request $request)
+    {
+
+        Desarrolladora::find($id)->update([
+            'ban' => true,
+            'motivo' => $request->motivo,
+        ]);
+
+        return $request->motivo;
+    }
+
+    public function unban($id)
+    {
+        Desarrolladora::find($id)->update([
+            'ban' => false,
+            'motivo' => null,
+        ]);
+
+        return "La desarrolladora ya no está baneado";
     }
 }

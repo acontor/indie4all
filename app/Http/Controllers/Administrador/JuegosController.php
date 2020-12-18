@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
 use App\Models\Juego;
+use Illuminate\Http\Request;
 
 class JuegosController extends Controller
 {
@@ -39,5 +40,25 @@ class JuegosController extends Controller
     {
         $juego = Juego::find($id);
         return view('admin.juego', ['juego' => $juego]);
+    }
+
+    public function ban($id, Request $request)
+    {
+        Juego::find($id)->update([
+            'ban' => true,
+            'motivo' => $request->motivo,
+        ]);
+
+        return $request->motivo;
+    }
+
+    public function unban($id)
+    {
+        Juego::find($id)->update([
+            'ban' => false,
+            'motivo' => null,
+        ]);
+
+        return "El juego ya no está baneado";
     }
 }

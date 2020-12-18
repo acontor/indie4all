@@ -51,13 +51,19 @@ Route::post('/admin/usuarios/nuevo', [App\Http\Controllers\Administrador\Usuario
 Route::post('/admin/usuarios/{id}/edit', [App\Http\Controllers\Administrador\UsuariosController::class, 'edit'])->name('admin.usuarios.edit');
 Route::patch('/admin/usuarios/{id}/update', [App\Http\Controllers\Administrador\UsuariosController::class, 'update'])->name('admin.usuarios.update');
 Route::delete('/admin/usuarios/{id}/delete', [App\Http\Controllers\Administrador\UsuariosController::class, 'destroy'])->name('admin.usuarios.destroy');
+Route::post('/admin/usuarios/{id}/ban', [App\Http\Controllers\Administrador\UsuariosController::class, 'ban'])->name('admin.usuarios.ban');
+Route::post('/admin/usuarios/{id}/unban', [App\Http\Controllers\Administrador\UsuariosController::class, 'unban'])->name('admin.usuarios.unban');
 
 // Desarrolladoras
 Route::get('/admin/desarrolladoras', [App\Http\Controllers\Administrador\DesarrolladorasController::class, 'index'])->name('admin.desarrolladoras.index');
+Route::post('/admin/desarrolladora/{id}/ban', [App\Http\Controllers\Administrador\DesarrolladorasController::class, 'ban'])->name('admin.desarrolladora.ban');
+Route::post('/admin/desarrolladora/{id}/unban', [App\Http\Controllers\Administrador\DesarrolladorasController::class, 'unban'])->name('admin.desarrolladora.unban');
 
 // Juegos
 Route::get('/admin/juegos', [App\Http\Controllers\Administrador\JuegosController::class, 'index'])->name('admin.juegos.index');
 Route::get('/admin/juego/{id}', [App\Http\Controllers\Administrador\JuegosController::class, 'show'])->name('admin.juego.show');
+Route::post('/admin/juego/{id}/ban', [App\Http\Controllers\Administrador\JuegosController::class, 'ban'])->name('admin.juego.ban');
+Route::post('/admin/juego/{id}/unban', [App\Http\Controllers\Administrador\JuegosController::class, 'unban'])->name('admin.juego.unban');
 
 // Campañas
 Route::get('/admin/campanias', [App\Http\Controllers\Administrador\CampaniasController::class, 'index'])->name('admin.campanias.index');

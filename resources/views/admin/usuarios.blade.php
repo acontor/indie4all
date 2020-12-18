@@ -52,13 +52,25 @@
                                                     <i class="far fa-edit"></i>
                                                 </button>
                                             </form>
-                                            <button class="btn btn-danger btn-sm round" type="submit">
-                                                <i class="fas fa-gavel"></i>
-                                            </button>
+                                            <input type="hidden" name="id" value="{{ $usuario->id }}">
+                                            <div class="ban">
+                                                @if(!$usuario->administrador && $usuario->ban == null)
+                                                <button class="btn btn-warning btn-sm round" type="submit">
+                                                    <i class="far fa-gavel"></i>
+                                                </button>
+                                                @elseif($usuario->ban)
+                                                <input type="hidden" name="motivo" value="{{ $usuario->motivo }}">
+                                                <button class="btn btn-success btn-sm round" type="submit">
+                                                    <i class="far fa-gavel"></i>
+                                                </button>
+                                                @endif
+                                            </div>
                                             <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}" method="post">
                                                 @csrf
                                                 @method("DELETE")
-                                                <button class="btn btn-danger btn-sm round ml-1" type="submit"><i class="far fa-trash-alt"></i></button>
+                                                <button class="btn btn-danger btn-sm round ml-1" type="submit">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
                                             </form>
                                         </div>
                                     </td>
@@ -92,6 +104,10 @@
             if (sessionSuccess != undefined) {
                 notificacion(sessionSuccess)
             }
+
+            $(".btn-warning").click(ban);
+
+            $(".btn-success").click(unban);
         });
 
         function graficaUsuarios(masters, cms, usuarios) {
@@ -106,6 +122,77 @@
             var myBarChart = new Chart(ctx, {
                 type: "doughnut",
                 data: data,
+            });
+        }
+
+        function ban() {
+            let elemento = $(this);
+            let url = '{{ route("admin.usuarios.ban", [":id" , "usuario"]) }}';
+            url = url.replace(':id', $(this).parent().prev().val());
+            Swal.fire({
+                title: 'Indica el motivo del ban',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: `Ban`,
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                preConfirm: function (result) {
+                    if (result != '') {
+                        let motivo = result;
+                        $.ajax({
+                            url: url,
+                            type : 'POST',
+                            headers:{
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: {
+                                motivo: motivo,
+                            }
+                            ,success: function(data){
+                                Swal.fire(data);
+                                elemento.removeClass('btn-warning').addClass('btn-success');
+                                elemento.click(unban);
+                                elemento.parent().prepend(`<input type="hidden" name="motivo" value="${motivo}">`);
+                            }
+                        });
+                    }else{
+                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
+                    }
+                }
+            });
+        }
+
+        function unban() {
+            let elemento = $(this);
+            let url = '{{ route("admin.usuarios.unban", [":id" , "usuario"]) }}';
+            url = url.replace(':id', $(this).parent().prev().val());
+            let motivo = $(this).prev().val();
+            Swal.fire({
+                title: '¿Quieres quitarle el ban a éste usuario?',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: `Aceptar`,
+                html: `<p>Motivo:</p><p>${motivo}</p>`,
+                preConfirm: function () {
+                    $.ajax({
+                        url: url,
+                        type : 'POST',
+                        headers:{
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        data: {
+                            motivo: motivo,
+                        }
+                        ,success: function(data){
+                            Swal.fire(data);
+                            elemento.removeClass('btn-success').addClass('btn-warning');
+                            elemento.click(ban);
+                            elemento.prev().remove();
+                        }
+                    });
+                }
             });
         }
 

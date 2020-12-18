@@ -102,4 +102,24 @@ class UsuariosController extends Controller
         User::find($id)->delete();
         return redirect('/admin/usuarios')->with('success', '¡Usuario borrado!');
     }
+
+    public function ban($id, Request $request)
+    {
+        User::find($id)->update([
+            'ban' => true,
+            'motivo' => $request->motivo,
+        ]);
+
+        return $request->motivo;
+    }
+
+    public function unban($id)
+    {
+        User::find($id)->update([
+            'ban' => false,
+            'motivo' => null,
+        ]);
+
+        return "El usuario ya no está baneado";
+    }
 }

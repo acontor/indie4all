@@ -239,6 +239,24 @@ input:focus {
     box-shadow: 0 0 0 0 !important;
 }
 
+.btn-warning {
+    background-color: #e3a633;
+    border: 0;
+    box-shadow: 1px 1px 1px 0 #2E3647;
+    color: #FFFFFF;
+}
+
+.btn-warning:hover,
+.btn-warning:active,
+.btn-warning:focus {
+    outline: 0px !important;
+    -webkit-appearance: none;
+    background-color: rgb(227,166,51, 0.9) !important;
+    border: 0;
+    box-shadow: 0 0 0 0 !important;
+    color: #FFFFFF;
+}
+
 .round {
     border-radius: 50% !important;
 }
