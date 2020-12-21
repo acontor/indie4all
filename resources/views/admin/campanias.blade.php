@@ -1,6 +1,5 @@
 @extends("layouts.admin.base")
 @section("styles")
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
 @endsection
 @section("content")
@@ -8,70 +7,42 @@
         <div class="row">
             <div class="col-sm">
                 <div class="box-header">
-                    <h1 class="d-inline-block">Usuarios ({{ $usuarios->count() }})</h1>
-                    <a href="{{ route('admin.usuarios.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
+                    <h1>Campañas ({{ $juegos->count() }})</h1>
                 </div>
-                <div class="box mt-4">
-                    <canvas id="myChart" width="400" height="100"></canvas>
-                </div>
-                <div class="box mt-4">
-                    <table class="table table-striped" id="tabla">
+                <div class="box">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
-                                <td class="w-20">Nombre</td>
-                                <td class="w-20">Email</td>
-                                <td class="w-20">Última conexión</td>
-                                <td class="w-30">Tipo</td>
-                                <td class="w-10 text-center">Acciones</td>
+                                <td>Nombre</td>
+                                <td>Fecha de fin</td>
+                                <td>Meta</td>
+                                <td>Recaudado</td>
+                                <td class="text-center">Acciones</td>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($usuarios as $usuario)
+                            @foreach ($juegos as $juego)
                                 <tr>
-                                    <td class="w-20">{{ $usuario->name }}</td>
-                                    <td class="w-20">{{ $usuario->email }}</td>
-                                    <td class="w-20">{{ $usuario->last_activity }}</td>
-                                    <td class="w-30">
-                                        @if ($usuario->administrador)
-                                            Administrador
-                                        @elseif ($usuario->master)
-                                            Master
-                                        @elseif($usuario->cm)
-                                            CM
-                                        @elseif($usuario->administrador)
-                                            Administrador
-                                        @else
-                                            Fan
-                                        @endif
-                                    </td>
-                                    <td class="align-middle w-10 text-center">
+                                    <td class="align-middle">{{ $juego->nombre }}</td>
+                                    <td class="align-middle">{{ $juego->campania->fecha_fin }}</td>
+                                    <td class="align-middle">{{ $juego->campania->meta }} €</td>
+                                    <td class="align-middle">{{ $juego->campania->recaudado }} €</td>
+                                    <td class="align-middle text-center">
                                         <div class="btn-group">
-                                            <form method="post" action="{{ route('admin.usuarios.edit', $usuario->id) }}">
-                                                @csrf
-                                                <button class="btn btn-primary btn-sm round mr-1" type="submit">
-                                                    <i class="far fa-edit"></i>
-                                                </button>
-                                            </form>
-                                            <input type="hidden" name="id" value="{{ $usuario->id }}">
+                                            <a href="{{ route('admin.campania.show', $juego->campania->id) }}" class="btn btn-primary btn-sm round mr-1"><i class="far fa-eye"></i></a><input type="hidden" name="id" value="{{ $juego->id }}">
+                                            <input type="hidden" name="id" value="{{ $juego->campania->id }}">
                                             <div class="ban">
-                                                @if(!$usuario->administrador && $usuario->ban == null)
+                                                @if($juego->campania->ban == null)
                                                 <button class="btn btn-warning btn-sm round" type="submit">
                                                     <i class="far fa-gavel"></i>
                                                 </button>
-                                                @elseif($usuario->ban)
-                                                <input type="hidden" name="motivo" value="{{ $usuario->motivo }}">
+                                                @else
+                                                <input type="hidden" name="motivo" value="{{ $juego->campania->motivo }}">
                                                 <button class="btn btn-success btn-sm round" type="submit">
                                                     <i class="far fa-gavel"></i>
                                                 </button>
                                                 @endif
                                             </div>
-                                            <form action="{{ route('admin.usuarios.destroy', $usuario->id) }}" method="post">
-                                                @csrf
-                                                @method("DELETE")
-                                                <button class="btn btn-danger btn-sm round ml-1" type="submit">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
-                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -86,48 +57,20 @@
 @section("scripts")
     <script src="{{ asset('js/datatable.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('js/chart.min.js') }}"></script>
-    <script>
+    <script type="text/javascript">
         $(function() {
             $('table').DataTable({
                 "responsive": true
             });
-
-            let masters = {!! $numMasters !!};
-            let cms = {!! $numCms !!};
-            let usuarios = {!! $usuarios->count() !!};
-
-            graficaUsuarios(masters, cms, usuarios);
-
-            let sessionSuccess = {!! json_encode(session()->get("success")) !!}
-
-            if (sessionSuccess != undefined) {
-                notificacion(sessionSuccess)
-            }
 
             $(".btn-warning").click(ban);
 
             $(".btn-success").click(unban);
         });
 
-        function graficaUsuarios(masters, cms, usuarios) {
-            var ctx = document.getElementById("myChart").getContext("2d");
-            var data = {
-                datasets: [{
-                    backgroundColor: ["#ff6384", "#A086BE", "#333333"],
-                    data: [masters, usuarios, cms]
-                }],
-                labels: ["Masters", "Fans", "Cms"]
-            };
-            var myBarChart = new Chart(ctx, {
-                type: "doughnut",
-                data: data,
-            });
-        }
-
         function ban() {
             let elemento = $(this);
-            let url = '{{ route("admin.usuarios.ban", [":id" , "usuario"]) }}';
+            let url = '{{ route("admin.campania.ban", [":id" , "campania"]) }}';
             url = url.replace(':id', $(this).parent().prev().val());
             Swal.fire({
                 title: 'Indica el motivo del ban',
@@ -166,11 +109,11 @@
 
         function unban() {
             let elemento = $(this);
-            let url = '{{ route("admin.usuarios.unban", [":id" , "usuario"]) }}';
+            let url = '{{ route("admin.campania.unban", [":id" , "campania"]) }}';
             url = url.replace(':id', $(this).parent().prev().val());
             let motivo = $(this).prev().val();
             Swal.fire({
-                title: '¿Quieres quitarle el ban a éste usuario?',
+                title: '¿Quieres quitarle el ban a ésta campaña?',
                 showCancelButton: true,
                 cancelButtonText: 'Cancelar',
                 confirmButtonText: `Aceptar`,

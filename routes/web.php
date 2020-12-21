@@ -51,12 +51,25 @@ Route::post('/admin/usuarios/nuevo', [App\Http\Controllers\Administrador\Usuario
 Route::post('/admin/usuarios/{id}/edit', [App\Http\Controllers\Administrador\UsuariosController::class, 'edit'])->name('admin.usuarios.edit');
 Route::patch('/admin/usuarios/{id}/update', [App\Http\Controllers\Administrador\UsuariosController::class, 'update'])->name('admin.usuarios.update');
 Route::delete('/admin/usuarios/{id}/delete', [App\Http\Controllers\Administrador\UsuariosController::class, 'destroy'])->name('admin.usuarios.destroy');
+Route::post('/admin/usuarios/{id}/ban', [App\Http\Controllers\Administrador\UsuariosController::class, 'ban'])->name('admin.usuarios.ban');
+Route::post('/admin/usuarios/{id}/unban', [App\Http\Controllers\Administrador\UsuariosController::class, 'unban'])->name('admin.usuarios.unban');
 
 // Desarrolladoras
 Route::get('/admin/desarrolladoras', [App\Http\Controllers\Administrador\DesarrolladorasController::class, 'index'])->name('admin.desarrolladoras.index');
+Route::post('/admin/desarrolladora/{id}/ban', [App\Http\Controllers\Administrador\DesarrolladorasController::class, 'ban'])->name('admin.desarrolladora.ban');
+Route::post('/admin/desarrolladora/{id}/unban', [App\Http\Controllers\Administrador\DesarrolladorasController::class, 'unban'])->name('admin.desarrolladora.unban');
 
-//Juegos
+// Juegos
 Route::get('/admin/juegos', [App\Http\Controllers\Administrador\JuegosController::class, 'index'])->name('admin.juegos.index');
+Route::get('/admin/juego/{id}', [App\Http\Controllers\Administrador\JuegosController::class, 'show'])->name('admin.juego.show');
+Route::post('/admin/juego/{id}/ban', [App\Http\Controllers\Administrador\JuegosController::class, 'ban'])->name('admin.juego.ban');
+Route::post('/admin/juego/{id}/unban', [App\Http\Controllers\Administrador\JuegosController::class, 'unban'])->name('admin.juego.unban');
+
+// Campañas
+Route::get('/admin/campanias', [App\Http\Controllers\Administrador\CampaniasController::class, 'index'])->name('admin.campanias.index');
+Route::get('/admin/campania/{id}', [App\Http\Controllers\Administrador\CampaniasController::class, 'show'])->name('admin.campania.show');
+Route::post('/admin/campania/{id}/ban', [App\Http\Controllers\Administrador\CampaniasController::class, 'ban'])->name('admin.campania.ban');
+Route::post('/admin/campania/{id}/unban', [App\Http\Controllers\Administrador\CampaniasController::class, 'unban'])->name('admin.campania.unban');
 
 // Logros
 Route::get('/admin/logros', [App\Http\Controllers\Administrador\LogrosController::class, 'index'])->name('admin.logros.index');
@@ -78,6 +91,12 @@ Route::delete('/admin/generos/{id}/delete', [App\Http\Controllers\Administrador\
 Route::get('/admin/solicitudes', [App\Http\Controllers\Administrador\SolicitudesController::class, 'index'])->name('admin.solicitudes.index');
 Route::post('/admin/solicitudes/{id}', [App\Http\Controllers\Administrador\SolicitudesController::class, 'aceptarDesarrolladora'])->name('admin.solicitudes.aceptarDesarrolladora');
 Route::delete('/admin/solicitudes/rechazar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'rechazarDesarrolladora'])->name('admin.solicitudes.rechazarDesarrolladora');
+
+// Reportes
+Route::get('/admin/reportes', [App\Http\Controllers\Administrador\ReportesController::class, 'index'])->name('admin.reportes.index');
+Route::get('/admin/reporte', [App\Http\Controllers\Administrador\ReportesController::class, 'show'])->name('admin.reporte.show');
+Route::get('/admin/reporte/cancelar', [App\Http\Controllers\Administrador\ReportesController::class, 'cancelar'])->name('admin.reporte.cancelar');
+Route::get('/admin/reporte/aceptar', [App\Http\Controllers\Administrador\ReportesController::class, 'aceptar'])->name('admin.reporte.aceptar');
 
 /**
  * Cm Routes
@@ -189,7 +208,7 @@ Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController
 Route::post('/juego/{id}/unfollow', [App\Http\Controllers\Usuario\JuegosController::class, 'unfollow'])->name('usuario.juego.unfollow')->middleware('auth');
 Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosController::class, 'notificacion'])->name('usuario.juego.notificacion')->middleware('auth');
 
-//master
+// Master
 Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index')->middleware('auth');
 Route::get('/masters/lista', [App\Http\Controllers\Usuario\MasterController::class, 'all'])->name('usuario.masters.all')->middleware('auth');
 Route::get('/master/{id}', [App\Http\Controllers\Usuario\MasterController::class, 'show'])->name('usuario.master.show')->middleware('auth');
@@ -198,16 +217,17 @@ Route::post('/master/{id}/follow', [App\Http\Controllers\Usuario\MasterControlle
 Route::post('/master/{id}/unfollow', [App\Http\Controllers\Usuario\MasterController::class, 'unfollow'])->name('usuario.master.unfollow')->middleware('auth');
 Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterController::class, 'notificacion'])->name('usuario.master.notificacion')->middleware('auth');
 
-//Campanias
+// Campanias
 Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index')->middleware('auth');
 Route::get('/campanias/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show')->middleware('auth');
 
-//reportes
+// Reportes
 Route::post('/reporte/{id}/{tipo}', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');
-//Mensajes
+
+// Mensajes
 Route::post('/mensaje/nuevo', [App\Http\Controllers\Usuario\MensajesController::class, 'store'])->name('usuario.mensaje.store');
 
-//Pagos
+// Pagos
 Route::post('/pago',[App\Http\Controllers\Usuario\PaymentController::class, 'payWithPaypal'])->name('usuario.paypal.pagar');
 Route::get('/pago/status',[App\Http\Controllers\Usuario\PaymentController::class, 'paypalStatus'])->name('usuario.paypal.status');
 

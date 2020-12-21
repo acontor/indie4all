@@ -35,6 +35,7 @@ class CreateReportesTable extends Migration
             $table->foreign('sorteo_id')->references('id')->on('sorteos');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -45,6 +46,8 @@ class CreateReportesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reportes');
+        Schema::table('reportes', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }
