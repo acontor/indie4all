@@ -56,4 +56,10 @@ class Post extends Model
     {
         return $this->belongsTo("App\Models\Juego");
     }
+
+    // Posts - 1:N - Campania
+    public function Campania()
+    {
+        return $this->belongsTo("App\Models\Campania");
+    }
 }

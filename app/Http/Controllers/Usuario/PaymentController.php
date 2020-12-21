@@ -8,11 +8,14 @@ use App\Listeners\InvertirListener;
 use App\Mail\Compras\CompraRealizada;
 use App\Mail\Compras\InversionRealizada;
 use App\Models\Campania;
+use App\Models\Compras;
 use App\Models\Juego;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Mail;
 use PayPal\Api\Amount;
 use PayPal\Api\Payer;
@@ -51,10 +54,10 @@ class PaymentController extends Controller
                 return view('usuario.informePago', ['juego' => $objetoCompra, 'status' => $status]);
             }
 
-            $descripcion = 'Compra del juego ' . $objetoCompra->nombre;
+            $descripcion = 'Compra del juego ' . $objetoCompra->nombre . '. ' . $objetoCompra->id;
         } else {
             $objetoCompra = Campania::find($request->campaniaId);
-            $descripcion = 'Participación en la campaña de' . $objetoCompra->juego->nombre;
+            $descripcion = 'Participación en la campaña de' . $objetoCompra->juego->nombre .  '. ' . $objetoCompra->id;
         }
 
         $payer = new Payer();
@@ -104,18 +107,52 @@ class PaymentController extends Controller
         $execution->setPayerId($payerID);
 
         $result = $payment->execute($execution, $this->apiContext);
-        $mensaje = $result->getTransactions();
 
         if ($result->getState() === 'approved') {
-            $status = 1;
-
             $user = User::find(Auth::id());
+            $status = 1;
+            $mensaje = $result->getTransactions();
+            $tipo = $mensaje[0]->description;
+            $tipo = explode(' ', $tipo);
+            $id =  array_pop($tipo);
+            foreach ($mensaje as $item) {
+                $precio =  $item->amount->total;
+                $dateTime = Carbon::parse($request->your_datetime_field);
+            }
+            if ($tipo[0] == 'Compra') {
 
-            //event(new ComprarListener($user));
-            //event(new InvertirListener($user));
+                Compras::create([
+                    'precio' => $precio,
+                    'key' => 'ramdomkey',
+                    'fecha_compra' => $dateTime->format('Y-m-d H:i:s'),
+                    'user_id' => Auth::id(),
+                    'juego_id' => $id,
+                ]);
+                event(new ComprarListener($user));
+                Mail::to($user->email)->send(new CompraRealizada());
+            } else {
+                $participacion = Compras::where('user_id', Auth::id())->where('campania_id', $id)->get();
+                if ($participacion->count() == 0) {
+                    Compras::create([
+                        'precio' => $precio,
+                        'key' => 'ramdomkey',
+                        'fecha_compra' => $dateTime->format('Y-m-d H:i:s'),
+                        'user_id' => Auth::id(),
+                        'campania_id' => $id,
+                    ]);
+                } else {
+                    $participacion = Compras::find($participacion[0]->id);
+                    $participacion->precio += $precio;
+                    $participacion->save();
+                }
 
-            //Mail::to($user->email)->send(new CompraRealizada());
-            //Mail::to($user->user()->email)->send(new InversionRealizada());
+                $campania = Campania::find($id);
+                $campania->recaudado += $precio;
+                $campania->save();
+
+                event(new InvertirListener($user));
+                Mail::to($user->email)->send(new InversionRealizada());
+            }
 
             return view('usuario.informePago', ['mensaje' => $mensaje, 'status' => $status]);
         }
