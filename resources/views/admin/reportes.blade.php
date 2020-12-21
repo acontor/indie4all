@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="box-header">
-                    <h1>Reportes (<span id="count">{{ $desarrolladoras->count() + $posts->count() + $mensajes->count() + $juegos->count() + $campanias->count() + $encuestas->count() + $sorteos->count() + $masters->count() }}</span>)</h1>
+                    <h1>Reportes (<span id="count">{{ $desarrolladoras->count() + $posts->count() + $mensajes->count() + $juegos->count() + $campanias->count() + $masters->count() }}</span>)</h1>
                 </div>
                 <div class="row box text-center menu mb-4">
                     @if ($desarrolladoras->count() > 0)
@@ -22,12 +22,6 @@
                     @endif
                     @if ($masters->count() > 0)
                         <div class="col-4 col-md-3 mb-2"><a id="masters" href="">Masters</a></div>
-                    @endif
-                    @if ($sorteos->count() > 0)
-                        <div class="col-4 col-md-3"><a id="sorteos" href="">Sorteos</a></div>
-                    @endif
-                    @if ($encuestas->count() > 0)
-                        <div class="col-4 col-md-3"><a id="encuestas" href="">Encuestas</a></div>
                     @endif
                     @if ($posts->count() > 0)
                         <div class="col-4 col-md-3"><a id="posts" href="">Posts</a></div>
@@ -205,80 +199,6 @@
                                                 <div class="btn-group">
                                                     <input type="hidden" name="id" value="{{ $campania->campania_id }}">
                                                     <input type="hidden" name="tipo" value="campania">
-                                                    <button class="btn btn-primary btn-sm round ml-1 ver">
-                                                        <i class="far fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-success btn-sm round ml-1 aceptar">
-                                                        <i class="far fa-check-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm round ml-1 rechazar">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                    @if ($encuestas->count() > 0)
-                        <div class="box encuestas d-none">
-                            <h2>Encuestas</h2>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <td>Pregunta</td>
-                                        <td>Número de reportes</td>
-                                        <td>Acciones</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($encuestas as $encuesta)
-                                        <tr>
-                                            <td class="align-middle">{{ $encuesta->encuesta->pregunta }}</td>
-                                            <td>{{ $reportes->where('encuesta_id', $encuesta->encuesta_id)->count() }}</td>
-                                            <td class="align-middle">
-                                                <div class="btn-group">
-                                                    <input type="hidden" name="id" value="{{ $encuesta->encuesta_id }}">
-                                                    <input type="hidden" name="tipo" value="encuesta">
-                                                    <button class="btn btn-primary btn-sm round ml-1 ver">
-                                                        <i class="far fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-success btn-sm round ml-1 aceptar">
-                                                        <i class="far fa-check-square"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm round ml-1 rechazar">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                    @if ($sorteos->count() > 0)
-                        <div class="box sorteos d-none">
-                            <h2>Sorteos</h2>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <td>Título</td>
-                                        <td>Número de reportes</td>
-                                        <td>Acciones</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($sorteos as $sorteo)
-                                        <tr>
-                                            <td class="align-middle">{{ $sorteo->sorteo->pregunta }}</td>
-                                            <td>{{ $reportes->where('sorteo_id', $sorteo->sorteo_id)->count() }}</td>
-                                            <td class="align-middle">
-                                                <div class="btn-group">
-                                                    <input type="hidden" name="id" value="{{ $sorteo->sorteo_id }}">
-                                                    <input type="hidden" name="tipo" value="sorteo">
                                                     <button class="btn btn-primary btn-sm round ml-1 ver">
                                                         <i class="far fa-eye"></i>
                                                     </button>

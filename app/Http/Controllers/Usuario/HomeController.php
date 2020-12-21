@@ -14,16 +14,6 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -42,8 +32,8 @@ class HomeController extends Controller
             $juegos = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->take(5)->get();
             $desarrolladoras = Desarrolladora::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->take(5)->get();
             $masters = DB::table('users')
-            ->join('masters', 'users.id', '=', 'masters.user_id')
-            ->select('masters.id', 'users.name')->where('users.name', 'LIKE', "%$search%")->take(5)->get();
+                ->join('masters', 'users.id', '=', 'masters.user_id')
+                ->select('masters.id', 'users.name')->where('users.name', 'LIKE', "%$search%")->take(5)->get();
             foreach ($juegos as $juego) {
                 $temp = ['id' => $juego->id, 'nombre' => $juego->nombre, 'tipo' => 'Juego'];
                 array_push($data, $temp);

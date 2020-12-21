@@ -16,31 +16,33 @@
                         <li><a href="http://{{ $desarrolladora->url }}" target="blank">{{ $desarrolladora->url }}</a></li>
                         <li>
                             <div class="btn-group mt-3">
-                                @if ($usuario == null)
-                                    <form action="{{ route('usuario.desarrolladora.follow', $desarrolladora->id) }}" method="post">
-                                        @csrf
-                                        <button type="submit" class="btn text-primary"><i class="far fa-check-circle"></i></button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('usuario.desarrolladora.unfollow', $desarrolladora->id) }}"
-                                        method="post">
-                                        @csrf
-                                        <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
-                                    </form>
-                                    @if ($usuario->pivot->notificacion == 0)
-                                        <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 1]) }}"
-                                            method="post">
+                                @auth
+                                    @if (Auth::user()->desarrolladoras->where('id', $desarrolladora->id)->count() == 0)
+                                        <form action="{{ route('usuario.desarrolladora.follow', $desarrolladora->id) }}" method="post">
                                             @csrf
-                                            <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
+                                            <button type="submit" class="btn text-primary"><i class="far fa-check-circle"></i></button>
                                         </form>
                                     @else
-                                        <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 0]) }}"
+                                        <form action="{{ route('usuario.desarrolladora.unfollow', $desarrolladora->id) }}"
                                             method="post">
                                             @csrf
-                                            <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
+                                            <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
                                         </form>
+                                        @if (Auth::user()->desarrolladoras->where('id', $desarrolladora->id)->first()->pivot->notificacion == 0)
+                                            <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 1]) }}"
+                                                method="post">
+                                                @csrf
+                                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 0]) }}"
+                                                method="post">
+                                                @csrf
+                                                <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
+                                            </form>
+                                        @endif
                                     @endif
-                                @endif
+                                @endauth
                             </div>
                         </li>
                     </ul>
@@ -55,9 +57,11 @@
                 <div class="col-4 col-md-2"><a id="sorteos" href="">Sorteos</a></div>
                 <div class="col-4 col-md-2"><a id="encuestas" href="">Encuestas</a></div>
                 <div class="col-4 col-md-2"><a id="contacto" href="">Contacto</a></div>
+                @auth
                 <div class="float-right">
                     <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteDesarrolladora'></i></a>
                 </div>
+                @endauth
             </div>
             <hr>
             <div id="contenido">
@@ -84,32 +88,66 @@
                 <div class="sorteos d-none">
                     <h3>Sorteos</h3>
                     <div class="row">
-                        @foreach ($desarrolladora->sorteos as $sorteo)
-                            <div class="col-12 col-md-6">
-                                <h4>{{ $sorteo->titulo }}</h4>
-                                <p>{{ $sorteo->descripcion }}</p>
-                                <input type="hidden" name="id" value="{{ $sorteo->id }}">
-                                <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
-                                <p class="mt-3">{{ $sorteo->fecha_fin }}</p>
-                            </div>
-                        @endforeach
+                        @auth
+                            @foreach ($desarrolladora->sorteos as $sorteo)
+                                <div class="col-12 col-md-6">
+                                    <h4>{{ $sorteo->titulo }}</h4>
+                                    <p>{{ $sorteo->descripcion }}</p>
+                                    <input type="hidden" name="id" value="{{ $sorteo->id }}">
+                                    @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
+                                        Eres CM de ésta desarrolladora
+                                    @elseif(Auth::user()->ban)
+                                        Tu cuenta está baneada
+                                    @elseif(Auth::user()->email_verified_at == null)
+                                        Tu cuenta no está verificada
+                                    @elseif(Auth::user()->sorteos->where('id', $sorteo->id)->count() != 0)
+                                        Ya has participado
+                                    @else
+                                        <div class="participar-sorteo-div">
+                                            <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
+                                        </div>
+                                    @endif
+                                    <p class="mt-3">{{ $sorteo->fecha_fin }}</p>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="col-12">Tienes que registrarte para participar en los sorteos.</div>
+                        @endauth
                     </div>
                 </div>
                 <div class="encuestas d-none">
                     <h3>Encuestas</h3>
-                    <div class="row">
-                        @foreach ($desarrolladora->encuestas as $encuesta)
-                            <div class="col-12 col-md-6">
-                                <h4>{{ $encuesta->pregunta }}</h4>
-                                @foreach ($encuesta->opciones as $opcion)
-                                    <label for="respuesta">{{ $opcion->descripcion }}</label>
-                                    <input type="radio" name="respuesta" id="respuesta" value="{{ $opcion->id }}">
+                        <div class="row">
+                            @auth
+                                @foreach ($desarrolladora->encuestas as $encuesta)
+                                    <div class="col-12 col-md-6">
+                                        <h4>{{ $encuesta->pregunta }}</h4>
+                                        <div class="opciones">
+                                            @foreach ($encuesta->opciones as $opcion)
+                                                <label for="respuesta">{{ $opcion->descripcion }}</label>
+                                                <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}" @if(Auth::user()->encuestas->where('id', $encuesta->id)->count() != 0 && Auth::user()->encuestas->where('id', $encuesta->id)->first()->pivot->opcion_id == $opcion->id) checked @endif>
+                                            @endforeach
+                                        </div>
+                                        <input type="hidden" name="id" value="{{ $encuesta->id }}">
+                                        @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
+                                            Eres CM de ésta desarrolladora
+                                        @elseif(Auth::user()->ban)
+                                            Tu cuenta está baneada
+                                        @elseif(Auth::user()->email_verified_at == null)
+                                            Tu cuenta no está verificada
+                                        @elseif(Auth::user()->encuestas->where('id', $encuesta->id)->count() != 0)
+                                            Ya has participado
+                                        @else
+                                            <div class="participar-encuesta-div">
+                                                <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
+                                            </div>
+                                        @endif
+                                        <p>{{ $encuesta->fecha_fin }}</p>
+                                    </div>
                                 @endforeach
-                                <input type="hidden" name="id" value="{{ $encuesta->id }}">
-                                <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
-                                <p>{{ $encuesta->fecha_fin }}</p>
-                            </div>
-                        @endforeach
+                        @else
+                            <div class="col-12">Tienes que registrarte para participar en las encuestas.</div>
+                        @endauth
                     </div>
                 </div>
                 <div class="contacto d-none">
@@ -211,7 +249,7 @@
             });
             $(".participar-sorteo").click(function (e) {
                 e.preventDefault();
-                let id = $(this).prev().val();
+                let id = $(this).parent().prev().val();
                 Swal.fire({
                     title: 'Confirmar Participación',
                     html: '<div id="recaptcha" class="mb-3"></div>',
@@ -232,6 +270,9 @@
                                 },
                                 data: {
                                     id: id,
+                                },
+                                success: function(data) {
+                                    $(".participar-sorteo-div").html("Ya has participado.");
                                 }
                             });
                         }
@@ -240,8 +281,8 @@
             });
             $(".participar-encuesta").click(function (e) {
                 e.preventDefault();
-                let encuesta = $(this).prev().val();
-                let opcion = $(this).prev().prev().val();
+                let encuesta = $(this).parent().prev().val();
+                let opcion = $(`input[name=respuesta${encuesta}]:checked`).val();
                 Swal.fire({
                     title: 'Confirmar Participación',
                     html: '<div id="recaptcha" class="mb-3"></div>',
@@ -263,11 +304,14 @@
                                 data: {
                                     encuesta: encuesta,
                                     opcion: opcion,
+                                },
+                                success: function(data) {
+                                    $(".participar-encuesta-div").html("Ya has participado.");
                                 }
                             });
                         }
                     }
-                })
+                });
             });
             $('#reporteDesarrolladora').click(function(){
                 let desarrolladoraId = {!! $desarrolladora->id !!}

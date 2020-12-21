@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class InvertirListener
 {
@@ -13,14 +14,17 @@ class InvertirListener
      */
     public function __construct(User $user)
     {
-        $inversiones = $user->compras->count();
+        if(Auth::user()->logros->where('logro_id', 4)->count() != 0) {
 
-        if ($inversiones >= 5) {
-            $user->logros()->attach([
-                4
-            ]);
+            $inversiones = $user->compras->count();
 
-            event(new LogrosListener($user));
+            if ($inversiones >= 5) {
+                $user->logros()->attach([
+                    4
+                ]);
+
+                event(new LogrosListener($user));
+            }
         }
     }
 }

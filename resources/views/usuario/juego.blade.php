@@ -18,38 +18,40 @@
                             </li>
                             <li>
                                 <div class="btn-group mt-3">
-                                    @if ($usuario == null)
-                                        <form method="post" action="{{ route('usuario.juego.follow', $juego->id) }}">
-                                            @csrf
-                                            <button type="submit" class="btn text-primary">
-                                                <i class="far fa-check-circle"></i>
-                                            </button>
-                                        </form>
-                                    @else
-                                        <form method="post" action="{{ route('usuario.juego.unfollow', $juego->id) }}">
-                                            @csrf
-                                            <button type="submit" class="btn text-danger">
-                                                <i class="far fa-times-circle"></i>
-                                            </button>
-                                        </form>
-                                        @if ($usuario->pivot->notificacion == 0)
-                                            <form method="post"
-                                                action="{{ route('usuario.juego.notificacion', [$juego->id, 1]) }}">
+                                    @auth
+                                        @if (Auth::user()->juegos->where('id', $juego->id)->count() == 0)
+                                            <form method="post" action="{{ route('usuario.juego.follow', $juego->id) }}">
                                                 @csrf
-                                                <button type="submit" class="btn text-primary text-primary">
-                                                    <i class="far fa-bell"></i></i>
+                                                <button type="submit" class="btn text-primary">
+                                                    <i class="far fa-check-circle"></i>
                                                 </button>
                                             </form>
                                         @else
-                                            <form method="post"
-                                                action="{{ route('usuario.juego.notificacion', [$juego->id, 0]) }}">
+                                            <form method="post" action="{{ route('usuario.juego.unfollow', $juego->id) }}">
                                                 @csrf
                                                 <button type="submit" class="btn text-danger">
-                                                    <i class="far fa-bell-slash"></i>
+                                                    <i class="far fa-times-circle"></i>
                                                 </button>
                                             </form>
+                                            @if (Auth::user()->juegos->where('id', $juego->id)->first()->pivot->notificacion == 0)
+                                                <form method="post"
+                                                    action="{{ route('usuario.juego.notificacion', [$juego->id, 1]) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn text-primary text-primary">
+                                                        <i class="far fa-bell"></i></i>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <form method="post"
+                                                    action="{{ route('usuario.juego.notificacion', [$juego->id, 0]) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn text-danger">
+                                                        <i class="far fa-bell-slash"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         @endif
-                                    @endif
+                                    @endauth
                                 </div>
                             </li>
                         </ul>
@@ -62,11 +64,12 @@
                     <div class="col-3"><a id="comprar" href="">Comprar</a></div>
                     <div class="col-3"><a id="noticias" href="">Noticias</a></div>
                     <div class="col-2"><a id="analisis" href="">Análisis</a></div>
+                    @auth
                     <div class="float-right">
                         <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteJuego'></i></a>
                     </div>
+                    @endauth
                 </div>
-                
                 <hr>
                 <div id="contenido">
                     <div class="general">
@@ -76,15 +79,19 @@
                     </div>
                     <div class="comprar d-none">
                         <h2>Comprar</h2>
+                        @auth
                         <form action="{{ route('usuario.paypal.pagar') }}" method="post">
-                        @csrf
-                        @method('POST')
-                        El precio es de {{ $juego->precio }}
-                        <input type="hidden" name="tipo" value="0" />
-                        <input type="hidden" name="precio" value="{{ $juego->precio }}">
-                        <input type="hidden" name="juegoId" value="{{ $juego->id }}">                        
-                        <button type="submit" class="btn btn-primary"> Pagar con Paypal</button>
+                            @csrf
+                            @method('POST')
+                            El precio es de {{ $juego->precio }}
+                            <input type="hidden" name="tipo" value="0" />
+                            <input type="hidden" name="precio" value="{{ $juego->precio }}">
+                            <input type="hidden" name="juegoId" value="{{ $juego->id }}">
+                            <button type="submit" class="btn btn-primary"> Pagar con Paypal</button>
                         </form>
+                        @else
+                        <p>Tienes que estar registrado para comprar.</p>
+                        @endauth
                     </div>
                     <div class="noticias d-none">
                         <h2>Noticias</h2>
@@ -217,7 +224,7 @@
                                     }
                                 }
                             })
-                        }) 
+                        })
                         $("#mensaje-form").click(function(e) {
                             e.preventDefault();
                             let mensaje = CKEDITOR.instances.editor.getData();
@@ -330,7 +337,7 @@
                     }
                 }
             })
-        })            
+        })
     });
 
     </script>

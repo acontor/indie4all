@@ -18,7 +18,7 @@ class CreateComprasTable extends Migration
             $table->timestamps();
             $table->double('precio');
             $table->date('fecha_compra');
-            $table->string('key');
+            $table->string('key')->nullable();
             $table->bigInteger('campania_id')->unsigned()->nullable();
             $table->bigInteger('juego_id')->unsigned()->nullable();
             $table->bigInteger('user_id')->unsigned();

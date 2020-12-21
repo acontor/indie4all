@@ -16,7 +16,6 @@ class CreateMensajesTable extends Migration
         Schema::create('mensajes', function (Blueprint $table) {
             $table->id();
             $table->longText('contenido');
-            $table->integer('reportes')->default(0);
             $table->timestamps();
             $table->bigInteger('post_id')->unsigned()->nullable();
             $table->bigInteger('user_id')->unsigned();

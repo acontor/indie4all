@@ -125,11 +125,12 @@ Route::delete('/cm/posts/{id}/delete', [App\Http\Controllers\Cm\PostsController:
 
 // Juegos
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
+Route::get('/cm/juego/{id}', [App\Http\Controllers\Cm\JuegosController::class, 'show'])->name('cm.juego.show');
 Route::get('/cm/juegos/nuevo', [App\Http\Controllers\Cm\JuegosController::class, 'create'])->name('cm.juegos.create');
 Route::post('/cm/juegos/store', [App\Http\Controllers\Cm\JuegosController::class, 'store'])->name('cm.juegos.store');
-Route::get('/cm/juegos/{id}/edit', [App\Http\Controllers\Cm\JuegosController::class, 'edit'])->name('cm.juegos.edit');
 Route::patch('/cm/juegos/{id}/update', [App\Http\Controllers\Cm\JuegosController::class, 'update'])->name('cm.juegos.update');
 Route::delete('/cm/juegos/{id}/delete', [App\Http\Controllers\Cm\JuegosController::class, 'destroy'])->name('cm.juegos.destroy');
+Route::post('/claves/importar',[App\Http\Controllers\Cm\JuegosController::class, 'importar'])->name('cm.claves.import');
 
 // Campañas
 Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
@@ -178,7 +179,7 @@ Route::delete('/master/posts/{id}/delete', [App\Http\Controllers\Master\PostsCon
 
 // Inicio
 
-Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home')->middleware('auth');;
 Route::get('/busqueda', [App\Http\Controllers\Usuario\HomeController::class, 'busqueda'])->name('usuario.busqueda');
 
 // Mi cuenta
@@ -187,39 +188,39 @@ Route::post('/cuenta/generos', [App\Http\Controllers\Usuario\CuentaController::c
 Route::patch('/cuenta/usuario', [App\Http\Controllers\Usuario\CuentaController::class, 'usuario'])->name('usuario.cuenta.usuario');
 
 // Desarrolladoras
-Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'index'])->name('usuario.desarrolladoras.index')->middleware('auth');
-Route::get('/desarrolladoras/lista', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'all'])->name('usuario.desarrolladoras.all')->middleware('auth');
-Route::get('/desarrolladora/{id}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'show'])->name('usuario.desarrolladora.show')->middleware('auth');
-Route::get('/desarrolladora/{id}/post', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'post'])->name('usuario.desarrolladora.post')->middleware('auth');
+Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'index'])->name('usuario.desarrolladoras.index');
+Route::get('/desarrolladoras/lista', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'all'])->name('usuario.desarrolladoras.all');
+Route::get('/desarrolladora/{id}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'show'])->name('usuario.desarrolladora.show');
+Route::get('/desarrolladora/{id}/post', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'post'])->name('usuario.desarrolladora.post');
 Route::post('/desarrolladora/{id}/follow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'follow'])->name('usuario.desarrolladora.follow')->middleware('auth');
 Route::post('/desarrolladora/{id}/unfollow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'unfollow'])->name('usuario.desarrolladora.unfollow')->middleware('auth');
 Route::post('/desarrolladora/{id}/{notificacion}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'notificacion'])->name('usuario.desarrolladora.notificacion')->middleware('auth');
-Route::get('/desarrolladoras/solicitud', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'create'])->name('usuario.desarrolladora.create')->middleware('auth');
-Route::post('/desarrolladoras/solicitud/store', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'store'])->name('usuario.desarrolladora.store')->middleware('auth');
 Route::post('/desarrolladoras/sorteo', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'sorteo'])->name('usuario.desarrolladora.sorteo')->middleware('auth');
 Route::post('/desarrolladoras/encuesta', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'encuesta'])->name('usuario.desarrolladora.encuesta')->middleware('auth');
+Route::get('/desarrolladoras/solicitud', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'create'])->name('usuario.desarrolladora.create')->middleware('auth');
+Route::post('/desarrolladoras/solicitud/store', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'store'])->name('usuario.desarrolladora.store')->middleware('auth');
 
 // Juegos
-Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index')->middleware('auth');
-Route::get('/juegos/lista', [App\Http\Controllers\Usuario\JuegosController::class, 'all'])->name('usuario.juegos.all')->middleware('auth');
-Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class, 'show'])->name('usuario.juego.show')->middleware('auth');
-Route::get('/juego/{id}/post', [App\Http\Controllers\Usuario\JuegosController::class, 'post'])->name('usuario.juego.post')->middleware('auth');
+Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index');
+Route::get('/juegos/lista', [App\Http\Controllers\Usuario\JuegosController::class, 'all'])->name('usuario.juegos.all');
+Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class, 'show'])->name('usuario.juego.show');
+Route::get('/juego/{id}/post', [App\Http\Controllers\Usuario\JuegosController::class, 'post'])->name('usuario.juego.post');
 Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController::class, 'follow'])->name('usuario.juego.follow')->middleware('auth');
 Route::post('/juego/{id}/unfollow', [App\Http\Controllers\Usuario\JuegosController::class, 'unfollow'])->name('usuario.juego.unfollow')->middleware('auth');
 Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosController::class, 'notificacion'])->name('usuario.juego.notificacion')->middleware('auth');
 
 // Master
-Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index')->middleware('auth');
-Route::get('/masters/lista', [App\Http\Controllers\Usuario\MasterController::class, 'all'])->name('usuario.masters.all')->middleware('auth');
-Route::get('/master/{id}', [App\Http\Controllers\Usuario\MasterController::class, 'show'])->name('usuario.master.show')->middleware('auth');
-Route::get('/master/{id}/post', [App\Http\Controllers\Usuario\MasterController::class, 'post'])->name('usuario.master.post')->middleware('auth');
+Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index');
+Route::get('/masters/lista', [App\Http\Controllers\Usuario\MasterController::class, 'all'])->name('usuario.masters.all');
+Route::get('/master/{id}', [App\Http\Controllers\Usuario\MasterController::class, 'show'])->name('usuario.master.show');
+Route::get('/master/{id}/post', [App\Http\Controllers\Usuario\MasterController::class, 'post'])->name('usuario.master.post');
 Route::post('/master/{id}/follow', [App\Http\Controllers\Usuario\MasterController::class, 'follow'])->name('usuario.master.follow')->middleware('auth');
 Route::post('/master/{id}/unfollow', [App\Http\Controllers\Usuario\MasterController::class, 'unfollow'])->name('usuario.master.unfollow')->middleware('auth');
 Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterController::class, 'notificacion'])->name('usuario.master.notificacion')->middleware('auth');
 
 // Campanias
-Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index')->middleware('auth');
-Route::get('/campanias/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show')->middleware('auth');
+Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index');
+Route::get('/campanias/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show');
 
 // Reportes
 Route::post('/reporte/{id}/{tipo}', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');
@@ -230,5 +231,3 @@ Route::post('/mensaje/nuevo', [App\Http\Controllers\Usuario\MensajesController::
 // Pagos
 Route::post('/pago',[App\Http\Controllers\Usuario\PaymentController::class, 'payWithPaypal'])->name('usuario.paypal.pagar');
 Route::get('/pago/status',[App\Http\Controllers\Usuario\PaymentController::class, 'paypalStatus'])->name('usuario.paypal.status');
-
-

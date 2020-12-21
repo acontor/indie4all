@@ -2,7 +2,7 @@
 @section("content")
     <main class="py-4">
         <div class="container">
-            <div class="row box text-center menu">
+            <div class="row box text-center menu mb-4">
                 <div class="col-4 col-md-2"><a id="preferencias" href="">Preferencias</a></div>
                 <div class="col-4 col-md-2"><a id="compras" href="">Compras</a></div>
                 @if ($usuario->solicitud)
@@ -13,11 +13,17 @@
                 <div class="col-4 col-md-2"><a id="masters" href="">Masters</a></div>
                 <div class="col-4 col-md-2"><a id="campanias" href="">Campañas</a></div>
             </div>
-            {{$usuario->mensajes->count()}}
             <div id="main">
                 <div class="preferencias">
                     <div class="box">
-                        <h5 class="mb-3">Mi cuenta</h5>
+                        <h2 class="mb-3">Mi cuenta</h2>
+                        @if($usuario->ban)
+                        <div class="alert alert-danger mb-3">
+                            <h5>Motivo del ban:</h5>
+                            <p>{{$usuario->motivo}}</p>
+                            <small>Puede recibir más información poniéndose en contacto con soporte@indie4all.com</small>
+                        </div>
+                        @endif
                         <form action="{{ route('usuario.cuenta.usuario') }}" method="post">
                             @method("PATCH")
                             @csrf
@@ -93,9 +99,9 @@
                 <div class="compras d-none">
                     <div class="box-header mt-4">
                         <h5>Compras</h5>
-                    </div>
-                    <div class="box">
-                        {{ $usuario->compras->count() }}
+                        @foreach ($usuario->compras as $compra)
+                            {{ $compra }}
+                        @endforeach
                     </div>
                 </div>
                 @endif

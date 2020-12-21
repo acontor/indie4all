@@ -62,4 +62,10 @@ class Juego extends Model
     {
         return $this->belongsToMany("App\Models\User")->withPivot('calificacion');
     }
+
+    // Claves - 1:N - Juegos
+    public function claves()
+    {
+        return $this->hasMany("App\Models\Clave");
+    }
 }

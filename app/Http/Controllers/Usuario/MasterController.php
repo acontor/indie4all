@@ -39,9 +39,8 @@ class MasterController extends Controller
      */
     public function show($id)
     {
-        $usuario = User::find(Auth::id())->masters()->where('master_id', '=', $id)->first();
         $master = Master::find($id);
-        return view('usuario.master', ['master' => $master, 'usuario' => $usuario]);
+        return view('usuario.master', ['master' => $master]);
     }
 
     public function follow($id)

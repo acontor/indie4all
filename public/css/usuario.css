@@ -124,6 +124,14 @@ header div ul li a {
 }
 
 /**
+ * CAMPAÑAS
+ */
+
+.mensajes {
+    word-wrap: break-word;
+}
+
+/**
  * MEDIA QUERIES
  */
 

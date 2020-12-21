@@ -27,6 +27,7 @@ class Post extends Model
         'ban',
         'motivo',
         'campania_id',
+        'comentarios',
     ];
 
     /**

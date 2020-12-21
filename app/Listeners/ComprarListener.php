@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ComprarListener
 {
@@ -13,14 +14,17 @@ class ComprarListener
      */
     public function __construct(User $user)
     {
-        $compras = $user->compras->count();
+        if(Auth::user()->logros->where('logro_id', 3)->count() != 0) {
 
-        if ($compras >= 5) {
-            $user->logros()->attach([
-                3
-            ]);
+            $compras = $user->compras->count();
 
-            event(new LogrosListener($user));
+            if ($compras >= 5) {
+                $user->logros()->attach([
+                    3
+                ]);
+
+                event(new LogrosListener($user));
+            }
         }
     }
 }

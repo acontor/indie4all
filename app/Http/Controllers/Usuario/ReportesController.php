@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportesController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function reporte(Request $request)
     {
         Reporte::create([

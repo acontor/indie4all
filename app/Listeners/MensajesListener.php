@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class MensajesListener
 {
@@ -13,14 +14,17 @@ class MensajesListener
      */
     public function __construct(User $user)
     {
-        $mensajes = $user->mensajes->count();
+        if(Auth::user()->logros->where('logro_id', 1)->count() != 0) {
 
-        if ($mensajes >= 5) {
-            $user->logros()->attach([
-                1
-            ]);
+            $mensajes = $user->mensajes->count();
 
-            event(new LogrosListener($user));
+            if ($mensajes >= 5) {
+                $user->logros()->attach([
+                    1
+                ]);
+
+                event(new LogrosListener($user));
+            }
         }
     }
 }
