@@ -195,7 +195,6 @@
                                     });
                                 },
                                 preConfirm: function (result) {
-                                    console.log(result)
                                     if (grecaptcha.getResponse().length === 0) {
                                         Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
                                     } else if (result != '') {
@@ -309,7 +308,6 @@
                     });
                 },
                 preConfirm: function (result) {
-                    console.log(result)
                     if (grecaptcha.getResponse().length === 0) {
                         Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
                     } else if (result != '') {

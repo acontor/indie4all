@@ -41,4 +41,16 @@ class Campania extends Model
     {
         return $this->belongsTo('App\Models\Juego');
     }
+
+    // Campaña - 1:N - Posts
+    public function posts()
+    {
+        return $this->hasMany("App\Models\Post");
+    }
+
+    // Campaña - 1:N - Mensajes
+    public function mensajes()
+    {
+        return $this->hasMany("App\Models\Mensaje");
+    }
 }

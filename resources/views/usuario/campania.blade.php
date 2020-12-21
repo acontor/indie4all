@@ -61,11 +61,29 @@
                 </div>
                 <div class="actualizaciones d-none">
                     <h3>Actualizaciones</h3>
-                    asdasdasdasdasd
+                         @if ($campania->posts->count() != 0)
+                            @foreach ($campania->posts as $post)
+                                <div>
+                                    <h4>{{ $post->titulo }}  <small>{{$post->created_at}} <a class="text-danger float-right" id='reportePost' dataset="{{$post->id}}"><i class="fas fa-exclamation-triangle"></i></a></h4>
+                                    <p>{{ $post->contenido }}</p>
+                                </div>                             
+                            @endforeach
+                        @else
+                            Aún no ha publicado ninguna actualización.
+                        @endif
                 </div>
                 <div class="foro d-none">
                     <h3>Foro</h3>
-                    ASDasd
+                        @if ($campania->mensajes->count() != 0)
+                            @foreach ($campania->mensajes as $mensaje)
+                                <div class="alert alert-dark">
+                                    <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
+                                    <p>{{ $mensaje->contenido }}</p>
+                                </div>                             
+                            @endforeach
+                        @else
+                            Aún no hay mensajes.. Sé el primero en participar!
+                        @endif
                 </div>
                 <div class="faq d-none">
                     <h3>FAQ</h3>
@@ -129,7 +147,6 @@
                     });
                 },
                 preConfirm: function (result) {
-                    console.log(result)
                     if (grecaptcha.getResponse().length === 0) {
                         Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
                     } else if (result != '') {
@@ -153,6 +170,93 @@
                 }
             })
         })    
+        $('#reporteMensaje').click(function(){
+            let id = $(this).attr('dataset');
+            let url = '{{ route("usuario.reporte", [":id" , "mensaje_id"]) }}';
+            url = url.replace(':id', id);
+            Swal.fire({
+                title: 'Indica el motivo del reporte',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: `Reportar`,
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                html: '<div id="recaptcha" class="mb-3"></div>',
+                didOpen: function() {
+                    grecaptcha.render('recaptcha', {
+                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                    });
+                },
+                preConfirm: function (result) {
+                    if (grecaptcha.getResponse().length === 0) {
+                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                    } else if (result != '') {
+                        let motivo = result;
+                        $.ajax({
+                            url: url,
+                            type : 'POST',
+                            headers:{
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: {
+                                motivo: motivo,
+                            }
+                            ,success: function(data){
+                                Swal.fire(data)
+                            }
+                        })
+                    }else{
+                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
+                    }
+                }
+            }) 
+        })    
+        $('#reportePost').click(function(){
+            let id = $(this).attr('dataset');
+            let url = '{{ route("usuario.reporte", [":id" , "post_id"]) }}';
+            url = url.replace(':id', id);
+            Swal.fire({
+                title: 'Indica el motivo del reporte',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: `Reportar`,
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                html: '<div id="recaptcha" class="mb-3"></div>',
+                didOpen: function() {
+                    grecaptcha.render('recaptcha', {
+                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                    });
+                },
+                preConfirm: function (result) {
+                    if (grecaptcha.getResponse().length === 0) {
+                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                    } else if (result != '') {
+                        let motivo = result;
+                        $.ajax({
+                            url: url,
+                            type : 'POST',
+                            headers:{
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            },
+                            data: {
+                                motivo: motivo,
+                            }
+                            ,success: function(data){
+                                Swal.fire(data)
+                            }
+                        })
+                    }else{
+                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
+                    }
+                }
+            }) 
+        })  
+        
     
     });
 
