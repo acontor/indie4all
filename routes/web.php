@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null]])->paginate(4);
+    $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null],['campania_id', null]])->paginate(4);
     $juegos = Juego::has('usuarios')->inRandomOrder()->take(5)->get();
     $desarrolladoras = Desarrolladora::all()->take(5);
     $masters = Master::all()->take(5);

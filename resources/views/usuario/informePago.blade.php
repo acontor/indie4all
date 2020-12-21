@@ -22,7 +22,7 @@
                     </ul>            
                 </div>    
                 @endforeach
-                <p>Recibirá un correo electrónico con más información y con la clave del producto a {{ Auth::user()->email }} </p>
+                <p>Recibirá un correo electrónico con más información a {{ Auth::user()->email }} </p>
                 <p> Gracias. </p>
                 @endif               
             </div>

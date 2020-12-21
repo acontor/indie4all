@@ -79,7 +79,7 @@ class JuegosController extends Controller
 
         $mensajes = DB::table('mensajes')
             ->join('users', 'users.id', '=', 'mensajes.user_id')
-            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name')
+            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name' ,'mensajes.id')
             ->where('mensajes.post_id', $post->id)->get();
 
         return ['post' => $post, 'mensajes' => $mensajes];

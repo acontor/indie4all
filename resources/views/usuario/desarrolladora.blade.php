@@ -271,7 +271,7 @@
             });
             $('#reporteDesarrolladora').click(function(){
                 let desarrolladoraId = {!! $desarrolladora->id !!}
-                let url = '{{ route("usuario.reporte", [":id" , "desarrolladora"]) }}';
+                let url = '{{ route("usuario.reporte", [":id" , "desarrolladora_id"]) }}';
                 url = url.replace(':id', desarrolladoraId);
                 Swal.fire({
                     title: 'Indica el motivo del reporte',

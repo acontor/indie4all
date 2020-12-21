@@ -38,4 +38,10 @@ class Mensaje extends Model
     {
         return $this->belongsTo("App\Models\Post");
     }
+
+    // Posts - 1:N - Campania
+    public function Campania()
+    {
+        return $this->belongsTo("App\Models\Campania");
+    }
 }
