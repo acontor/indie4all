@@ -17,28 +17,30 @@
                             <li> imagen: {{ $master->imagen }}</li>
                             <li>
                                 <div class="btn-group mt-3">
-                                    @if ($usuario == null)
-                                        <form method="post" action="{{ route('usuario.master.follow', $master->id) }}">
-                                            @csrf
-                                            <button type="submit" class="btn text-primary"><i class="far fa-check-circle"></i></button>
-                                        </form>
-                                    @else
-                                        <form method="post" action="{{ route('usuario.master.unfollow', $master->id) }}">
-                                            @csrf
-                                            <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
-                                        </form>
-                                        @if ($usuario->pivot->notificacion == 0)
-                                            <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 1]) }}">
+                                    @auth
+                                        @if (Auth::user()->masters->where('id', $master->id)->count() == 0)
+                                            <form method="post" action="{{ route('usuario.master.follow', $master->id) }}">
                                                 @csrf
-                                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></i></button>
+                                                <button type="submit" class="btn text-primary"><i class="far fa-check-circle"></i></button>
                                             </form>
                                         @else
-                                            <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 0]) }}">
+                                            <form method="post" action="{{ route('usuario.master.unfollow', $master->id) }}">
                                                 @csrf
-                                                <button type="submit" class=" btn text-danger"><i class="far fa-bell-slash"></i></button>
+                                                <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
                                             </form>
+                                            @if (Auth::user()->masters->where('id', $master->id)->first()->pivot->notificacion == 0)
+                                                <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 1]) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></i></button>
+                                                </form>
+                                            @else
+                                                <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 0]) }}">
+                                                    @csrf
+                                                    <button type="submit" class=" btn text-danger"><i class="far fa-bell-slash"></i></button>
+                                                </form>
+                                            @endif
                                         @endif
-                                    @endif
+                                    @endauth
                                 </div>
                             </li>
                         </ul>
@@ -49,9 +51,11 @@
                         <div class="col-3"><a id="general" href="">General</a></div>
                         <div class="col-3"><a id="analisis" href="">Análisis</a></div>
                         <div class="col-3"><a id="notas" href="">Notas</a></div>
+                        @auth
                         <div class="float-right">
                             <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteMaster'></i></a>
                         </div>
+                        @endauth
                     </div>
                     <hr>
                     <div id="contenido">
@@ -206,7 +210,7 @@
                                     }
                                 }
                             })
-                        })                          
+                        })
                         $("#mensaje-form").click(function(e) {
 
                             e.preventDefault();
@@ -322,7 +326,7 @@
                         }
                     }
                 })
-            })  
+            })
         });
 
     </script>

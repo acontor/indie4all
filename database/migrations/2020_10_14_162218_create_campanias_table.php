@@ -20,7 +20,6 @@ class CreateCampaniasTable extends Migration
             $table->date('fecha_fin');
             $table->longText('contenido')->nullable();
             $table->longText('faq')->nullable();
-            $table->integer('reportes')->default(0);
             $table->boolean('ban')->default(false);
             $table->longText('motivo')->nullable();
             $table->timestamps();

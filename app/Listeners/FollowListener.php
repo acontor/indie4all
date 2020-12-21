@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class FollowListener
 {
@@ -13,14 +14,17 @@ class FollowListener
      */
     public function __construct(User $user)
     {
-        $follows = $user->desarrolladoras->count() + $user->juegos->count() + $user->masters->count();
+        if(Auth::user()->logros->where('logro_id', 5)->count() != 0) {
 
-        if ($follows >= 5) {
-            $user->logros()->attach([
-                5
-            ]);
+            $follows = $user->desarrolladoras->count() + $user->juegos->count() + $user->masters->count();
 
-            event(new LogrosListener($user));
+            if ($follows >= 5) {
+                $user->logros()->attach([
+                    5
+                ]);
+
+                event(new LogrosListener($user));
+            }
         }
     }
 }

@@ -32,7 +32,16 @@
 <body>
     <div id="app">
         @include("layouts.usuario.nav")
-
+        @if (Auth::user() != null && Auth::user()->ban)
+        <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light">
+            <span class="mx-auto">Su cuenta se encuentra baneada. No podrá hacer uso de las funciones sociales de la plataforma. Accede a <a href="{{ route('usuario.cuenta.index') }}">Mi Cuenta</a> para ver el motivo.</span>
+        </nav>
+        @endif
+        @if (Auth::user() != null && Auth::user()->email_verified_at == null)
+        <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light">
+            <span class="verify-alert mx-auto">Para utilizar las funciones sociales de la plataforma verifique su cuenta. Haz clic <a class="verify-link">aquí</a> para recibir el email de verificación</span>
+        </nav>
+        @endif
         @yield("content")
     </div>
     @yield("scripts")
@@ -46,6 +55,8 @@
             });
 
             $(".search").click(busqueda);
+
+            $(".verify-link").click(verificar);
         });
 
         function busqueda() {
@@ -108,6 +119,19 @@
                             }
                         }
                     });
+                }
+            });
+        }
+
+        function verificar() {
+            $.ajax({
+                url: "{{ route('verification.resend') }}",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $(".verify-alert").html("El correo debe haberse enviado a su bandeja de entrada. Compruebe su bandeja de spam si no le llega.")
                 }
             });
         }

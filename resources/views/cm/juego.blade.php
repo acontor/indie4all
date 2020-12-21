@@ -1,42 +1,35 @@
 @extends("layouts.cm.base")
 @section('styles')
+    <style>
+        input[type="file"] {
+            display: none;
+        }
 
-<style>
-
-    input[type="file"] {
-    display: none;
-}
-.custom-file-upload {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-}
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
     </style>
-
-
 @endsection
 @section("content")
     <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <br />
-                @endif
-                <div class="box">
-                    @if (isset($juego))
-                        <h1 class="mb-4">Editar Juego</h1>
-                    @else
-                        <h1 class="mb-4">Nuevo Juego</h1>
-                    @endif
-
+        @if (isset($juego))
+        <div class="row box text-center menu mb-4">
+            <div class="col-4"><a id="editar" href="">Editar juego</a></div>
+            <div class="col-4"><a id="claves" href="">Claves</a></div>
+            <div class="col-4"><a id="noticias" href="">Noticias</a></div>
+        </div>
+        <div id="main">
+            <div class="editar">
+                <div class="box mt-4">
+                    <h1 class="mb-4">Editar Juego</h1>
+        @else
+            <div class="nuevo">
+                <div class="box mt-4">
+                    <h1 class="mb-4">Nuevo Juego</h1>
+        @endif
                 @if (isset($juego))
                     <form action="{{ route('cm.juegos.update', $juego->id) }}" method="post" enctype="multipart/form-data">
                     @method("PATCH")
@@ -103,20 +96,53 @@
                     </form>
                 </div>
             </div>
+            @if(isset($juego))
+            <div class="claves d-none">
+                <div class="box mt-4">
+                    <h1 class="mb-4">Claves</h1>
+                    <form action="{{ route('cm.claves.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
+                            <div class="custom-file text-left">
+                                <input type="hidden" name="juego" value="{{ $juego->id }}">
+                                <input type="file" name="csv" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">Import data</button>
+                    </form>
+                    <div class="row mt-5">
+                        @foreach ($juego->claves as $clave)
+                            {{ $clave }}
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="noticias d-none">
+                <div class="box mt-4">
+                    <h1 class="mb-4">Noticias</h1>
+                    @foreach ($juego->posts as $post)
+                        {{ $post->titulo }}
+                        {{ $post->contenido }}
+                    @endforeach
+                </div>
+            </div>
+            @endif
         </div>
-
     </div>
-    @section("scripts")
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/es.js"></script>
+@endsection
+@section("scripts")
     <script>
-        $("#genero").select2({
-            language: "es",
-            width: "100%",
-            placeholder: "generos...",
-            allowClear: true,
-            dropdownAutoWidth: true
+        $(function() {
+            $(".menu").children("div").children("a").click(function(e) {
+                console.log($(this).attr("id"))
+                e.preventDefault();
+                let item = $(this).attr("id");
+                $("#main").children("div").addClass("d-none");
+                $(`.${item}`).removeClass("d-none");
+            });
         });
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -129,6 +155,7 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
         function readURL2(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -142,7 +169,5 @@
             }
         }
 
-
     </script>
-@endsection
 @endsection

@@ -31,9 +31,9 @@
                                             {{ $juego->sinopsis }}
                                         </p>
                                         <div class="row">
-                                            <a class="btn btn-primary btn-sm round ml-1" title="Editar Juego"
-                                                href="{{ route('cm.juegos.edit', $juego->id) }}">
-                                                <i class="fa fa-edit"></i>
+                                            <a class="btn btn-primary btn-sm round ml-1" title="Ver Juego"
+                                                href="{{ route('cm.juego.show', $juego->id) }}">
+                                                <i class="fa fa-eye"></i>
                                             </a>
                                             <form action="{{ route('cm.juegos.destroy', $juego->id) }}" method='post'>
                                                 @csrf

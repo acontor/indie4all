@@ -27,18 +27,22 @@
                 <ul class="list-group list-group-flush mt-5">
                     <li class="list-group-item">Fecha de lanzamiento: {{ $campania->juego->fecha_lanzamiento }}</li>
                     <li class="list-group-item">Género: {{ $campania->juego->genero->nombre }}</li>
-                    <li class="list-group-item">Participantes: </li>
+                    <li class="list-group-item">Participantes: {{ $campania->compras->count() }}</li>
                     <li id="diasRestantes" class="list-group-item text-danger"></li>
                 </p>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center participar-div">
+                    @auth
                     <form action="{{ route('usuario.paypal.pagar') }}" method="post">
                         @csrf
                         @method('POST')
                         <input type="hidden" name="tipo" value="1" />
-                        <input type="hidden" name="campaniaId" value="{{ $campania->id }}">                          
-                        <input type="text" name="precio">                      
+                        <input type="hidden" name="campaniaId" value="{{ $campania->id }}">
+                        <input type="text" name="precio">
                         <button type="submit" class="btn btn-primary"> Participar</button>
-                        </form>
+                    </form>
+                    @else
+                    <p>Tienes que estar registrado para participar.</p>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -46,12 +50,16 @@
             <div class="row text-center menu">
                 <div class="col-4 col-md-2 offset-md-1"><a id="general" href="">General</a></div>
                 <div class="col-4 col-md-2"><a id="actualizaciones" href="">Actualizaciones</a></div>
+                @auth
                 <div class="col-4 col-md-2"><a id="foro" href="">Foro</a></div>
+                @endauth
                 <div class="col-4 col-md-2"><a id="faq" href="">FAQ</a></div>
                 <div class="col-4 col-md-2"><a id="contacto" href="">Contacto</a></div>
+                @auth
                 <div class="float-right">
                     <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteCampania'></i></a>
                 </div>
+                @endauth
             </div>
             <div id="contenido">
                 <div class="general">
@@ -61,30 +69,32 @@
                 </div>
                 <div class="actualizaciones d-none">
                     <h3>Actualizaciones</h3>
-                         @if ($campania->posts->count() != 0)
+                        @if ($campania->posts->count() != 0)
                             @foreach ($campania->posts as $post)
                                 <div>
-                                    <h4>{{ $post->titulo }}  <small>{{$post->created_at}} <a class="text-danger float-right" id='reportePost' dataset="{{$post->id}}"><i class="fas fa-exclamation-triangle"></i></a></h4>
+                                    <h4>{{ $post->titulo }}  <small>{{$post->created_at}}@auth <a class="text-danger float-right" id='reportePost' dataset="{{$post->id}}"><i class="fas fa-exclamation-triangle"></i></a>@endauth</h4>
                                     <p>{{ $post->contenido }}</p>
-                                </div>                             
+                                </div>
                             @endforeach
                         @else
                             Aún no ha publicado ninguna actualización.
                         @endif
                 </div>
+                @auth
                 <div class="foro d-none">
                     <h3>Foro</h3>
                         @if ($campania->mensajes->count() != 0)
                             @foreach ($campania->mensajes as $mensaje)
                                 <div class="alert alert-dark">
                                     <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
-                                    <p>{{ $mensaje->contenido }}</p>
-                                </div>                             
+                                    <p class="mensaje">{{ $mensaje->contenido }}</p>
+                                </div>
                             @endforeach
                         @else
                             Aún no hay mensajes.. Sé el primero en participar!
                         @endif
                 </div>
+                @endauth
                 <div class="faq d-none">
                     <h3>FAQ</h3>
                 </div>
@@ -117,8 +127,14 @@
         let fechaFinal =moment(fechaFin,);
         let porcentaje = (100*recaudado)/meta;
 
-        $('.progress-bar').css('width',porcentaje+'%')
-        $('#diasRestantes').append(`¡Quedan ${fechaFinal.diff(fechaHoy, 'days')} días!`)
+        $('.progress-bar').css('width',porcentaje+'%');
+
+        if(fechaFinal.diff(fechaHoy) < 0) {
+            $('#diasRestantes').append('¡La campaña ha terminado!');
+            $('.participar-div').remove();
+        } else {
+            $('#diasRestantes').append(`¡Quedan ${fechaFinal.diff(fechaHoy, 'days')} días!`);
+        }
 
         $(".menu").children("div").children("a").click(function(e) {
                 e.preventDefault();
@@ -169,7 +185,7 @@
                     }
                 }
             })
-        })    
+        })
         $('#reporteMensaje').click(function(){
             let id = $(this).attr('dataset');
             let url = '{{ route("usuario.reporte", [":id" , "mensaje_id"]) }}';
@@ -211,8 +227,8 @@
                         Swal.showValidationMessage(`Por favor, indica un motivo.`)
                     }
                 }
-            }) 
-        })    
+            })
+        })
         $('#reportePost').click(function(){
             let id = $(this).attr('dataset');
             let url = '{{ route("usuario.reporte", [":id" , "post_id"]) }}';
@@ -254,10 +270,10 @@
                         Swal.showValidationMessage(`Por favor, indica un motivo.`)
                     }
                 }
-            }) 
-        })  
-        
-    
+            })
+        })
+
+
     });
 
 </script>

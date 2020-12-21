@@ -8,14 +8,13 @@ use App\Listeners\InvertirListener;
 use App\Mail\Compras\CompraRealizada;
 use App\Mail\Compras\InversionRealizada;
 use App\Models\Campania;
-use App\Models\Compras;
+use App\Models\Compra;
 use App\Models\Juego;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Mail;
 use PayPal\Api\Amount;
 use PayPal\Api\Payer;
@@ -33,6 +32,8 @@ class PaymentController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth');
+
         $payPalConfig =  Config::get('paypal');
 
         $this->apiContext = new ApiContext(
@@ -121,7 +122,7 @@ class PaymentController extends Controller
             }
             if ($tipo[0] == 'Compra') {
 
-                Compras::create([
+                Compra::create([
                     'precio' => $precio,
                     'key' => 'ramdomkey',
                     'fecha_compra' => $dateTime->format('Y-m-d H:i:s'),
@@ -131,9 +132,9 @@ class PaymentController extends Controller
                 event(new ComprarListener($user));
                 Mail::to($user->email)->send(new CompraRealizada());
             } else {
-                $participacion = Compras::where('user_id', Auth::id())->where('campania_id', $id)->get();
+                $participacion = Compra::where('user_id', Auth::id())->where('campania_id', $id)->get();
                 if ($participacion->count() == 0) {
-                    Compras::create([
+                    Compra::create([
                         'precio' => $precio,
                         'key' => 'ramdomkey',
                         'fecha_compra' => $dateTime->format('Y-m-d H:i:s'),
@@ -141,7 +142,7 @@ class PaymentController extends Controller
                         'campania_id' => $id,
                     ]);
                 } else {
-                    $participacion = Compras::find($participacion[0]->id);
+                    $participacion = Compra::find($participacion[0]->id);
                     $participacion->precio += $precio;
                     $participacion->save();
                 }

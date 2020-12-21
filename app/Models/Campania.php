@@ -30,10 +30,10 @@ class Campania extends Model
      * Relationships
      */
 
-    // Campanias - N:M - Users
-    public function users()
+    // Campanias - 1:N - Compras
+    public function compras()
     {
-        return $this->belongsToMany("App\Models\Campania");
+        return $this->hasMany("App\Models\Compra");
     }
 
     // Campanias - 1:1 - Juegos

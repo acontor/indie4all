@@ -24,7 +24,8 @@ class LoginListener
      */
     public function handle()
     {
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->logros->where('logro_id', 6)->count() != 0) {
+
             $usuario = User::find(Auth::id());
 
             $date = Carbon::now();

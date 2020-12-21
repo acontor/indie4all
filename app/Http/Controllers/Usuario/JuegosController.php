@@ -38,9 +38,8 @@ class JuegosController extends Controller
      */
     public function show($id)
     {
-        $usuario = User::find(Auth::id())->juegos()->where('juego_id', '=', $id)->first();
         $juego = Juego::find($id);
-        return view('usuario.juego', ['juego' => $juego, 'usuario' => $usuario]);
+        return view('usuario.juego', ['juego' => $juego]);
     }
 
     public function follow($id)

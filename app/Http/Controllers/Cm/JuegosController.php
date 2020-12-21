@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Cm;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ClavesImport;
 use App\Models\Cm;
 use App\Models\Desarrolladora;
 use App\Models\Genero;
 use App\Models\Juego;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JuegosController extends Controller
 {
@@ -33,10 +35,24 @@ class JuegosController extends Controller
         $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->get();
         return view('cm.juegos', ['juegos' => $juegos]);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $juego = Juego::find($id);
+        $generos = Genero::All();
+        return view('cm.juego', ['juego' => $juego, 'generos' => $generos]);
+    }
+
     public function create()
     {
         $generos = Genero::all();
-        return view('cm.juegos_crear', ['generos' => $generos]);
+        return view('cm.juego', ['generos' => $generos]);
     }
 
     public function store(Request $request)
@@ -83,12 +99,6 @@ class JuegosController extends Controller
         return redirect('/cm/juegos')->with('success', 'Juego creado!');
     }
 
-    public function edit($id)
-    {
-        $juego = Juego::find($id);
-        $generos = Genero::All();
-        return view('cm.juegos_crear', ['juego' => $juego, 'generos' => $generos]);
-    }
     public function update(Request $request, $id)
     {
         $juego = Juego::find($id);
@@ -152,5 +162,19 @@ class JuegosController extends Controller
         Juego::find($id)->delete();
 
         return redirect('/cm/juegos')->with('success', '¡Juego borrado!');
+    }
+
+    public function importar(Request $request)
+    {
+        Excel::import(new ClavesImport($request->juego), $request->file('csv'));
+
+        $juego = Juego::find($request->juego);
+
+        return view('cm.juego', ['juego' => $juego]);
+    }
+
+    public function fileImportExport()
+    {
+        return view('cm.claves');
     }
 }

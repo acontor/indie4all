@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Compras extends Model
+class Clave extends Model
 {
     use HasFactory;
 
@@ -15,11 +15,7 @@ class Compras extends Model
      * @var array
      */
     protected $fillable = [
-        'precio',
-        'fecha_compra',
         'key',
-        'campania_id',
         'juego_id',
-        'user_id',
     ];
 }

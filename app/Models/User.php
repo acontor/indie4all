@@ -90,7 +90,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // Users - 1:N - Compras
     public function compras()
     {
-        return $this->hasMany("App\Models\Compras");
+        return $this->hasMany("App\Models\Compra");
     }
 
     // Users - 1:N - Mensajes
@@ -138,6 +138,6 @@ class User extends Authenticatable implements MustVerifyEmail
     // Usuario - N:N - Encuestas
     public function encuestas()
     {
-        return $this->belongsToMany("App\Models\Encuesta")->wherePivot('opcion_id');
+        return $this->belongsToMany("App\Models\Encuesta")->withPivot('opcion_id');
     }
 }
