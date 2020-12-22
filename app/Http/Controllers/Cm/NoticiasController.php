@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class PostsController extends Controller
+class NoticiasController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -30,13 +30,13 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->posts()->get();
-        return view('cm.posts', ['posts' => $posts]);
+        $noticias = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->posts()->get();
+        return view('cm.noticias', ['noticias' => $noticias]);
     }
 
     public function create()
     {
-        return view('cm.posts_editor');
+        return view('cm.noticia_editor');
     }
 
     /**
@@ -60,13 +60,13 @@ class PostsController extends Controller
             'desarrolladora_id' => Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
         ]);
 
-        return redirect('/cm/posts')->with('success', '¡Post guardado!');
+        return redirect('/cm/noticias')->with('success', 'Noticia guardada!');
     }
 
     public function edit($id)
     {
-        $post = Post::find($id);
-        return view('cm.posts_editor', ['post' => $post]);
+        $noticia = Post::find($id);
+        return view('cm.noticia_editor', ['noticia' => $noticia]);
     }
 
     /**
@@ -88,7 +88,7 @@ class PostsController extends Controller
             'contenido' => $request->contenido,
         ]);
 
-        return redirect('/cm/posts')->with('success', '!Post actualizado!');
+        return redirect('/cm/noticias')->with('success', '!Noticia actualizado!');
     }
 
     /**
@@ -101,6 +101,6 @@ class PostsController extends Controller
     {
         Post::find($id)->delete();
 
-        return redirect('/cm/posts')->with('success', '¡Post borrado!');
+        return redirect('/cm/noticias')->with('success', 'Noticia borrado!');
     }
 }

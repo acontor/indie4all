@@ -8,8 +8,8 @@
         <div class="row">
             <div class="col-sm">
                 <div class="box-header">
-                    <h1 class="d-inline-block">Posts ({{ $posts->count() }})</h1>
-                    <a href="{{ route('cm.posts.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
+                    <h1 class="d-inline-block">Noticias ({{ $noticias->count() }})</h1>
+                    <a href="{{ route('cm.noticia.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                 </div>
                 <div class="table-responsive box">
                     <table class="table table-striped">
@@ -23,21 +23,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($posts as $post)
+                            @foreach ($noticias as $noticia)
                                 <tr>
-                                    <td>{{ $post->titulo }}</td>
-                                    <td>{{ $post->tipo }}</td>
-                                    <td class="text-center">{{ $post->mensajes->count() }}</td>
-                                    <td class="text-center">{{ $post->calificacion }}</td>
+                                    <td>{{ $noticia->titulo }}</td>
+                                    <td>{{ $noticia->tipo }}</td>
+                                    <td class="text-center">{{ $noticia->mensajes->count() }}</td>
+                                    <td class="text-center">{{ $noticia->calificacion }}</td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
-                                            <form action="{{ route('cm.posts.edit', $post->id) }}" method="post">
+                                            <form action="{{ route('cm.noticia.edit', $noticia->id) }}" method="post">
                                                 @csrf
                                                 <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                                     <i class="far fa-edit"></i>
                                                 </button>
                                             </form>
-                                            <form action="{{ route('cm.posts.destroy', $post->id) }}" method="post">
+                                            <form action="{{ route('cm.noticia.destroy', $noticia->id) }}" method="post">
                                                 @csrf
                                                 @method("DELETE")
                                                 <button class="btn btn-danger btn-sm round ml-1" type="submit">

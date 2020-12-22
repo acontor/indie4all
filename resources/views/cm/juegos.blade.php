@@ -8,48 +8,42 @@
             <div class="col-sm">
                 <div class="box-header">
                     <h1 class="d-inline-block">Juegos ({{ $juegos->count() }})</h1>
-                    <a href="{{ route('cm.juegos.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
+                    <a href="{{ route('cm.juego.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                 </div>
             </div>
         </div>
         <div class="row">
-            <section>
-                <div class="container">
-                    <div class="row">
-                        @foreach ($juegos as $juego)
-                            <div class="col-3 mt-4 mr-4">
-                                <div class="card">
-                                    <img src="{{ asset('/images/default.png') }}" height="100" />
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a>
-                                        </h5>
-                                        <p class="date-lanzamiento"> {{ $juego->fecha_lanzamiento }}
-                                            <span class="genero">{{ $juego->genero->nombre }}</span>
-                                        </p>
-                                        <p class="card-text">
-                                            {{ $juego->sinopsis }}
-                                        </p>
-                                        <div class="row">
-                                            <a class="btn btn-primary btn-sm round ml-1" title="Ver Juego"
-                                                href="{{ route('cm.juego.show', $juego->id) }}">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                            <form action="{{ route('cm.juegos.destroy', $juego->id) }}" method='post'>
-                                                @csrf
-                                                @method("DELETE")
-                                                <button class="btn btn-danger btn-sm round ml-1 btn-delete" type="submit">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+            @foreach ($juegos as $juego)
+                <div class="col-3 mt-4 mr-4">
+                    <div class="card">
+                        <img src="{{ asset('/images/default.png') }}" height="100" />
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a>
+                            </h5>
+                            <p class="date-lanzamiento"> {{ $juego->fecha_lanzamiento }}
+                                <span class="genero">{{ $juego->genero->nombre }}</span>
+                            </p>
+                            <p class="card-text">
+                                {{ $juego->sinopsis }}
+                            </p>
+                            <div class="row">
+                                <a class="btn btn-primary btn-sm round ml-1" title="Ver Juego"
+                                    href="{{ route('cm.juego.show', $juego->id) }}">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <form action="{{ route('cm.juego.destroy', $juego->id) }}" method='post'>
+                                    @csrf
+                                    @method("DELETE")
+                                    <button class="btn btn-danger btn-sm round ml-1 btn-delete" type="submit">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
                 </div>
-            </section>
+            @endforeach
         </div>
     </div>
 @endsection

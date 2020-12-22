@@ -114,31 +114,31 @@ Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'in
 Route::get('/cm/sorteos/nuevo', [App\Http\Controllers\Cm\SorteosController::class, 'create'])->name('cm.sorteos.create');
 Route::post('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'store'])->name('cm.sorteos.store');
 
-// Posts
-Route::get('/cm/posts', [App\Http\Controllers\Cm\PostsController::class, 'index'])->name('cm.posts.index');
-Route::get('/cm/posts/nueva', [App\Http\Controllers\Cm\PostsController::class, 'create'])->name('cm.posts.create');
-Route::post('/cm/posts/upload', [App\Http\Controllers\Cm\PostsController::class, 'upload'])->name('cm.posts.upload');
-Route::post('/cm/posts/nueva', [App\Http\Controllers\Cm\PostsController::class, 'store'])->name('cm.posts.store');
-Route::post('/cm/posts/{id}/edit', [App\Http\Controllers\Cm\PostsController::class, 'edit'])->name('cm.posts.edit');
-Route::patch('/cm/posts/{id}/update', [App\Http\Controllers\Cm\PostsController::class, 'update'])->name('cm.posts.update');
-Route::delete('/cm/posts/{id}/delete', [App\Http\Controllers\Cm\PostsController::class, 'destroy'])->name('cm.posts.destroy');
+// Noticias
+Route::get('/cm/noticias', [App\Http\Controllers\Cm\NoticiasController::class, 'index'])->name('cm.noticias.index');
+Route::get('/cm/noticia/nueva', [App\Http\Controllers\Cm\NoticiasController::class, 'create'])->name('cm.noticia.create');
+Route::post('/cm/noticia/upload', [App\Http\Controllers\Cm\NoticiasController::class, 'upload'])->name('cm.noticia.upload');
+Route::post('/cm/noticia/nueva', [App\Http\Controllers\Cm\NoticiasController::class, 'store'])->name('cm.noticia.store');
+Route::post('/cm/noticia/{id}/edit', [App\Http\Controllers\Cm\NoticiasController::class, 'edit'])->name('cm.noticia.edit');
+Route::patch('/cm/noticia/{id}/update', [App\Http\Controllers\Cm\NoticiasController::class, 'update'])->name('cm.noticia.update');
+Route::delete('/cm/noticia/{id}/delete', [App\Http\Controllers\Cm\NoticiasController::class, 'destroy'])->name('cm.noticia.destroy');
 
 // Juegos
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
 Route::get('/cm/juego/{id}', [App\Http\Controllers\Cm\JuegosController::class, 'show'])->name('cm.juego.show');
-Route::get('/cm/juegos/nuevo', [App\Http\Controllers\Cm\JuegosController::class, 'create'])->name('cm.juegos.create');
-Route::post('/cm/juegos/store', [App\Http\Controllers\Cm\JuegosController::class, 'store'])->name('cm.juegos.store');
-Route::patch('/cm/juegos/{id}/update', [App\Http\Controllers\Cm\JuegosController::class, 'update'])->name('cm.juegos.update');
-Route::delete('/cm/juegos/{id}/delete', [App\Http\Controllers\Cm\JuegosController::class, 'destroy'])->name('cm.juegos.destroy');
+Route::get('/cm/juego/nuevo', [App\Http\Controllers\Cm\JuegosController::class, 'create'])->name('cm.juego.create');
+Route::post('/cm/juego/store', [App\Http\Controllers\Cm\JuegosController::class, 'store'])->name('cm.juego.store');
+Route::patch('/cm/juego/{id}/update', [App\Http\Controllers\Cm\JuegosController::class, 'update'])->name('cm.juego.update');
+Route::delete('/cm/juego/{id}/delete', [App\Http\Controllers\Cm\JuegosController::class, 'destroy'])->name('cm.juego.destroy');
 Route::post('/claves/importar',[App\Http\Controllers\Cm\JuegosController::class, 'importar'])->name('cm.claves.import');
 
 // Campañas
 Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
-Route::post('/cm/campanias/juego/{id}/nuevo', [App\Http\Controllers\Cm\CampaniasController::class, 'create'])->name('cm.campanias.create');
-Route::post('/cm/campanias/store/{id}', [App\Http\Controllers\Cm\CampaniasController::class, 'store'])->name('cm.campanias.store');
-Route::post('/cm/campanias/{idCampania}/{idJuego}/edit', [App\Http\Controllers\Cm\CampaniasController::class, 'edit'])->name('cm.campanias.edit');
-Route::patch('/cm/campanias/{id}/update', [App\Http\Controllers\Cm\CampaniasController::class, 'update'])->name('cm.campanias.update');
-Route::delete('/cm/campanias/{id}/delete', [App\Http\Controllers\Cm\CampaniasController::class, 'destroy'])->name('cm.campanias.destroy');
+Route::get('/cm/campania/{id}', [App\Http\Controllers\Cm\CampaniasController::class, 'show'])->name('cm.campania.show');
+Route::get('/cm/campania/nuevo', [App\Http\Controllers\Cm\CampaniasController::class, 'create'])->name('cm.campania.create');
+Route::post('/cm/campania/store', [App\Http\Controllers\Cm\CampaniasController::class, 'store'])->name('cm.campania.store');
+Route::patch('/cm/campania/{id}/update', [App\Http\Controllers\Cm\CampaniasController::class, 'update'])->name('cm.campania.update');
+Route::delete('/cm/campania/{id}/delete', [App\Http\Controllers\Cm\CampaniasController::class, 'destroy'])->name('cm.campania.destroy');
 
 // Encuestas
 Route::get('/cm/encuestas', [App\Http\Controllers\Cm\EncuestasController::class, 'index'])->name('cm.encuestas.index');

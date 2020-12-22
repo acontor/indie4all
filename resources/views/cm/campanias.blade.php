@@ -1,105 +1,49 @@
 @extends("layouts.cm.base")
 @section("styles")
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
-    <style>
-        .table-responsive thead {
-            background-color: #E34E33;
-            color: #FFF;
-        }
-        .page-link{
-            color:#E34E33;
-        }
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: rgb(227, 78,51, 0.54) !important;
-            color: white!important;
-            border-radius: 4px;
-            border: 1px solid #E34E33;
-        }        
-        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-            background: #E34E33;
-            color: black!important;
-        } 
-        .page-item.active .page-link{
-            background-color: #E34E33 !important;
-        }
-</style>
+    <link href="{{ asset('css/cm.css') }}" rel="stylesheet">
 @endsection
 @section("content")
     <div class="container">
         <div class="row">
             <div class="col-sm">
                 <div class="box-header">
-                    <h1 class="d-inline-block">Campañas</h1>
-                </div>
-                <div class="table-responsive box mt-4">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td class="w-30">Nombre</td>
-                                <td class="w-30">Campaña</td>
-                                <td class="w-30">Recaudado</td>
-                                <td class="w-40">Meta</td>
-                                <td class="w-30">Fecha de finalización</td>
-                                <td class="w-10 text-center">Acciones</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($juegos as $juego)
-                                <tr>
-                                    <td class="align-middle w-30">{{ $juego->nombre }}</td>
-                                    <td class="align-middle w-30">
-                                    @if ($juego->campania) Campaña Creada @else No
-                                            activa
-                                        @endif
-                                    </td>
-                                    <td class="align-middle w-30">
-                                        @if (isset($juego->campania->recaudado))
-                                            {{ $juego->campania->recaudado }} €
-                                        @endif
-                                    </td>
-                                    <td class="align-middle w-30">
-                                        @if (isset($juego->campania->meta))
-                                            {{ $juego->campania->meta }} €
-                                        @endif
-                                    </td>
-                                    <td class="align-middle w-30">
-                                        @if (isset($juego->campania))
-                                            {{ $juego->campania->fecha_fin }}
-                                        @endif
-                                    </td>
-                                    <td class=" align-middle w-10 text-center">
-                                        <div class="btn-group">
-                                            @if ($juego->campania)
-                                                <form action="{{ route('cm.campanias.edit', ['idCampania' => $juego->campania->id, 'idJuego' => $juego->id]) }}" method="post">
-                                                    @csrf
-                                                    <button class="btn btn-primary btn-sm round mr-1" type="submit">
-                                                        <i class="far fa-edit"></i>
-                                                    </button>
-                                                </form>
-                                                <form action="{{ route('cm.campanias.destroy', $juego->campania->id) }}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm round ml-1" type="submit">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('cm.campanias.create', $juego->id) }}" method="post">
-                                                    @csrf
-                                                    <button class="btn btn-success btn-sm round mr-1" type="submit">
-                                                        <i class="fas fa-plus-square"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <h1 class="d-inline-block">Campañas ({{ $juegos->count() }})</h1>
+                    <a href="{{ route('cm.campania.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            @foreach ($juegos as $juego)
+                <div class="col-3 mt-4 mr-4">
+                    <div class="card">
+                        <img src="{{ asset('/images/default.png') }}" height="100" />
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ route('usuario.campania.show', $juego->campania->id) }}">{{ $juego->nombre }}</a>
+                            </h5>
+                            <p class="date-lanzamiento"> {{ $juego->fecha_lanzamiento }}
+                                <span class="genero">{{ $juego->genero->nombre }}</span>
+                            </p>
+                            <p class="card-text">
+                                {{ $juego->sinopsis }}
+                            </p>
+                            <div class="row">
+                                <a class="btn btn-primary btn-sm round ml-1" title="Ver Juego"
+                                    href="{{ route('cm.campania.show', $juego->campania->id) }}">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <form action="{{ route('cm.campania.destroy', $juego->campania->id) }}" method='post'>
+                                    @csrf
+                                    @method("DELETE")
+                                    <button class="btn btn-danger btn-sm round ml-1 btn-delete" type="submit">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 @endsection
@@ -108,16 +52,7 @@
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script>
         $(function() {
-            $("table").dataTable({
-                pageLength : 5,
-                lengthMenu: [[5, 10, 15, -1], [5, 10, 15, 'Todos']],
-                info : false,
-                language : {
-                    search : 'Buscar',
-                    lengthMenu: 'Mostrando _MENU_  por página',
-                    zeroRecords: 'Ninguna coincidencia'
-                }
-            });
+            $("table").dataTable();
 
             let sessionSuccess = {!! json_encode(session()->get("success")) !!}
 
@@ -125,13 +60,13 @@
                 notificacion(sessionSuccess)
             }
 
-            $('.btn-danger').click(function(e) {
+            $(".btn-danger").click(function(e) {
                 e.preventDefault();
-                let form = $(this).parents('form');
+                let form = $(this).parents("form");
                 Swal.fire({
                     position: "center",
                     title: "Cuidado",
-                    text: "¡Tendrás que volver a crear la campaña para recuperarla!",
+                    text: "¡Tendrás que volver a crear el juego para recuperarlo!",
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
