@@ -17,7 +17,7 @@
     <div class="container">
         @if (isset($juego))
         <div class="row box text-center menu mb-4">
-            <div class="col-4"><a id="editar" href="">Editar juego</a></div>
+            <div class="col-4"><a id="editar" href="">Juego</a></div>
             <div class="col-4"><a id="claves" href="">Claves</a></div>
             <div class="col-4"><a id="noticias" href="">Noticias</a></div>
         </div>
@@ -30,12 +30,12 @@
                 <div class="box mt-4">
                     <h1 class="mb-4">Nuevo Juego</h1>
         @endif
-                @if (isset($juego))
-                    <form action="{{ route('cm.juegos.update', $juego->id) }}" method="post" enctype="multipart/form-data">
+        @if (isset($juego))
+                    <form action="{{ route('cm.juego.update', $juego->id) }}" method="post" enctype="multipart/form-data">
                     @method("PATCH")
-                @else
-                    <form action="{{ route('cm.juegos.store') }}" method="post" enctype="multipart/form-data">
-                @endif
+        @else
+                    <form action="{{ route('cm.juego.store') }}" method="post" enctype="multipart/form-data">
+        @endif
                     @csrf
                         <div class="form-group">
                             <label for="nombre">Título:</label>
@@ -45,16 +45,12 @@
                             <label for="sinopsis">sinopsis:</label>
                             <textarea class="form-control" name="sinopsis"> @if (isset($juego)){{ $juego->sinopsis }}@endif</textarea>
                         </div>
-                    </div>
-                    <div class="box">
                         <div class="form-group">
                             <label for="fecha_lanzamiento">Fecha de lanzamiento:</label>
                             <input type="date" name="fecha_lanzamiento" @if (isset($juego)) value="{{ $juego->fecha_lanzamiento }}" @endif>
                             <label for="precio">Precio:</label>
                             <input type="text" name="precio" @if (isset($juego)) value="{{ $juego->precio }}" @endif>
                         </div>
-                    </div>
-                    <div class="box mt-3">
                         <div class="row">
                             <div class="form-group  col-sm-5">
                                 <label for="genero_id">Género</label>
@@ -92,46 +88,112 @@
                             @endif
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mb-3">Crear</button>
+                        @if(isset($juego))
+                            <div class="form-group">
+                                <label>Contenido</label>
+                                <textarea class="form-control" name="contenido" id="editor">
+                                        {{ $juego->contenido }}
+                                </textarea>
+                            </div>
+                        @endif
+                        <button type="submit" class="btn btn-success">@if(isset($juego)) Editar @else Crear @endif</button>
                     </form>
                 </div>
             </div>
             @if(isset($juego))
-            <div class="claves d-none">
-                <div class="box mt-4">
-                    <h1 class="mb-4">Claves</h1>
-                    <form action="{{ route('cm.claves.import') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
-                            <div class="custom-file text-left">
-                                <input type="hidden" name="juego" value="{{ $juego->id }}">
-                                <input type="file" name="csv" class="custom-file-input" id="customFile">
-                                <label class="custom-file-label" for="customFile">Choose file</label>
+                <div class="claves d-none">
+                    <div class="box mt-4">
+                        <h1 class="mb-4">Claves ({{ $juego->claves->count() }})</h1>
+                        <form action="{{ route('cm.claves.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
+                                <div class="custom-file text-left">
+                                    <input type="hidden" name="juego" value="{{ $juego->id }}">
+                                    <input type="file" name="csv" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
                             </div>
+                            <button class="btn btn-primary">Import data</button>
+                        </form>
+                        <div class="row mt-5">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <td class="w-75">Clave</td>
+                                        <td class="w-25 text-center">Acciones</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($juego->claves as $clave)
+                                    <tr>
+                                        <td class="align-middle">{{ $clave->key }}</td>
+                                        <td class="align-middle text-center">
+                                            <div class="btn-group">
+                                                <form action="{{ route('admin.noticias.edit', $clave->id) }}" method="post">
+                                                    @csrf
+                                                    <button class="btn btn-primary btn-sm round mr-1" type="submit">
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('admin.noticias.destroy', $clave->id) }}" method="post">
+                                                    @csrf
+                                                    @method("DELETE")
+                                                    <button class="btn btn-danger btn-sm round ml-1" type="submit">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                        <button class="btn btn-primary">Import data</button>
-                    </form>
-                    <div class="row mt-5">
-                        @foreach ($juego->claves as $clave)
-                            {{ $clave }}
-                        @endforeach
                     </div>
                 </div>
-            </div>
-            <div class="noticias d-none">
-                <div class="box mt-4">
-                    <h1 class="mb-4">Noticias</h1>
-                    @foreach ($juego->posts as $post)
-                        {{ $post->titulo }}
-                        {{ $post->contenido }}
-                    @endforeach
+                <div class="noticias d-none">
+                    <div class="box mt-4">
+                        <h1 class="mb-4">Noticias</h1>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td class="w-75">Título</td>
+                                    <td class="w-25 text-center">Acciones</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($juego->posts as $post)
+                                    <tr>
+                                        <td class="align-middle">{{ $post->titulo }}</td>
+                                        <td class="align-middle text-center">
+                                            <div class="btn-group">
+                                                <form action="{{ route('admin.noticias.edit', $post->id) }}" method="post">
+                                                    @csrf
+                                                    <button class="btn btn-primary btn-sm round mr-1" type="submit">
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('admin.noticias.destroy', $post->id) }}" method="post">
+                                                    @csrf
+                                                    @method("DELETE")
+                                                    <button class="btn btn-danger btn-sm round ml-1" type="submit">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>
 @endsection
 @section("scripts")
+    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
         $(function() {
             $(".menu").children("div").children("a").click(function(e) {
@@ -140,6 +202,11 @@
                 let item = $(this).attr("id");
                 $("#main").children("div").addClass("d-none");
                 $(`.${item}`).removeClass("d-none");
+            });
+
+            CKEDITOR.replace("contenido", {
+                filebrowserUploadUrl: "{{ route('cm.juego.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: "form"
             });
         });
 
