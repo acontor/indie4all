@@ -45,16 +45,12 @@
                             <label for="sinopsis">sinopsis:</label>
                             <textarea class="form-control" name="sinopsis"> @if (isset($juego)){{ $juego->sinopsis }}@endif</textarea>
                         </div>
-                    </div>
-                    <div class="box">
                         <div class="form-group">
                             <label for="fecha_lanzamiento">Fecha de lanzamiento:</label>
                             <input type="date" name="fecha_lanzamiento" @if (isset($juego)) value="{{ $juego->fecha_lanzamiento }}" @endif>
                             <label for="precio">Precio:</label>
                             <input type="text" name="precio" @if (isset($juego)) value="{{ $juego->precio }}" @endif>
                         </div>
-                    </div>
-                    <div class="box mt-3">
                         <div class="row">
                             <div class="form-group  col-sm-5">
                                 <label for="genero_id">Género</label>
@@ -92,7 +88,15 @@
                             @endif
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mb-3">Crear</button>
+                        @if(isset($juego))
+                            <div class="form-group">
+                                <label>Contenido</label>
+                                <textarea class="form-control" name="contenido" id="editor">
+                                        {{ $juego->contenido }}
+                                </textarea>
+                            </div>
+                        @endif
+                        <button type="submit" class="btn btn-success">@if(isset($juego)) Editar @else Crear @endif</button>
                     </form>
                 </div>
             </div>
@@ -189,6 +193,7 @@
     </div>
 @endsection
 @section("scripts")
+    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
         $(function() {
             $(".menu").children("div").children("a").click(function(e) {
@@ -197,6 +202,11 @@
                 let item = $(this).attr("id");
                 $("#main").children("div").addClass("d-none");
                 $(`.${item}`).removeClass("d-none");
+            });
+
+            CKEDITOR.replace("contenido", {
+                filebrowserUploadUrl: "{{ route('cm.juego.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: "form"
             });
         });
 

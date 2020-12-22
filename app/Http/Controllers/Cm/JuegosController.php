@@ -110,7 +110,7 @@ class JuegosController extends Controller
             'sinopsis' => 'required',
             'fecha_lanzamiento' => 'required',
             'precio' => 'required',
-            'genero_id' => 'required',
+            'genero_id' => 'required'
         ]);
 
         $portada = public_path() . '/images/juegos/portadas/' . $juego->imagen_portada;
@@ -135,7 +135,7 @@ class JuegosController extends Controller
             $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
         }
 
-        Juego::find($id)->update([
+        $juego = Juego::find($id)->update([
             'nombre' => $request->nombre,
             'imagen_portada' => $fileNamePortada,
             'imagen_caratula' => $fileNameCaratula,
@@ -145,6 +145,7 @@ class JuegosController extends Controller
             'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
             'genero_id' => $request->genero,
             'genero_id' => $request->genero_id,
+            'contenido' => $request->contenido,
         ]);
 
         return redirect('/cm/juegos')->with('success', 'Juego actualizado!');

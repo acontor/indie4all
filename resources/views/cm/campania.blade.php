@@ -122,6 +122,18 @@
                             <label for="fecha_fin">Fecha de finalización:</label>
                             <input type="date" name="fecha_fin" value="{{ $campania->fecha_fin }}">
                         </div>
+                        <div class="form-group">
+                            <label>Contenido</label>
+                            <textarea class="form-control" name="contenido" id="editor">
+                                    {{ $campania->contenido }}
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>FAQ</label>
+                            <textarea class="form-control" name="faq" id="faq">
+                                    {{ $campania->faq }}
+                            </textarea>
+                        </div>
                         <button type="submit" class="btn btn-success mb-3">Editar</button>
                     </form>
                 </div>
@@ -177,6 +189,7 @@
     </div>
 @endsection
 @section("scripts")
+    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
         $(function() {
             $(".menu").children("div").children("a").click(function(e) {
@@ -185,6 +198,16 @@
                 let item = $(this).attr("id");
                 $("#main").children("div").addClass("d-none");
                 $(`.${item}`).removeClass("d-none");
+            });
+
+            CKEDITOR.replace("contenido", {
+                filebrowserUploadUrl: "{{ route('cm.juego.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: "form"
+            });
+
+            CKEDITOR.replace("faq", {
+                filebrowserUploadUrl: "{{ route('cm.juego.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: "form"
             });
         });
 

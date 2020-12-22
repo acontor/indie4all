@@ -127,6 +127,7 @@ Route::delete('/cm/noticia/{id}/delete', [App\Http\Controllers\Cm\NoticiasContro
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
 Route::get('/cm/juego/{id}', [App\Http\Controllers\Cm\JuegosController::class, 'show'])->name('cm.juego.show');
 Route::get('/cm/juego/nuevo', [App\Http\Controllers\Cm\JuegosController::class, 'create'])->name('cm.juego.create');
+Route::post('/cm/juego/upload', [App\Http\Controllers\Cm\JuegosController::class, 'upload'])->name('cm.juego.upload');
 Route::post('/cm/juego/store', [App\Http\Controllers\Cm\JuegosController::class, 'store'])->name('cm.juego.store');
 Route::patch('/cm/juego/{id}/update', [App\Http\Controllers\Cm\JuegosController::class, 'update'])->name('cm.juego.update');
 Route::delete('/cm/juego/{id}/delete', [App\Http\Controllers\Cm\JuegosController::class, 'destroy'])->name('cm.juego.destroy');

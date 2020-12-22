@@ -74,8 +74,7 @@
                 <div id="contenido">
                     <div class="general">
                         <h2>General</h2>
-                        Contenido que quiera la desarrolladora.
-                        Hay que crear un atributo en la tabla juegos llamado contenido.
+                        {!! $juego->contenido !!}
                     </div>
                     <div class="comprar d-none">
                         <h2>Comprar</h2>
