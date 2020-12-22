@@ -82,11 +82,16 @@
                         <form action="{{ route('usuario.paypal.pagar') }}" method="post">
                             @csrf
                             @method('POST')
-                            El precio es de {{ $juego->precio }}
+                            <p>Stock: {{$juego->claves->count()}}</p>
+                            <p>El precio es de {{ $juego->precio }}</p>
+                            @if($juego->claves->count() > 0)
                             <input type="hidden" name="tipo" value="0" />
                             <input type="hidden" name="precio" value="{{ $juego->precio }}">
                             <input type="hidden" name="juegoId" value="{{ $juego->id }}">
                             <button type="submit" class="btn btn-primary"> Pagar con Paypal</button>
+                            @else
+                            <p class="text-danger">No hay stock en estos momentos</p>
+                            @endif
                         </form>
                         @else
                         <p>Tienes que estar registrado para comprar.</p>

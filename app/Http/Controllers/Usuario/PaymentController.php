@@ -8,6 +8,7 @@ use App\Listeners\InvertirListener;
 use App\Mail\Compras\CompraRealizada;
 use App\Mail\Compras\InversionRealizada;
 use App\Models\Campania;
+use App\Models\Clave;
 use App\Models\Compra;
 use App\Models\Juego;
 use App\Models\User;
@@ -121,22 +122,23 @@ class PaymentController extends Controller
                 $dateTime = Carbon::parse($request->your_datetime_field);
             }
             if ($tipo[0] == 'Compra') {
-
+                $key = Clave::where('juego_id', $id)->inRandomOrder()->first();
+                $clave = $key->key;
+                $key->delete();
                 Compra::create([
                     'precio' => $precio,
-                    'key' => 'ramdomkey',
+                    'key' => $clave,
                     'fecha_compra' => $dateTime->format('Y-m-d H:i:s'),
                     'user_id' => Auth::id(),
                     'juego_id' => $id,
                 ]);
                 event(new ComprarListener($user));
-                Mail::to($user->email)->send(new CompraRealizada());
+                Mail::to($user->email)->send(new CompraRealizada($clave, $user->name, $mensaje));
             } else {
                 $participacion = Compra::where('user_id', Auth::id())->where('campania_id', $id)->get();
                 if ($participacion->count() == 0) {
-                    Compra::create([
+                    $participacion = Compra::create([
                         'precio' => $precio,
-                        'key' => 'ramdomkey',
                         'fecha_compra' => $dateTime->format('Y-m-d H:i:s'),
                         'user_id' => Auth::id(),
                         'campania_id' => $id,
@@ -146,16 +148,15 @@ class PaymentController extends Controller
                     $participacion->precio += $precio;
                     $participacion->save();
                 }
-
                 $campania = Campania::find($id);
                 $campania->recaudado += $precio;
                 $campania->save();
 
                 event(new InvertirListener($user));
-                Mail::to($user->email)->send(new InversionRealizada());
+                Mail::to($user->email)->send(new InversionRealizada($participacion->precio, $user->name, $mensaje));
             }
 
-            return view('usuario.informePago', ['mensaje' => $mensaje, 'status' => $status]);
+            return view('usuario.informePago', ['precio' => $participacion->precio, 'mensaje' => $mensaje, 'status' => $status]);
         }
 
         $status = 0;

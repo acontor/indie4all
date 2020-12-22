@@ -16,12 +16,13 @@
                 <div class="container">
                     <ul style="list-style:none;">
                         <li> Descripción del producto: {{ $item->description }} .</li>
-                        <li> Total: {{ $item->amount->total }} € </li>
+                        <li> Precio: {{ $item->amount->total }} € </li>
                         <li> A nombre de: {{ $item->item_list->shipping_address->recipient_name }}</li>
                         <li> Dirección: {{ $item->item_list->shipping_address->line1 . ' '.$item->item_list->shipping_address->city .' '. $item->item_list->shipping_address->postal_code  }}</li>
                     </ul>            
                 </div>    
                 @endforeach
+                <p>Lleva un total de: {{$precio}} en esta campaña.</p>
                 <p>Recibirá un correo electrónico con más información a {{ Auth::user()->email }} </p>
                 <p> Gracias. </p>
                 @endif               
