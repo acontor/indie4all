@@ -43,8 +43,21 @@
         </nav>
         @endif
         @yield("content")
+        @if(Auth::user() && Auth::user()->master()->count() != 0)
+        <a href="#">
+            <div class="estado">
+                <i class="fas fa-brain" aria-hidden="true"></i>
+            </div>
+        </a>
+        <a href="{{ route('usuario.master.show', Auth::user()->master()->first()->id) }}">
+            <div class="perfil">
+                <i class="fas fa-user" aria-hidden="true"></i>
+            </div>
+        </a>
+        @endif
     </div>
     @yield("scripts")
+    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script>
         $(function() {
@@ -57,6 +70,41 @@
             $(".search").click(busqueda);
 
             $(".verify-link").click(verificar);
+
+            $('.estado').parent().click(function() {
+                Swal.fire({
+                    position: 'bottom',
+                    title: 'Nuevo estado',
+                    html: '<textarea class="form-control" name="nuevo-estado" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button>',
+                    showCloseButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    showClass: {
+                        popup: 'animate__animated animate__bounceInUp'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__backOutDown'
+                    }
+                });
+                CKEDITOR.replace("nuevo-estado", {
+                    customConfig: "{{ asset('js/ckeditor/config.js') }}"
+                });
+                $("#estado-form").click(function(e) {
+                    e.preventDefault();
+                    let estado = CKEDITOR.instances.editor.getData();
+                    CKEDITOR.instances.editor.setData("");
+                    $.ajax({
+                        url: '{{ route("master.estado.store") }}',
+                        type: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            estado: estado
+                        }
+                    });
+                });
+            });
         });
 
         function busqueda() {

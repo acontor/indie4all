@@ -117,7 +117,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne('\App\Models\Solicitud');
     }
 
-    // Usuario - 1:N - Masters
+    // Usuario - 1:N - Master
     public function master()
     {
         return $this->belongsTo("App\Models\Master", 'id', 'user_id');

@@ -42,20 +42,84 @@ body {
     border-radius: 5px;
 }
 
-  /* Track */
+/* Track */
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
-  /* Handle */
+/* Handle */
 ::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 10px;
 }
 
-  /* Handle on hover */
+/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+/**
+ * FLOAT MENU
+ */
+
+.estado {
+    position: fixed;
+    background: #e3a633;
+    color: #333;
+    padding-right: 15px;
+    right: -20px;
+    bottom: 30px;
+    height: 50px;
+    width: 50px;
+    border-radius: 100px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all .1s ease;
+    cursor: pointer;
+}
+
+.estado:hover {
+    width: 195px;
+}
+
+.estado:hover:after {
+    display: inline-table;
+    margin-left: 5px;
+    font-weight: bold;
+    content: "Nuevo estado";
+}
+
+.perfil {
+    position: fixed;
+    background: #e3a633;
+    color: #333;
+    padding-right: 15px;
+    right: -20px;
+    bottom: 100px;
+    height: 50px;
+    width: 50px;
+    border-radius: 100px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all .1s ease;
+    cursor: pointer;
+}
+
+.perfil:hover {
+    width: 195px;
+}
+
+.perfil:hover:after {
+    display: inline-table;
+    margin-left: 5px;
+    font-weight: bold;
+    content: "Ver perfil";
 }
 
 /**

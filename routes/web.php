@@ -164,13 +164,17 @@ Route::patch('/master/perfil/{id}/update', [App\Http\Controllers\Master\PerfilCo
 // Quitar id al update y encontrarlo en el controller
 
 // Posts
-Route::get('/master/posts', [App\Http\Controllers\Master\PostsController::class, 'index'])->name('master.posts.index');
-Route::get('/master/posts/nueva', [App\Http\Controllers\Master\PostsController::class, 'create'])->name('master.posts.create');
-Route::post('/master/posts/upload', [App\Http\Controllers\Master\PostsController::class, 'upload'])->name('master.posts.upload');
-Route::post('/master/posts/nueva', [App\Http\Controllers\Master\PostsController::class, 'store'])->name('master.posts.store');
-Route::post('/master/posts/{id}/edit', [App\Http\Controllers\Master\PostsController::class, 'edit'])->name('master.posts.edit');
-Route::patch('/master/posts/{id}/update', [App\Http\Controllers\Master\PostsController::class, 'update'])->name('master.posts.update');
-Route::delete('/master/posts/{id}/delete', [App\Http\Controllers\Master\PostsController::class, 'destroy'])->name('master.posts.destroy');
+Route::get('/master/analisis', [App\Http\Controllers\Master\AnalisisController::class, 'index'])->name('master.analisis.index');
+Route::get('/master/analisis/nueva', [App\Http\Controllers\Master\AnalisisController::class, 'create'])->name('master.analisis.create');
+Route::post('/master/analisis/upload', [App\Http\Controllers\Master\AnalisisController::class, 'upload'])->name('master.analisis.upload');
+Route::post('/master/analisis/nueva', [App\Http\Controllers\Master\AnalisisController::class, 'store'])->name('master.analisis.store');
+Route::post('/master/analisis/{id}/edit', [App\Http\Controllers\Master\AnalisisController::class, 'edit'])->name('master.analisis.edit');
+Route::patch('/master/analisis/{id}/update', [App\Http\Controllers\Master\AnalisisController::class, 'update'])->name('master.analisis.update');
+Route::delete('/master/analisis/{id}/delete', [App\Http\Controllers\Master\AnalisisController::class, 'destroy'])->name('master.analisis.destroy');
+
+// Estado
+Route::post('/master/estado/nuevo', [App\Http\Controllers\Master\EstadosController::class, 'store'])->name('master.estado.store');
+Route::delete('/master/posts/{id}/delete', [App\Http\Controllers\Master\EstadosController::class, 'destroy'])->name('master.estado.destroy');
 
 // Añadir a la tabla posts un atributo que sea fecha de publicación para programar una publicación futura
 

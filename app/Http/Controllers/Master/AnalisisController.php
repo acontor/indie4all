@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class PostsController extends Controller
+class AnalisisController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -28,13 +28,13 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('master_id', User::find(Auth::id())->master->id)->get();
-        return view('master.posts', ['posts' => $posts]);
+        $analisis = Post::where('master_id', User::find(Auth::id())->master->id)->get();
+        return view('master.analisis', ['analisis' => $analisis]);
     }
 
     public function create()
     {
-        return view('master.posts_editor');
+        return view('master.analisis_editor');
     }
 
     /**
@@ -47,27 +47,25 @@ class PostsController extends Controller
     {
         $request->validate([
             'titulo' => 'required',
-            'tipo' => ['required', 'regex:/^(Análisis|General)$/i'],
+            'calificacion' => 'required',
             'contenido' => 'required',
         ]);
-
-        // Recorrer contenido para buscar imágenes, cambiar ruta temp por post
 
         Post::create([
             'titulo' => $request->titulo,
             'calificacion' => $request->calificacion,
-            'tipo' => $request->tipo,
+            'tipo' => 'Análisis',
             'contenido' => $request->contenido,
             'master_id' => User::find(Auth::id())->master->id,
         ]);
 
-        return redirect('/master/posts')->with('success', '¡Post guardado!');
+        return redirect('/master/analisis')->with('success', '¡Análisis guardado!');
     }
 
     public function edit($id)
     {
         $post = Post::find($id);
-        return view('master.posts_editor', ['post' => $post]);
+        return view('master.analisis_editor', ['post' => $post]);
     }
 
     /**
@@ -91,7 +89,7 @@ class PostsController extends Controller
             'contenido' => $request->contenido,
         ]);
 
-        return redirect('/master/posts')->with('success', '!Post actualizado!');
+        return redirect('/master/analisis')->with('success', '¡Análisis actualizado!');
     }
 
     /**
@@ -104,6 +102,6 @@ class PostsController extends Controller
     {
         Post::find($id)->delete();
 
-        return redirect('/master/posts')->with('success', '¡Post borrado!');
+        return redirect('/master/analisis')->with('success', '¡Post borrado!');
     }
 }
