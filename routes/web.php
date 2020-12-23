@@ -108,6 +108,7 @@ Route::get('/cm', [App\Http\Controllers\Cm\HomeController::class, 'index'])->nam
 // Desarrolladora
 Route::get('/cm/desarrolladora', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'index'])->name('cm.desarrolladora.index');
 Route::patch('/cm/desarrolladora/{id}/update', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'update'])->name('cm.desarrolladora.update');
+Route::post('/cm/desarrolladora/upload', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'upload'])->name('cm.desarrolladora.upload');
 
 // Sorteos
 Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
