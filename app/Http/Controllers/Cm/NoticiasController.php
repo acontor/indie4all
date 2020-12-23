@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Cm;
 use App\Models\Desarrolladora;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -34,9 +33,9 @@ class NoticiasController extends Controller
         return view('cm.noticias', ['noticias' => $noticias]);
     }
 
-    public function create()
+    public function create($tipo, $id)
     {
-        return view('cm.noticia_editor');
+        return view('cm.noticia_editor', ['tipo' => $tipo, 'id' => $id]);
     }
 
     /**
@@ -45,22 +44,28 @@ class NoticiasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $tipo, $id)
     {
         $request->validate([
             'titulo' => 'required',
             'contenido' => 'required',
         ]);
 
-        // Recorrer contenido para buscar imágenes, cambiar ruta temp por post
-
         Post::create([
             'titulo' => $request->titulo,
             'contenido' => $request->contenido,
-            'desarrolladora_id' => Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
+            $tipo . '_id' => $id,
         ]);
 
-        return redirect('/cm/noticias')->with('success', 'Noticia guardada!');
+        if($tipo == 'juego') {
+            $url = '/cm/juego/' . $id;
+        } else if($tipo == 'campania') {
+            $url = '/cm/campania/' . $id;
+        } else {
+            $url = '/cm/noticias';
+        }
+
+        return redirect()->to($url);
     }
 
     public function edit($id)
@@ -83,12 +88,22 @@ class NoticiasController extends Controller
             'contenido' => 'required',
         ]);
 
-        Post::find($id)->update([
+        $post = Post::find($id);
+
+        $post->update([
             'titulo' => $request->titulo,
             'contenido' => $request->contenido,
         ]);
 
-        return redirect('/cm/noticias')->with('success', '!Noticia actualizado!');
+        if($post->juego_id) {
+            $url = '/cm/juego/' . $post->juego_id;
+        } else if($post->campania_id) {
+            $url = '/cm/campania/' . $post->campania_id;
+        } else {
+            $url = '/cm/noticias';
+        }
+
+        return redirect()->to($url);
     }
 
     /**
@@ -99,8 +114,23 @@ class NoticiasController extends Controller
      */
     public function destroy($id)
     {
-        Post::find($id)->delete();
+        return Post::find($id)->delete();
+    }
 
-        return redirect('/cm/noticias')->with('success', 'Noticia borrado!');
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $originName = $request->file('upload')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+            $request->file('upload')->move(public_path('images/posts'), $fileName);
+            $CKEditorFuncNum = $request->input('CKEditorFuncNum');
+            $url = asset('images/posts/' . $fileName);
+            $msg = 'Image successfully uploaded';
+            $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
+            @header('Content-type: text/html; charset=utf-8');
+            echo $response;
+        }
     }
 }

@@ -15,7 +15,7 @@
                             <h1>Nueva noticia</h1>
                         </div>
                         <div class="box">
-                            <form action="{{ route('cm.noticia.create') }}" method='post' enctype="multipart/form-data">
+                            <form action="{{ route('cm.noticia.store', ['tipo' => $tipo, 'id' => $id]) }}" method='post' enctype="multipart/form-data">
                     @endif
                         @csrf
                         <div class="form-group">

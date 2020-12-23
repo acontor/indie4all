@@ -32,4 +32,10 @@ class Compra extends Model
     {
         return $this->belongsTo("App\Models\Compra");
     }
+
+    // Compra - 1:N - User
+    public function participante()
+    {
+        return $this->belongsTo("App\Models\User", "user_id", "id");
+    }
 }

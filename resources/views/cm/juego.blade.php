@@ -103,7 +103,14 @@
             @if(isset($juego))
                 <div class="claves d-none">
                     <div class="box mt-4">
-                        <h1 class="mb-4">Claves ({{ $juego->claves->count() }})</h1>
+                        <h1 class="mb-4 d-inline-block">Claves para {{ $juego->nombre }} ({{ $juego->claves->count() }})</h1>
+                        <form class="float-right mt-2" action="{{ route('cm.claves.destroy', $juego->id) }}" method="post">
+                            @csrf
+                            @method("DELETE")
+                            <button class="btn btn-danger btn-sm ml-1" type="submit">
+                                Delete all <i class="far fa-trash-alt"></i>
+                            </button>
+                        </form>
                         <form action="{{ route('cm.claves.import') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
@@ -129,13 +136,7 @@
                                         <td class="align-middle">{{ $clave->key }}</td>
                                         <td class="align-middle text-center">
                                             <div class="btn-group">
-                                                <form action="{{ route('admin.noticias.edit', $clave->id) }}" method="post">
-                                                    @csrf
-                                                    <button class="btn btn-primary btn-sm round mr-1" type="submit">
-                                                        <i class="far fa-edit"></i>
-                                                    </button>
-                                                </form>
-                                                <form action="{{ route('admin.noticias.destroy', $clave->id) }}" method="post">
+                                                <form action="{{ route('cm.clave.destroy', $clave->id) }}" method="post">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button class="btn btn-danger btn-sm round ml-1" type="submit">
@@ -153,7 +154,8 @@
                 </div>
                 <div class="noticias d-none">
                     <div class="box mt-4">
-                        <h1 class="mb-4">Noticias</h1>
+                        <h1 class="mb-4 d-inline-block">Noticias</h1>
+                        <a href="{{ route('cm.noticia.create', ['tipo' => 'juego', 'id' => $juego->id]) }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -167,13 +169,13 @@
                                         <td class="align-middle">{{ $post->titulo }}</td>
                                         <td class="align-middle text-center">
                                             <div class="btn-group">
-                                                <form action="{{ route('admin.noticias.edit', $post->id) }}" method="post">
+                                                <form action="{{ route('cm.noticia.edit', $post->id) }}" method="post">
                                                     @csrf
                                                     <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                                         <i class="far fa-edit"></i>
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('admin.noticias.destroy', $post->id) }}" method="post">
+                                                <form action="{{ route('cm.noticia.destroy', $post->id) }}" method="post">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button class="btn btn-danger btn-sm round ml-1" type="submit">

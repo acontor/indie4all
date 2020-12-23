@@ -230,6 +230,7 @@
                 width: "auto",
                 placeholder: "Géneros",
             });
+
             $(".menu").children("div").children("a").click(function(e) {
                 console.log($(this).attr("id"))
                 e.preventDefault();
