@@ -5,14 +5,14 @@
             <div class="col-sm">
                 @if(isset($post))
                     <div class="box-header">
-                        <h1>Editar post</h1>
+                        <h1>Editar análisis</h1>
                     </div>
                     <div class="box">
                         <form action="{{ route('master.analisis.update', $post->id) }}" method='post' enctype="multipart/form-data">
                         @method("PATCH")
                     @else
                         <div class="box-header">
-                            <h1>Nuevo post</h1>
+                            <h1>Nuevo análisis</h1>
                         </div>
                         <div class="box">
                             <form action="{{ route('master.analisis.store') }}" method='post' enctype="multipart/form-data">
@@ -21,6 +21,14 @@
                         <div class="form-group">
                             <label>Título</label>
                             <input type="text" class="form-control" name="titulo" value="@if(isset($post)){{ $post->titulo }}@endif" />
+                        </div>
+                        <div class="form-group">
+                            <select id="juego_id" class="form-control select2" data-ui-jp="select2" data-ui-options="{theme: 'bootstrap'}" name="juego_id">
+                                <option value="">Juegos</option>
+                                @foreach ($juegos as $juego)
+                                    <option value="{{ $juego->id }}">{{ $juego->nombre }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Calificación</label>

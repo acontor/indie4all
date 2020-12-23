@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Models\Juego;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +35,8 @@ class AnalisisController extends Controller
 
     public function create()
     {
-        return view('master.analisis_editor');
+        $juegos = Juego::all();
+        return view('master.analisis_editor', ['juegos' => $juegos]);
     }
 
     /**
@@ -49,6 +51,7 @@ class AnalisisController extends Controller
             'titulo' => 'required',
             'calificacion' => 'required',
             'contenido' => 'required',
+            'juego_id' => 'required',
         ]);
 
         Post::create([
@@ -57,6 +60,7 @@ class AnalisisController extends Controller
             'tipo' => 'Análisis',
             'contenido' => $request->contenido,
             'master_id' => User::find(Auth::id())->master->id,
+            'juego_id' => $request->juego_id,
         ]);
 
         return redirect('/master/analisis')->with('success', '¡Análisis guardado!');

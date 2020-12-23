@@ -99,8 +99,8 @@
                     </div>
                     <div class="noticias d-none">
                         <h2>Noticias</h2>
-                        @if ($juego->posts->count() != 0)
-                            @foreach ($juego->posts as $post)
+                        @if ($juego->posts->where('tipo', null)->count() != 0)
+                            @foreach ($juego->posts->where('tipo', null) as $post)
                                 <div>
                                     <h4>{{ $post->titulo }}</h4>
                                     <p>{{ $post->contenido }}</p>
@@ -117,12 +117,17 @@
                     </div>
                     <div class="analisis d-none">
                         <h2>Análisis</h2>
-                        @if ($juego->posts->count() != 0)
-                            @foreach ($juego->posts as $post)
+                        @if ($juego->posts->where('tipo', 'Análisis')->count() != 0)
+                            @foreach ($juego->posts->where('tipo', 'Análisis') as $post)
                                 <div>
                                     <h4>{{ $post->titulo }}</h4>
                                     <p>{{ $post->contenido }}</p>
                                 </div>
+                                <small>Comentarios: {{ $post->mensajes->count() }}</small>
+                                <form>
+                                    <input type="hidden" name="id" value="{{ $post->id }}" />
+                                    <a type="submit" class="more">Leer más</a>
+                                </form>
                             @endforeach
                         @else
                             Aún no se han creado análisis del juego.
