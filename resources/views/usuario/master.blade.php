@@ -48,31 +48,34 @@
                 </header>
                 <div class="col-md-12 box mt-4">
                     <div class="row text-center menu">
-                        <div class="col-3"><a id="general" href="">General</a></div>
-                        <div class="col-3"><a id="analisis" href="">Análisis</a></div>
-                        <div class="col-3"><a id="notas" href="">Notas</a></div>
+                        <div class="@guest col-4 @else col-3 offset-1 @endguest"><a id="estados" href="">Estados</a></div>
+                        <div class="@guest col-4 @else col-3 @endguest"><a id="analisis" href="">Análisis</a></div>
+                        <div class="@guest col-4 @else col-3 @endguest"><a id="notas" href="">Notas</a></div>
                         @auth
-                        <div class="float-right">
+                        <div class="col-1 offset-1">
                             <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteMaster'></i></a>
                         </div>
                         @endauth
                     </div>
                     <hr>
                     <div id="contenido">
-                        <div class="general">
-                            <h3>General</h3>
-                            @if ($master->posts->where('tipo', 'General')->count() != 0)
-                                @foreach ($master->posts->where('tipo', 'General') as $post)
-                                    <div>
-                                        <h4>{{ $post->titulo }}</h4>
+                        <div class="estados">
+                            <h3>Estados</h3>
+                            @if ($master->posts->where('comentarios', 0)->count() != 0)
+                                @foreach ($master->posts->where('comentarios', 0) as $post)
+                                    <div class="alert alert-dark">
+                                        {!! $post->contenido !!}
+                                        @if($master->id == Auth::user()->master()->first()->id)
+                                            <form action="{{ route('master.estado.destroy', $post->id) }}" method="post">
+                                                @csrf
+                                                @method("DELETE")
+                                                <button class="btn btn-danger btn-sm round ml-1 eliminar-estado" type="submit">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
-                                    <small>Comentarios: {{ $post->mensajes->count() }}</small>
-                                    <form>
-                                        <input type="hidden" name="id" value="{{ $post->id }}" />
-                                        <a type="submit" class="more">Comentarios</a>
-                                    </form>
                                 @endforeach
-                                <!-- Esto será como estados que va a poder escribir el master y tendrán comentarios -->
                             @else
                                 Aún no ha publicado ninguna actualización.
                             @endif
@@ -127,6 +130,11 @@
                 $(".post").remove();
                 $("#contenido").children("div").addClass("d-none");
                 $(`.${item}`).removeClass("d-none");
+            });
+
+            $(".eliminar-estado").click(function() {
+                $(this).parent().submit();
+                $(this).parent().parent().remove();
             });
 
             $(".more").click(function () {
