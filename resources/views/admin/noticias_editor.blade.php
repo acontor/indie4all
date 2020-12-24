@@ -30,6 +30,10 @@
                                 @endif
                             </textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="comentarios">¿Permitir comentarios?</label>
+                            <input type="checkbox" name="comentarios" id="comentarios" value="1" @if(isset($post) && $post->comentarios) checked @endif>
+                        </div>
                         <button type="submit" class="btn btn-success">@if(isset($post)) Editar @else Crear @endif</button>
                     </form>
                 </div>

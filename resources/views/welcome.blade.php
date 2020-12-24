@@ -13,7 +13,9 @@
                                     <h4>{{ $noticia->titulo }}</h4>
                                     <p>{!! substr($noticia->contenido, 0, 300) !!}...</p>
                                     {{ $noticia->created_at }}
-                                    <small>Comentarios: {{ $noticia->mensajes->count() }}</small>
+                                    @if ($noticia->comentarios)
+                                        <small>Comentarios: {{ $noticia->mensajes->count() }}</small>
+                                    @endif
                                     <form>
                                         <input type="hidden" name="id" value="{{ $noticia->id }}" />
                                         <a type="submit" class="more">Leer más</a>

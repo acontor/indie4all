@@ -36,7 +36,6 @@ class EstadosController extends Controller
         Post::create([
             'contenido' => $request->estado,
             'master_id' => User::find(Auth::id())->master->id,
-            'comentarios' => 0,
         ]);
     }
 
