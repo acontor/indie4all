@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Models\Campania;
+use App\Models\Mensaje;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CampaniasController extends Controller
 {
@@ -30,4 +33,18 @@ class CampaniasController extends Controller
         return view('usuario.campania', ['campania' => $campania]);
     }
 
+    public function store(Request $request)
+    {
+        $mensaje = Mensaje::create([
+            'contenido' => $request->mensaje,
+            'campania_id' => $request->id,
+            'user_id' => Auth::id(),
+        ]);
+
+        return $mensaje = [
+            'contenido' => $mensaje->contenido,
+            'created_at' => $mensaje->created_at,
+            'autor' => Auth::user()->name,
+        ];
+    }
 }

@@ -18,7 +18,6 @@
         @if (isset($campania))
             <div class="row box text-center menu mb-4">
                 <div class="col-4"><a id="juego" href="">Juego</a></div>
-                <div class="col-4"><a id="campania" href="">Campaña</a></div>
                 <div class="col-4"><a id="actualizaciones" href="">Actualizaciones</a></div>
                 <div class="col-4"><a id="participantes" href="">Participantes</a></div>
             </div>
@@ -54,8 +53,6 @@
                             <label for="precio">Precio:</label>
                             <input type="text" name="precio" @if (isset($campania)) value="{{ $campania->juego->precio }}" @endif> €
                         </div>
-                    </div>
-                    <div class="box mt-3">
                         <div class="row">
                             <div class="form-group col-sm-5">
                                 <label for="genero_id">Género</label>
@@ -91,56 +88,40 @@
                                 @endif
                             </div>
                         </div>
-                        @if(!isset($campania))
-                        <div class="row">
-                            <div class="form-group">
-                                <label for="meta">Meta:</label>
-                                <input type="text" class="form-control" name="meta" /> €
-                            </div>
-                            <div class="form-group">
-                                <label for="fecha_fin">Fecha de finalización:</label>
-                                <input type="date" name="fecha_fin">
-                            </div>
+                    </div>
+                    <div class="box mt-3">
+                        <div class="form-group">
+                            <label for="meta">Meta:</label>
+                            <input type="text" class="form-control" name="meta" value="{{ $campania->meta }}" /> €
                         </div>
+                        <div class="form-group">
+                            <label for="fecha_fin">Fecha de finalización:</label>
+                            <input type="date" name="fecha_fin" value="{{ $campania->fecha_fin }}">
+                        </div>
+                        @if(isset($campania))
+                            <div class="form-group">
+                                <label>Contenido</label>
+                                <textarea class="form-control" name="contenido" id="editor">
+                                    {{ $campania->contenido }}
+                                </textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>FAQ</label>
+                                <textarea class="form-control" name="faq" id="faq">
+                                    {{ $campania->faq }}
+                                </textarea>
+                            </div>
                         @endif
                         <button type="submit" class="btn btn-success mb-3">@if (isset($campania)) Editar @else Crear @endif</button>
                     </form>
                 </div>
             </div>
             @if(isset($campania))
-            <div class="campania d-none">
-                <div class="box mt-4">
-                    <h1 class="mb-4">Campaña</h1>
-                    <form action="{{ route('cm.campania.update', $campania->id, $campania->juego->id) }}" method="post">
-                        @method("PATCH")
-                        @csrf
-                        <div class="form-group">
-                            <label for="meta">Meta:</label>
-                            <input class="col-sm-1" type="text" class="form-control" name="meta" value="{{ $campania->meta }}" /> €
-                        </div>
-                        <div class="form-group">
-                            <label for="fecha_fin">Fecha de finalización:</label>
-                            <input type="date" name="fecha_fin" value="{{ $campania->fecha_fin }}">
-                        </div>
-                        <div class="form-group">
-                            <label>Contenido</label>
-                            <textarea class="form-control" name="contenido" id="editor">
-                                    {{ $campania->contenido }}
-                            </textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>FAQ</label>
-                            <textarea class="form-control" name="faq" id="faq">
-                                    {{ $campania->faq }}
-                            </textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success mb-3">Editar</button>
-                    </form>
-                </div>
-            </div>
             <div class="actualizaciones d-none">
                 <div class="box mt-4">
-                    <h1 class="mb-4">Actualizaciones</h1>
+                    <h1 class="mb-4 d-inline-block">Actualizaciones</h1>
+
+                    <a href="{{ route('cm.noticia.create', ['tipo' => 'campania', 'id' => $campania->id]) }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -154,13 +135,13 @@
                                     <td class="align-middle">{{ $post->titulo }}</td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
-                                            <form action="{{ route('admin.noticias.edit', $post->id) }}" method="post">
+                                            <form action="{{ route('cm.noticia.edit', $post->id) }}" method="post">
                                                 @csrf
                                                 <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                                     <i class="far fa-edit"></i>
                                                 </button>
                                             </form>
-                                            <form action="{{ route('admin.noticias.destroy', $post->id) }}" method="post">
+                                            <form action="{{ route('cm.noticia.destroy', $post->id) }}" method="post">
                                                 @csrf
                                                 @method("DELETE")
                                                 <button class="btn btn-danger btn-sm round ml-1" type="submit">
@@ -178,10 +159,24 @@
             <div class="participantes d-none">
                 <div class="box mt-4">
                     <h1 class="mb-4">Participantes</h1>
-                    @foreach ($campania->posts as $post)
-                        {{ $post->titulo }}
-                        {{ $post->contenido }}
-                    @endforeach
+                    <table class="table table-striped" id="participantes">
+                        <thead>
+                            <tr>
+                                <td>Email</td>
+                                <td>Total</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($compras as $compra)
+                            <tr>
+                                <td>{{ $compra->participante->email }}</td>
+                                <td>{{ $compra->precio }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    Exportar correos electrónicos de participantes
+                    <button class="btn btn-success">Exportar</button>
                 </div>
             </div>
             @endif
@@ -189,11 +184,18 @@
     </div>
 @endsection
 @section("scripts")
+    <script src="{{ asset('js/datatable.js') }}"></script>
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
         $(function() {
+            $('table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv', 'excel', 'pdf'
+                ]
+            });
+
             $(".menu").children("div").children("a").click(function(e) {
-                console.log($(this).attr("id"))
                 e.preventDefault();
                 let item = $(this).attr("id");
                 $("#main").children("div").addClass("d-none");

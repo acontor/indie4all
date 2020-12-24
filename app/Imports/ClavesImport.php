@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 class ClavesImport implements ToModel
 {
+
     public $juego;
 
     /**

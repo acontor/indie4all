@@ -26,7 +26,7 @@ class NoticiasController extends Controller
      */
     public function index()
     {
-        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null]])->get();
+        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null], ['campania_id', null]])->get();
         return view('admin.noticias', ['noticias' => $noticias]);
     }
 
@@ -48,8 +48,6 @@ class NoticiasController extends Controller
             'contenido' => 'required',
         ]);
 
-        // Recorrer contenido para buscar imágenes, cambiar ruta temp por post
-
         Post::create($request->all());
 
         return redirect('/admin/noticias')->with('success', '¡Noticia guardada!');
@@ -69,7 +67,11 @@ class NoticiasController extends Controller
             'contenido' => 'required',
         ]);
 
-        Post::find($id)->update($request->all());
+        Post::find($id)->update([
+            'titulo' => $request->titulo,
+            'contenido' => $request->contenido,
+            'comentarios' => $request->comentarios || 0
+        ]);
 
         return redirect('/admin/noticias')->with('success', '!Noticia actualizada!');
     }

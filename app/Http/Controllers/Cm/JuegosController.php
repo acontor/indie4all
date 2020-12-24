@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Cm;
 
 use App\Http\Controllers\Controller;
 use App\Imports\ClavesImport;
+use App\Models\Clave;
 use App\Models\Cm;
 use App\Models\Desarrolladora;
 use App\Models\Genero;
 use App\Models\Juego;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -171,11 +173,29 @@ class JuegosController extends Controller
 
         $juego = Juego::find($request->juego);
 
-        return view('cm.juego', ['juego' => $juego]);
+        $generos = Genero::All();
+        return view('cm.juego', ['juego' => $juego, 'generos' => $generos]);
     }
 
     public function fileImportExport()
     {
         return view('cm.claves');
+    }
+
+    public function claveDestroy($id)
+    {
+        Clave::find($id)->delete();
+
+        return redirect('/cm/juegos');
+    }
+
+    public function clavesDestroy($id)
+    {
+        Clave::where('juego_id', $id)->delete();
+
+        $juego = Juego::find($id);
+
+        $generos = Genero::All();
+        return view('cm.juego', ['juego' => $juego, 'generos' => $generos]);
     }
 }

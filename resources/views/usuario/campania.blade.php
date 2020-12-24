@@ -48,7 +48,7 @@
         </div>
         <div class="col-md-12 box mt-4">
             <div class="row text-center menu">
-                <div class="col-4 col-md-2 offset-md-1"><a id="general" href="">General</a></div>
+                <div class="col-4 col-md-2 offset-md-1"><a id="contenido" href="">Contenido</a></div>
                 <div class="col-4 col-md-2"><a id="actualizaciones" href="">Actualizaciones</a></div>
                 @auth
                 <div class="col-4 col-md-2"><a id="foro" href="">Foro</a></div>
@@ -61,20 +61,20 @@
                 </div>
                 @endauth
             </div>
-            <div id="contenido">
-                <div class="general">
+            <div id="main">
+                <div class="contenido">
                     <h3>Contenido</h3>
-                    Contenido que quiera la desarrolladora.
-                    Hay que crear un atributo en la tabla desarrolladoras llamado contenido.
+                    {!! $campania->contenido !!}
                 </div>
                 <div class="actualizaciones d-none">
                     <h3>Actualizaciones</h3>
                         @if ($campania->posts->count() != 0)
                             @foreach ($campania->posts as $post)
                                 <div>
-                                    <h4>{{ $post->titulo }}  <small>{{$post->created_at}}@auth <a class="text-danger float-right" id='reportePost' dataset="{{$post->id}}"><i class="fas fa-exclamation-triangle"></i></a>@endauth</h4>
-                                    <p>{{ $post->contenido }}</p>
+                                    <h4>{{ $post->titulo }} <small>{{$post->created_at}}</small></h4>
+                                    <p>{!! $post->contenido !!}</p>
                                 </div>
+                                <hr>
                             @endforeach
                         @else
                             Aún no ha publicado ninguna actualización.
@@ -83,20 +83,26 @@
                 @auth
                 <div class="foro d-none">
                     <h3>Foro</h3>
+                    <textarea class="form-control" name="mensaje" id="editor"></textarea>
+                    <input type="hidden" name="id" value="{{ $campania->id }}">
+                    <button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button>
+                    <div class="mensajes">
                         @if ($campania->mensajes->count() != 0)
                             @foreach ($campania->mensajes as $mensaje)
                                 <div class="alert alert-dark">
                                     <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
-                                    <p class="mensaje">{{ $mensaje->contenido }}</p>
+                                    <p class="mensaje">{!! $mensaje->contenido !!}</p>
                                 </div>
                             @endforeach
                         @else
-                            Aún no hay mensajes.. Sé el primero en participar!
+                            <div class="mensaje mt-3">Aún no hay mensajes.. Sé el primero en participar!</div>
                         @endif
+                    </div>
                 </div>
                 @endauth
                 <div class="faq d-none">
                     <h3>FAQ</h3>
+                    {!! $campania->faq !!}
                 </div>
                 <div class="contacto d-none">
                     <h3>Contacto</h3>
@@ -137,11 +143,11 @@
         }
 
         $(".menu").children("div").children("a").click(function(e) {
-                e.preventDefault();
-                let item = $(this).attr("id");
-                $("#contenido").children("div").addClass("d-none");
-                $(`.${item}`).removeClass("d-none");
-            });
+            e.preventDefault();
+            let item = $(this).attr("id");
+            $("#main").children("div").addClass("d-none");
+            $(`.${item}`).removeClass("d-none");
+        });
 
         $('#reporteCampania').click(function(){
             let campaniaId = {!! $campania->id !!}
@@ -270,10 +276,36 @@
                         Swal.showValidationMessage(`Por favor, indica un motivo.`)
                     }
                 }
-            })
-        })
+            });
+        });
 
+        CKEDITOR.replace("mensaje", {
+            customConfig: "{{ asset('js/ckeditor/config.js') }}"
+        });
 
+        $("#mensaje-form").click(function(e) {
+            e.preventDefault();
+            let mensaje = CKEDITOR.instances.editor.getData();
+            CKEDITOR.instances.editor.setData("");
+            let id = $(this).prev().val();
+            $.ajax({
+                url: '{{ route("usuario.foro.store") }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    id: id,
+                    mensaje: mensaje
+                }, success: function(data) {
+                    if ($('.mensajes').children().text() == "Aún no hay mensajes.. Sé el primero en participar!") {
+                        $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                    } else {
+                        $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                    }
+                }
+            });
+        });
     });
 
 </script>

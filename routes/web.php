@@ -108,6 +108,7 @@ Route::get('/cm', [App\Http\Controllers\Cm\HomeController::class, 'index'])->nam
 // Desarrolladora
 Route::get('/cm/desarrolladora', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'index'])->name('cm.desarrolladora.index');
 Route::patch('/cm/desarrolladora/{id}/update', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'update'])->name('cm.desarrolladora.update');
+Route::post('/cm/desarrolladora/upload', [App\Http\Controllers\Cm\DesarrolladoraController::class, 'upload'])->name('cm.desarrolladora.upload');
 
 // Sorteos
 Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
@@ -116,12 +117,12 @@ Route::post('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 's
 
 // Noticias
 Route::get('/cm/noticias', [App\Http\Controllers\Cm\NoticiasController::class, 'index'])->name('cm.noticias.index');
-Route::get('/cm/noticia/nueva', [App\Http\Controllers\Cm\NoticiasController::class, 'create'])->name('cm.noticia.create');
-Route::post('/cm/noticia/upload', [App\Http\Controllers\Cm\NoticiasController::class, 'upload'])->name('cm.noticia.upload');
-Route::post('/cm/noticia/nueva', [App\Http\Controllers\Cm\NoticiasController::class, 'store'])->name('cm.noticia.store');
+Route::get('/cm/{tipo}/noticia/{id}/nueva', [App\Http\Controllers\Cm\NoticiasController::class, 'create'])->name('cm.noticia.create');
+Route::post('/cm/{tipo}/noticia/{id}/nueva', [App\Http\Controllers\Cm\NoticiasController::class, 'store'])->name('cm.noticia.store');
 Route::post('/cm/noticia/{id}/edit', [App\Http\Controllers\Cm\NoticiasController::class, 'edit'])->name('cm.noticia.edit');
 Route::patch('/cm/noticia/{id}/update', [App\Http\Controllers\Cm\NoticiasController::class, 'update'])->name('cm.noticia.update');
 Route::delete('/cm/noticia/{id}/delete', [App\Http\Controllers\Cm\NoticiasController::class, 'destroy'])->name('cm.noticia.destroy');
+Route::post('/cm/noticia/upload', [App\Http\Controllers\Cm\NoticiasController::class, 'upload'])->name('cm.noticia.upload');
 
 // Juegos
 Route::get('/cm/juegos', [App\Http\Controllers\Cm\JuegosController::class, 'index'])->name('cm.juegos.index');
@@ -132,6 +133,8 @@ Route::post('/cm/juego/store', [App\Http\Controllers\Cm\JuegosController::class,
 Route::patch('/cm/juego/{id}/update', [App\Http\Controllers\Cm\JuegosController::class, 'update'])->name('cm.juego.update');
 Route::delete('/cm/juego/{id}/delete', [App\Http\Controllers\Cm\JuegosController::class, 'destroy'])->name('cm.juego.destroy');
 Route::post('/claves/importar',[App\Http\Controllers\Cm\JuegosController::class, 'importar'])->name('cm.claves.import');
+Route::delete('/clave/{id}/delete',[App\Http\Controllers\Cm\JuegosController::class, 'claveDestroy'])->name('cm.clave.destroy');
+Route::delete('/claves/{id}/delete',[App\Http\Controllers\Cm\JuegosController::class, 'clavesDestroy'])->name('cm.claves.destroy');
 
 // Campañas
 Route::get('/cm/campanias', [App\Http\Controllers\Cm\CampaniasController::class, 'index'])->name('cm.campanias.index');
@@ -225,7 +228,8 @@ Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterC
 
 // Campanias
 Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index');
-Route::get('/campanias/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show');
+Route::get('/campania/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show');
+Route::post('/campania/foro/nuevo', [App\Http\Controllers\Usuario\CampaniasController::class, 'store'])->name('usuario.foro.store');
 
 // Reportes
 Route::post('/reporte/{id}/{tipo}', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');

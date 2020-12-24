@@ -65,7 +65,7 @@
                                 @foreach ($master->posts->where('comentarios', 0) as $post)
                                     <div class="alert alert-dark">
                                         {!! $post->contenido !!}
-                                        @if($master->id == Auth::user()->master()->first()->id)
+                                        @if(Auth::user()->master != null && $master->id == Auth::user()->master->id)
                                             <form action="{{ route('master.estado.destroy', $post->id) }}" method="post">
                                                 @csrf
                                                 @method("DELETE")
