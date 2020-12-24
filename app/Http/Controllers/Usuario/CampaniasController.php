@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Usuario;
 use App\Http\Controllers\Controller;
 use App\Models\Campania;
 use App\Models\Mensaje;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,5 +47,12 @@ class CampaniasController extends Controller
             'created_at' => $mensaje->created_at,
             'autor' => Auth::user()->name,
         ];
+    }
+
+    public function actualizacion(Request $request)
+    {
+        $post = Post::find($request->id);
+
+        return ['post' => $post];
     }
 }

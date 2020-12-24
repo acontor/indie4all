@@ -18,13 +18,20 @@ class Sorteo extends Model
         'titulo',
         'descripcion',
         'fecha_fin',
+        'user_id',
         'desarrolladora_id',
     ];
 
     // Users - N:M - Sorteos
-    public function usuarios()
+    public function participantes()
     {
-        return $this->belongsToMany("App\Models\User");
+        return $this->belongsToMany("App\Models\User")->withPivot('sorteo_id', 'user_id');
+    }
+
+    // Users - 1:N - Sorteos
+    public function ganador()
+    {
+        return $this->belongsTo("App\Models\User", 'user_id', 'id');
     }
 
     // Users - 1:N - Sorteos

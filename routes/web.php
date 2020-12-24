@@ -112,8 +112,11 @@ Route::post('/cm/desarrolladora/upload', [App\Http\Controllers\Cm\Desarrolladora
 
 // Sorteos
 Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
-Route::get('/cm/sorteos/nuevo', [App\Http\Controllers\Cm\SorteosController::class, 'create'])->name('cm.sorteos.create');
-Route::post('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'store'])->name('cm.sorteos.store');
+Route::get('/cm/sorteo/nuevo', [App\Http\Controllers\Cm\SorteosController::class, 'create'])->name('cm.sorteo.create');
+Route::post('/cm/sorteo/store', [App\Http\Controllers\Cm\SorteosController::class, 'store'])->name('cm.sorteo.store');
+Route::get('/cm/sorteo/{id}/edit', [App\Http\Controllers\Cm\SorteosController::class, 'edit'])->name('cm.sorteo.edit');
+Route::patch('/cm/sorteo/{id}/update', [App\Http\Controllers\Cm\SorteosController::class, 'update'])->name('cm.sorteo.update');
+Route::get('/cm/sorteo/{id}/finish', [App\Http\Controllers\Cm\SorteosController::class, 'finish'])->name('cm.sorteo.finish');
 
 // Noticias
 Route::get('/cm/noticias', [App\Http\Controllers\Cm\NoticiasController::class, 'index'])->name('cm.noticias.index');
@@ -146,9 +149,10 @@ Route::delete('/cm/campania/{id}/delete', [App\Http\Controllers\Cm\CampaniasCont
 
 // Encuestas
 Route::get('/cm/encuestas', [App\Http\Controllers\Cm\EncuestasController::class, 'index'])->name('cm.encuestas.index');
-Route::get('/cm/encuestas/nuevo', [App\Http\Controllers\Cm\EncuestasController::class, 'create'])->name('cm.encuestas.create');
-Route::post('/cm/encuestas', [App\Http\Controllers\Cm\EncuestasController::class, 'store'])->name('cm.encuestas.store');
-Route::delete('/admin/encuestas/{id}/delete', [App\Http\Controllers\Cm\EncuestasController::class, 'destroy'])->name('cm.encuestas.destroy');
+Route::get('/cm/encuesta/nuevo', [App\Http\Controllers\Cm\EncuestasController::class, 'create'])->name('cm.encuestas.create');
+Route::post('/cm/encuesta', [App\Http\Controllers\Cm\EncuestasController::class, 'store'])->name('cm.encuestas.store');
+Route::delete('/cm/encuesta/{id}/delete', [App\Http\Controllers\Cm\EncuestasController::class, 'destroy'])->name('cm.encuestas.destroy');
+Route::get('/cm/encuesta/{id}/finish', [App\Http\Controllers\Cm\EncuestasController::class, 'finish'])->name('cm.encuesta.finish');
 
 // Sorteos
 Route::get('/cm/sorteos', [App\Http\Controllers\Cm\SorteosController::class, 'index'])->name('cm.sorteos.index');
@@ -168,7 +172,7 @@ Route::patch('/master/perfil/{id}/update', [App\Http\Controllers\Master\PerfilCo
 
 // Posts
 Route::get('/master/analisis', [App\Http\Controllers\Master\AnalisisController::class, 'index'])->name('master.analisis.index');
-Route::get('/master/analisis/nueva', [App\Http\Controllers\Master\AnalisisController::class, 'create'])->name('master.analisis.create');
+Route::get('/master/analisis/nueva/{id?}', [App\Http\Controllers\Master\AnalisisController::class, 'create'])->name('master.analisis.create');
 Route::post('/master/analisis/upload', [App\Http\Controllers\Master\AnalisisController::class, 'upload'])->name('master.analisis.upload');
 Route::post('/master/analisis/nueva', [App\Http\Controllers\Master\AnalisisController::class, 'store'])->name('master.analisis.store');
 Route::post('/master/analisis/{id}/edit', [App\Http\Controllers\Master\AnalisisController::class, 'edit'])->name('master.analisis.edit');
@@ -230,6 +234,7 @@ Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterC
 Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index');
 Route::get('/campania/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show');
 Route::post('/campania/foro/nuevo', [App\Http\Controllers\Usuario\CampaniasController::class, 'store'])->name('usuario.foro.store');
+Route::get('/campania/{id}/actualizacion', [App\Http\Controllers\Usuario\CampaniasController::class, 'actualizacion'])->name('usuario.campania.actualizacion');
 
 // Reportes
 Route::post('/reporte/{id}/{tipo}', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');

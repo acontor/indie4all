@@ -9,7 +9,7 @@
             <div class="col-sm">
                 <div class="box-header">
                     <h1 class="d-inline-block">Análisis ({{ $analisis->count() }})</h1>
-                    <a href="{{ route('master.analisis.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
+                    <a href="{{ route('master.analisis.create', 0) }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                 </div>
                 <div class="table-responsive box">
                     <table class="table table-striped">

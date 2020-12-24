@@ -33,10 +33,10 @@ class AnalisisController extends Controller
         return view('master.analisis', ['analisis' => $analisis]);
     }
 
-    public function create()
+    public function create($id)
     {
         $juegos = Juego::all();
-        return view('master.analisis_editor', ['juegos' => $juegos]);
+        return view('master.analisis_editor', ['juegos' => $juegos, 'id' => $id || null]);
     }
 
     /**

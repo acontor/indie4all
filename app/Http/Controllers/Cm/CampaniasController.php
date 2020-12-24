@@ -58,7 +58,7 @@ class CampaniasController extends Controller
             'fecha_fin' => 'required',
             'nombre' => 'required',
             'sinopsis' => 'required',
-            'imagen_portada' => 'required',
+            'imagen_portada' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=1024,height=512',
             'imagen_caratula' => 'required',
             'sinopsis' => 'required',
             'fecha_lanzamiento' => 'required',
@@ -117,7 +117,7 @@ class CampaniasController extends Controller
             'fecha_fin' => 'required',
             'nombre' => 'required',
             'sinopsis' => 'required',
-            'sinopsis' => 'required',
+            'imagen_portada' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=1024,height=512',
             'fecha_lanzamiento' => 'required',
             'precio' => 'required',
             'genero_id' => 'required',
@@ -151,6 +151,8 @@ class CampaniasController extends Controller
 
         Juego::find($campania->juego_id)->update([
             'nombre' => $request->nombre,
+            'imagen_portada' => $fileNamePortada,
+            'imagen_caratula' => $fileNameCaratula,
             'sinopsis' => $request->sinopsis,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,

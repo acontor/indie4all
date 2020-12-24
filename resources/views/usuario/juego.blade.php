@@ -1,6 +1,11 @@
 @extends("layouts.usuario.base")
 
 @section("content")
+    @if(Auth::user() && Auth::user()->master()->count() != 0 && Auth::user()->master->posts->where('juego_id', $juego->id)->count() == 0)
+        <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light">
+            <span class="mx-auto">¿Quieres <a href="{{ route('master.analisis.create', $juego->id) }}">analizar</a> éste juego?</span>
+        </nav>
+    @endif
     <div class="container p-5">
         <div class="row">
             <div class="col-12 p-0">
@@ -295,7 +300,7 @@
                                                 Swal.fire(data)
                                             }
                                         })
-                                    }else{
+                                    } else {
                                         Swal.showValidationMessage(`Por favor, indica un motivo.`)
                                     }
                                 }

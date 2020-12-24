@@ -143,8 +143,6 @@ class DesarrolladorasController extends Controller
     {
         $user = User::find(Auth::id());
 
-        $user->encuestas()->attach([$request->encuesta => ['opcion_id' => $request->opcion]]);
-
-        //Mail::to($user->email)->send(new SorteoConfirmacion($user->name, $sorteo, $desarrolladora));
+        $user->opciones()->attach([$request->opcion => ['opcion_id' => $request->opcion]]);
     }
 }

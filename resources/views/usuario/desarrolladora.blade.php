@@ -93,20 +93,25 @@
                                 <div class="col-12 col-md-6">
                                     <h4>{{ $sorteo->titulo }}</h4>
                                     <p>{{ $sorteo->descripcion }}</p>
-                                    <input type="hidden" name="id" value="{{ $sorteo->id }}">
-                                    @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
-                                        Eres CM de ésta desarrolladora
-                                    @elseif(Auth::user()->ban)
-                                        Tu cuenta está baneada
-                                    @elseif(Auth::user()->email_verified_at == null)
-                                        Tu cuenta no está verificada
-                                    @elseif(Auth::user()->sorteos->where('id', $sorteo->id)->count() != 0)
-                                        Ya has participado
+                                    @isset($sorteo->user_id)
+                                        El sorteo ha finalizado.
+                                        Ganador: {{$sorteo->ganador->username}}
                                     @else
-                                        <div class="participar-sorteo-div">
-                                            <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
-                                        </div>
-                                    @endif
+                                        <input type="hidden" name="id" value="{{ $sorteo->id }}">
+                                        @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
+                                            Eres CM de ésta desarrolladora
+                                        @elseif(Auth::user()->ban)
+                                            Tu cuenta está baneada
+                                        @elseif(Auth::user()->email_verified_at == null)
+                                            Tu cuenta no está verificada
+                                        @elseif(Auth::user()->sorteos->where('id', $sorteo->id)->count() != 0)
+                                            Ya has participado
+                                        @else
+                                            <div class="participar-sorteo-div">
+                                                <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
+                                            </div>
+                                        @endif
+                                    @endisset
                                     <p class="mt-3">{{ $sorteo->fecha_fin }}</p>
                                 </div>
                             @endforeach
@@ -122,25 +127,46 @@
                                 @foreach ($desarrolladora->encuestas as $encuesta)
                                     <div class="col-12 col-md-6">
                                         <h4>{{ $encuesta->pregunta }}</h4>
-                                        <div class="opciones">
+                                        @if (Auth::user()->opciones->where('encuesta_id', $encuesta->id)->count() > 0 || Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
+                                            @php
+                                                $total = 0
+                                            @endphp
                                             @foreach ($encuesta->opciones as $opcion)
-                                                <label for="respuesta">{{ $opcion->descripcion }}</label>
-                                                <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}" @if(Auth::user()->encuestas->where('id', $encuesta->id)->count() != 0 && Auth::user()->encuestas->where('id', $encuesta->id)->first()->pivot->opcion_id == $opcion->id) checked @endif>
+                                                @php
+                                                    $total+=$opcion->participantes->count()
+                                                @endphp
                                             @endforeach
-                                        </div>
-                                        <input type="hidden" name="id" value="{{ $encuesta->id }}">
-                                        @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
-                                            Eres CM de ésta desarrolladora
-                                        @elseif(Auth::user()->ban)
-                                            Tu cuenta está baneada
-                                        @elseif(Auth::user()->email_verified_at == null)
-                                            Tu cuenta no está verificada
-                                        @elseif(Auth::user()->encuestas->where('id', $encuesta->id)->count() != 0)
-                                            Ya has participado
+                                            @if($total == 0)
+                                                Aún no ha participaciones
+                                            @else
+                                                @foreach ($encuesta->opciones as $opcion)
+
+                                                    @if($opcion->participantes->where('id',Auth::id())->count() > 0)
+                                                        <span class="bg-primary">{{$opcion->descripcion}}</span>
+                                                    @else
+                                                        {{$opcion->descripcion}}
+                                                    @endif
+                                                    {{($opcion->participantes->count() / $total) * 100}} %
+                                                    <br>
+                                                @endforeach
+                                            @endif
                                         @else
-                                            <div class="participar-encuesta-div">
-                                                <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
+                                            <div class="opciones">
+                                                @foreach ($encuesta->opciones as $opcion)
+                                                    <label for="respuesta">{{ $opcion->descripcion }}</label>
+                                                    <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}">
+                                                @endforeach
                                             </div>
+                                            <input type="hidden" name="id" value="{{ $encuesta->id }}">
+                                            @if(Auth::user()->ban)
+                                                Tu cuenta está baneada
+                                            @elseif(Auth::user()->email_verified_at == null)
+                                                Tu cuenta no está verificada
+                                            @else
+                                                <div class="participar-encuesta-div">
+                                                    <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
+                                                </div>
+                                            @endif
                                         @endif
                                         <p>{{ $encuesta->fecha_fin }}</p>
                                     </div>
@@ -302,7 +328,6 @@
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                                 },
                                 data: {
-                                    encuesta: encuesta,
                                     opcion: opcion,
                                 },
                                 success: function(data) {

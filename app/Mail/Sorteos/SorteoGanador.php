@@ -11,6 +11,7 @@ class SorteoGanador extends Mailable
     use Queueable, SerializesModels;
 
     public $name;
+    public $sorteo;
     public $desarrolladora;
 
     /**
@@ -18,9 +19,10 @@ class SorteoGanador extends Mailable
      *
      * @return void
      */
-    public function __construct($name, $desarrolladora)
+    public function __construct($name, $sorteo, $desarrolladora)
     {
         $this->name = $name;
+        $this->sorteo = $sorteo;
         $this->desarrolladora = $desarrolladora;
     }
 
@@ -36,6 +38,7 @@ class SorteoGanador extends Mailable
             ->view('emails.sorteos.ganador')
             ->with([
                 'name' => $this->name,
+                'sorteo' => $this->sorteo,
                 'desarrolladora' => $this->desarrolladora,
             ]);
     }

@@ -20,7 +20,9 @@ class CreateSorteosTable extends Migration
             $table->date('fecha_fin');
             $table->timestamps();
             $table->bigInteger('desarrolladora_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('desarrolladora_id')->references('id')->on('desarrolladoras');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
