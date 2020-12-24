@@ -15,6 +15,7 @@ class Master extends Model
      * @var array
      */
     protected $fillable = [
+        'nombre',
         'email',
         'imagen',
         'user_id',

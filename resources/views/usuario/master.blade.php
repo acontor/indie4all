@@ -11,7 +11,7 @@
                         <img class="img-fluid h-auto" src="{{url('/images/masters/' . $master->imagen)}}">
                     @endif
                     <div>
-                        <h1 class="font-weight-light">{{ $master->usuario->name }}</h1>
+                        <h1 class="font-weight-light">{{ $master->nombre }}</h1>
                         <ul class="lead">
                             <li> Email: {{ $master->email }}</li>
                             <li> imagen: {{ $master->imagen }}</li>
@@ -53,7 +53,13 @@
                         <div class="@guest col-4 @else col-3 @endguest"><a id="notas" href="">Notas</a></div>
                         @auth
                         <div class="col-1 offset-1">
-                            <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteMaster'></i></a>
+                            <div>
+                                @if(Auth::user() && Auth::user()->master()->count() != 0 && Auth::user()->master->id == $master->id)
+                                    <a href="{{ route('master.perfil.index') }}"><i class="fas fa-user-edit"></i></a>
+                                @else
+                                    <a class="text-danger"><i class="fas fa-exclamation-triangle" id='reporteMaster'></i></a>
+                                @endif
+                            </div>
                         </div>
                         @endauth
                     </div>

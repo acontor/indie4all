@@ -53,7 +53,7 @@ class Desarrolladora extends Model
     // Desarrolladoras - 1:N - Sorteos
     public function sorteos()
     {
-        return $this->hasMany("App\Models\Sorteo");
+        return $this->hasMany("App\Models\Sorteo")->orderBy('fecha_fin', 'DESC');
     }
 
     // Desarrolladoras - 1:N - Cms

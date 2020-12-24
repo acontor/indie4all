@@ -61,7 +61,7 @@ class EncuestasController extends Controller
 
         $num_opciones = count($request->all()) - 2;
 
-        for ($i=1; $i < $num_opciones; $i++) {
+        for ($i = 1; $i < $num_opciones; $i++) {
             $num_opcion = "opcion" . $i;
             $opcion = $request->$num_opcion;
             Opcion::create([
@@ -80,5 +80,14 @@ class EncuestasController extends Controller
         Encuesta::find($id)->delete();
 
         return redirect('/cm/encuestas')->with('success', 'Encuesta eliminada!');
+    }
+
+    public function finish($id)
+    {
+        Encuesta::find($id)->update([
+            'fin' => true
+        ]);
+
+        return redirect('/cm/encuestas')->with('success', 'Encuesta finalizada!');
     }
 }

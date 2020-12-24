@@ -44,14 +44,36 @@
         @endif
         @yield("content")
         @if(Auth::user() && Auth::user()->master()->count() != 0)
+        <a href="{{ route('usuario.master.show', Auth::user()->master()->first()->id) }}">
+            <div class="perfil">
+                <i class="fas fa-user" aria-hidden="true"></i>
+            </div>
+        </a>
+        <a href="{{ route('master.analisis.create', 0) }}">
+            <div class="analisis">
+                <i class="fas fa-feather-alt" aria-hidden="true"></i>
+            </div>
+        </a>
         <a href="#">
             <div class="estado">
                 <i class="fas fa-brain" aria-hidden="true"></i>
             </div>
         </a>
-        <a href="{{ route('usuario.master.show', Auth::user()->master()->first()->id) }}">
+        @endif
+        @if(Auth::user() && Auth::user()->cm()->count() != 0)
+        <a href="{{ route('usuario.desarrolladora.show', Auth::user()->cm()->first()->id) }}">
             <div class="perfil">
                 <i class="fas fa-user" aria-hidden="true"></i>
+            </div>
+        </a>
+        <a href="{{ route('cm.juego.create') }}">
+            <div class="juego">
+                <i class="fas fa-gamepad" aria-hidden="true"></i>
+            </div>
+        </a>
+        <a href="{{ route('cm.campania.create') }}">
+            <div class="campania">
+                <i class="fas fa-bullhorn" aria-hidden="true"></i>
             </div>
         </a>
         @endif

@@ -26,7 +26,7 @@
                             <select id="juego_id" class="form-control select2" data-ui-jp="select2" data-ui-options="{theme: 'bootstrap'}" name="juego_id">
                                 <option value="">Juegos</option>
                                 @foreach ($juegos as $juego)
-                                    <option value="{{ $juego->id }}">{{ $juego->nombre }}</option>
+                                    <option value="{{ $juego->id }}" @if($juego->id == $id) selected @endif>{{ $juego->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -34,7 +34,6 @@
                             <label>Calificación</label>
                             <input type="number" class="form-control" name="calificacion" value="@if(isset($post)){{ $post->calificacion }}@endif" />
                         </div>
-                        <!-- Poner botones en juegos para que master pueda crear análisis o post sobre ese juego. Incluir aquí un select de los juegos y el tipo de post. -->
                         <div class="form-group">
                             <label>Contenido</label>
                             <textarea class="form-control" name="contenido" id="editor">

@@ -17,7 +17,6 @@ class Opcion extends Model
     protected $fillable = [
         'descripcion',
         'encuesta_id',
-        'ganadora',
     ];
 
     /**
@@ -28,5 +27,11 @@ class Opcion extends Model
     public function encuesta()
     {
         return $this->belongsTo("App\Models\Encuesta");
+    }
+
+    // Opcion - N:N - User
+    public function participantes()
+    {
+        return $this->belongsToMany("App\Models\User");
     }
 }

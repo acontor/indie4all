@@ -24,7 +24,7 @@ class LoginListener
      */
     public function handle()
     {
-        if (Auth::check() && Auth::user()->logros->where('logro_id', 6)->count() != 0) {
+        if (Auth::check()) {
 
             $usuario = User::find(Auth::id());
 
@@ -34,7 +34,7 @@ class LoginListener
 
             $usuario->update(['last_activity' => $timestamp]);
 
-            if ($date->diffInDays($usuario->created_at) >= 365 && !$usuario->logros->find(2)) {
+            if (Auth::user()->logros->where('logro_id', 2)->count() != 0 && $date->diffInDays($usuario->created_at) >= 365 && !$usuario->logros->find(2)) {
                 $usuario->logros()->attach([
                     2
                 ]);

@@ -92,11 +92,11 @@
                     <div class="box mt-3">
                         <div class="form-group">
                             <label for="meta">Meta:</label>
-                            <input type="text" class="form-control" name="meta" value="{{ $campania->meta }}" /> €
+                            <input type="text" class="form-control" name="meta" value="@if(isset($campania)){{ $campania->meta }}@endif" /> €
                         </div>
                         <div class="form-group">
                             <label for="fecha_fin">Fecha de finalización:</label>
-                            <input type="date" name="fecha_fin" value="{{ $campania->fecha_fin }}">
+                            <input type="date" name="fecha_fin" value="@if(isset($campania)){{ $campania->fecha_fin }}@endif">
                         </div>
                         @if(isset($campania))
                             <div class="form-group">

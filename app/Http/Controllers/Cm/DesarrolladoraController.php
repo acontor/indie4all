@@ -43,19 +43,23 @@ class DesarrolladoraController extends Controller
             'url' => 'required',
             'imagen_logo' => 'required',
         ]);
+
         $fileName = '';
         $imagen = public_path() . '/images/desarrolladoras/' . $desarrolladora->imagen_logo;
+
         if (@getimagesize($imagen)) {
             unlink($imagen);
         }
+
         if ($imagen = $request->file('imagen_logo')) {
             $originName = $request->file('imagen_logo')->getClientOriginalName();
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
             $extension = $request->file('imagen_logo')->getClientOriginalExtension();
             $fileName = $fileName . '_' . time() . '.' . $extension;
             $imagen->move('images/desarrolladoras/', $fileName);
-        }        
-        Desarrolladora::find($id)->update([
+        }
+
+        $desarrolladora->update([
             'nombre' => $request->nombre,
             'email' => $request->email,
             'direccion' => $request->direccion,

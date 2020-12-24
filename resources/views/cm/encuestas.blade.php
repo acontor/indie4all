@@ -27,10 +27,32 @@
                                 <tr>
                                     <td class="w-20">{{ $encuesta->pregunta }}</td>
                                     <td class="w-30">{{ $encuesta->fecha_fin }}</td>
-                                    <td class="w-20 text-center">0</td>
-                                    <td class="w-20">-</td>
+                                    <td class="w-20 text-center">
+                                        @php
+                                            $total = 0
+                                        @endphp
+                                        @foreach ($encuesta->opciones as $opcion)
+                                            @php
+                                                $total+=$opcion->participantes->count()
+                                            @endphp
+                                        @endforeach
+                                        {{$total}}
+                                    </td>
+                                    <td class="w-20">
+                                        @if($total == 0)
+                                            Aún no ha participaciones
+                                        @else
+                                        @foreach ($encuesta->opciones as $opcion)
+                                            {{$opcion->descripcion}} - {{($opcion->participantes->count() / $total) * 100}} %
+                                            <br>
+                                        @endforeach
+                                        @endif
+                                    </td>
                                     <td class="align-middle w-10 text-center">
                                         <div class="btn-group">
+                                            <a class="btn btn-success btn-sm round mr-2" href="{{ route('cm.encuesta.finish', $encuesta->id) }}">
+                                                <i class="fas fa-hourglass-half"></i>
+                                            </a>
                                             <form action="{{ route('cm.encuestas.destroy', $encuesta->id) }}" method='post'>
                                                 @csrf
                                                 @method('DELETE')

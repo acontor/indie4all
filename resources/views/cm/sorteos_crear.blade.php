@@ -4,33 +4,32 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <br />
-                @endif
                 <div class="box-header">
-                    <h1>Nuevo sorteo</h1>
+                    @if(isset($sorteo))
+                        <h1>Editar sorteo</h1>
+                    @else
+                        <h1>Nuevo sorteo</h1>
+                    @endif
                 </div>
                 <div class="box">
-                    <form method="post" action="{{ route('cm.sorteos.store') }}">
+                    @isset($sorteo)
+                        <form method="post" action="{{ route('cm.sorteo.update', $sorteo->id) }}">
+                        @method('PATCH')
+                    @else
+                        <form method="post" action="{{ route('cm.sorteo.store') }}">
+                    @endisset
                         @csrf
                         <div class="form-group">
                             <label for="titulo">Título:</label>
-                            <input type="text" class="form-control" name="titulo" />
+                            <input type="text" class="form-control" name="titulo" @isset($sorteo) value="{{$sorteo->titulo}} @endisset" />
                         </div>
                         <div class="form-group">
                             <label for="descripcion">Descripción:</label>
-                            <textarea class="form-control" name="descripcion"></textarea>
+                            <textarea class="form-control" name="descripcion">@isset($sorteo) {{$sorteo->descripcion}} @endisset</textarea>
                         </div>
                         <div class="form-group">
                             <label for="fecha_fin">Fecha de finalización:</label>
-                            <input type="date" name="fecha_fin">
+                            <input type="date" name="fecha_fin" @isset($sorteo) value="{{$sorteo->fecha_fin}}" @endisset>
                         </div>
                         <button type="submit" class="btn btn-success mb-3">Crear</button>
                     </form>
