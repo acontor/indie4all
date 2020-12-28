@@ -59,7 +59,6 @@ class SolicitudesController extends Controller
         ]);
 
         Cm::create([
-            'rol' => 'Jefe',
             'desarrolladora_id' => $desarrolladora->id,
             'user_id' => $solicitud->user_id
         ]);

@@ -1,7 +1,7 @@
 @extends("layouts.usuario.base")
 
 @section("content")
-    <main class="py-4">
+    <main class="p-3 pb-5">
         <div class="container">
             <div class="box-header">
                 <h1>Masters ({{ $masters->count() }})</h1>

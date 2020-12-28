@@ -26,6 +26,8 @@
     <link href="{{ asset('css/usuario.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     @yield("styles")
 </head>
 
@@ -33,52 +35,54 @@
     <div id="app">
         @include("layouts.usuario.nav")
         @if (Auth::user() != null && Auth::user()->ban)
-        <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light">
-            <span class="mx-auto">Su cuenta se encuentra baneada. No podrá hacer uso de las funciones sociales de la plataforma. Accede a <a href="{{ route('usuario.cuenta.index') }}">Mi Cuenta</a> para ver el motivo.</span>
-        </nav>
+            <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light nav-alert">
+                <span class="mx-auto">Su cuenta se encuentra baneada. No podrá hacer uso de las funciones sociales de la plataforma. Accede a <a href="{{ route('usuario.cuenta.index') }}">Mi Cuenta</a> para ver el motivo.</span>
+            </nav>
         @endif
         @if (Auth::user() != null && Auth::user()->email_verified_at == null)
-        <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light">
-            <span class="verify-alert mx-auto">Para utilizar las funciones sociales de la plataforma verifique su cuenta. Haz clic <a class="verify-link">aquí</a> para recibir el email de verificación</span>
-        </nav>
+            <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light nav-alert">
+                <span class="verify-alert mx-auto">Para utilizar las funciones sociales de la plataforma verifique su cuenta. Haz clic <a class="verify-link">aquí</a> para recibir el email de verificación</span>
+            </nav>
         @endif
         @yield("content")
         @if(Auth::user() && Auth::user()->master()->count() != 0)
-        <a href="{{ route('usuario.master.show', Auth::user()->master()->first()->id) }}">
-            <div class="perfil">
-                <i class="fas fa-user" aria-hidden="true"></i>
-            </div>
-        </a>
-        <a href="{{ route('master.analisis.create', 0) }}">
-            <div class="analisis">
-                <i class="fas fa-feather-alt" aria-hidden="true"></i>
-            </div>
-        </a>
-        <a href="#">
-            <div class="estado">
-                <i class="fas fa-brain" aria-hidden="true"></i>
-            </div>
-        </a>
+            <a href="{{ route('usuario.master.show', Auth::user()->master()->first()->id) }}">
+                <div class="perfil">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                </div>
+            </a>
+            <a href="{{ route('master.analisis.create', 0) }}">
+                <div class="analisis">
+                    <i class="fas fa-feather-alt" aria-hidden="true"></i>
+                </div>
+            </a>
+            <a href="#">
+                <div class="estado">
+                    <i class="fas fa-brain" aria-hidden="true"></i>
+                </div>
+            </a>
         @endif
         @if(Auth::user() && Auth::user()->cm()->count() != 0)
-        <a href="{{ route('usuario.desarrolladora.show', Auth::user()->cm()->first()->id) }}">
-            <div class="perfil">
-                <i class="fas fa-user" aria-hidden="true"></i>
-            </div>
-        </a>
-        <a href="{{ route('cm.juego.create') }}">
-            <div class="juego">
-                <i class="fas fa-gamepad" aria-hidden="true"></i>
-            </div>
-        </a>
-        <a href="{{ route('cm.campania.create') }}">
-            <div class="campania">
-                <i class="fas fa-bullhorn" aria-hidden="true"></i>
-            </div>
-        </a>
+            <a href="{{ route('usuario.desarrolladora.show', Auth::user()->cm()->first()->id) }}">
+                <div class="perfil">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                </div>
+            </a>
+            <a href="{{ route('cm.juego.create') }}">
+                <div class="juego">
+                    <i class="fas fa-gamepad" aria-hidden="true"></i>
+                </div>
+            </a>
+            <a href="{{ route('cm.campania.create') }}">
+                <div class="campania">
+                    <i class="fas fa-bullhorn" aria-hidden="true"></i>
+                </div>
+            </a>
         @endif
     </div>
+    @include("layouts.usuario.footer")
     @yield("scripts")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script>
@@ -163,29 +167,56 @@
                                 data.forEach(element => {
                                     if(element.tipo == "Juego") {
                                         if(html.indexOf("<h4 class='mt-2 mb-2'>Juegos</h4>") == -1) {
-                                            html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="{{ route('usuario.juegos.all') }}">Ver todos</a></small>`;
+                                            html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="{{ route('usuario.juegos.all') }}">Ver todos</a></small><div class="owl-carousel owl-theme 1">`;
                                         }
                                         let url = '{{ route("usuario.juego.show", ":id") }}';
                                         url = url.replace(':id', element.id);
-                                        html += `<a href="${url}" class="list-group-item list-group-item-action">${element.nombre}</a>`;
+                                        html += `<div class="item"><a href="${url}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                     } else if (element.tipo == "Desarrolladora") {
                                         if(html.indexOf("<h4 class='mt-2 mb-2'>Desarrolladoras</h4>") == -1) {
-                                            html += `<h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="{{ route('usuario.desarrolladoras.all') }}">Ver todas</a></small>`;
+                                            html += `</div><h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="{{ route('usuario.desarrolladoras.all') }}">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
                                         }
                                         let url = '{{ route("usuario.desarrolladora.show", ":id") }}';
                                         url = url.replace(':id', element.id);
-                                        html += `<a href="${url}" class="list-group-item list-group-item-action">${element.nombre}</a>`;
+                                        html += `<div class="item"><a href="${url}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                     } else if (element.tipo == "Master") {
                                         if(html.indexOf("<h4 class='mt-2 mb-2'>Masters</h4>") == -1) {
-                                            html += `<h4 class='mt-2 mb-2'>Masters</h4><small><a href="{{ route('usuario.masters.all') }}">Ver todas</a></small>`;
+                                            html += `</div><h4 class='mt-2 mb-2'>Masters</h4><small><a href="{{ route('usuario.masters.all') }}">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
                                         }
                                         let url = '{{ route("usuario.master.show", ":id") }}';
                                         url = url.replace(':id', element.id);
-                                        html += `<a href="${url}" class="list-group-item list-group-item-action">${element.nombre}</a>`;
+                                        html += `<div class="item"><a href="${url}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                     }
                                 });
-                                html += '</ul>';
+                                html += '</div>';
                                 $(".swal2-html-container>div").append(html);
+                                var owl = $('.1');
+
+                                owl.owlCarousel({
+                                    center: true,
+                                    items:2,
+                                    loop:true,
+                                    margin:10,
+                                    responsive: {
+                                        0: {
+                                            items: 2.5
+                                        },
+                                        600: {
+                                            items: 2.5
+                                        },
+                                        1000: {
+                                            items: 3.5
+                                        }
+                                    }
+                                });
+
+                                $(".item").hover(function() {
+                                    $(this).children('a').children('img').css('filter', 'brightness(0.2)');
+                                    $(this).children('a').children('div').fadeToggle(200, "linear");
+                                }, function() {
+                                    $(this).children('a').children('img').css('filter', 'brightness(1)');
+                                    $(this).children('a').children('div').fadeToggle(0, "linear");
+                                });
                             }
                         }
                     });

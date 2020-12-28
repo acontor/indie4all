@@ -20,8 +20,13 @@ class JuegosController extends Controller
      */
     public function index()
     {
-        $juegos = Juego::inRandomOrder()->limit(5)->get();
-        return view('usuario.juegos', ['juegos' => $juegos]);
+        if(Auth::user()) {
+            $seguidos = Auth::user()->juegos;
+        } else {
+            $seguidos = null;
+        }
+        $juegos = Juego::all();
+        return view('usuario.juegos', ['juegos' => $juegos, 'seguidos' => $seguidos]);
     }
 
     public function all()

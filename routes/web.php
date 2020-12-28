@@ -191,8 +191,13 @@ Route::delete('/master/posts/{id}/delete', [App\Http\Controllers\Master\EstadosC
 
 // Inicio
 
-Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home')->middleware('auth');;
+Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::get('/busqueda', [App\Http\Controllers\Usuario\HomeController::class, 'busqueda'])->name('usuario.busqueda');
+Route::get('/acerca', [App\Http\Controllers\Usuario\HomeController::class, 'acerca'])->name('usuario.acerca');
+Route::get('/faq', [App\Http\Controllers\Usuario\HomeController::class, 'faq'])->name('usuario.faq');
+Route::get('/desarrolladora', [App\Http\Controllers\Usuario\HomeController::class, 'desarrolladora'])->name('usuario.desarrolladora');
+Route::get('/master/nuevo', [App\Http\Controllers\Usuario\HomeController::class, 'master'])->name('usuario.master');
+
 
 // Mi cuenta
 Route::get('/cuenta', [App\Http\Controllers\Usuario\CuentaController::class, 'index'])->name('usuario.cuenta.index');

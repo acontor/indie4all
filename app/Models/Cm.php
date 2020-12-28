@@ -15,7 +15,6 @@ class Cm extends Model
      * @var array
      */
     protected $fillable = [
-        'rol',
         'desarrolladora_id',
         'user_id',
     ];

@@ -350,3 +350,14 @@ header div ul li a {
         font-size: 11px !important;
     }
 }
+
+
+header .carousel-caption {
+    bottom: initial;
+}
+
+.nav-alert {
+    z-index: 1;
+}
+
+

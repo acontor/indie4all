@@ -17,7 +17,6 @@ class Post extends Model
     protected $fillable = [
         'titulo',
         'contenido',
-        'tipo',
         'calificacion',
         'desarrolladora_id',
         'juego_id',
@@ -27,7 +26,6 @@ class Post extends Model
         'ban',
         'motivo',
         'campania_id',
-        'comentarios',
     ];
 
     /**
@@ -53,7 +51,7 @@ class Post extends Model
     }
 
     // Posts - 1:N - Juegos
-    public function juegos()
+    public function juego()
     {
         return $this->belongsTo("App\Models\Juego");
     }

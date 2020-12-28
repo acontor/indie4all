@@ -37,7 +37,6 @@ class DesarrolladorasSeeder extends Seeder
             <p>Llevamos en el sector m&aacute;s de 10 a&ntilde;os y nuestro actual grupo se conforma de j&oacute;venes talentos con una visi&oacute;n de los videojuegos &uacute;nica. Intentamos llevar a lo m&aacute;s alto los g&eacute;neros de aventura, rol y terror.</p>',
         ]);
         DB::table('cms')->insert([
-            'rol' => 'Jefe',
             'desarrolladora_id' => 1,
             'user_id' => 5,
         ]);
@@ -49,7 +48,6 @@ class DesarrolladorasSeeder extends Seeder
             'url' => 'www.turismostudios.com',
         ]);
         DB::table('cms')->insert([
-            'rol' => 'Jefe',
             'desarrolladora_id' => 2,
             'user_id' => 6,
         ]);

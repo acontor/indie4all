@@ -21,6 +21,7 @@ class Desarrolladora extends Model
         'direccion',
         'telefono',
         'url',
+        'imagen_portada',
         'imagen_logo',
         'contenido',
         'ban',

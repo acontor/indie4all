@@ -17,12 +17,10 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('titulo')->nullable();
             $table->longText('contenido');
-            $table->string('tipo')->nullable();
             $table->double('calificacion')->nullable();
             $table->boolean('destacado')->default(false);
             $table->boolean('ban')->default(false);
             $table->longText('motivo')->nullable();
-            $table->boolean('comentarios')->default(true);
             $table->timestamps();
             $table->bigInteger('desarrolladora_id')->unsigned()->nullable();
             $table->bigInteger('juego_id')->unsigned()->nullable();

@@ -50,7 +50,7 @@ input[type="file"] {
     </div>
 @endsection
 @section("scripts")
-<script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
         $(function() {
             CKEDITOR.replace("contenido", {

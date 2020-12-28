@@ -49,4 +49,24 @@ class HomeController extends Controller
         }
         return response()->json($data);
     }
+
+    public function acerca()
+    {
+        return view('acerca');
+    }
+
+    public function faq()
+    {
+        return view('faq');
+    }
+
+    public function desarrolladora()
+    {
+        return view('desarrolladora');
+    }
+
+    public function master()
+    {
+        return view('master');
+    }
 }

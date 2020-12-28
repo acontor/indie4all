@@ -22,7 +22,7 @@ class CreateJuegosTable extends Migration
             $table->longText('contenido')->nullable();
             $table->boolean('ban')->default(false);
             $table->longText('motivo')->nullable();
-            $table->date('fecha_lanzamiento');
+            $table->date('fecha_lanzamiento')->nullable();
             $table->double('precio')->nullable();
             $table->timestamps();
             $table->bigInteger('desarrolladora_id')->unsigned();

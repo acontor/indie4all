@@ -17,7 +17,8 @@ class Master extends Model
     protected $fillable = [
         'nombre',
         'email',
-        'imagen',
+        'imagen_portada',
+        'imagen_logo',
         'user_id',
     ];
 
