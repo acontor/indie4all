@@ -17,6 +17,7 @@ class Campania extends Model
     protected $fillable = [
         'meta',
         'recaudado',
+        'aporte_minimo',
         'fecha_fin',
         'juego_id',
         'contenido',

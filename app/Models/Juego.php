@@ -18,7 +18,6 @@ class Juego extends Model
         'nombre',
         'imagen_portada',
         'imagen_caratula',
-        'sinopsis',
         'fecha_lanzamiento',
         'precio',
         'desarrolladora_id',

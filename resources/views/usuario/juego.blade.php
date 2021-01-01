@@ -22,7 +22,23 @@
                 </div>
             </header>
 
-
+            <div class="row mb-5">
+                <div class="col-12 col-md-6 mt-5">
+                    <h3 class="text-center">Usuarios</h3>
+                    <div class="circle mx-auto">
+                        -
+                        @if (Auth::user() != null && Auth::user()->email_verified_at != null && !Auth::user()->ban)
+                            <button class="btn btn-dark btn-circle">-</button>
+                        @endif
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 mt-5">
+                    <h3 class="text-center">Masters</h3>
+                    <div class="circle mx-auto">
+                        -
+                    </div>
+                </div>
+            </div>
 
             <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
                 <div class="navbar-nav float-right-sm">

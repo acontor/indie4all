@@ -17,6 +17,7 @@ class CreateCampaniasTable extends Migration
             $table->id();
             $table->double('meta');
             $table->double('recaudado')->default(0);
+            $table->double('aporte_minimo');
             $table->date('fecha_fin');
             $table->longText('contenido')->nullable();
             $table->longText('faq')->nullable();
