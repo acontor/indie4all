@@ -18,7 +18,6 @@ class CreateJuegosTable extends Migration
             $table->string('nombre');
             $table->string('imagen_portada')->nullable();
             $table->string('imagen_caratula')->nullable();
-            $table->longText('sinopsis');
             $table->longText('contenido')->nullable();
             $table->boolean('ban')->default(false);
             $table->longText('motivo')->nullable();
