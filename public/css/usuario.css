@@ -389,3 +389,27 @@ header .carousel-caption {
     font-weight: bold;
     font-size: 20px;
 }
+
+
+.title{
+    text-align: center;
+}
+
+.calendar-container{
+    position: relative;
+    margin: 50px auto;
+    max-width: 500px;
+}
+
+.calendar {
+    color: #2c3646 !important;
+}
+
+.calendar header {
+    color: #2c3646 !important;
+}
+.calendar header div {
+    position: relative !important;
+    left: auto;
+    top: 10px;
+}

@@ -85,7 +85,7 @@
                                 @foreach ($master->posts->where('juego_id', null) as $post)
                                     <div class="alert alert-dark">
                                         {!! $post->contenido !!}
-                                        @if(Auth::user()->master != null && $master->id == Auth::user()->master->id)
+                                        @if(Auth::user() && Auth::user()->master != null && $master->id == Auth::user()->master->id)
                                             <form action="{{ route('master.estado.destroy', $post->id) }}" method="post">
                                                 @csrf
                                                 @method("DELETE")

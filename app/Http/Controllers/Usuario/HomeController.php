@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campania;
 use App\Models\Desarrolladora;
 use App\Models\Juego;
-use App\Models\Master;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,9 @@ class HomeController extends Controller
     public function index()
     {
         $usuario = User::find(Auth::id());
-        return view('usuario.home', ['usuario' => $usuario]);
+        $juegos = Juego::whereDoesntHave('campania')->get();
+        $campanias = Auth::user()->compras->has('campania');
+        return view('usuario.home', ['usuario' => $usuario, 'juegos' => $juegos, 'campanias' => $campanias]);
     }
 
     public function busqueda(Request $request)

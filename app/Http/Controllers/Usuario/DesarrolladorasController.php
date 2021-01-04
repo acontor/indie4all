@@ -66,6 +66,7 @@ class DesarrolladorasController extends Controller
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
             'url' => $request->url,
+            'comentario' => $request->comentario,
             'tipo' => 'Desarrolladora',
             'user_id' => Auth::id(),
         ]);

@@ -28,7 +28,7 @@ class Compra extends Model
      */
 
     // Campanias - 1:N - Compras
-    public function campanias()
+    public function campania()
     {
         return $this->belongsTo("App\Models\Compra");
     }

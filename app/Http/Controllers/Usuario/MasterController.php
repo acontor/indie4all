@@ -20,9 +20,15 @@ class MasterController extends Controller
      */
     public function index()
     {
+        if(Auth::user()) {
+            $seguidos = Auth::user()->masters;
+        } else {
+            $seguidos = null;
+        }
+
         $masters = Master::all();
 
-        return view('usuario.masters', ['masters' => $masters]);
+        return view('usuario.masters', ['masters' => $masters, 'seguidos' => $seguidos]);
     }
 
     public function all()

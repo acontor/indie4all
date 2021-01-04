@@ -19,7 +19,6 @@ class JuegosSeeder extends Seeder
         DB::table('juegos')->insert([
             'nombre' => 'Mi amigo pedro',
             'contenido' => '',
-            'sinopsis' => 'Es un juego de matar mucho',
             'fecha_lanzamiento' => '2020-10-20',
             'precio' =>43.44,
             'desarrolladora_id' => 1,
@@ -27,7 +26,6 @@ class JuegosSeeder extends Seeder
         ]);
         DB::table('juegos')->insert([
             'nombre' => 'Residente demoníaco 2',
-            'sinopsis' => 'Juego que da mucho miedo',
             'fecha_lanzamiento' => '2020-11-05',
             'precio' => 49.99,
             'desarrolladora_id' => 1,
@@ -35,7 +33,6 @@ class JuegosSeeder extends Seeder
         ]);
         DB::table('juegos')->insert([
             'nombre' => 'Caballero hueco',
-            'sinopsis' => 'Cuidao que te pierdes por el mapa',
             'fecha_lanzamiento' => '2020-05-05',
             'precio' =>19.99,
             'desarrolladora_id' => 1,
@@ -43,7 +40,6 @@ class JuegosSeeder extends Seeder
         ]);
         DB::table('juegos')->insert([
             'nombre' => 'Fuerza del horizonte 4',
-            'sinopsis' => 'Juego para que vayas a toda velocidad',
             'fecha_lanzamiento' => '2020-12-05',
             'precio' =>59.99,
             'desarrolladora_id' => 2,
@@ -51,7 +47,6 @@ class JuegosSeeder extends Seeder
         ]);
         DB::table('juegos')->insert([
             'nombre' => 'Contraataque: Ofensiva Global',
-            'sinopsis' => 'Juego de disparos por equipos',
             'fecha_lanzamiento' => '2018-11-05',
             'precio' =>5.99,
             'desarrolladora_id' => 2,
@@ -59,7 +54,6 @@ class JuegosSeeder extends Seeder
         ]);
         DB::table('juegos')->insert([
             'nombre' => 'Geraldo el magias 3',
-            'sinopsis' => 'Siéntete un aventurero de verdad',
             'fecha_lanzamiento' => '2019-11-05',
             'precio' =>59.99,
             'desarrolladora_id' => 2,

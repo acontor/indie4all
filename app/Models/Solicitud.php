@@ -22,6 +22,7 @@ class Solicitud extends Model
         'direccion',
         'telefono',
         'url',
+        'comentario',
         'user_id',
     ];
 

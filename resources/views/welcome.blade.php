@@ -1,83 +1,73 @@
 @extends("layouts.usuario.base")
 
 @section("content")
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header"><h3>Noticias</h3></div>
-                    <div class="card-body">
-                        @if ($noticias->count() != 0)
-                            @foreach ($noticias as $noticia)
-                                <div>
-                                    <h4>{{ $noticia->titulo }}</h4>
-                                    <p>{!! substr($noticia->contenido, 0, 300) !!}...</p>
-                                    {{ $noticia->created_at }}
-                                    @if ($noticia->comentarios)
-                                        <small>Comentarios: {{ $noticia->mensajes->count() }}</small>
-                                    @endif
-                                    <form>
-                                        <input type="hidden" name="id" value="{{ $noticia->id }}" />
-                                        <a type="submit" class="more">Leer más</a>
-                                    </form>
-                                </div>
-                                <hr>
-                            @endforeach
-                        @else
-                            Aún no hay publicada ninguna noticia.
-                        @endif
+    <main class="p-3 pb-5">
+        <div class="container box mt-4">
+            <div class="row">
+                <div class="col-12 col-md-7">
+                    <h2>Últimas noticias</h2>
+                    <div class="noticias">
+                        <div class="items">
+                            @if ($noticias->count() != 0)
+                                @foreach ($noticias as $noticia)
+                                    <div>
+                                        <h4>{{ $noticia->titulo }}</h4>
+                                        <p>{!! substr($noticia->contenido, 0, 300) !!}...</p>
+                                        {{ $noticia->created_at }}
+                                        @if ($noticia->comentarios)
+                                            <small>Comentarios: {{ $noticia->mensajes->count() }}</small>
+                                        @endif
+                                        <form>
+                                            <input type="hidden" name="id" value="{{ $noticia->id }}" />
+                                            <a type="submit" class="more">Leer más</a>
+                                        </form>
+                                    </div>
+                                    <hr>
+                                @endforeach
+                            @else
+                                Aún no hay publicada ninguna noticia.
+                            @endif
+                        </div>
+                        <div class="pager">
+                            <div class="firstPage">&laquo;</div>
+                            <div class="previousPage">&lsaquo;</div>
+                            <div class="pageNumbers"></div>
+                            <div class="nextPage">&rsaquo;</div>
+                            <div class="lastPage">&raquo;</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">Juegos</div>
-                    <div class="card-body">
-                        <ul>
-                            @foreach ($juegos as $juego)
-                                <li>{{ $juego->nombre }} - Punt.
-                                    {{ $juego->usuarios->sum("pivot.calificacion") / $juego->usuarios->count() }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-                <div class="card mt-3">
-                    <div class="card-header">Desarrolladoras</div>
-                    <div class="card-body">
-                        <ul>
-                            @foreach ($desarrolladoras as $desarrolladora)
-                                <li>{{ $desarrolladora->nombre }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-                <div class="card mt-3">
-                    <div class="card-header">Masters</div>
-                    <div class="card-body">
-                        <ul>
-                            @foreach ($masters as $master)
-                                <li>{{ $master->usuario->name }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+
+                <div class="col-12 col-md-4 offset-md-1 mt-5 mt-md-0">
+                    <h4>Desarrolladoras</h4>
+                    <hr>
+                    @foreach ($desarrolladoras as $desarrolladora)
+                        <li>{{ $desarrolladora->nombre }}</li>
+                    @endforeach
+                    <h4 class="mt-5">Juegos + puntuación</h4>
+                    <hr>
+                    @foreach ($juegos as $juego)
+                        <li>{{ $juego->nombre }} - Punt.
+                            {{ $juego->usuarios->sum("pivot.calificacion") / $juego->usuarios->count() }}
+                        </li>
+                    @endforeach
+                    <h4 class="mt-5">Masters</h4>
+                    <hr>
+                    @foreach ($masters as $master)
+                        <li>{{ $master->usuario->name }}</li>
+                    @endforeach
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 @endsection
 @section("scripts")
     <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/paginga.jquery.min.js') }}"></script>
     <script>
         $(function() {
-            $(".menu").children("div").children("a").click(function(e) {
-                e.preventDefault();
-                let item = $(this).attr("id");
-                $(".post").remove();
-                $("#contenido").children("div").addClass("d-none");
-                $(`.${item}`).removeClass("d-none");
-            });
+            $(".noticias").paginga();
 
             $(".more").click(function () {
                 let url = '{{ route("usuario.master.post", ":id") }}';
