@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Desarrolladora;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,8 +43,9 @@ class PostTest extends TestCase
             'titulo' => 'titulo test2', //actualizamos el titulo
             'contenido' => 'contenido test2' //actualizamos el contenido
         ]);
+        $post = Post::latest()->first();
         //Comprobamos que los cambios se han efectuado
-        $this->assertEquals($post->titulo, 'titulo test2'); 
+        $this->assertEquals($post->titulo, 'titulo test2');
         $this->assertEquals($post->contenido, 'contenido test2');
     }
 
@@ -53,9 +55,9 @@ class PostTest extends TestCase
     public function delete_post()
     {
         $user = User::find(1);
-        $this->actingAs($user);     
+        $this->actingAs($user);
         $post = Post::latest()->first();
         $this->delete('/admin/noticias/' . $post->id . '/delete');
-        $this->assertCount(2, Post::all()); 
+        $this->assertCount(2, Post::all());
     }
 }
