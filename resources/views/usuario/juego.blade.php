@@ -180,7 +180,7 @@
 @endsection
 @section("scripts")
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {

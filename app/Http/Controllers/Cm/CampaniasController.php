@@ -51,6 +51,17 @@ class CampaniasController extends Controller
         return view('cm.campania', ['campania' => $campania, 'generos' => $generos, 'compras' => $compras]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('cm.campania');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -101,13 +112,6 @@ class CampaniasController extends Controller
         ]);
 
         return redirect('/cm/campanias')->with('success', '¡Campaña creada!');
-    }
-
-    public function edit($campaniaId, $juegoId)
-    {
-        $campania = Campania::find($campaniaId);
-        $juego = Juego::find($juegoId);
-        return view('cm.campanias_crear', ['campania' => $campania, 'juego' => $juego]);
     }
 
     public function update(Request $request, $id)

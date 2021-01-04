@@ -138,7 +138,7 @@
 @endsection
 @section('scripts')
 <script src="{{ asset('js/paginga.jquery.min.js') }}"></script>
-<script src="{{ asset('js/sweetalert.min.js') }}"></script>
+<script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
 <script src="http://momentjs.com/downloads/moment.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>

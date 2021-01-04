@@ -184,7 +184,7 @@
     </div>
 @endsection
 @section("scripts")
-    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/datatable.js') }}"></script>
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
         $(function() {

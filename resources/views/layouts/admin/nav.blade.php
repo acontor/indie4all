@@ -12,16 +12,16 @@
                     <a class="nav-link" href="{{ route('admin.reportes.index') }}" role="button" aria-haspopup="true"
                         aria-expanded="false" v-pre>
                         <i class="fas fa-flag"></i>
-                        <span class="badge badge-warning" id="messages-count">{{ $reportes }}</span>
+                        <span class="badge badge-warning" id="reportes-count">{{ $reportes }}</span>
                     </a>
                 </li>
             @endif
             @if ($solicitudes > 0)
-                <li class="nav-item">
+                <li class="nav-item solicitudes-li">
                     <a class="nav-link" href="{{ route('admin.solicitudes.index') }}" role="button" aria-haspopup="true"
                         aria-expanded="false" v-pre>
-                        <i class="fas fa-envelope"></i>
-                        <span class="badge badge-warning" id="messages-count">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge badge-warning" id="solicitudes-count">
                             {{ $solicitudes }}
                         </span>
                     </a>

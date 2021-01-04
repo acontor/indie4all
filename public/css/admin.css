@@ -53,7 +53,7 @@ body {
     background-color: #c67605;
 }
 
-#messages-count {
+#solicitudes-count, #reportes-count {
     font-size: 10px;
     background: #2E3647;
     color: #FFF;

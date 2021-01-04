@@ -81,10 +81,10 @@
         @endif
     </div>
     @include("layouts.usuario.footer")
-    @yield("scripts")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
             $(document).keydown(function(event) {
@@ -238,6 +238,7 @@
         }
 
     </script>
+    @yield("scripts")
 </body>
 
 </html>

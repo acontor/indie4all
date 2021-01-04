@@ -41,7 +41,8 @@ class DesarrolladoraController extends Controller
             'direccion' => 'required',
             'telefono' => 'required',
             'url' => 'required',
-            'imagen_logo' => 'required',
+            'imagen_portada' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=1024,height=512',
+            'imagen_logo' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=200,height=256',
         ]);
 
         $fileName = '';

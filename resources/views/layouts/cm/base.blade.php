@@ -36,6 +36,7 @@
         </main>
     </div>
 
+    <script src="{{ asset('js/cm.js') }}"></script>
     @yield("scripts")
 </body>
 

@@ -3,34 +3,81 @@
 @section('content')
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
-            <form method="post" action="{{ route('usuario.desarrolladora.store') }}">
+            <div class="row mt-3 mb-5">
+                <div class="col-12 col-md-10">
+                    <h1>Solicitud para crear desarrolladora</h1>
+                </div>
+                <div class="col-12 col-md-2 text-md-right">
+                    <div><i class="fas fa-info-circle text-danger"></i> Requerido</div>
+                    <div><i class="fas fa-info-circle"></i> Opcional</div>
+                </div>
+            </div>
+            <form method="post" id="form-solicitud-desarrolladora" action="{{ route('usuario.desarrolladora.store') }}">
                 @csrf
-                <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" class="form-control" name="nombre" />
+                <div class="row">
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="nombre">Nombre desarrolladora: <i class="fas fa-info-circle pop-info text-danger"
+                                data-content="Nombre que tendrá la desarrolladora<br><span class='text-danger'>Requerido</span>"
+                                data-html="true" rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
+                        <input type="text" class="form-control" name="nombre" value="{{ old('nombre') }}" autofocus />
+                        @error('nombre')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="email">Email de contacto: <i class="fas fa-info-circle pop-info text-danger"
+                                data-content="Email de soporte de la desarrolladora<br><span class='text-danger'>Requerido</span>"
+                                data-html="true" rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
+                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" />
+                        @error('email')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="telefono">Teléfono: <i class="fas fa-info-circle pop-info"
+                                data-content="Teléfono de contacto de la desarrolladora" rel="popover"
+                                data-placement="bottom" data-trigger="hover"></i></label>
+                        <input type="text" class="form-control" name="telefono" value="{{ old('telefono') }}" />
+                        @error('telefono')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="col-12 col-md-6 mb-3">
+                        <label for="url">Url: <i class="fas fa-info-circle pop-info"
+                                data-content="Página web de la desarrolladora" rel="popover" data-placement="bottom"
+                                data-trigger="hover"></i></label>
+                        <input type="text" class="form-control" name="url" value="{{ old('url') }}" />
+                        @error('url')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" name="email" />
+                    <label for="direccion">Dirección postal: <i class="fas fa-info-circle pop-info"
+                            data-content="Dirección postal de la desarrolladora" rel="popover" data-placement="bottom"
+                            data-trigger="hover"></i></label>
+                    <input type="text" class="form-control" name="direccion" value="{{ old('direccion') }}" />
+                    @error('direccion')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
                 <div class="form-group">
-                    <label for="direccion">Dirección postal:</label>
-                    <input type="text" class="form-control" name="direccion" />
+                    <label for="comentario">Comentario: <i class="fas fa-info-circle pop-info"
+                            data-content="Agrega un comentario si necesitas contarnos algo más" rel="popover"
+                            data-placement="bottom" data-trigger="hover"></i></label>
+                    <textarea name="comentario" class="form-control" id="comentario"
+                        rows="5">{{ old('comentario') }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="text" class="form-control" name="telefono" />
-                </div>
-                <div class="form-group">
-                    <label for="url">Url:</label>
-                    <input type="text" class="form-control" name="url" />
-                </div>
-                <div class="form-group">
-                    <label for="comentario">Comentario:</label>
-                    <textarea name="comentario" class="form-control" id="comentario" rows="5"></textarea>
-                </div>
-                <button type="submit" class="btn btn-success mb-3">Enviar</button>
+                <small class="text-danger recaptcha-error"></small>
+                <div class="g-recaptcha" data-sitekey="{{env('SITE_KEY_CAPTCHA')}}"></div>
+                <button type="submit" class="btn btn-success mt-3 mb-3">Enviar</button>
             </form>
         </div>
     </main>
+@endsection
+
+@section('scripts')
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 @endsection

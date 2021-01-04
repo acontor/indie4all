@@ -11,10 +11,11 @@
             <p class="mb-5">¡Ésta es una oportunidad única!. Únete a nuestra comunidad y empieza a vender tus juegos,
                 realiza tus anuncios importantes o conecta con tu público. Si estás pensando en lanzar un juego, aquí
                 tendrás la oportunidad de crear una campaña de financiación para hacerlo realidad.</p>
-            {{ Auth::user()->cm }}
-            @if (Auth::user() && !Auth::user()->cm && !Auth::user()->master && Auth::user()->reportes == 0 && !Auth::user()->ban)
+            @if (Auth::user() && !Auth::user()->cm && !Auth::user()->master && Auth::user()->reportes == 0 && !Auth::user()->ban && !Auth::user()->solicitud)
                 <p>Rellena el siguiente formulario y te responderemos en 24/48 horas.</p>
-                <a class="btn btn-dark" href="/desarrolladoras/solicitud">Realizar solicitud</a>
+                <a class="btn btn-dark" href="/solicitud/desarrolladora">Realizar solicitud</a>
+            @elseif(Auth::user()->solicitud)
+                <p><b>¡Tu solicitud se está procesando!</b></p>
             @else
                 <small>Para realizar una solicitud debes cumplir las siguientes condiciones:
                     <ul class="ml-5 mt-3 list-unstyled">
@@ -29,4 +30,19 @@
             <p class="mt-5">¡Te esperamos con los brazos abiertos!</p>
         </div>
     </main>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/script.js') }}"></script>
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
+
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
+
+        </script>
+    @endif
 @endsection

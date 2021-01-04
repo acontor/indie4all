@@ -35,7 +35,7 @@ class DesarrolladorasController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra la vista para realizar una solicitud de tipo Desarrolladora.
      *
      * @return \Illuminate\Http\Response
      */
@@ -45,7 +45,7 @@ class DesarrolladorasController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Crear una solicitud de tipo Desarrolladora.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -53,14 +53,14 @@ class DesarrolladorasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required',
-            'email' => 'required',
-            'direccion' => 'required',
-            'telefono' => 'required',
-            'url' => 'required',
+            'nombre' => ['required', 'unique:solicituds', 'unique:desarrolladoras', 'max:255'],
+            'email' => ['required', 'max:255'],
+            'direccion' => ['max:255'],
+            'telefono' => ['max:12', 'nullable', 'numeric'],
+            'url' => ['max:255', 'nullable', 'url'],
         ]);
 
-        Solicitud::create([
+        $solicitud = Solicitud::create([
             'nombre' => $request->nombre,
             'email' => $request->email,
             'direccion' => $request->direccion,
@@ -71,7 +71,13 @@ class DesarrolladorasController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return redirect('/desarrolladoras');
+        if ($solicitud->exists) {
+            session()->flash('success', 'Será procesada en un plazo de 24/48 horas.');
+        } else {
+            session()->flash('error', 'Su solicitud ha fallado. En caso de que sigua fallando, contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/desarrolladora');
     }
 
     /**

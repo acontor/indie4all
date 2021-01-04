@@ -59,8 +59,8 @@
     </div>
 @endsection
 @section("scripts")
-    <script src="{{ asset('js/datatable.js') }}"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/chart.min.js') }}"></script>
     <script>
         $(function() {

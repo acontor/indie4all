@@ -154,7 +154,7 @@
 @endsection
 @section("scripts")
     <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {

@@ -36,7 +36,7 @@
     </main>
 @endsection
 @section("scripts")
-    <script src="{{ asset('js/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/datatable.js') }}"></script>
     <script type="text/javascript">
         $(function() {
             $("table").dataTable();

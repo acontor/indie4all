@@ -16,7 +16,7 @@ class CheckSolicitudDesarrolladora
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::user()->cm || !Auth::user()->master || Auth::user()->reportes == 0 || !Auth::user()->ban) {
+        if (Auth::user()->cm || Auth::user()->master || Auth::user()->ban || Auth::user()->reportes > 0 || Auth::user()->solicitud) {
             return redirect('home');
         }
 
