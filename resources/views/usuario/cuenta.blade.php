@@ -1,4 +1,9 @@
 @extends("layouts.usuario.base")
+
+@section('styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+
 @section("content")
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">

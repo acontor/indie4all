@@ -1,8 +1,8 @@
 @extends("layouts.admin.base")
 
 @section('styles')
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable/datatable.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -92,5 +92,4 @@
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
-    <script src="{{ asset('js/admin.js') }}"></script>
 @endsection

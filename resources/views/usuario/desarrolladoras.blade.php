@@ -1,8 +1,5 @@
 @extends("layouts.usuario.base")
-@section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-@endsection
+
 @section('content')
     <main class="p-3 pb-5">
         <div class="container box mt-4">
@@ -101,8 +98,9 @@
         </div>
     </main>
 @endsection
+
 @section('scripts')
-    <script src="{{ asset('js/paginga.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
     <script>
         $(function() {
             $(".noticias").paginga();

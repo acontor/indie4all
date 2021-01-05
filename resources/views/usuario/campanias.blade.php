@@ -1,7 +1,7 @@
 @extends("layouts.usuario.base")
 
 @section("styles")
-    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable/datatable.css') }}" rel="stylesheet">
 @endsection
 
 @section("content")

@@ -1,7 +1,7 @@
 "use strict"
 
 /**
- * NOTIFIACIONES
+ * NOTIFICACIONES
  */
 
 function notificacionEstado(estado, mensaje) {

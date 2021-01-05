@@ -1,10 +1,5 @@
 @extends("layouts.usuario.base")
 
-@section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-@endsection
-
 @section("content")
 
 
@@ -292,7 +287,7 @@
 
 @endsection
 @section("scripts")
-    <script src="{{ asset('js/paginga.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {

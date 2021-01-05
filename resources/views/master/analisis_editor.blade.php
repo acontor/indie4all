@@ -1,4 +1,5 @@
 @extends("layouts.master.base")
+
 @section("content")
     <div class="container">
         <div class="row">
@@ -49,6 +50,7 @@
         </div>
     </div>
 @endsection
+
 @section("scripts")
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>

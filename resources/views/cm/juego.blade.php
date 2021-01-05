@@ -1,4 +1,5 @@
 @extends("layouts.cm.base")
+
 @section('styles')
     <style>
         input[type="file"] {
@@ -13,6 +14,7 @@
         }
     </style>
 @endsection
+
 @section("content")
     <div class="container">
         @if (isset($juego))
@@ -194,6 +196,7 @@
         </div>
     </div>
 @endsection
+
 @section("scripts")
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>

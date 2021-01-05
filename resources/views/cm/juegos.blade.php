@@ -1,7 +1,5 @@
 @extends("layouts.cm.base")
-@section("styles")
-    <link href="{{ asset('css/cm.css') }}" rel="stylesheet">
-@endsection
+
 @section("content")
     <div class="container">
         <div class="row">
@@ -47,6 +45,7 @@
         </div>
     </div>
 @endsection
+
 @section("scripts")
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>

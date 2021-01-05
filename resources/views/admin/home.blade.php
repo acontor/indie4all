@@ -1,7 +1,9 @@
 @extends("layouts.admin.base")
+
 @section("styles")
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
 @endsection
+
 @section("content")
     <div class="container">
         <div class="box-header">
@@ -66,9 +68,10 @@
         </div>
     </div>
 @endsection
+
 @section("scripts")
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('js/chart.min.js') }}"></script>
+    <script src="{{ asset('js/chart/chart.min.js') }}"></script>
     <script>
         $(function() {
 

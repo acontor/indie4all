@@ -1,4 +1,5 @@
 @extends("layouts.master.base")
+
 @section("content")
     <div class="container">
         <div class="row">

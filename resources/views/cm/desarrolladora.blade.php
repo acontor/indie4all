@@ -1,8 +1,9 @@
 @extends("layouts.cm.base")
+
 @section('styles')
 
 <style>
-    
+
     input[type="file"] {
     display: none;
 }
@@ -13,9 +14,10 @@
     cursor: pointer;
 }
     </style>
-    
-    
+
+
 @endsection
+
 @section("content")
     <div class="container">
         <div class="row">
@@ -23,7 +25,7 @@
                 <div class="box-header">
                     <h1 class="d-inline-block">Desarrolladora {{ $desarrolladora->nombre }}</h1>
                 </div>
-                <div class="box">                                    
+                <div class="box">
                     <form method="post" action="{{ route('cm.desarrolladora.update',$desarrolladora->id) }} "enctype="multipart/form-data">
                         @method('PATCH')
                         @csrf
@@ -61,14 +63,15 @@
                             </textarea>
                         </div>
                         <button type="submit" class="btn btn-success mb-3">Editar</button>
-                    </form>                    
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
 @section("scripts")
-<script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
         $(function() {
             CKEDITOR.replace("contenido", {
@@ -108,7 +111,7 @@
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     $('#blah').attr('src', e.target.result);
-                    $('#blah').css('display','block'); 
+                    $('#blah').css('display','block');
                     $('#btn-logo').removeClass("btn-outline-dark");
                     $('#btn-logo').addClass('btn-primary')
                 }

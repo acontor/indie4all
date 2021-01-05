@@ -61,10 +61,9 @@
         </div>
     </main>
 @endsection
+
 @section("scripts")
-    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('js/paginga.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
     <script>
         $(function() {
             $(".noticias").paginga();

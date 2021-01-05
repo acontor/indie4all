@@ -1,7 +1,9 @@
 @extends("layouts.usuario.base")
+
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/simple-calendar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/calendar/simple-calendar.css') }}">
 @endsection
+
 @section("content")
     <main class="p-3 pb-5">
         <div class="container box mt-4">
@@ -30,8 +32,9 @@
         </div>
     </main>
 @endsection
+
 @section("scripts")
-    <script src="{{ asset('js/jquery.simple-calendar.min.js') }}"></script>
+    <script src="{{ asset('js/calendar/jquery.simple-calendar.min.js') }}"></script>
     <script>
         $(document).ready(function () {
             let juegos = {!! json_encode($juegos) !!};

@@ -1,5 +1,5 @@
 @extends("layouts.usuario.base")
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
+
 @section('content')
     <main class="p-4">
         <!-- HEADER -->
@@ -136,8 +136,9 @@
         </div>
     </main>
 @endsection
+
 @section('scripts')
-<script src="{{ asset('js/paginga.jquery.min.js') }}"></script>
+<script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
 <script src="http://momentjs.com/downloads/moment.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
