@@ -1,41 +1,8 @@
 @extends("layouts.usuario.base")
 
-
 @section("content")
 
-<style>
-    .container {
-        position: relative;
-    }
 
-    .hola {
-        width: 100%;
-        height: 100% !important;
-        background-color: white !important;
-        position: absolute;
-        top: 0%;
-        margin: 0 !important;
-        z-index: 1030;
-        left: -10000px;
-        transition: left .5s;
-        overflow: auto;
-    }
-
-    .items > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-        padding: 40px;
-    }
-
-    .general > div, .sorteos > div, .encuestas > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-    }
-
-    /* MEDIA MOBILE*/
-    small {
-        font-size: 10px;
-    }
-
-</style>
 
 
     <main class="p-3 pb-5">
@@ -58,7 +25,7 @@
 
 
 
-            <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3 px-md-5">
+            <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
                 <div class="navbar-nav float-right-sm">
                     <div class="d-flex">
                         @auth
@@ -95,7 +62,6 @@
                             @endif
                         @endauth
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
-                        <a class="btn btn-dark web ml-2" href="{{ $desarrolladora->url }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
                         @auth
                             @if(Auth::user() && Auth::user()->cm()->count() != 0 && Auth::user()->cm->desarrolladora_id != $desarrolladora->id)
                                 <a class="btn btn-danger ml-2"><i class="fas fa-exclamation-triangle mt-1" id='reporteDesarrolladora'></i></a>
@@ -107,12 +73,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar">
-                    <hr class="mt-4 mb-3">
                     <ul class="navbar-nav ml-auto submenu-items">
                         <li class="nav-item"><a class="nav-link" id="general" href="">General</a></li>
                         <li class="nav-item"><a class="nav-link" id="noticias" href="">Noticias</a></li>
                         <li class="nav-item"><a class="nav-link" id="sorteos" href="">Sorteos</a></li>
                         <li class="nav-item"><a class="nav-link" id="encuestas" href="">Encuestas</a></li>
+                        <li class="nav-item"><a class="nav-link" id="contacto" href="">Contacto</a></li>
                     </ul>
                 </div>
             </nav>
@@ -120,20 +86,18 @@
 
 
             <div class="row">
-                <div class="col-md-9 mt-4">
+                <div class="col-md-8 mt-4">
                     <div id="contenido">
-                        <div class="general p-1">
-                            <div class="shadow p-4 p-md-5">
-                                {!! $desarrolladora->contenido !!}
-                            </div>
+                        <div class="general">
+                            {!! $desarrolladora->contenido !!}
                         </div>
                         <div class="noticias d-none">
                             @if ($desarrolladora->posts->count() != 0)
                                 <div class="items">
                                     @foreach ($desarrolladora->posts as $post)
-                                        <div class="shadow mb-4">
+                                        <div>
                                             <h4>{{ $post->titulo }}</h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}...</p>
+                                            <p>{!! $post->contenido !!}</p>
                                             <small>Comentarios: {{ $post->mensajes->count() }}</small>
                                             <br>
                                             <input type="hidden" name="id" value="{{ $post->id }}" />
@@ -153,103 +117,111 @@
                             @endif
                         </div>
                         <div class="sorteos d-none">
-                            <div class="shadow p-4 p-md-5">
-                                <h3>Sorteos</h3>
-                                <div class="row">
-                                    @auth
-                                        @foreach ($desarrolladora->sorteos as $sorteo)
-                                            <div class="col-12 col-md-6">
-                                                <h4>{{ $sorteo->titulo }}</h4>
-                                                <p>{{ $sorteo->descripcion }}</p>
-                                                @isset($sorteo->user_id)
-                                                    El sorteo ha finalizado.
-                                                    Ganador: {{$sorteo->ganador->username}}
+                            <h3>Sorteos</h3>
+                            <div class="row">
+                                @auth
+                                    @foreach ($desarrolladora->sorteos as $sorteo)
+                                        <div class="col-12 col-md-6">
+                                            <h4>{{ $sorteo->titulo }}</h4>
+                                            <p>{{ $sorteo->descripcion }}</p>
+                                            @isset($sorteo->user_id)
+                                                El sorteo ha finalizado.
+                                                Ganador: {{$sorteo->ganador->username}}
+                                            @else
+                                                <input type="hidden" name="id" value="{{ $sorteo->id }}">
+                                                @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
+                                                    Eres CM de ésta desarrolladora
+                                                @elseif(Auth::user()->ban)
+                                                    Tu cuenta está baneada
+                                                @elseif(Auth::user()->email_verified_at == null)
+                                                    Tu cuenta no está verificada
+                                                @elseif(Auth::user()->sorteos->where('id', $sorteo->id)->count() != 0)
+                                                    Ya has participado
                                                 @else
-                                                    <input type="hidden" name="id" value="{{ $sorteo->id }}">
-                                                    @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
-                                                        Eres CM de ésta desarrolladora
-                                                    @elseif(Auth::user()->ban)
-                                                        Tu cuenta está baneada
-                                                    @elseif(Auth::user()->email_verified_at == null)
-                                                        Tu cuenta no está verificada
-                                                    @elseif(Auth::user()->sorteos->where('id', $sorteo->id)->count() != 0)
-                                                        Ya has participado
-                                                    @else
-                                                        <div class="participar-sorteo-div">
-                                                            <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
-                                                        </div>
-                                                    @endif
-                                                @endisset
-                                                <p class="mt-3">{{ $sorteo->fecha_fin }}</p>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <div class="col-12">Tienes que registrarte para participar en los sorteos.</div>
-                                    @endauth
-                                </div>
+                                                    <div class="participar-sorteo-div">
+                                                        <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
+                                                    </div>
+                                                @endif
+                                            @endisset
+                                            <p class="mt-3">{{ $sorteo->fecha_fin }}</p>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="col-12">Tienes que registrarte para participar en los sorteos.</div>
+                                @endauth
                             </div>
                         </div>
                         <div class="encuestas d-none">
-                            <div class="shadow p-4 p-md-5">
-                                <h3>Encuestas</h3>
-                                    <div class="row">
-                                        @auth
-                                            @foreach ($desarrolladora->encuestas as $encuesta)
-                                                <div class="col-12 col-md-6">
-                                                    <h4>{{ $encuesta->pregunta }}</h4>
-                                                    @if (Auth::user()->opciones->where('encuesta_id', $encuesta->id)->count() > 0 || Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
+                            <h3>Encuestas</h3>
+                                <div class="row">
+                                    @auth
+                                        @foreach ($desarrolladora->encuestas as $encuesta)
+                                            <div class="col-12 col-md-6">
+                                                <h4>{{ $encuesta->pregunta }}</h4>
+                                                @if (Auth::user()->opciones->where('encuesta_id', $encuesta->id)->count() > 0 || Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
+                                                    @php
+                                                        $total = 0
+                                                    @endphp
+                                                    @foreach ($encuesta->opciones as $opcion)
                                                         @php
-                                                            $total = 0
+                                                            $total+=$opcion->participantes->count()
                                                         @endphp
-                                                        @foreach ($encuesta->opciones as $opcion)
-                                                            @php
-                                                                $total+=$opcion->participantes->count()
-                                                            @endphp
-                                                        @endforeach
-                                                        @if($total == 0)
-                                                            Aún no ha participaciones
-                                                        @else
-                                                            @foreach ($encuesta->opciones as $opcion)
-
-                                                                @if($opcion->participantes->where('id',Auth::id())->count() > 0)
-                                                                    <span class="bg-primary">{{$opcion->descripcion}}</span>
-                                                                @else
-                                                                    {{$opcion->descripcion}}
-                                                                @endif
-                                                                {{($opcion->participantes->count() / $total) * 100}} %
-                                                                <br>
-                                                            @endforeach
-                                                        @endif
+                                                    @endforeach
+                                                    @if($total == 0)
+                                                        Aún no ha participaciones
                                                     @else
-                                                        <div class="opciones">
-                                                            @foreach ($encuesta->opciones as $opcion)
-                                                                <label for="respuesta">{{ $opcion->descripcion }}</label>
-                                                                <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}">
-                                                            @endforeach
-                                                        </div>
-                                                        <input type="hidden" name="id" value="{{ $encuesta->id }}">
-                                                        @if(Auth::user()->ban)
-                                                            Tu cuenta está baneada
-                                                        @elseif(Auth::user()->email_verified_at == null)
-                                                            Tu cuenta no está verificada
-                                                        @else
-                                                            <div class="participar-encuesta-div">
-                                                                <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
-                                                            </div>
-                                                        @endif
+                                                        @foreach ($encuesta->opciones as $opcion)
+
+                                                            @if($opcion->participantes->where('id',Auth::id())->count() > 0)
+                                                                <span class="bg-primary">{{$opcion->descripcion}}</span>
+                                                            @else
+                                                                {{$opcion->descripcion}}
+                                                            @endif
+                                                            {{($opcion->participantes->count() / $total) * 100}} %
+                                                            <br>
+                                                        @endforeach
                                                     @endif
-                                                    <p>{{ $encuesta->fecha_fin }}</p>
-                                                </div>
-                                            @endforeach
-                                    @else
-                                        <div class="col-12">Tienes que registrarte para participar en las encuestas.</div>
-                                    @endauth
-                                </div>
+                                                @else
+                                                    <div class="opciones">
+                                                        @foreach ($encuesta->opciones as $opcion)
+                                                            <label for="respuesta">{{ $opcion->descripcion }}</label>
+                                                            <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}">
+                                                        @endforeach
+                                                    </div>
+                                                    <input type="hidden" name="id" value="{{ $encuesta->id }}">
+                                                    @if(Auth::user()->ban)
+                                                        Tu cuenta está baneada
+                                                    @elseif(Auth::user()->email_verified_at == null)
+                                                        Tu cuenta no está verificada
+                                                    @else
+                                                        <div class="participar-encuesta-div">
+                                                            <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                                <p>{{ $encuesta->fecha_fin }}</p>
+                                            </div>
+                                        @endforeach
+                                @else
+                                    <div class="col-12">Tienes que registrarte para participar en las encuestas.</div>
+                                @endauth
                             </div>
+                        </div>
+                        <div class="contacto d-none">
+                            <h3>Contacto</h3>
+                            <ul class="lead">
+                                <li><a href="http://{{ $desarrolladora->url }}"
+                                        target="blank">{{ $desarrolladora->url }}</a>
+                                </li>
+                                <li><a href="mailto:{{ $desarrolladora->email }}"
+                                        target="blank">{{ $desarrolladora->email }}</a></li>
+                                <li>{{ $desarrolladora->direccion }}</li>
+                                <li>{{ $desarrolladora->telefono }}</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mt-4 pr-3 pr-md-4">
+                <div class="col-md-3 offset-md-1 mt-4">
                     <h4>Juegos</h4>
                     <hr>
                     <div class="owl-carousel 1">
@@ -275,13 +247,13 @@
                             @endempty
                         @endforeach
                     </div>
-                    @if($desarrolladora->juegos()->has('campania')->count() > 0)
-                        <h4 class="mt-5">Campañas</h4>
-                        <hr>
-                        <div class="owl-carousel 2">
-                            @foreach ($desarrolladora->juegos()->has('campania')->get() as $juego)
+                    <h4 class="mt-5">Campañas</h4>
+                    <hr>
+                    <div class="owl-carousel 2">
+                        @foreach ($desarrolladora->juegos as $juego)
+                            @isset($juego->campania)
                                 <div class="item">
-                                    <a href="{{ route('usuario.campania.show', $juego->campania->id) }}">
+                                    <a href="{{ route('usuario.juego.show', $juego->id) }}">
                                         <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
                                             alt="{{ $juego->nombre }}">
                                         <div class="carousel-caption" style="display: none;">
@@ -297,15 +269,14 @@
                                         </div>
                                     </a>
                                 </div>
-                            @endforeach
-                        </div>
-                    @endif
+                            @endisset
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
 
 
-            <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
 
 
         </div>
@@ -320,7 +291,6 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
-            $('img').addClass('img-fluid')
             $(".noticias").paginga();
 
             var owl = $('.1');
@@ -399,8 +369,7 @@
                         id: $(this).prev().val(),
                     },
                     success: function(data) {
-                        let html = "<button class='btn btn-light volver'>Volver</button>";
-                        html += `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
+                        let html = `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
                         if(data.mensajes.length > 0) {
                             data.mensajes.forEach(element => {
                                 html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><p>${element.contenido}</p></div>`;
@@ -409,10 +378,7 @@
                             html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
                         }
                         html += '</div></div>';
-                        window.scrollTo({top: 100, behavior: 'smooth'});
-                        $('.hola').html(html);
-                        $('.hola').css('left', 0);
-                        /* Swal.fire({
+                        Swal.fire({
                             title: `<h4><strong>${data.post.titulo}</strong></h4>`,
                             html: html,
                             showCloseButton: false,
@@ -425,10 +391,7 @@
                             hideClass: {
                                 popup: 'animate__animated animate__zoomOutDown'
                             }
-                        }); */
-                        $('.volver').on('click', function(e) {
-                            $('.hola').css('left', -10000);
-                        })
+                        });
                         CKEDITOR.replace("mensaje", {
                             customConfig: "{{ asset('js/ckeditor/config.js') }}"
                         });

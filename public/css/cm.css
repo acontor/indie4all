@@ -1,3 +1,15 @@
+main {
+    width: calc(100% - 85px);
+    position: relative;
+    left: 85px;
+    top: 60px;
+    height: 96%;
+    display: flex;
+    justify-content: center;
+}
+
+
+
 .mt-5 {
     margin-top: 5rem;
 }

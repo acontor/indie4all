@@ -47,25 +47,19 @@ $(function () {
                             data.forEach(element => {
                                 if(element.tipo == "Juego") {
                                     if(html.indexOf("<h4 class='mt-2 mb-2'>Juegos</h4>") == -1) {
-                                        html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="{{ route('usuario.juegos.all') }}">Ver todos</a></small><div class="owl-carousel owl-theme 1">`;
+                                        html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="/juegos/lista">Ver todos</a></small><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    let url = '{{ route("usuario.juego.show", ":id") }}';
-                                    url = url.replace(':id', element.id);
-                                    html += `<div class="item"><a href="${url}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    html += `<div class="item"><a href="/juego/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Desarrolladora") {
                                     if(html.indexOf("<h4 class='mt-2 mb-2'>Desarrolladoras</h4>") == -1) {
-                                        html += `</div><h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="{{ route('usuario.desarrolladoras.all') }}">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
+                                        html += `</div><h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="/desarrolladoras/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    let url = '{{ route("usuario.desarrolladora.show", ":id") }}';
-                                    url = url.replace(':id', element.id);
-                                    html += `<div class="item"><a href="${url}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    html += `<div class="item"><a href="/desarrolladora/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Master") {
                                     if(html.indexOf("<h4 class='mt-2 mb-2'>Masters</h4>") == -1) {
-                                        html += `</div><h4 class='mt-2 mb-2'>Masters</h4><small><a href="{{ route('usuario.masters.all') }}">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
+                                        html += `</div><h4 class='mt-2 mb-2'>Masters</h4><small><a href="/masters/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    let url = '{{ route("usuario.master.show", ":id") }}';
-                                    url = url.replace(':id', element.id);
-                                    html += `<div class="item"><a href="${url}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    html += `<div class="item"><a href="/master/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 }
                             });
                             html += '</div>';
@@ -88,10 +82,10 @@ $(function () {
                                     }
                                 }
                             });
-                            $(".item").hover(function() {
+                            $('.item').on('mouseenter', function() {
                                 $(this).children('a').children('img').css('filter', 'brightness(0.2)');
-                                $(this).children('a').children('div').fadeToggle(200, "linear");
-                            }, function() {
+                                $(this).children('a').children('div').fadeToggle(0, "linear");
+                            }).on('mouseleave', function() {
                                 $(this).children('a').children('img').css('filter', 'brightness(1)');
                                 $(this).children('a').children('div').fadeToggle(0, "linear");
                             });
@@ -180,5 +174,7 @@ $(function () {
         let item = $(this).attr("id");
         $("#contenido").children("div").addClass("d-none");
         $(`.${item}`).removeClass("d-none");
+        $('.navbar-toggler').addClass('collapsed');
+        $('.navbar-collapse').removeClass('show');
     });
 });

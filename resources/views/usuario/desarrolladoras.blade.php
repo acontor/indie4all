@@ -4,7 +4,7 @@
     <main class="p-3 pb-5">
         <div class="container box mt-4">
             <div class="row mb-4">
-                <h1 class="ml-3">Desarrolladoras para tí</h1>
+                <h1 class="ml-3">Desarrolladoras para tí <a href="/desarrolladoras/lista" class="btn btn-primary">Ver todos</a></h1>
             </div>
 
             <div class="owl-carousel 1">

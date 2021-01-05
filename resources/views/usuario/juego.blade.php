@@ -183,8 +183,7 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
-
-            let juego = {!! json_encode($juego) !!};
+            let juego = {!! $juego !!};
 
             $(".compartir").click(function() {
                 Swal.fire({

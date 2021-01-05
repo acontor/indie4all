@@ -18,7 +18,7 @@
                             <li class="nav-item"><a class="nav-link" id="solicitud" href="">Solicitud</a></li>
                         @endif
                         <li class="nav-item"><a class="nav-link" id="compras" href="">Compras</a></li>
-                        <li class="nav-item"><a class="nav-link" id="desarolladoras" href="">Desarrolladoras</a></li>
+                        <li class="nav-item"><a class="nav-link" id="desarrolladoras" href="">Desarrolladoras</a></li>
                         <li class="nav-item"><a class="nav-link" id="juegos" href="">Juegos</a></li>
                         <li class="nav-item"><a class="nav-link" id="campanias" href="">Campañas</a></li>
                         <li class="nav-item"><a class="nav-link" id="masters" href="">Masters</a></li>
@@ -99,7 +99,7 @@
                         <h5 class="mb-3">Logros</h5>
                         <div class="row">
                             @foreach ($logros as $logro)
-                                <div class="col-2">
+                                <div class="col-6 col-md-4">
                                     <h5 class="text-center @if (!$logro->usuarios->contains(Auth::id())) text-muted @else text-primary @endif"><i class="{{ $logro->icono }}"></i> {{ $logro->nombre }}</h5>
                                     <p class="@if (!$logro->usuarios->contains(Auth::id())) text-muted @else text-primary @endif">{{ $logro->descripcion }}</p>
                                 </div>

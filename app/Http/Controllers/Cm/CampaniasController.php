@@ -68,10 +68,8 @@ class CampaniasController extends Controller
             'meta' => 'required',
             'fecha_fin' => 'required',
             'nombre' => 'required',
-            'sinopsis' => 'required',
             'imagen_portada' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=1024,height=512',
             'imagen_caratula' => 'required',
-            'sinopsis' => 'required',
             'fecha_lanzamiento' => 'required',
             'precio' => 'required',
             'genero_id' => 'required',
@@ -97,7 +95,6 @@ class CampaniasController extends Controller
             'nombre' => $request->nombre,
             'imagen_portada' => $fileNamePortada,
             'imagen_caratula' => $fileNameCaratula,
-            'sinopsis' => $request->sinopsis,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
@@ -109,6 +106,7 @@ class CampaniasController extends Controller
             'resultado' => $request->imagen_portada,
             'fecha_fin' => $request->fecha_fin,
             'juego_id' => $juego->id,
+            'aporte_minimo' => 1
         ]);
 
         return redirect('/cm/campanias')->with('success', '¡Campaña creada!');
