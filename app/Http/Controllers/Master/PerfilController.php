@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Master;
-use App\Models\User;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -28,8 +28,9 @@ class PerfilController extends Controller
      */
     public function index()
     {
-        $perfil = Master::find(User::find(Auth::id())->master->id);
-        return view('master.perfil', ['perfil' => $perfil]);
+        $perfil = Master::find(Auth::user()->master->id);
+        $analisis = Post::where('master_id', Auth::user()->master->id)->where('juego_id', '!=', null)->get();
+        return view('master.perfil', ['perfil' => $perfil, 'analisis' => $analisis]);
     }
 
     /**
@@ -40,7 +41,7 @@ class PerfilController extends Controller
      */
     public function update(Request $request)
     {
-        $master = Master::find(User::find(Auth::id())->master->id);
+        $master = Master::find(Auth::user()->master->id);
 
         $request->validate([
             'nombre' => $master->nombre !== $request->nombre ? ['required', 'unique:masters', 'max:255'] : ['required', 'max:255'],
@@ -49,7 +50,7 @@ class PerfilController extends Controller
             'imagen_logo' => ['mimes:png', 'dimensions:width=256,height=256'],
         ]);
 
-        if($master->nombre != $request->nombre) {
+        if ($master->nombre != $request->nombre) {
             rename(public_path('/images/masters/' . $master->nombre), public_path('/images/masters/' . $request->nombre));
         }
 
@@ -73,6 +74,16 @@ class PerfilController extends Controller
             'imagen_logo' => $imagenLogo,
         ]);
 
+        Post::where('master_id', Auth::user()->master->id)->where('juego_id', '!=', null)->update([
+            'destacado' => 0,
+        ]);
+
+        foreach ($request->juegos as $value) {
+            Post::where('master_id', Auth::user()->master->id)->where('juego_id', $value)->update([
+                'destacado' => 1,
+            ]);
+        }
+
         session()->flash('success', 'Perfil modificado.');
 
         return redirect('/master/perfil');
@@ -93,9 +104,9 @@ class PerfilController extends Controller
                 unlink($ruta);
             }
             $extension = $imagen->getClientOriginalExtension();
-            $imagen->move($ruta, $nombre . '.'.  $extension);
+            $imagen->move($ruta, $nombre . '.' .  $extension);
         }
 
-        return $nombre . '.'.  $extension;
+        return $nombre . '.' .  $extension;
     }
 }

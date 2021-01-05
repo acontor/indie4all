@@ -27,9 +27,9 @@ class Master extends Model
      */
 
     // Fans - N:M - Masters
-    public function usuarios()
+    public function seguidores()
     {
-        return $this->belongsToMany("App\Models\User");
+        return $this->belongsToMany("App\Models\User")->withPivot('created_at');
     }
 
     // user - 1:M - Masters

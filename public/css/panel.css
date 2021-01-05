@@ -123,16 +123,6 @@ body {
  * MAIN CONTENT
  */
 
-main {
-    width: calc(100% - 160px);
-    position: relative;
-    left: 150px;
-    top: 100px;
-    height: 96%;
-    display: flex;
-    justify-content: center;
-}
-
 .box {
     background-color: #fff;
     position: relative;
@@ -242,7 +232,7 @@ main {
 .btn-warning:focus {
     outline: 0px !important;
     -webkit-appearance: none;
-    background-color: rgb(227,166,51, 0.9) !important;
+    background-color: rgb(227, 166, 51, 0.9) !important;
     border: 0;
     box-shadow: 0 0 0 0 !important;
     color: #FFFFFF;
@@ -250,6 +240,45 @@ main {
 
 .round {
     border-radius: 50% !important;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+/**
+ * TABLES
+ */
+
+thead {
+    background-color: #E34E33;
+    color: #FFF;
+}
+
+.page-item.active .page-link {
+    background-color: #E34E33 !important;
+    border: 1px solid black;
+    color: white !important;
+}
+
+.page-link {
+    color: black !important;
+}
+
+.page-link:hover {
+    background: #ef58003f !important;
+    color: black !important;
+}
+
+.page-link:focus {
+    border: 1px solid black !important;
 }
 
 /**

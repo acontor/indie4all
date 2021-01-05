@@ -102,7 +102,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // Usuario - N:M - Masters
     public function masters()
     {
-        return $this->belongsToMany("App\Models\Master")->withPivot('notificacion');
+        return $this->belongsToMany("App\Models\Master")->withPivot('notificacion')->withTimestamps();
     }
 
     // Usuario - N:M - Juego

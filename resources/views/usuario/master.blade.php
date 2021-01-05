@@ -10,7 +10,7 @@
                 @if (!$master->imagen_portada)
                     <img class="img-fluid h-auto" src="{{ url('/images/default.png') }}" style="filter: brightness(0.2)">
                 @else
-                    <img class="img-fluid h-auto" src="{{ url('/images/masters/portadas/' . $master->imagen_portada) }}">
+                    <img class="img-fluid h-auto" src="{{ url('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}">
                 @endif
                 <div class="carousel-caption ">
                     <h1><strong>{{ $master->nombre }}</strong></h1>

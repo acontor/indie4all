@@ -15,7 +15,7 @@
                                 alt="{{ $master->nombre }}">
                             <div class="carousel-caption mb-5" style="display: none;">
                                 <h6><strong>{{ $master->nombre }}</strong></h6>
-                                <small class="float-left text-left">Seguidores: {{ $master->usuarios->count() }}</small>
+                                <small class="float-left text-left">Seguidores: {{ $master->seguidores->count() }}</small>
                             </div>
                         </a>
                     </div>
