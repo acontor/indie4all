@@ -166,7 +166,7 @@ Route::get('/master', [App\Http\Controllers\Master\HomeController::class, 'index
 
 // Perfil
 Route::get('/master/perfil', [App\Http\Controllers\Master\PerfilController::class, 'index'])->name('master.perfil.index');
-Route::patch('/master/perfil/{id}/update', [App\Http\Controllers\Master\PerfilController::class, 'update'])->name('master.perfil.update');
+Route::patch('/master/perfil/update', [App\Http\Controllers\Master\PerfilController::class, 'update'])->name('master.perfil.update');
 
 // Quitar id al update y encontrarlo en el controller
 
@@ -195,8 +195,8 @@ Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'
 Route::get('/busqueda', [App\Http\Controllers\Usuario\HomeController::class, 'busqueda'])->name('usuario.busqueda');
 Route::get('/acerca', [App\Http\Controllers\Usuario\HomeController::class, 'acerca'])->name('usuario.acerca');
 Route::get('/faq', [App\Http\Controllers\Usuario\HomeController::class, 'faq'])->name('usuario.faq');
-Route::get('/desarrolladora', [App\Http\Controllers\Usuario\HomeController::class, 'desarrolladora'])->name('usuario.desarrolladora');
-Route::get('/master/nuevo', [App\Http\Controllers\Usuario\HomeController::class, 'master'])->name('usuario.master');
+Route::get('/desarrolladora/solicitud', [App\Http\Controllers\Usuario\HomeController::class, 'desarrolladora'])->name('usuario.desarrolladora');
+Route::get('/master/solicitud', [App\Http\Controllers\Usuario\HomeController::class, 'master'])->name('usuario.master');
 
 
 // Mi cuenta
@@ -216,10 +216,8 @@ Route::post('/desarrolladoras/sorteo', [App\Http\Controllers\Usuario\Desarrollad
 Route::post('/desarrolladoras/encuesta', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'encuesta'])->name('usuario.desarrolladora.encuesta')->middleware('auth');
 
 // Solicitudes
-Route::get('/solicitud/desarrolladora', [App\Http\Controllers\Usuario\SolicitudesController::class, 'createDesarrolladora'])->name('usuario.desarrolladora.create')->middleware('auth', 'solicitud.desarrolladora', 'verified');
-Route::post('/solicitud/desarrolladora/store', [App\Http\Controllers\Usuario\SolicitudesController::class, 'storeDesarrolladora'])->name('usuario.desarrolladora.store')->middleware('auth');
-Route::get('/solicitud/master', [App\Http\Controllers\Usuario\SolicitudesController::class, 'createMaster'])->name('usuario.master.create')->middleware('auth', 'verified');
-Route::post('/solicitud/master/store', [App\Http\Controllers\Usuario\SolicitudesController::class, 'storeMaster'])->name('usuario.master.store')->middleware('auth');
+Route::get('/solicitud/{tipo}', [App\Http\Controllers\Usuario\SolicitudesController::class, 'create'])->name('usuario.solicitud.create')->middleware('auth', 'solicitud', 'verified');
+Route::post('/solicitud/store', [App\Http\Controllers\Usuario\SolicitudesController::class, 'store'])->name('usuario.solicitud.store')->middleware('auth', 'solicitud', 'verified');
 
 // Juegos
 Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index');

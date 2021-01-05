@@ -21,7 +21,7 @@ class CreateSolicitudesTable extends Migration
             $table->string('direccion')->nullable();
             $table->string('telefono')->nullable();
             $table->string('url')->nullable();
-            $table->longText('comentario')->nullable();
+            $table->longText('comentario');
             $table->timestamps();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');

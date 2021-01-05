@@ -13,15 +13,15 @@
                 tendrás la oportunidad de crear una campaña de financiación para hacerlo realidad.</p>
             @if (Auth::user() && !Auth::user()->cm && !Auth::user()->master && Auth::user()->reportes == 0 && !Auth::user()->ban && !Auth::user()->solicitud && Auth::user()->hasVerifiedEmail())
                 <p>Rellena el siguiente formulario y te responderemos en 24/48 horas.</p>
-                <a class="btn btn-dark" href="/solicitud/desarrolladora">Realizar solicitud</a>
-            @elseif(Auth::user()->solicitud)
+                <a class="btn btn-dark" href="{{route('usuario.solicitud.create', 'Desarrolladora')}}">Realizar solicitud</a>
+            @elseif(Auth::user()->solicitud && Auth::user()->solicitud->tipo == "Desarrolladora")
                 <p><b>¡Tu solicitud se está procesando!</b></p>
             @else
                 <small>Para realizar una solicitud debes cumplir las siguientes condiciones:
                     <ul class="ml-5 mt-3 list-unstyled">
                         <li>Estar registrado en nuestra plataforma</li>
                         <li>No pertenecer a otra desarrolladora</li>
-                        <li>No formar parte del exclusivo círculo de Masters</li>
+                        <li>No haber solicitado o formar parte del exclusivo círculo de Masters</li>
                         <li>No haber recibido baneos en el tiempo que lleves formando parte de nuestra familia</li>
                         <li>Verificar tu cuenta</li>
                     </ul>

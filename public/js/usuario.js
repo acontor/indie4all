@@ -161,11 +161,6 @@ $(function () {
     });
 
     /**
-     * POPOVER
-     */
-    $(".pop-info").popover();
-
-    /**
      * FORMS
      */
 

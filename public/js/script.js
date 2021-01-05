@@ -1,6 +1,11 @@
 "use strict"
 
 /**
+ * POPOVER
+ */
+$(".pop-info").popover();
+
+/**
  * NOTIFICACIONES
  */
 
@@ -21,4 +26,22 @@ function notificacionEstado(estado, mensaje) {
         backdrop: false,
         width: "auto",
     });
+}
+
+/**
+ * INPUT IMAGES
+ */
+
+function readURL(imagen, input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            console.log(imagen)
+            $('#imagen-' + imagen).attr('src', e.target.result);
+            $('#imagen-' + imagen).css('display', 'block');
+            $('#btn-').removeClass("btn-outline-dark");
+            $('#btn-').addClass('btn-primary');
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
 }
