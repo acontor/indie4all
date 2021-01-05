@@ -138,7 +138,6 @@
 @endsection
 @section('scripts')
 <script src="{{ asset('js/paginga.jquery.min.js') }}"></script>
-<script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
 <script src="http://momentjs.com/downloads/moment.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js"></script>
 <script>
@@ -166,13 +165,6 @@
         $(".participar").click(function() {
             $("#precio").focus();
         })
-
-        $("#submenu").children('div').children('ul').children().children().click(function(e) {
-            e.preventDefault();
-            let item = $(this).attr("id");
-            $("#main").children("div").addClass("d-none");
-            $(`.${item}`).removeClass("d-none");
-        });
 
         $('#reporteCampania').click(function(){
             let campaniaId = {!! $campania->id !!}

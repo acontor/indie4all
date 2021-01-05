@@ -16,4 +16,14 @@ $(function () {
             $('.recaptcha-error').text('Debes realizar el captcha');
         }
     });
+
+    /**
+     * SUBMENU CLICK EVENT
+     */
+    $(".submenu-items").children("li").children("a").on("click", function(e) {
+        e.preventDefault();
+        let item = $(this).attr("id");
+        $("#contenido").children("div").addClass("d-none");
+        $(`.${item}`).removeClass("d-none");
+    });
 });

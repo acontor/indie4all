@@ -11,7 +11,7 @@
             <p class="mb-5">¡Ésta es una oportunidad única!. Únete a nuestra comunidad y empieza a vender tus juegos,
                 realiza tus anuncios importantes o conecta con tu público. Si estás pensando en lanzar un juego, aquí
                 tendrás la oportunidad de crear una campaña de financiación para hacerlo realidad.</p>
-            @if (Auth::user() && !Auth::user()->cm && !Auth::user()->master && Auth::user()->reportes == 0 && !Auth::user()->ban && !Auth::user()->solicitud)
+            @if (Auth::user() && !Auth::user()->cm && !Auth::user()->master && Auth::user()->reportes == 0 && !Auth::user()->ban && !Auth::user()->solicitud && Auth::user()->hasVerifiedEmail())
                 <p>Rellena el siguiente formulario y te responderemos en 24/48 horas.</p>
                 <a class="btn btn-dark" href="/solicitud/desarrolladora">Realizar solicitud</a>
             @elseif(Auth::user()->solicitud)
@@ -23,6 +23,7 @@
                         <li>No pertenecer a otra desarrolladora</li>
                         <li>No formar parte del exclusivo círculo de Masters</li>
                         <li>No haber recibido baneos en el tiempo que lleves formando parte de nuestra familia</li>
+                        <li>Verificar tu cuenta</li>
                     </ul>
                     Si tienes algún problema, contacta con soporte@indie4all.com
                 </small>

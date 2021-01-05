@@ -1,5 +1,9 @@
 @extends("layouts.usuario.base")
 
+@section("styles")
+    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+@endsection
+
 @section("content")
     <main class="py-4">
         <div class="container">
@@ -35,12 +39,8 @@
         </div>
     </main>
 @endsection
+
 @section("scripts")
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
-    <script type="text/javascript">
-        $(function() {
-            $("table").dataTable();
-        });
-
-    </script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
 @endsection

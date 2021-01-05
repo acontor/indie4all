@@ -36,6 +36,7 @@
         $(document).ready(function () {
             let juegos = {!! json_encode($juegos) !!};
             let events = [];
+
             juegos.forEach(element => {
                 events.push({
                     'startDate': element.fecha_lanzamiento,
@@ -43,6 +44,7 @@
                     'summary': element.nombre
                 })
             });
+
             $("#container").simpleCalendar({
                 months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 days: ['Domingo', 'Luneas', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],

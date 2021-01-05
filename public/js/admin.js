@@ -86,7 +86,7 @@ $(function () {
             }
             $('.numero-solicitudes').text($('.numero-solicitudes').text() - 1);
             if ($('.numero-solicitudes').text() > 0) {
-                $('.solicitudes-count').text($('.solicitudes-count').text() - 1);
+                $('#solicitudes-count').text($('#solicitudes-count').text() - 1);
             } else {
                 $('.solicitudes-li').remove();
             }

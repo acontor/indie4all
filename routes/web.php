@@ -214,8 +214,12 @@ Route::post('/desarrolladora/{id}/unfollow', [App\Http\Controllers\Usuario\Desar
 Route::post('/desarrolladora/{id}/{notificacion}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'notificacion'])->name('usuario.desarrolladora.notificacion')->middleware('auth');
 Route::post('/desarrolladoras/sorteo', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'sorteo'])->name('usuario.desarrolladora.sorteo')->middleware('auth');
 Route::post('/desarrolladoras/encuesta', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'encuesta'])->name('usuario.desarrolladora.encuesta')->middleware('auth');
-Route::get('/solicitud/desarrolladora', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'create'])->name('usuario.desarrolladora.create')->middleware('auth', 'solicitud.desarrolladora');
-Route::post('/solicitud/desarrolladora/store', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'store'])->name('usuario.desarrolladora.store')->middleware('auth');
+
+// Solicitudes
+Route::get('/solicitud/desarrolladora', [App\Http\Controllers\Usuario\SolicitudesController::class, 'createDesarrolladora'])->name('usuario.desarrolladora.create')->middleware('auth', 'solicitud.desarrolladora', 'verified');
+Route::post('/solicitud/desarrolladora/store', [App\Http\Controllers\Usuario\SolicitudesController::class, 'storeDesarrolladora'])->name('usuario.desarrolladora.store')->middleware('auth');
+Route::get('/solicitud/master', [App\Http\Controllers\Usuario\SolicitudesController::class, 'createMaster'])->name('usuario.master.create')->middleware('auth', 'verified');
+Route::post('/solicitud/master/store', [App\Http\Controllers\Usuario\SolicitudesController::class, 'storeMaster'])->name('usuario.master.store')->middleware('auth');
 
 // Juegos
 Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index');

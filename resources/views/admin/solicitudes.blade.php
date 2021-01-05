@@ -87,13 +87,10 @@
         </div>
     </div>
 @endsection
+
 @section('scripts')
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/admin.js') }}"></script>
-    <script>
-
-
-    </script>
 @endsection

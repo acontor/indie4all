@@ -1,77 +1,84 @@
 @extends("layouts.usuario.base")
 @section("content")
-    <main class="py-4">
-        <div class="container">
-            <div class="row box text-center menu mb-4">
-                <div class="col-4 col-md-2"><a id="preferencias" href="">Preferencias</a></div>
-                <div class="col-4 col-md-2"><a id="compras" href="">Compras</a></div>
-                @if ($usuario->solicitud)
-                    <div class="col-4 col-md-2"><a id="solicitud" href="">Solicitud</a></div>
-                @endif
-                <div class="col-4 col-md-2"><a id="desarrolladoras" href="">Desarrolladoras</a></div>
-                <div class="col-4 col-md-2"><a id="juegos" href="">Juegos</a></div>
-                <div class="col-4 col-md-2"><a id="masters" href="">Masters</a></div>
-                <div class="col-4 col-md-2"><a id="campanias" href="">Campañas</a></div>
-            </div>
-            <div id="main">
-                <div class="preferencias">
-                    <div class="box">
-                        <h2 class="mb-3">Mi cuenta</h2>
-                        @if($usuario->ban)
-                        <div class="alert alert-danger mb-3">
-                            <h5>Motivo del ban:</h5>
-                            <p>{{$usuario->motivo}}</p>
-                            <small>Puede recibir más información poniéndose en contacto con soporte@indie4all.com</small>
-                        </div>
+    <main class="p-3 pb-5">
+        <div class="container bg-light p-3 shadow-lg rounded mt-4">
+            <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
+                <button class="navbar-toggler ml-1" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar">
+                    <ul class="navbar-nav mx-auto submenu-items">
+                        <li class="nav-item"><a class="nav-link" id="preferencias" href="">Preferencias</a></li>
+                        @if ($usuario->solicitud)
+                            <li class="nav-item"><a class="nav-link" id="solicitud" href="">Solicitud</a></li>
                         @endif
-                        <form action="{{ route('usuario.cuenta.usuario') }}" method="post">
-                            @method("PATCH")
-                            @csrf
-                            <div class="row form-group">
-                                <div class="col-md-4">
-                                    <label for="nombre">Nombre:</label>
-                                    <input type="text" name="nombre" class="form-control" id="nombre" value="{{ $usuario->name }}">
-                                </div>
-                                <div class="col-md-4 mt-3 mt-md-0">
-                                    <label for="username">Nombre de usuario:</label>
-                                    <input type="text" name="username" class="form-control" id="username">
-                                </div>
-                                <div class="col-md-4 mt-3 mt-md-0">
-                                    <label for="email">Email:</label>
-                                    <input type="email" name="email" class="form-control" id="email" value="{{ $usuario->email }}">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-4 mt-3 mt-md-0">
-                                    <label for="password">Nueva contraseña:</label>
-                                    <input type="password" name="password" class="form-control" id="password">
-                                </div>
-                                <div class="col-md-4 mt-3 mt-md-0">
-                                    <label for="password1">Repetir contraseña:</label>
-                                    <input type="password" name="password1" class="form-control" id="password1">
-                                </div>
-                            </div>
-                            <div class="row form-group align-items-end">
-                                <div class="col-md-4">
-                                    <label for="verify">Contraseña actual:</label>
-                                    <input type="password" name="verify" class="form-control" id="verify">
-                                </div>
-                                <div class="col-md-4 mt-3">
-                                    <button type="submit" class="btn btn-success">Editar</button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    @if (session()->get("danger"))
-                                        <div class="alert alert-danger">
-                                            {{ session()->get("danger") }}
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </form>
+                        <li class="nav-item"><a class="nav-link" id="compras" href="">Compras</a></li>
+                        <li class="nav-item"><a class="nav-link" id="desarolladoras" href="">Desarrolladoras</a></li>
+                        <li class="nav-item"><a class="nav-link" id="juegos" href="">Juegos</a></li>
+                        <li class="nav-item"><a class="nav-link" id="campanias" href="">Campañas</a></li>
+                        <li class="nav-item"><a class="nav-link" id="masters" href="">Masters</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+
+            <div id="contenido">
+                <div class="preferencias">
+                    <h2 class="mb-3">Mi cuenta</h2>
+                    @if($usuario->ban)
+                    <div class="alert alert-danger mb-3">
+                        <h5>Motivo del ban:</h5>
+                        <p>{{$usuario->motivo}}</p>
+                        <small>Puede recibir más información poniéndose en contacto con soporte@indie4all.com</small>
                     </div>
-                    <div class="box align-items-center mt-4">
+                    @endif
+                    <form action="{{ route('usuario.cuenta.usuario') }}" method="post">
+                        @method("PATCH")
+                        @csrf
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" name="nombre" class="form-control" id="nombre" value="{{ $usuario->name }}">
+                            </div>
+                            <div class="col-md-4 mt-3 mt-md-0">
+                                <label for="username">Nombre de usuario:</label>
+                                <input type="text" name="username" class="form-control" id="username">
+                            </div>
+                            <div class="col-md-4 mt-3 mt-md-0">
+                                <label for="email">Email:</label>
+                                <input type="email" name="email" class="form-control" id="email" value="{{ $usuario->email }}">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-4 mt-3 mt-md-0">
+                                <label for="password">Nueva contraseña:</label>
+                                <input type="password" name="password" class="form-control" id="password">
+                            </div>
+                            <div class="col-md-4 mt-3 mt-md-0">
+                                <label for="password1">Repetir contraseña:</label>
+                                <input type="password" name="password1" class="form-control" id="password1">
+                            </div>
+                        </div>
+                        <div class="row form-group align-items-end">
+                            <div class="col-md-4">
+                                <label for="verify">Contraseña actual:</label>
+                                <input type="password" name="verify" class="form-control" id="verify">
+                            </div>
+                            <div class="col-md-4 mt-3">
+                                <button type="submit" class="btn btn-success">Editar</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                @if (session()->get("danger"))
+                                    <div class="alert alert-danger">
+                                        {{ session()->get("danger") }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </form>
+                    <div class="align-items-center mt-4">
                         <h5 class="mb-3">Géneros</h5>
                         <form action="{{ route('usuario.cuenta.generos') }}" method="post">
                             @csrf
@@ -83,7 +90,7 @@
                             <button type="submit" class="btn btn-success">Guardar</button>
                         </form>
                     </div>
-                    <div class="box mt-4">
+                    <div class="mt-4">
                         <h5 class="mb-3">Logros</h5>
                         <div class="row">
                             @foreach ($logros as $logro)
@@ -95,25 +102,41 @@
                         </div>
                     </div>
                 </div>
-                @if ($usuario->compras)
                 <div class="compras d-none">
-                    <div class="box-header mt-4">
-                        <h5>Compras</h5>
-                        @foreach ($usuario->compras as $compra)
-                            {{ $compra }}
-                        @endforeach
+                    <div class="mt-4">
+                        <h1>Compras</h1>
+                        <hr>
+                        @if ($usuario->compras->count() > 0)
+                            @foreach ($usuario->compras as $compra)
+                                {{ $compra }}
+                            @endforeach
+                        @else
+                            No has realizado ninguna compra.
+                        @endif
                     </div>
                 </div>
-                @endif
                 @if ($usuario->solicitud)
-                <div class="solicitud d-none">
-                    <div class="box-header mt-4">
-                        <h5>Solicitud</h5>
+                    <div class="solicitud d-none">
+                        <div class="mt-4">
+                            <h1>Solicitud</h1>
+                            <hr>
+                            Tipo de la solicitud: {{ $usuario->solicitud->tipo }}
+                            <br>
+                            Nombre: {{ $usuario->solicitud->nombre }}
+                            <br>
+                            Email: {{ $usuario->solicitud->email }}
+                            <br>
+                            @if ($usuario->solicitud->tipo == "Desarrolladora")
+                                Dirección: {{ $usuario->solicitud->direccion }}
+                                <br>
+                                Teléfono: {{ $usuario->solicitud->telefono }}
+                                <br>
+                                Url: {{ $usuario->solicitud->url }}
+                                <br>
+                                Comentario: {{ $usuario->solicitud->comentario }}
+                            @endif
+                        </div>
                     </div>
-                    <div class="box">
-                        {{ $usuario->solicitud->where("user_id", $usuario->id)->get()->count() }}
-                    </div>
-                </div>
                 @endif
                 <div class="desarrolladoras d-none">
                     <div class="box mt-4">
@@ -222,6 +245,7 @@
         </div>
     </main>
 @endsection
+
 @section('scripts')
     <script>
         $(function() {
@@ -229,14 +253,6 @@
                 language: "es",
                 width: "auto",
                 placeholder: "Géneros",
-            });
-
-            $(".menu").children("div").children("a").click(function(e) {
-                console.log($(this).attr("id"))
-                e.preventDefault();
-                let item = $(this).attr("id");
-                $("#main").children("div").addClass("d-none");
-                $(`.${item}`).removeClass("d-none");
             });
         });
 

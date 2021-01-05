@@ -179,8 +179,6 @@
     </main>
 @endsection
 @section("scripts")
-    <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
@@ -210,14 +208,6 @@
                     document.execCommand("copy");
                     $("#input-link").blur();
                 });
-            });
-
-            $(".submenu-items").children("li").children("a").click(function(e) {
-                e.preventDefault();
-                let item = $(this).attr("id");
-                console.log(item)
-                $("#contenido").children("div").addClass("d-none");
-                $(`.${item}`).removeClass("d-none");
             });
 
             $(".more").click(function () {
