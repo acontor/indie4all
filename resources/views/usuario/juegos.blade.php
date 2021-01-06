@@ -4,127 +4,244 @@
     <main class="p-3 pb-5">
         <div class="container box mt-4">
             <div class="row mb-4">
-                <h1 class="ml-3">Juegos para tí <a href="/juegos/lista" class="btn btn-primary">Ver todos</a></h1>
-            </div>
-
-            <div class="owl-carousel 1">
-                @foreach ($juegos->take('10') as $juego)
-                    <div class="item">
-                        <a href="{{ route('usuario.juego.show', $juego->id) }}">
-                            <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                alt="{{ $juego->nombre }}">
+                <div class="col-12 col-md-8">
+                    <h3 class="ml-3 text-uppercase font-weight-bold">Recomendaciones</h3>
+                    <div class="owl-carousel 1 mt-5">
+                        @foreach ($juegos->take('10') as $juego)
+                            <div class="item m-2 shadow">
+                                <a href="{{ route('usuario.juego.show', $juego->id) }}">
+                                    <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
+                                        alt="{{ $juego->nombre }}">
+                                    <div class="carousel-caption" style="display: none;">
+                                        <h6>{{ $juego->nombre }}</h6>
+                                        <small>
+                                            {{ $juego->desarrolladora->nombre }}
+                                            <br>
+                                            <span class="badge badge-danger">{{ $juego->genero->nombre }}</span>
+                                            <br>
+                                            {{ $juego->precio }} €
+                                        </small>
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mx-auto">
+                    <h3 class="text-uppercase font-weight-bold text-center">Destacados</h3>
+                    <div class="mt-4 text-center">
+                        <a href="{{ route('usuario.juego.show', $juego->first()->id) }}">
+                            <img class="img-fluid" height="20" src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
+                                alt="{{ $juego->first()->nombre }}">
                             <div class="carousel-caption" style="display: none;">
-                                <h6><strong>{{ $juego->nombre }}</strong></h6>
-                                <small>{{ $juego->desarrolladora->nombre }}</small>
-                                <hr>
-                                <small class="float-left text-left">{{ $juego->genero->nombre }}
+                                <h6>{{ $juego->first()->nombre }}</h6>
+                                <small>
+                                    {{ $juego->first()->desarrolladora->nombre }}
                                     <br>
-                                    {{ $juego->precio }} €
+                                    <span class="badge badge-danger">{{ $juego->first()->genero->nombre }}</span>
                                     <br>
-                                    {{ $juego->fecha_lanzamiento }}
+                                    {{ $juego->first()->precio }} €
                                 </small>
                             </div>
                         </a>
                     </div>
-                @endforeach
-            </div>
-
-            <hr class="mt-4 mb-5">
-
-            <div class="row">
-                <div class="col-12 col-md-7">
-                    @isset($seguidos)
-                        <h2>Últimas noticias de tus juegos</h2>
-                        <div class="noticias">
-                            <div class="items">
-                                @foreach ($seguidos as $juego)
-                                    @foreach ($juego->posts->where('master_id', null) as $post)
-                                        <div>
-                                            <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
-                                            <form>
-                                                <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="more">Leer más</a>
-                                            </form>
-                                        </div>
-                                    @endforeach
-                                @endforeach
-                            </div>
-                            <div class="pager">
-                                <div class="firstPage">&laquo;</div>
-                                <div class="previousPage">&lsaquo;</div>
-                                <div class="pageNumbers"></div>
-                                <div class="nextPage">&rsaquo;</div>
-                                <div class="lastPage">&raquo;</div>
-                            </div>
-                        </div>
-                    @else
-                        @auth
-                            No sigues a ningún juego aún
-                        @endauth
-                        <h2>Últimas noticias</h2>
-                        <div class="noticias">
-                            <div class="items">
-                                @foreach ($juegos as $juego)
-                                    @foreach ($juego->posts->where('master_id', null) as $post)
-                                        <div>
-                                            <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
-                                            <form>
-                                                <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="more">Leer más</a>
-                                            </form>
-                                        </div>
-                                    @endforeach
-                                @endforeach
-                            </div>
-                            <div class="pager">
-                                <div class="firstPage">&laquo;</div>
-                                <div class="previousPage">&lsaquo;</div>
-                                <div class="pageNumbers"></div>
-                                <div class="nextPage">&rsaquo;</div>
-                                <div class="lastPage">&raquo;</div>
-                            </div>
-                        </div>
-                    @endisset
                 </div>
-
-                <div class="col-12 col-md-4 offset-md-1 mt-5 mt-md-0">
-                    <div class="owl-carousel owl-theme 2">
-                        <div class="item">
-                            <h4>Juegos + vendidos</h4>
-                            <hr>
-                            @foreach ($juegos->take(5) as $juego)
-                                {{ $juego->nombre }}
-                                <br>
-                            @endforeach
-                        </div>
-                        <div class="item">
-                            <h4>Juegos con + seguidores</h4>
-                            <hr>
-                            @foreach ($juegos->take(5) as $juego)
-                                {{ $juego->nombre }}
-                                <br>
-                            @endforeach
-                        </div>
-                        <div class="item">
-                            <h4>Juegos mejor valorados</h4>
-                            <hr>
-                            @foreach ($juegos->take(5) as $juego)
-                                {{ $juego->nombre }}
-                                <br>
-                            @endforeach
-                        </div>
-                        <div class="item">
-                            <h4>Juegos + votados</h4>
-                            <hr>
-                            @foreach ($juegos->take(5) as $juego)
-                                {{ $juego->nombre }}
-                                <br>
-                            @endforeach
-                        </div>
+            </div>
+            <hr class="mt-5">
+            <div class="row">
+                <div class="col-12 col-md-8 pt-5">
+                    <div class="shadow p-3">
+                        @isset($seguidos)
+                            <h2>Últimas noticias de tus juegos</h2>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <p>asdasd</p>
+                            <div class="noticias">
+                                <div class="items">
+                                    @foreach ($seguidos as $juego)
+                                        @foreach ($juego->posts->where('master_id', null) as $post)
+                                            <div>
+                                                <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
+                                                <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                                <form>
+                                                    <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                    <a type="submit" class="more">Leer más</a>
+                                                </form>
+                                            </div>
+                                        @endforeach
+                                    @endforeach
+                                </div>
+                                <div class="pager">
+                                    <div class="firstPage">&laquo;</div>
+                                    <div class="previousPage">&lsaquo;</div>
+                                    <div class="pageNumbers"></div>
+                                    <div class="nextPage">&rsaquo;</div>
+                                    <div class="lastPage">&raquo;</div>
+                                </div>
+                            </div>
+                        @else
+                            @auth
+                                No sigues a ningún juego aún
+                            @endauth
+                            <h2>Últimas noticias</h2>
+                            <div class="noticias">
+                                <div class="items">
+                                    @foreach ($juegos as $juego)
+                                        @foreach ($juego->posts->where('master_id', null) as $post)
+                                            <div>
+                                                <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
+                                                <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                                <form>
+                                                    <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                    <a type="submit" class="more">Leer más</a>
+                                                </form>
+                                            </div>
+                                        @endforeach
+                                    @endforeach
+                                </div>
+                                <div class="pager">
+                                    <div class="firstPage">&laquo;</div>
+                                    <div class="previousPage">&lsaquo;</div>
+                                    <div class="pageNumbers"></div>
+                                    <div class="nextPage">&rsaquo;</div>
+                                    <div class="lastPage">&raquo;</div>
+                                </div>
+                            </div>
+                        @endisset
                     </div>
                 </div>
+                <div class="col-12 col-md-4 mt-5 mt-md-0">
+                    <nav class="sticky-top pt-5 bg-transparent">
+                        <div class="list-group shadow">
+                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                                <a href="" id="nuevos" class="list-group-item list-group-item-action list-buttons">Nuevo</a>
+                                <a href="" id="ventas" class="list-group-item list-group-item-action list-buttons">Venta</a>
+                                <a href="" id="populares" class="list-group-item list-group-item-action list-buttons">Popular</a>
+                            </ul>
+                            <a href="/juegos/lista" class="btn btn-danger rounded-0">Ver todos</a>
+                            @foreach ($juegos->take(5) as $juego)
+                                <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado nuevos">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                        <small>Seguidores: {{$juego->seguidores->count()}}</small>
+                                    </div>
+                                    <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
+                                </a>
+                            @endforeach
+                            @foreach ($juegos->take(5) as $juego)
+                                <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none ventas">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                        <small>Seguidores: {{$juego->seguidores->count()}}</small>
+                                    </div>
+                                    <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
+                                </a>
+                            @endforeach
+                            @foreach ($juegos->take(5) as $juego)
+                                <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none populares">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                        <small>Seguidores: {{$juego->seguidores->count()}}</small>
+                                    </div>
+                                    <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
+                                </a>
+                            @endforeach
+                        </div>
+                    </header>
+                </nav>
             </div>
         </div>
     </main>
@@ -134,6 +251,17 @@
     <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
     <script>
         $(function() {
+            $('.list-buttons').on('click', function(e) {
+                e.preventDefault();
+                let item = $(this).attr('id');
+                $('.listado').each(function () {
+                    if (!$(this).hasClass("d-none")) {
+                        $(this).addClass('d-none');
+                    }
+                });
+                $('.' + item).removeClass('d-none');
+            });
+
             $(".noticias").paginga();
 
             var owl = $('.1');
@@ -150,23 +278,12 @@
                         items: 3.5
                     },
                     1000: {
-                        items: 5.5
+                        items: 4.5
                     }
                 }
             });
 
             mousewheel(owl);
-
-            var owl2 = $('.2');
-
-            owl2.owlCarousel({
-                loop: true,
-                margin: 10,
-                items: 1,
-                navText : ['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>']
-            });
-
-            mousewheel(owl2);
 
             function mousewheel(objeto) {
                 objeto.on('mousewheel', '.owl-stage', function(e) {
