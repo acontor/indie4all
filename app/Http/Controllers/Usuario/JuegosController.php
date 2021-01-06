@@ -20,7 +20,7 @@ class JuegosController extends Controller
      */
     public function index()
     {
-        if(Auth::user()) {
+        if (Auth::user()) {
             $seguidos = Auth::user()->juegos;
         } else {
             $seguidos = null;
@@ -29,9 +29,21 @@ class JuegosController extends Controller
         return view('usuario.juegos', ['juegos' => $juegos, 'seguidos' => $seguidos]);
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        $juegos = Juego::all();
+        $juegos = Juego::paginate(2);
+        if ($request->ajax()) {
+            if ($request->nombre != '' || $request->genero != '') {
+                if ($request->genero != '') {
+                    $juegos = Juego::where('nombre', 'like', '%' . $request->nombre . '%')->where('genero_id', $request->genero)->paginate(200);
+                } else if ($request->nombre == '') {
+                    $juegos = Juego::where('genero_id', $request->genero)->paginate(200);
+                } else {
+                    $juegos = Juego::where('nombre', 'like', '%' . $request->nombre . '%')->paginate(200);
+                }
+            }
+            return view('usuario.pagination_data', ['juegos' => $juegos])->render();
+        }
         return view('usuario.juegos_all', ['juegos' => $juegos]);
     }
 
@@ -83,7 +95,7 @@ class JuegosController extends Controller
 
         $mensajes = DB::table('mensajes')
             ->join('users', 'users.id', '=', 'mensajes.user_id')
-            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name' ,'mensajes.id')
+            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name', 'mensajes.id')
             ->where('mensajes.post_id', $post->id)->get();
 
         return ['post' => $post, 'mensajes' => $mensajes];
