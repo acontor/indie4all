@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null],['campania_id', null]])->paginate(4);
-    $juegos = Juego::has('usuarios')->inRandomOrder()->take(5)->get();
+    $juegos = Juego::has('seguidores')->inRandomOrder()->take(5)->get();
     $desarrolladoras = Desarrolladora::all()->take(5);
     $masters = Master::all()->take(5);
     return view('welcome', ['noticias' => $noticias, 'juegos' => $juegos, 'desarrolladoras' => $desarrolladoras, 'masters' => $masters]);
@@ -200,7 +200,7 @@ Route::get('/master/solicitud', [App\Http\Controllers\Usuario\HomeController::cl
 
 
 // Mi cuenta
-Route::get('/cuenta', [App\Http\Controllers\Usuario\CuentaController::class, 'index'])->name('usuario.cuenta.index');
+Route::get('/cuenta/{seccion?}', [App\Http\Controllers\Usuario\CuentaController::class, 'index'])->name('usuario.cuenta.index');
 Route::post('/cuenta/generos', [App\Http\Controllers\Usuario\CuentaController::class, 'generos'])->name('usuario.cuenta.generos');
 Route::patch('/cuenta/usuario', [App\Http\Controllers\Usuario\CuentaController::class, 'usuario'])->name('usuario.cuenta.usuario');
 

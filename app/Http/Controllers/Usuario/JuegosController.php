@@ -7,6 +7,7 @@ use App\Models\Juego;
 use App\Models\Post;
 use App\Models\User;
 use App\Listeners\FollowListener;
+use App\Models\Compra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,13 +21,16 @@ class JuegosController extends Controller
      */
     public function index()
     {
-        if (Auth::user()) {
-            $seguidos = Auth::user()->juegos;
-        } else {
-            $seguidos = null;
-        }
+        $coleccion = Auth::user() ? Auth::user()->juegos : null;
+        $generos = Auth::user() ? Auth::user()->generos : null;
         $juegos = Juego::all();
-        return view('usuario.juegos', ['juegos' => $juegos, 'seguidos' => $seguidos]);
+        $fecha = date('Y-m-d');
+        $compras = Compra::select('juego_id', DB::raw("count(id) as ventas"))->whereBetween('fecha_compra', [date('Y-m-d', strtotime($fecha . ' -1 months')), $fecha])->groupBy('juego_id')->get();
+
+        $posts = $this->obtenerPosts($coleccion);
+        $recomendados = $this->obtenerJuegos($generos, $coleccion);
+
+        return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'compras' => $compras, 'posts' => $posts]);
     }
 
     public function all(Request $request)
@@ -99,5 +103,59 @@ class JuegosController extends Controller
             ->where('mensajes.post_id', $post->id)->get();
 
         return ['post' => $post, 'mensajes' => $mensajes];
+    }
+
+    public function obtenerPosts($coleccion)
+    {
+        $juegos_id = [];
+
+        if ($coleccion->count() > 0) {
+            foreach ($coleccion as $juego) {
+                array_push($juegos_id, $juego->id);
+            }
+        }
+
+        if (count($juegos_id) > 0) {
+            $posts = Post::whereIn('juego_id', $juegos_id)->get();
+        } else {
+            $posts = Post::where('juego_id', '!=', null)->get();
+        }
+
+        if($posts->count() == 0 || count($juegos_id)  == 0) {
+            $posts = Post::where('juego_id', '!=', null)->get();
+        }
+
+        return $posts;
+    }
+
+    public function obtenerJuegos($generos, $coleccion)
+    {
+        $generos_id = [];
+
+        if ($generos->count() > 0) {
+            foreach ($generos as $genero) {
+                array_push($generos_id, $genero->id);
+            }
+        }
+
+        $juegos_id = [];
+
+        if ($coleccion->count() > 0) {
+            foreach ($coleccion as $juego) {
+                array_push($juegos_id, $juego->id);
+            }
+        }
+
+        if (count($generos_id) > 0) {
+            if(count($juegos_id) > 0) {
+                $posts = Juego::whereIn('genero_id', $generos_id)->whereNotIn('id', $juegos_id)->get();
+            } else {
+                $posts = Juego::whereIn('genero_id', $generos_id)->get();
+            }
+        } else {
+            $posts = Juego::where('genero_id', '!=', null)->get();
+        }
+
+        return $posts;
     }
 }

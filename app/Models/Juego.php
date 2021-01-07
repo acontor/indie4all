@@ -67,4 +67,10 @@ class Juego extends Model
     {
         return $this->hasMany("App\Models\Clave");
     }
+
+    // Compras - 1:N - Juegos
+    public function compras()
+    {
+        return $this->hasMany("App\Models\Compra");
+    }
 }

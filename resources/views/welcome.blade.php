@@ -48,7 +48,7 @@
                     <hr>
                     @foreach ($juegos as $juego)
                         <li>{{ $juego->nombre }} - Punt.
-                            {{ $juego->usuarios->sum("pivot.calificacion") / $juego->usuarios->count() }}
+                            {{ $juego->seguidores->sum("pivot.calificacion") / $juego->seguidores->count() }}
                         </li>
                     @endforeach
                     <h4 class="mt-5">Masters</h4>

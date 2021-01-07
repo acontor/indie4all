@@ -37,14 +37,14 @@
                                             <input type="hidden" name="id" value="{{ $juego->id }}">
                                             <div class="ban">
                                                 @if($juego->ban == null)
-                                                <button class="btn btn-warning btn-sm round" type="submit">
-                                                    <i class="far fa-gavel"></i>
-                                                </button>
+                                                    <button class="btn btn-warning btn-sm round" type="submit">
+                                                        <i class="far fa-gavel"></i>
+                                                    </button>
                                                 @else
-                                                <input type="hidden" name="motivo" value="{{ $juego->motivo }}">
-                                                <button class="btn btn-success btn-sm round" type="submit">
-                                                    <i class="far fa-gavel"></i>
-                                                </button>
+                                                    <input type="hidden" name="motivo" value="{{ $juego->motivo }}">
+                                                    <button class="btn btn-success btn-sm round" type="submit">
+                                                        <i class="far fa-gavel"></i>
+                                                    </button>
                                                 @endif
                                             </div>
                                         </div>

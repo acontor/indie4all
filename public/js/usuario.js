@@ -66,19 +66,19 @@ $(function () {
                             $(".swal2-html-container>div").append(html);
                             var owl = $('.1');
                             owl.owlCarousel({
-                                center: true,
+                                center: false,
                                 items:2,
-                                loop:true,
+                                loop:false,
                                 margin:10,
                                 responsive: {
                                     0: {
-                                        items: 2.5
+                                        items: 2
                                     },
                                     600: {
-                                        items: 2.5
+                                        items: 3
                                     },
                                     1000: {
-                                        items: 3.5
+                                        items: 4
                                     }
                                 }
                             });

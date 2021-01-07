@@ -39,10 +39,10 @@ class AnalisisController extends Controller
      * @param  Integer  $id
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($id = null)
     {
         $juegos = Juego::all();
-        return view('master.analisis_editor', ['juegos' => $juegos, 'id' => $id || null]);
+        return view('master.analisis_editor', ['juegos' => $juegos, 'id' => $id]);
     }
 
     /**

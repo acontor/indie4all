@@ -22,10 +22,9 @@
                     <h4 class="mt-5">Enlaces de interés</h4>
                     <hr>
                     <ul>
-                        <li>Colección de juegos</li>
-                        <li>Masters seguidos</li>
-                        <li>Juegos seguidos</li>
-                        <li>Desarrolladoras seguidas</li>
+                        <li><a href="{{ route('usuario.cuenta.index', 'compras') }}">Colección de juegos</a></li>
+                        <li><a href="{{ route('usuario.cuenta.index', 'masters') }}">Masters seguidos</a></li>
+                        <li><a href="{{ route('usuario.cuenta.index', 'desarrolladoras') }}">Desarrolladoras seguidas</a></li>
                     </ul>
                 </div>
             </div>

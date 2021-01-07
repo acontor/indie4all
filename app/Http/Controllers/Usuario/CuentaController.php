@@ -28,13 +28,13 @@ class CuentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($seccion = null)
     {
         $usuario = User::find(Auth()->id());
         $logros = Logro::all();
         $generos = Genero::all();
         $solicitudRechazada = Solicitud::where('user_id', Auth()->id())->withTrashed()->get();
-        return view('usuario.cuenta', ['usuario' => $usuario, 'logros' => $logros, 'generos' => $generos, 'solicitudRechazada' => $solicitudRechazada]);
+        return view('usuario.cuenta', ['usuario' => $usuario, 'logros' => $logros, 'generos' => $generos, 'solicitudRechazada' => $solicitudRechazada, 'seccion' => $seccion]);
     }
 
     public function usuario(Request $request)

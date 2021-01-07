@@ -28,7 +28,7 @@
 
 
             <div id="contenido">
-                <div class="preferencias">
+                <div class="preferencias @if($seccion != null) d-none @endif">
                     <h2 class="mb-3">Mi cuenta</h2>
                     @if($usuario->ban)
                     <div class="alert alert-danger mb-3">
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="compras d-none">
+                <div class="compras @if($seccion != "compras") d-none @endif">
                     <div class="mt-4">
                         <h1>Compras</h1>
                         <hr>
@@ -121,7 +121,7 @@
                     </div>
                 </div>
                 @if ($usuario->solicitud)
-                    <div class="solicitud d-none">
+                    <div class="solicitud @if($seccion != "solicitud") d-none @endif">
                         <div class="mt-4">
                             <h1>Solicitud</h1>
                             <hr>
@@ -143,7 +143,7 @@
                         </div>
                     </div>
                 @endif
-                <div class="desarrolladoras d-none">
+                <div class="desarrolladoras @if($seccion != "desarrolladoras") d-none @endif">
                     <div class="box mt-4">
                         <h5 class="mb-3">Desarrolladoras</h5>
                         @if ($usuario->desarrolladoras->count() == 0)
@@ -172,7 +172,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="juegos d-none">
+                <div class="juegos @if($seccion != "juegos") d-none @endif">
                     <div class="box mt-4">
                         <h5 class="mb-3">Juegos</h5>
                         @if ($usuario->juegos->count() == 0)
@@ -205,7 +205,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="masters d-none">
+                <div class="masters @if($seccion != "masters") d-none @endif">
                     <div class="box mt-4">
                         <h5 class="mb-3">Masters</h5>
                         @if ($usuario->masters->count() == 0)
@@ -234,7 +234,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="campanias d-none">
+                <div class="campanias @if($seccion != "campanias") d-none @endif">
                     <div class="box mt-4">
                         <h5 class="mb-3">Campañas</h5>
                         @if ($usuario->compras->where("campania_id", '!=', null)->count() > 0)

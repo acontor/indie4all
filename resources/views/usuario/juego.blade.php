@@ -359,6 +359,7 @@
                     }
                 });
             });
+
             $('#reporteJuego').click(function(){
             let juegoId = {!! $juego->id !!}
             let url = '{{ route("usuario.reporte", [":id" , "juego_id"]) }}';
