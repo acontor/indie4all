@@ -22,7 +22,6 @@
                                             <a type="submit" class="more">Leer más</a>
                                         </form>
                                     </div>
-                                    <hr>
                                 @endforeach
                             @else
                                 Aún no hay publicada ninguna noticia.
@@ -64,10 +63,9 @@
 
 @section("scripts")
     <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
-            $(".noticias").paginga();
-
             $(".more").click(function () {
                 let url = '{{ route("usuario.master.post", ":id") }}';
                 url = url.replace(':id', $(this).prev().val());

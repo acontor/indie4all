@@ -7,15 +7,15 @@ use App\Models\Juego;
 use App\Models\Post;
 use App\Models\User;
 use App\Listeners\FollowListener;
-use App\Models\Compra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class JuegosController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra una vista con últimas noticias de juegos favoritos o todos los juegos, recomendaciones y filtros.
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,36 +23,21 @@ class JuegosController extends Controller
     {
         $coleccion = Auth::user() ? Auth::user()->juegos : null;
         $generos = Auth::user() ? Auth::user()->generos : null;
-        $juegos = Juego::all();
-        $fecha = date('Y-m-d');
-        $compras = Compra::select('juego_id', DB::raw("count(id) as ventas"))->whereBetween('fecha_compra', [date('Y-m-d', strtotime($fecha . ' -1 months')), $fecha])->groupBy('juego_id')->get();
 
-        $posts = $this->obtenerPosts($coleccion);
-        $recomendados = $this->obtenerJuegos($generos, $coleccion);
+        $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
+            $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+        }, 'compras' => function (Builder $query) {
+            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+        }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'compras' => $compras, 'posts' => $posts]);
-    }
+        $posts = $this->obtenerNoticias($coleccion);
+        $recomendados = $this->obtenerJuegos($juegos, $generos, $coleccion);
 
-    public function all(Request $request)
-    {
-        $juegos = Juego::paginate(2);
-        if ($request->ajax()) {
-            if ($request->nombre != '' || $request->genero != '') {
-                if ($request->genero != '') {
-                    $juegos = Juego::where('nombre', 'like', '%' . $request->nombre . '%')->where('genero_id', $request->genero)->paginate(200);
-                } else if ($request->nombre == '') {
-                    $juegos = Juego::where('genero_id', $request->genero)->paginate(200);
-                } else {
-                    $juegos = Juego::where('nombre', 'like', '%' . $request->nombre . '%')->paginate(200);
-                }
-            }
-            return view('usuario.pagination_data', ['juegos' => $juegos])->render();
-        }
-        return view('usuario.juegos_all', ['juegos' => $juegos]);
+        return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'posts' => $posts]);
     }
 
     /**
-     * Display the specified resource.
+     * Muestra la vista de un juego.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -63,6 +48,12 @@ class JuegosController extends Controller
         return view('usuario.juego', ['juego' => $juego]);
     }
 
+    /**
+     * Añade un juego a la colección.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function follow($id)
     {
         $user = User::find(Auth::id());
@@ -73,6 +64,13 @@ class JuegosController extends Controller
         return redirect()->route('usuario.juego.show', ['id' => $id]);
     }
 
+    /**
+     *
+     * Elimina un juego de la colección.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function unfollow($id)
     {
         $user = User::find(Auth::id());
@@ -82,6 +80,12 @@ class JuegosController extends Controller
         return redirect()->route('usuario.juego.show', ['id' => $id]);
     }
 
+    /**
+     * Activa las notificaciones de un juego.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function notificacion($id, $notificacion)
     {
         $user = User::find(Auth::id());
@@ -93,6 +97,12 @@ class JuegosController extends Controller
         return redirect()->route('usuario.juego.show', ['id' => $id]);
     }
 
+    /**
+     * Obtiene un post y sus mensajes.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function post(Request $request)
     {
         $post = Post::find($request->id);
@@ -105,11 +115,17 @@ class JuegosController extends Controller
         return ['post' => $post, 'mensajes' => $mensajes];
     }
 
-    public function obtenerPosts($coleccion)
+    /**
+     * Obtiene últimas noticias de los juegos.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function obtenerNoticias($coleccion)
     {
         $juegos_id = [];
 
-        if ($coleccion->count() > 0) {
+        if ($coleccion && $coleccion->count() > 0) {
             foreach ($coleccion as $juego) {
                 array_push($juegos_id, $juego->id);
             }
@@ -121,18 +137,24 @@ class JuegosController extends Controller
             $posts = Post::where('juego_id', '!=', null)->get();
         }
 
-        if($posts->count() == 0 || count($juegos_id)  == 0) {
+        if ($posts->count() == 0 || count($juegos_id)  == 0) {
             $posts = Post::where('juego_id', '!=', null)->get();
         }
 
         return $posts;
     }
 
-    public function obtenerJuegos($generos, $coleccion)
+    /**
+     * Obtiene juegos para recomendar.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function obtenerJuegos($juegos, $generos, $coleccion)
     {
         $generos_id = [];
 
-        if ($generos->count() > 0) {
+        if ($generos && $generos->count() > 0) {
             foreach ($generos as $genero) {
                 array_push($generos_id, $genero->id);
             }
@@ -140,22 +162,18 @@ class JuegosController extends Controller
 
         $juegos_id = [];
 
-        if ($coleccion->count() > 0) {
+        if ($coleccion && $coleccion->count() > 0) {
             foreach ($coleccion as $juego) {
                 array_push($juegos_id, $juego->id);
             }
         }
 
-        if (count($generos_id) > 0) {
-            if(count($juegos_id) > 0) {
-                $posts = Juego::whereIn('genero_id', $generos_id)->whereNotIn('id', $juegos_id)->get();
-            } else {
-                $posts = Juego::whereIn('genero_id', $generos_id)->get();
-            }
-        } else {
-            $posts = Juego::where('genero_id', '!=', null)->get();
+        if (count($generos_id) > 0 && count($juegos_id) > 0) {
+            $juegos->whereIn('genero_id', $generos_id)->whereNotIn('id', $juegos_id)->get();
+        } else if (count($generos_id) > 0) {
+            $juegos->whereIn('genero_id', $generos_id)->get();
         }
 
-        return $posts;
+        return $juegos;
     }
 }

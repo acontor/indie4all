@@ -37,7 +37,6 @@
                 </div>
             </div>
 
-            <!-- SUBMENU -->
             <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
                 <div class="navbar-nav float-right-sm">
                     <div class="d-flex">
@@ -57,12 +56,10 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar">
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto submenu-items">
                         <li class="nav-item"><a class="nav-link" id="contenido" href="">Campaña</a></li>
                         <li class="nav-item"><a class="nav-link" id="actualizaciones" href="">Actualizaciones</a></li>
-                        @auth
-                            <li class="nav-item"><a class="nav-link" id="foro" href="">Foro</a></li>
-                        @endauth
+                        <li class="nav-item"><a class="nav-link" id="foro" href="">Foro</a></li>
                         <li class="nav-item"><a class="nav-link" id="faq" href="">FAQ</a></li>
                         <a class="nav-link" id="contacto" href="{{ route('usuario.desarrolladora.show', $campania->juego->desarrolladora_id) }}" target="_blank">Desarrolladora</a>
                     </ul>
@@ -141,11 +138,9 @@
 <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
 <script src="http://momentjs.com/downloads/moment.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js"></script>
+<script src="{{ asset('js/usuario.js') }}"></script>
 <script>
     $(function() {
-        $(".actualizaciones").paginga();
-        $(".mensajes").paginga();
-
         let recaudado = {{json_encode($campania->recaudado)}};
         let meta = {{json_encode($campania->meta)}};
         const fechaFin = @json($campania).fecha_fin;
@@ -165,7 +160,7 @@
 
         $(".participar").click(function() {
             $("#precio").focus();
-        })
+        });
 
         $('#reporteCampania').click(function(){
             let campaniaId = {!! $campania->id !!}
@@ -314,30 +309,14 @@
 
         let campania = {!! json_encode($campania) !!};
 
-        $(".compartir").click(function() {
-            Swal.fire({
-                html: `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
-                `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!?&url=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
-                `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
-                `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!%20http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
-                `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/campania/${campania.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
-                `<small class="mt-3 float-left">¡Gracias por compartir!</small>`,
-                showCloseButton: false,
-                showCancelButton: false,
-                showConfirmButton: false,
-                showClass: {
-                    popup: 'animate__animated animate__slideInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__zoomOutDown'
-                }
-            });
-            $(".copiar").click(function() {
-                $("#input-link").select();
-                document.execCommand("copy");
-                $("#input-link").blur();
-            });
-        });
+        html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
+        `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!?&url=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
+        `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
+        `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!%20http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
+        `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/campania/${campania.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
+        `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
+
+        $(".compartir").on('click', {html: html}, compartir);
 
         $(".participar").click(function() {
             Swal.fire({

@@ -119,6 +119,11 @@ $(function () {
      * COMPONENTES MASTER
      */
 
+    $(".eliminar-estado").on('click', function() {
+        $(this).parent().on('submit');
+        $(this).parent().parent().remove();
+    });
+
     $(".estado").parent().on("click", function() {
         Swal.fire({
             position: 'bottom',
@@ -137,7 +142,7 @@ $(function () {
         CKEDITOR.replace("nuevo-estado", {
             customConfig: "{{ asset('js/ckeditor/config.js') }}"
         });
-        $("#estado-form").click(function(e) {
+        $("#estado-form").on('click', function(e) {
             e.preventDefault();
             let estado = CKEDITOR.instances.editor.getData();
             CKEDITOR.instances.editor.setData("");
@@ -177,4 +182,45 @@ $(function () {
         $('.navbar-toggler').addClass('collapsed');
         $('.navbar-collapse').removeClass('show');
     });
+
+    /**
+     * PAGINGA NOTICIAS
+     */
+
+    $(".noticias, .actualizaciones, .mensajes").paginga({
+        maxPageNumbers: 3
+    });
+    $(".actualizaciones").paginga();
+    $(".mensajes").paginga();
 });
+
+/**
+ * COMPARTIR
+ */
+
+function compartir(event) {
+    Swal.fire({
+        html: event.data.html,
+        showCloseButton: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+        showClass: {
+            popup: 'animate__animated animate__slideInDown'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__zoomOutDown'
+        }
+    });
+
+    $(".copiar").on('click', function() {
+        $("#input-link").on('select');
+        document.execCommand("copy");
+        $("#input-link").on('blur');
+    });
+}
+
+/**
+ * LEER MAS
+ */
+
+

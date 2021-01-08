@@ -101,11 +101,11 @@
 
 @section('scripts')
     <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
             $('img').addClass('img-fluid');
             $('img').addClass('h-auto');
-            $(".noticias").paginga();
 
             var owl = $('.1');
 

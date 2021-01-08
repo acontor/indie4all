@@ -52,17 +52,17 @@
                 <div class="col-12 col-md-4 mx-auto">
                     <h3 class="text-uppercase font-weight-bold text-center">Destacados</h3>
                     <div class="mt-4 text-center item">
-                        <a href="{{ route('usuario.juego.show', $compras->sortByDesc('ventas')->first()->juego->first()->id) }}">
+                        <a href="{{ route('usuario.juego.show', $juegos->first()->id) }}">
                             <img class="img-fluid shadow" height="20" src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                alt="{{ $compras->sortByDesc('ventas')->first()->juego->first()->nombre }}">
+                                alt="{{ $juegos->first()->nombre }}">
                             <div class="carousel-caption" style="display: none;">
-                                <h6>{{ $compras->sortByDesc('ventas')->first()->juego->first()->nombre }}</h6>
+                                <h6>{{ $juegos->first()->nombre }}</h6>
                                 <small>
-                                    {{ $compras->sortByDesc('ventas')->first()->juego->first()->desarrolladora->nombre }}
+                                    {{ $juegos->first()->nombre }}
                                     <br>
-                                    <span class="badge badge-danger">{{ $compras->sortByDesc('ventas')->first()->juego->first()->genero->nombre }}</span>
+                                    <span class="badge badge-danger">{{ $juegos->first()->genero->nombre }}</span>
                                     <br>
-                                    {{ $compras->sortByDesc('ventas')->first()->juego->first()->precio }} €
+                                    {{ $juegos->first()->precio }} €
                                 </small>
                             </div>
                         </a>
@@ -73,27 +73,32 @@
             <div class="row">
                 <div class="col-12 col-md-8 pt-5">
                     <div class="shadow p-3">
-                        @if($coleccion->count() == 0)
+                        @if($coleccion && $coleccion->count() == 0)
                             @auth
                                 Para obtener noticias personalizadas deberías añadir tus juegos favoritos a tu colección.
                             @endauth
                         @endif
-                        @if($coleccion->count() > 0)
-                            <a class="btn btn-dark" href="{{ route('usuario.cuenta.index', 'juegos') }}">Colección de juegos</a>
-                        @endif
-                        <h2>Últimas noticias</h2>
+                        <h2>Últimas noticias
+                            @if($coleccion && $coleccion->count() > 0)
+                                <a class="btn btn-dark float-right" href="{{ route('usuario.cuenta.index', 'juegos') }}">Colección de juegos</a>
+                            @endif
+                        </h2>
                         <div class="noticias">
                             <div class="items">
-                                @foreach ($posts->where('master_id', null)->sortByDesc('created_at') as $post)
-                                    <div>
-                                        <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
-                                        <p>{!! substr($post->contenido, 0, 300) !!}</p>
-                                        <form>
-                                            <input type="hidden" name="id" value="{{ $post->id }}" />
-                                            <a type="submit" class="more">Leer más</a>
-                                        </form>
-                                    </div>
-                                @endforeach
+                                @if($posts->count() == 0)
+                                    No existen noticias aún.
+                                @else
+                                    @foreach ($posts->where('master_id', null)->sortByDesc('created_at') as $post)
+                                        <div>
+                                            <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
+                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            <form>
+                                                <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                <a type="submit" class="more">Leer más</a>
+                                            </form>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                             <div class="pager">
                                 <div class="firstPage">&laquo;</div>
@@ -128,15 +133,15 @@
                                     <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
                                 </a>
                             @endforeach
-                            @foreach ($compras->sortByDesc('ventas')->take(5) as $compra)
-                                <a href="{{route('usuario.juego.show', $compra->juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none ventas">
+                            @foreach ($juegos->take(5) as $juego)
+                                <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none ventas">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1"><b>{{$compra->juego->nombre}}</b></h6>
-                                        <small>{{$compra->juego->fecha_lanzamiento}}</small>
+                                        <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                        <small>{{$juego->fecha_lanzamiento}}</small>
                                     </div>
-                                    <p class="mb-1">{{$compra->juego->desarrolladora->nombre}}</p>
-                                    <span class="btn btn-dark btn-sm float-right">{{$compra->juego->precio}} €</span>
-                                    <small class="badge badge-danger badge-pill mt-2">{{$compra->juego->genero->nombre}}</small>
+                                    <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
                                 </a>
                             @endforeach
                             @foreach ($juegos->where('fecha_lanzamiento', '>=', $fechaHoy)->sortBy('fecha_lanzamiento')->take(5) as $juego)
@@ -161,6 +166,7 @@
 
 @section('scripts')
     <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
             $('.list-buttons').on('click', function(e) {
@@ -173,8 +179,6 @@
                 });
                 $('.' + item).removeClass('d-none');
             });
-
-            $(".noticias").paginga();
 
             var owl = $('.1');
 
@@ -238,20 +242,6 @@
                         window.scrollTo({top: 100, behavior: 'smooth'});
                         $('.hola').html(html);
                         $('.hola').css('left', 0);
-                        /* Swal.fire({
-                            title: `<h4><strong>${data.post.titulo}</strong></h4>`,
-                            html: html,
-                            showCloseButton: false,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            width: 1000,
-                            showClass: {
-                                popup: 'animate__animated animate__slideInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__zoomOutDown'
-                            }
-                        }); */
                         $('.volver').on('click', function(e) {
                             $('.hola').css('left', -10000);
                         })
