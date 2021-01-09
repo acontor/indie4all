@@ -6,34 +6,36 @@
 @section("content")
     <div class="container">
         <div class="box-header mt-2">
-            <h1>Desarrolladoras ({{ App\Models\Desarrolladora::count() }})</h1>
+            <h1>Campañas ({{ App\Models\Campania::count() }})</h1>
         </div>
-        <div class="box p-3 mb-2 rounded">
-            <div class="form-row">
-                <div class=" form-group mt-2 col-12 col-md-4">
+        <div class="box p-3 mb-2">
+            <div class="mt-2 form-row">
+                <div class=" form-group col-12 col-md-4">
                     <input type="text" id="nombre" class="form-control" style="width:100%" placeholder="Nombre"/>
                 </div>  
-                <div class=" form-group mt-2 col-6 col-md-2">   
+                <div class=" form-group col-6 col-md-2">   
                     <select id="ordenarPor" class="form-control col-md-2 select2">
                         <option value="">Ordenar por..</option>
-                        <option value="posts_count">Actividad</option>
-                        <option value="users_count">Seguidores</option>
-                        <option value="juegos_count">Juegos</option>
+                        <option value="recaudado">Recaudado</option>
+                        <option value="meta">Meta</option>
+                        <option value="seguidores_count">Participaciones</option>
+                        <option value="fecha_fin">Fecha de finalización</option>
+                        
                     </select>  
                 </div>
-                <div class=" form-group mt-2 col-6 col-md-2">
+                <div class=" form-group col-6 col-md-2">
                     <select id="ordenarDe" class="form-control col-md-2 select2">
                         <option value="DESC" selected>Descendiente</option>
                         <option value="ASC">Acendiente</option>
                     </select>        
-                </div> 
+                </div>
                 <div class="form-group col-md-12">
                     <button id='buscar' class=" col-sm-2 float-right form-control btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbspBuscar</button>   
-                </div>                  
-            </div>            
+                </div>    
+            </div> 
         </div>
 
-        <div id="desarrolladoras_data">
+        <div id="campania_data">
             @include('usuario.pagination_data')
         </div>
     </div>
@@ -72,19 +74,19 @@
 
         function fetch_data(page){
             $.ajax({
-                url:"/desarrolladoras/lista?page="+page,
+                url:"/campanias/lista?page="+page,
 
                 success:function(data){
-                    $('#desarrolladoras_data').html(data);
+                    $('#campania_data').html(data);
                 }
             });
         }   
         function buscar(nombre,ordenarPor,ordenarDe){
             $.ajax({
-                url:"/desarrolladoras/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe,
+                url:"/campanias/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe,
                 
                 success:function(data){
-                    $('#desarrolladoras_data').html(data);
+                    $('#campania_data').html(data);
                 }
             });
         }     
