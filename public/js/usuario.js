@@ -116,6 +116,77 @@ $(function () {
     }
 
     /**
+     * COMPONENTES DESARROLLADORA
+     */
+
+    $(".participar-sorteo").click(function (e) {
+        e.preventDefault();
+        let id = $(this).parent().prev().val();
+        Swal.fire({
+            title: 'Confirmar Participación',
+            html: '<div id="recaptcha" class="mb-3"></div>',
+            didOpen: function() {
+                grecaptcha.render('recaptcha', {
+                        'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                });
+            },
+            preConfirm: function () {
+                if (grecaptcha.getResponse().length === 0) {
+                    Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                } else {
+                    $.ajax({
+                        url: '{{ route("usuario.desarrolladora.sorteo") }}',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            id: id,
+                        },
+                        success: function(data) {
+                            $(".participar-sorteo-div").html("Ya has participado.");
+                        }
+                    });
+                }
+            }
+        })
+    });
+
+    $(".participar-encuesta").click(function (e) {
+        e.preventDefault();
+        let encuesta = $(this).parent().prev().val();
+        let opcion = $(`input[name=respuesta${encuesta}]:checked`).val();
+        Swal.fire({
+            title: 'Confirmar Participación',
+            html: '<div id="recaptcha" class="mb-3"></div>',
+            didOpen: function() {
+                grecaptcha.render('recaptcha', {
+                        'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                });
+            },
+            preConfirm: function () {
+                if (grecaptcha.getResponse().length === 0) {
+                    Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                } else {
+                    $.ajax({
+                        url: '{{ route("usuario.desarrolladora.encuesta") }}',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            opcion: opcion,
+                        },
+                        success: function(data) {
+                            $(".participar-encuesta-div").html("Ya has participado.");
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    /**
      * COMPONENTES MASTER
      */
 
@@ -187,11 +258,57 @@ $(function () {
      * PAGINGA NOTICIAS
      */
 
-    $(".noticias, .actualizaciones, .mensajes").paginga({
+    $(".noticias, .actualizaciones, .mensajes, .analisis-div").paginga({
         maxPageNumbers: 3
     });
-    $(".actualizaciones").paginga();
-    $(".mensajes").paginga();
+
+    /**
+     * OWL
+     */
+
+    let owl = $('.owl-loop');
+
+    owl.owlCarousel({
+        loop: true,
+        margin: 10,
+        dots: true,
+        responsive: {
+            0: {
+                items: 1.5
+            },
+            600: {
+                items: 3.5
+            },
+            1000: {
+                items: 4.5
+            }
+        }
+    });
+
+    mousewheel(owl);
+
+    $(".item").hover(function() {
+        $(this).children('a').children('img').css('filter', 'brightness(0.2)');
+        $(this).children('a').children('div').removeClass('d-none');
+    }, function() {
+        $(this).children('a').children('img').css('filter', 'brightness(1)');
+        $(this).children('a').children('div').addClass('d-none');
+    });
+
+    /**
+     * Botones lista
+     */
+
+    $('.list-buttons').on('click', function(e) {
+        e.preventDefault();
+        let item = $(this).attr('id');
+        $('.listado').each(function () {
+            if (!$(this).hasClass("d-none")) {
+                $(this).addClass('d-none');
+            }
+        });
+        $('.' + item).removeClass('d-none');
+    });
 });
 
 /**
@@ -223,4 +340,136 @@ function compartir(event) {
  * LEER MAS
  */
 
+function more(url, id, config, checkUser) {
+    $.ajax({
+        url: url,
+        data: {
+            id: id,
+        },
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                'content'),
+        },
+        success: function(data) {
+            let report = '';
+            if(data.post.juego_id != null || data.post.master_id != null || data.post.desarrolladora_id != null || data.post.campania_id != null) {
+                report = `<input id="idPost" type="hidden" value="${data.post.id}"><a class="text-danger" id='reportePost'><i class="fas fa-exclamation-triangle"></i></a>`;
+            }
+            let html = `<div class='post text-justify'><button class="btn btn-dark volver">Volver</button><div class="contenido-post">${data.post.contenido}</p>${report}</div>`;
+            if(checkUser) {
+                html += `<hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
+                if(data.mensajes.length > 0) {
+                    data.mensajes.forEach(element => {
+                        html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><input type="hidden" value="${element.id}"><a name="${element.id}asd" class="text-danger float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p></div>`;
+                    });
+                } else {
+                    html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
+                }
+            }
+            html += '</div></div>';
+            window.scrollTo({top: 100, behavior: 'smooth'});
+            $('.hola').html(html);
+            $('.hola').css('left', 0);
+            $('.volver').on('click', function(e) {
+                $('.hola').css('left', -10000);
+            });
+            if(checkUser) {
+                CKEDITOR.replace("mensaje", {
+                    customConfig: config
+                });
+            }
+            $('#reportePost').on('click', function(){
+                reporte('/reporte', $('#idPost').val(), 'post_id');
+            });
+            $("#mensaje-form").on('click', function(e) {
+                e.preventDefault();
+                let mensaje = CKEDITOR.instances.editor.getData();
+                CKEDITOR.instances.editor.setData("");
+                $.ajax({
+                    url: '/mensaje/nuevo',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        id: data.post.id,
+                        mensaje: mensaje
+                    }, success: function(data) {
+                        if ($('.mensajes').children().text() == "No hay ningún mensaje") {
+                            $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                        } else {
+                            $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                        }
+                    }
+                });
+            });
+            $('i[name ="reportarMensaje"]').on('click', function() {
+                reporte('/reporte', $(this).parent().prev().val(), 'mensaje_id');
+            });
+        }
+    });
+}
 
+/**
+ * REPORTES
+ */
+
+function reporte(url, id, tipo) {
+    Swal.fire({
+        title: 'Indica el motivo del reporte',
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: `Reportar`,
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        html: '<div id="recaptcha" class="mb-3"></div>',
+        didOpen: function() {
+            grecaptcha.render('recaptcha', {
+                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+            });
+        },
+        preConfirm: function (result) {
+            console.log(result)
+            if (grecaptcha.getResponse().length === 0) {
+                Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+            } else if (result != '') {
+                let motivo = result;
+                $.ajax({
+                    url: url,
+                    type : 'POST',
+                    headers:{
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    data: {
+                        id: id,
+                        tipo: tipo,
+                        motivo: motivo,
+                    }
+                    ,success: function(data){
+                        Swal.fire(data)
+                    }
+                })
+            }else{
+                Swal.showValidationMessage(`Por favor, indica un motivo.`)
+            }
+        }
+    });
+}
+
+/**
+ * OWL
+ */
+
+function mousewheel(objeto) {
+    objeto.on('mousewheel', '.owl-stage', function(e) {
+        e.preventDefault();
+        if (e.originalEvent.wheelDelta > 0) {
+            objeto.trigger('prev.owl');
+        } else {
+            objeto.trigger('next.owl');
+        }
+    });
+}

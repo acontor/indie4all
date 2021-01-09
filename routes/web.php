@@ -208,7 +208,6 @@ Route::patch('/cuenta/usuario', [App\Http\Controllers\Usuario\CuentaController::
 Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'index'])->name('usuario.desarrolladoras.index');
 Route::get('/desarrolladoras/lista', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'all'])->name('usuario.desarrolladoras.all');
 Route::get('/desarrolladora/{id}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'show'])->name('usuario.desarrolladora.show');
-Route::get('/desarrolladora/{id}/post', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'post'])->name('usuario.desarrolladora.post');
 Route::post('/desarrolladora/{id}/follow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'follow'])->name('usuario.desarrolladora.follow')->middleware('auth');
 Route::post('/desarrolladora/{id}/unfollow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'unfollow'])->name('usuario.desarrolladora.unfollow')->middleware('auth');
 Route::post('/desarrolladora/{id}/{notificacion}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'notificacion'])->name('usuario.desarrolladora.notificacion')->middleware('auth');
@@ -223,7 +222,6 @@ Route::post('/solicitud/store', [App\Http\Controllers\Usuario\SolicitudesControl
 Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index');
 Route::get('/juegos/lista', [App\Http\Controllers\Usuario\JuegosController::class, 'all'])->name('usuario.juegos.all');
 Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class, 'show'])->name('usuario.juego.show');
-Route::get('/juego/{id}/post', [App\Http\Controllers\Usuario\JuegosController::class, 'post'])->name('usuario.juego.post');
 Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController::class, 'follow'])->name('usuario.juego.follow')->middleware('auth');
 Route::post('/juego/{id}/unfollow', [App\Http\Controllers\Usuario\JuegosController::class, 'unfollow'])->name('usuario.juego.unfollow')->middleware('auth');
 Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosController::class, 'notificacion'])->name('usuario.juego.notificacion')->middleware('auth');
@@ -232,7 +230,6 @@ Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosCo
 Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index');
 Route::get('/masters/lista', [App\Http\Controllers\Usuario\MasterController::class, 'all'])->name('usuario.masters.all');
 Route::get('/master/{id}', [App\Http\Controllers\Usuario\MasterController::class, 'show'])->name('usuario.master.show');
-Route::get('/master/post', [App\Http\Controllers\Usuario\MasterController::class, 'post'])->name('usuario.master.post');
 Route::post('/master/{id}/follow', [App\Http\Controllers\Usuario\MasterController::class, 'follow'])->name('usuario.master.follow')->middleware('auth');
 Route::post('/master/{id}/unfollow', [App\Http\Controllers\Usuario\MasterController::class, 'unfollow'])->name('usuario.master.unfollow')->middleware('auth');
 Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterController::class, 'notificacion'])->name('usuario.master.notificacion')->middleware('auth');
@@ -244,10 +241,13 @@ Route::post('/campania/foro/nuevo', [App\Http\Controllers\Usuario\CampaniasContr
 Route::get('/campania/{id}/actualizacion', [App\Http\Controllers\Usuario\CampaniasController::class, 'actualizacion'])->name('usuario.campania.actualizacion');
 
 // Reportes
-Route::post('/reporte/{id}/{tipo}', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');
+Route::post('/reporte', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');
 
 // Mensajes
 Route::post('/mensaje/nuevo', [App\Http\Controllers\Usuario\MensajesController::class, 'store'])->name('usuario.mensaje.store');
+
+// Posts
+Route::post('/post', [App\Http\Controllers\Usuario\PostsController::class, 'show'])->name('usuario.post.show');
 
 // Pagos
 Route::post('/pago',[App\Http\Controllers\Usuario\PaymentController::class, 'payWithPaypal'])->name('usuario.paypal.pagar');

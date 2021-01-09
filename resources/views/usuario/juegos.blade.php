@@ -28,13 +28,13 @@
             <div class="row mb-4">
                 <div class="col-12 col-md-8">
                     <h3 class="ml-3 text-uppercase font-weight-bold">Recomendaciones</h3>
-                    <div class="owl-carousel 1 mt-5">
+                    <div class="owl-carousel owl-loop mt-5">
                         @foreach ($recomendados->take('10') as $juego)
                             <div class="item m-2 shadow">
                                 <a href="{{ route('usuario.juego.show', $juego->id) }}">
                                     <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
                                         alt="{{ $juego->nombre }}">
-                                    <div class="carousel-caption" style="display: none;">
+                                    <div class="carousel-caption d-none">
                                         <h6>{{ $juego->nombre }}</h6>
                                         <small>
                                             {{ $juego->desarrolladora->nombre }}
@@ -55,10 +55,10 @@
                         <a href="{{ route('usuario.juego.show', $juegos->first()->id) }}">
                             <img class="img-fluid shadow" height="20" src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
                                 alt="{{ $juegos->first()->nombre }}">
-                            <div class="carousel-caption" style="display: none;">
+                            <div class="carousel-caption d-none">
                                 <h6>{{ $juegos->first()->nombre }}</h6>
                                 <small>
-                                    {{ $juegos->first()->nombre }}
+                                    {{ $juegos->first()->desarrolladora->nombre }}
                                     <br>
                                     <span class="badge badge-danger">{{ $juegos->first()->genero->nombre }}</span>
                                     <br>
@@ -73,16 +73,16 @@
             <div class="row">
                 <div class="col-12 col-md-8 pt-5">
                     <div class="shadow p-3">
-                        @if($coleccion && $coleccion->count() == 0)
-                            @auth
-                                Para obtener noticias personalizadas deberías añadir tus juegos favoritos a tu colección.
-                            @endauth
-                        @endif
                         <h2>Últimas noticias
                             @if($coleccion && $coleccion->count() > 0)
                                 <a class="btn btn-dark float-right" href="{{ route('usuario.cuenta.index', 'juegos') }}">Colección de juegos</a>
                             @endif
                         </h2>
+                        @if($coleccion && $coleccion->count() == 0)
+                            @auth
+                                <small>Para obtener noticias personalizadas deberías añadir tus juegos favoritos a tu colección.</small>
+                            @endauth
+                        @endif
                         <div class="noticias">
                             <div class="items">
                                 @if($posts->count() == 0)
@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 mt-5 mt-md-0">
-                    <nav class="sticky-top pt-5 bg-transparent">
+                    <nav class="pt-5 bg-transparent">
                         <div class="list-group shadow">
                             <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
                                 <a href="" id="nuevos" class="list-group-item list-group-item-action list-buttons">Nuevo</a>
@@ -156,8 +156,8 @@
                                 </a>
                             @endforeach
                         </div>
-                    </header>
-                </nav>
+                    </nav>
+                </div>
             </div>
             <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
         </div>
@@ -169,109 +169,16 @@
     <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
-            $('.list-buttons').on('click', function(e) {
-                e.preventDefault();
-                let item = $(this).attr('id');
-                $('.listado').each(function () {
-                    if (!$(this).hasClass("d-none")) {
-                        $(this).addClass('d-none');
-                    }
-                });
-                $('.' + item).removeClass('d-none');
-            });
-
-            var owl = $('.1');
-
-            owl.owlCarousel({
-                loop: true,
-                margin: 10,
-                dots: true,
-                responsive: {
-                    0: {
-                        items: 1.5
-                    },
-                    600: {
-                        items: 3.5
-                    },
-                    1000: {
-                        items: 4.5
-                    }
+            $(".more").on('click', function () {
+                let checkUser = false;
+                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
+                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                    checkUser = true;
                 }
-            });
-
-            mousewheel(owl);
-
-            function mousewheel(objeto) {
-                objeto.on('mousewheel', '.owl-stage', function(e) {
-                    e.preventDefault();
-                    if (e.originalEvent.wheelDelta > 0) {
-                        objeto.trigger('prev.owl');
-                    } else {
-                        objeto.trigger('next.owl');
-                    }
-                });
-            }
-
-            $(".item").hover(function() {
-                $(this).children('a').children('img').css('filter', 'brightness(0.2)');
-                $(this).children('a').children('div').fadeToggle(0, "linear");
-            }, function() {
-                $(this).children('a').children('img').css('filter', 'brightness(1)');
-                $(this).children('a').children('div').fadeToggle(0, "linear");
-            });
-
-            $(".more").click(function () {
-                let url = '{{ route("usuario.juego.post", ":id") }}';
-                url = url.replace(':id', $(this).prev().val());
-                $.ajax({
-                    url: url,
-                    data: {
-                        id: $(this).prev().val(),
-                    },
-                    success: function(data) {
-                        let html = "<button class='btn btn-light volver'>Volver</button>";
-                        html += `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
-                        if(data.mensajes.length > 0) {
-                            data.mensajes.forEach(element => {
-                                html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><p>${element.contenido}</p></div>`;
-                            });
-                        } else {
-                            html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
-                        }
-                        html += '</div></div>';
-                        window.scrollTo({top: 100, behavior: 'smooth'});
-                        $('.hola').html(html);
-                        $('.hola').css('left', 0);
-                        $('.volver').on('click', function(e) {
-                            $('.hola').css('left', -10000);
-                        })
-                        CKEDITOR.replace("mensaje", {
-                            customConfig: "{{ asset('js/ckeditor/config.js') }}"
-                        });
-                        $("#mensaje-form").click(function(e) {
-                            e.preventDefault();
-                            let mensaje = CKEDITOR.instances.editor.getData();
-                            CKEDITOR.instances.editor.setData("");
-                            $.ajax({
-                                url: '{{ route("usuario.mensaje.store") }}',
-                                type: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: {
-                                    id: data.post.id,
-                                    mensaje: mensaje
-                                }, success: function(data) {
-                                    if ($('.mensajes').children().text() == "No hay ningún mensaje") {
-                                        $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    } else {
-                                        $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    }
-                                }
-                            });
-                        });
-                    }
-                });
+                let url = '{{ route("usuario.post.show") }}';
+                let id = $(this).prev().val();
+                let config = '{{ asset("js/ckeditor/config.js") }}';
+                more(url, id, config, checkUser);
             });
         });
 

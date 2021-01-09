@@ -1,6 +1,39 @@
 @extends("layouts.usuario.base")
 
 @section('content')
+<style>
+    .container {
+        position: relative;
+    }
+
+    .hola {
+        width: 100%;
+        height: 100% !important;
+        background-color: white !important;
+        position: absolute;
+        top: 0%;
+        margin: 0 !important;
+        z-index: 1030;
+        left: -10000px;
+        transition: left .5s;
+        overflow: auto;
+    }
+
+    .items > div {
+        border: 2px solid rgb(0, 0, 0, 0.1);
+        padding: 40px;
+    }
+
+    .general > div, .sorteos > div, .encuestas > div {
+        border: 2px solid rgb(0, 0, 0, 0.1);
+    }
+
+    /* MEDIA MOBILE*/
+    small {
+        font-size: 10px;
+    }
+
+</style>
     <main class="p-3 pb-5">
         <div class="container box mt-4">
             <div class="row mb-4">
@@ -13,7 +46,7 @@
                         <a href="{{ route('usuario.master.show', $master->id) }}">
                             <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
                                 alt="{{ $master->nombre }}">
-                            <div class="carousel-caption mb-5" style="display: none;">
+                            <div class="carousel-caption mb-5 d-none">
                                 <h6><strong>{{ $master->nombre }}</strong></h6>
                                 <small class="float-left text-left">Seguidores: {{ $master->seguidores->count() }}</small>
                             </div>
@@ -95,6 +128,7 @@
                     </div>
                 </div>
             </div>
+            <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
         </div>
     </main>
 @endsection
@@ -104,13 +138,32 @@
     <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
+
+
+            $(".more").on('click', function () {
+                let checkUser = false;
+                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
+                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                    checkUser = true;
+                }
+                let url = '{{ route("usuario.post.show") }}';
+                let id = $(this).prev().val();
+                let config = '{{ asset("js/ckeditor/config.js") }}';
+                more(url, id, config, checkUser);
+            });
+
+
+
+
+
+
             $('img').addClass('img-fluid');
             $('img').addClass('h-auto');
 
             var owl = $('.1');
 
             owl.owlCarousel({
-                loop: true,
+                loop: false,
                 margin: 10,
                 dots: true,
                 responsive: {
@@ -149,14 +202,6 @@
                     }
                 });
             }
-
-            $(".item").hover(function() {
-                $(this).children('a').children('img').css('filter', 'brightness(0.2)');
-                $(this).children('a').children('div').fadeToggle(200, "linear");
-            }, function() {
-                $(this).children('a').children('img').css('filter', 'brightness(1)');
-                $(this).children('a').children('div').fadeToggle(0, "linear");
-            });
         });
 
     </script>

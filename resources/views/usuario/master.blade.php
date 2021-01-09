@@ -2,7 +2,39 @@
 
 @section("content")
 
+<style>
+    .container {
+        position: relative;
+    }
 
+    .hola {
+        width: 100%;
+        height: 100% !important;
+        background-color: white !important;
+        position: absolute;
+        top: 0%;
+        margin: 0 !important;
+        z-index: 1030;
+        left: -10000px;
+        transition: left .5s;
+        overflow: auto;
+    }
+
+    .items > div {
+        border: 2px solid rgb(0, 0, 0, 0.1);
+        padding: 40px;
+    }
+
+    .general > div, .sorteos > div, .encuestas > div {
+        border: 2px solid rgb(0, 0, 0, 0.1);
+    }
+
+    /* MEDIA MOBILE*/
+    small {
+        font-size: 10px;
+    }
+
+</style>
 
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
@@ -55,8 +87,8 @@
                         @endauth
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
                         @auth
-                            @if(Auth::user() && Auth::user()->master()->count() != 0 && Auth::user()->master->id != $master->id)
-                                <a class="btn btn-danger ml-2"><i class="fas fa-exclamation-triangle mt-1" id='reporteMaster'></i></a>
+                            @if(Auth::user() && !Auth::user()->master)
+                                <a class="btn btn-danger ml-2" id='reporteMaster'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth
                     </div>
@@ -144,6 +176,7 @@
                     @endif
                 </div>
             </div>
+            <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
         </div>
     </main>
 
@@ -169,204 +202,23 @@
 
             $(".compartir").on('click', {html: html}, compartir);
 
-            $(".more").click(function () {
-                let url = '{{ route("usuario.master.post", ":id") }}';
-                url = url.replace(':id', $(this).prev().val());
-                $.ajax({
-                    url: url,
-                    data: {
-                        id: $(this).prev().val(),
-                    },
-                    success: function(data) {
-                        let html = `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p> <input id="idPost" type="hidden" value="${data.post.id}"><a class="text-danger"><i class="fas fa-exclamation-triangle" id='reportePost'></i></a></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
-                        if(data.mensajes.length > 0) {
-                            data.mensajes.forEach(element => {
-                                console.log(element)
-                                html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><input type="hidden" value="${element.id}"><a name="${element.id}asd" class="text-danger float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p></div>`;
-                            });
-                        } else {
-                            html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
-                        }
-                        html += '</div></div>';
-                        Swal.fire({
-                            title: `<h4><strong>${data.post.titulo}</strong></h4>`,
-                            html: html,
-                            showCloseButton: false,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            width: 1000,
-                            showClass: {
-                                popup: 'animate__animated animate__slideInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__zoomOutDown'
-                            }
-                        });
-
-                        CKEDITOR.replace("mensaje", {
-                            customConfig: "{{ asset('js/ckeditor/config.js') }}"
-                        });
-                        $('#reportePost').click(function(){
-                            let postId =  $('#idPost').val();
-                            console.log(postId)
-                            let url = '{{ route("usuario.reporte", [":id" , "post_id"]) }}';
-                            url = url.replace(':id', postId);
-                            Swal.fire({
-                                title: 'Indica el motivo del reporte',
-                                showCancelButton: true,
-                                cancelButtonText: 'Cancelar',
-                                confirmButtonText: `Reportar`,
-                                input: 'text',
-                                inputAttributes: {
-                                    autocapitalize: 'off'
-                                },
-                                html: '<div id="recaptcha" class="mb-3"></div>',
-                                didOpen: function() {
-                                    grecaptcha.render('recaptcha', {
-                                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                                    });
-                                },
-                                preConfirm: function (result) {
-                                    console.log(result)
-                                    if (grecaptcha.getResponse().length === 0) {
-                                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                                    } else if (result != '') {
-                                        let motivo = result;
-                                        $.ajax({
-                                            url: url,
-                                            type : 'POST',
-                                            headers:{
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                            },
-                                            data: {
-                                                motivo: motivo,
-                                            }
-                                            ,success: function(data){
-                                                Swal.fire(data)
-                                            }
-                                        })
-                                    }else{
-                                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                                    }
-                                }
-                            })
-                        })
-                        $("#mensaje-form").click(function(e) {
-
-                            e.preventDefault();
-                            let mensaje = CKEDITOR.instances.editor.getData();
-                            CKEDITOR.instances.editor.setData("");
-
-                            $.ajax({
-                                url: '{{ route("usuario.mensaje.store") }}',
-                                type: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: {
-                                    id: data.post.id,
-                                    mensaje: mensaje
-                                }, success: function(data) {
-                                    if ($('.mensajes').children().text() == "No hay ningún mensaje") {
-                                        $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    } else {
-                                        $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    }
-                                }
-                            });
-                        });
-                        $('i[name ="reportarMensaje"]').click(function(){
-                            let mensajeId =  $(this).parent().prev().val();
-                            console.log(mensajeId)
-                            let url = '{{ route("usuario.reporte", [":id" , "mensaje_id"]) }}';
-                            url = url.replace(':id', mensajeId);
-                            Swal.fire({
-                                title: 'Indica el motivo del reporte',
-                                showCancelButton: true,
-                                cancelButtonText: 'Cancelar',
-                                confirmButtonText: `Reportar`,
-                                input: 'text',
-                                inputAttributes: {
-                                    autocapitalize: 'off'
-                                },
-                                html: '<div id="recaptcha" class="mb-3"></div>',
-                                didOpen: function() {
-                                    grecaptcha.render('recaptcha', {
-                                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                                    });
-                                },
-                                preConfirm: function (result) {
-                                    console.log(result)
-                                    if (grecaptcha.getResponse().length === 0) {
-                                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                                    } else if (result != '') {
-                                        let motivo = result;
-                                        $.ajax({
-                                            url: url,
-                                            type : 'POST',
-                                            headers:{
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                            },
-                                            data: {
-                                                motivo: motivo,
-                                            }
-                                            ,success: function(data){
-                                                Swal.fire(data)
-                                            }
-                                        })
-                                    }else{
-                                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                                    }
-                                }
-                            })
-                        })
-                    }
-                });
+            $(".more").on('click', function () {
+                let checkUser = false;
+                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
+                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                    checkUser = true;
+                }
+                let url = '{{ route("usuario.post.show") }}';
+                let id = $(this).prev().val();
+                let config = '{{ asset("js/ckeditor/config.js") }}';
+                more(url, id, config, checkUser);
             });
-            $('#reporteMaster').click(function(){
-                let masterId = {!! $master->id !!}
-                let url = '{{ route("usuario.reporte", [":id" , "master_id"]) }}';
-                url = url.replace(':id', masterId);
-                Swal.fire({
-                    title: 'Indica el motivo del reporte',
-                    showCancelButton: true,
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonText: `Reportar`,
-                    input: 'text',
-                    inputAttributes: {
-                        autocapitalize: 'off'
-                    },
-                    html: '<div id="recaptcha" class="mb-3"></div>',
-                    didOpen: function() {
-                        grecaptcha.render('recaptcha', {
-                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                        });
-                    },
-                    preConfirm: function (result) {
-                        console.log(result)
-                        if (grecaptcha.getResponse().length === 0) {
-                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                        } else if (result != '') {
-                            let motivo = result;
-                            $.ajax({
-                                url: url,
-                                type : 'POST',
-                                headers:{
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                },
-                                data: {
-                                    motivo: motivo,
-                                }
-                                ,success: function(data){
-                                    Swal.fire(data)
-                                }
-                            })
-                        }else{
-                            Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                        }
-                    }
-                })
-            })
+
+            $('#reporteMaster').on('click', function(){
+                let id = {!! $master->id !!};
+                let url = '{{ route("usuario.reporte") }}';
+                reporte(url, id, 'master_id');
+            });
         });
 
     </script>

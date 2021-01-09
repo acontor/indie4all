@@ -97,8 +97,8 @@
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
                         <a class="btn btn-dark web ml-2" href="{{ $desarrolladora->url }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
                         @auth
-                            @if(Auth::user() && Auth::user()->cm()->count() != 0 && Auth::user()->cm->desarrolladora_id != $desarrolladora->id)
-                                <a class="btn btn-danger ml-2"><i class="fas fa-exclamation-triangle mt-1" id='reporteDesarrolladora'></i></a>
+                            @if(Auth::user() && !Auth::user()->cm)
+                                <a class="btn btn-danger ml-2" id='reporteDesarrolladora'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth
                     </div>
@@ -321,7 +321,47 @@
     <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
-            $('img').addClass('img-fluid')
+            $('img').addClass('img-fluid');
+
+            let desarrolladora = {!! json_encode($desarrolladora) !!};
+
+            html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
+            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20la%20desarrolladora%20${desarrolladora.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
+            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
+            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20la%desarrolladora%20${desarrolladora.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
+            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
+            `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
+
+            $(".compartir").on('click', {html: html}, compartir);
+
+            $(".more").on('click', function () {
+                let checkUser = false;
+                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
+                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                    checkUser = true;
+                }
+                let url = '{{ route("usuario.post.show") }}';
+                let id = $(this).prev().val();
+                let config = '{{ asset("js/ckeditor/config.js") }}';
+                more(url, id, config, checkUser);
+            });
+
+            $('#reporteDesarrolladora').click(function(){
+                let id = {!! $desarrolladora->id !!};
+                let url = '{{ route("usuario.reporte") }}';
+                reporte(url, id, 'desarrolladora_id');
+            });
+
+
+
+
+
+
+
+
+
+
+
 
             var owl = $('.1');
 
@@ -363,193 +403,6 @@
                 e.preventDefault();
             });
 
-            let desarrolladora = {!! json_encode($desarrolladora) !!};
-
-            html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
-            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20la%20desarrolladora%20${desarrolladora.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
-            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
-            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20la%desarrolladora%20${desarrolladora.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
-            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
-            `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
-
-            $(".compartir").on('click', {html: html}, compartir);
-
-            $(".more").click(function () {
-                let url = '{{ route("usuario.desarrolladora.post", ":id") }}';
-                url = url.replace(':id', $(this).prev().val());
-                $.ajax({
-                    url: url,
-                    data: {
-                        id: $(this).prev().val(),
-                    },
-                    success: function(data) {
-                        let html = "<button class='btn btn-light volver'>Volver</button>";
-                        html += `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
-                        if(data.mensajes.length > 0) {
-                            data.mensajes.forEach(element => {
-                                html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><p>${element.contenido}</p></div>`;
-                            });
-                        } else {
-                            html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
-                        }
-                        html += '</div></div>';
-                        window.scrollTo({top: 100, behavior: 'smooth'});
-                        $('.hola').html(html);
-                        $('.hola').css('left', 0);
-                        /* Swal.fire({
-                            title: `<h4><strong>${data.post.titulo}</strong></h4>`,
-                            html: html,
-                            showCloseButton: false,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            width: 1000,
-                            showClass: {
-                                popup: 'animate__animated animate__slideInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__zoomOutDown'
-                            }
-                        }); */
-                        $('.volver').on('click', function(e) {
-                            $('.hola').css('left', -10000);
-                        })
-                        CKEDITOR.replace("mensaje", {
-                            customConfig: "{{ asset('js/ckeditor/config.js') }}"
-                        });
-                        $("#mensaje-form").click(function(e) {
-                            e.preventDefault();
-                            let mensaje = CKEDITOR.instances.editor.getData();
-                            CKEDITOR.instances.editor.setData("");
-                            $.ajax({
-                                url: '{{ route("usuario.mensaje.store") }}',
-                                type: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: {
-                                    id: data.post.id,
-                                    mensaje: mensaje
-                                }, success: function(data) {
-                                    if ($('.mensajes').children().text() == "No hay ningún mensaje") {
-                                        $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    } else {
-                                        $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    }
-                                }
-                            });
-                        });
-                    }
-                });
-            });
-            $(".participar-sorteo").click(function (e) {
-                e.preventDefault();
-                let id = $(this).parent().prev().val();
-                Swal.fire({
-                    title: 'Confirmar Participación',
-                    html: '<div id="recaptcha" class="mb-3"></div>',
-                    didOpen: function() {
-                        grecaptcha.render('recaptcha', {
-                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                        });
-                    },
-                    preConfirm: function () {
-                        if (grecaptcha.getResponse().length === 0) {
-                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                        } else {
-                            $.ajax({
-                                url: '{{ route("usuario.desarrolladora.sorteo") }}',
-                                type: 'post',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: {
-                                    id: id,
-                                },
-                                success: function(data) {
-                                    $(".participar-sorteo-div").html("Ya has participado.");
-                                }
-                            });
-                        }
-                    }
-                })
-            });
-            $(".participar-encuesta").click(function (e) {
-                e.preventDefault();
-                let encuesta = $(this).parent().prev().val();
-                let opcion = $(`input[name=respuesta${encuesta}]:checked`).val();
-                Swal.fire({
-                    title: 'Confirmar Participación',
-                    html: '<div id="recaptcha" class="mb-3"></div>',
-                    didOpen: function() {
-                        grecaptcha.render('recaptcha', {
-                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                        });
-                    },
-                    preConfirm: function () {
-                        if (grecaptcha.getResponse().length === 0) {
-                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                        } else {
-                            $.ajax({
-                                url: '{{ route("usuario.desarrolladora.encuesta") }}',
-                                type: 'post',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: {
-                                    opcion: opcion,
-                                },
-                                success: function(data) {
-                                    $(".participar-encuesta-div").html("Ya has participado.");
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-            $('#reporteDesarrolladora').click(function(){
-                let desarrolladoraId = {!! $desarrolladora->id !!}
-                let url = '{{ route("usuario.reporte", [":id" , "desarrolladora_id"]) }}';
-                url = url.replace(':id', desarrolladoraId);
-                Swal.fire({
-                    title: 'Indica el motivo del reporte',
-                    showCancelButton: true,
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonText: `Reportar`,
-                    input: 'text',
-                    inputAttributes: {
-                        autocapitalize: 'off'
-                    },
-                    html: '<div id="recaptcha" class="mb-3"></div>',
-                    didOpen: function() {
-                        grecaptcha.render('recaptcha', {
-                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                        });
-                    },
-                    preConfirm: function (result) {
-                        console.log(result)
-                        if (grecaptcha.getResponse().length === 0) {
-                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                        } else if (result != '') {
-                            let motivo = result;
-                            $.ajax({
-                                url: url,
-                                type : 'POST',
-                                headers:{
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                },
-                                data: {
-                                    motivo: motivo,
-                                }
-                                ,success: function(data){
-                                    Swal.fire(data)
-                                }
-                            })
-                        }else{
-                            Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                        }
-                    }
-                })
-            })
         });
 
     </script>
