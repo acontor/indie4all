@@ -29,7 +29,7 @@
                                 <tr>
                                     <td>{{ $noticia->titulo }}</td>
                                     <td>{{ $noticia->tipo }}</td>
-                                    <td class="text-center">{{ $noticia->mensajes->count() }}</td>
+                                    <td class="text-center">{{ $noticia->comentarios->count() }}</td>
                                     <td class="text-center">{{ $noticia->calificacion }}</td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">

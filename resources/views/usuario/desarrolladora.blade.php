@@ -134,7 +134,7 @@
                                         <div class="shadow mb-4">
                                             <h4>{{ $post->titulo }}</h4>
                                             <p>{!! substr($post->contenido, 0, 300) !!}...</p>
-                                            <small>Comentarios: {{ $post->mensajes->count() }}</small>
+                                            <small>Comentarios: {{ $post->comentarios->count() }}</small>
                                             <br>
                                             <input type="hidden" name="id" value="{{ $post->id }}" />
                                             <a type="submit" class="more">Leer más</a>

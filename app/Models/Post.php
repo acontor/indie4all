@@ -39,7 +39,7 @@ class Post extends Model
     }
 
     // Posts - 1:N - Mensajes
-    public function mensajes()
+    public function comentarios()
     {
         return $this->hasMany("App\Models\Mensaje");
     }

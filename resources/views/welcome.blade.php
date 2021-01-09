@@ -48,7 +48,7 @@
                                         <p>{!! substr($noticia->contenido, 0, 300) !!}...</p>
                                         {{ $noticia->created_at }}
                                         @if ($noticia->comentarios)
-                                            <small>Comentarios: {{ $noticia->mensajes->count() }}</small>
+                                            <small>Comentarios: {{ $noticia->comentarios->count() }}</small>
                                         @endif
                                         <form>
                                             <input type="hidden" name="id" value="{{ $noticia->id }}" />

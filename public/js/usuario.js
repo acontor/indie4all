@@ -258,7 +258,7 @@ $(function () {
      * PAGINGA NOTICIAS
      */
 
-    $(".noticias, .actualizaciones, .mensajes, .analisis-div").paginga({
+    $(".noticias, .actualizaciones, .mensajes, .analisis-div, .estados").paginga({
         maxPageNumbers: 3
     });
 
@@ -353,10 +353,10 @@ function more(url, id, config, checkUser) {
         },
         success: function(data) {
             let report = '';
-            if(data.post.juego_id != null || data.post.master_id != null || data.post.desarrolladora_id != null || data.post.campania_id != null) {
+            if((data.post.juego_id != null || data.post.master_id != null || data.post.desarrolladora_id != null || data.post.campania_id != null) && checkUser) {
                 report = `<input id="idPost" type="hidden" value="${data.post.id}"><a class="text-danger" id='reportePost'><i class="fas fa-exclamation-triangle"></i></a>`;
             }
-            let html = `<div class='post text-justify'><button class="btn btn-dark volver">Volver</button><div class="contenido-post">${data.post.contenido}</p>${report}</div>`;
+            let html = `<div class='post text-justify'><button class="btn btn-dark mb-3 volver">Volver</button><div class="contenido-post">${data.post.contenido}</p>${report}</div>`;
             if(checkUser) {
                 html += `<hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
                 if(data.mensajes.length > 0) {

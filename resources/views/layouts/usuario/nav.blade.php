@@ -10,19 +10,18 @@
     </button>
     <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar2">
         <ul class="navbar-nav mx-auto text-md-center text-left">
-            <li class="nav-item mt-1">
-                <a class="nav-link" href="{{ url('/') }}">Portal</a>
+            <li class="nav-item">
+                <a href="{{ url('/') }}" class="nav-link navbar-brand mx-0 d-none d-md-inline">
+                    <img src="{{ asset('images/logo.png') }}" class="img-fluid" width="50" alt="">
+                </a>
             </li>
-            <li class="nav-item mt-1">
-                <a class="nav-link" href="{{ route('home') }}">Home</a>
-            </li>
+            @auth
+                <li class="nav-item mt-1">
+                    <a class="nav-link" href="{{ route('home') }}">Portal</a>
+                </li>
+            @endauth
             <li class="nav-item mt-1">
                 <a class="nav-link" href="{{ route('usuario.masters.index') }}">Masters</a>
-            </li>
-            <li class="nav-item ml-3 mr-3">
-                <span class="nav-link navbar-brand mx-0 d-none d-md-inline">
-                    <img src="{{ asset('images/logo.png') }}" class="img-fluid" width="50" alt="">
-                </span>
             </li>
             <li class="nav-item mt-1">
                 <a class="nav-link" href="{{ route('usuario.desarrolladoras.index') }}">Desarrolladoras</a>

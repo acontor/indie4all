@@ -140,7 +140,7 @@
                                     <div>
                                         <h4>{{ $post->titulo }}</h4>
                                         <p>{!! substr($post->contenido, 0, 300) !!}...</p>
-                                        <small>Comentarios: {{ $post->mensajes->count() }}</small>
+                                        <small>Comentarios: {{ $post->comentarios->count() }}</small>
                                         <form>
                                             <input type="hidden" name="id" value="{{ $post->id }}" />
                                             <a type="submit" class="more">Leer más</a>
@@ -204,8 +204,11 @@
 
             $(".more").on('click', function () {
                 let checkUser = false;
-                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
-                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                let user = {
+                    ban: "{{{ (Auth::user()) ? Auth::user()->ban : 1 }}}",
+                    email_verified_at: "{{{ (Auth::user()) ? Auth::user()->email_verified_at : null }}}"
+                };
+                if(user.ban == 0 && user.email_verified_at != null) {
                     checkUser = true;
                 }
                 let url = '{{ route("usuario.post.show") }}';
