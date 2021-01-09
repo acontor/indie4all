@@ -29,9 +29,10 @@ class JuegosController extends Controller
         }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
         $posts = $this->obtenerNoticias($coleccion);
+        $analisis = Post::where('master_id', '!=', null)->where('juego_id', '!=', null)->orderBy('created_at', 'DESC')->get();
         $recomendados = $this->obtenerJuegos($generos, $coleccion);
 
-        return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'posts' => $posts]);
+        return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'posts' => $posts, 'analisis' => $analisis]);
     }
 
     /**
@@ -127,13 +128,13 @@ class JuegosController extends Controller
         }
 
         if (count($juegos_id) > 0) {
-            $posts = Post::whereIn('juego_id', $juegos_id)->get();
+            $posts = Post::whereIn('juego_id', $juegos_id)->where('master_id', null)->get();
         } else {
-            $posts = Post::where('juego_id', '!=', null)->get();
+            $posts = Post::where('juego_id', '!=', null)->where('master_id', null)->get();
         }
 
         if ($posts->count() == 0 || count($juegos_id)  == 0) {
-            $posts = Post::where('juego_id', '!=', null)->get();
+            $posts = Post::where('juego_id', '!=', null)->where('master_id', null)->get();
         }
 
         return $posts;

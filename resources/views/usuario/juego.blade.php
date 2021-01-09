@@ -1,40 +1,6 @@
 @extends("layouts.usuario.base")
 
 @section("content")
-<style>
-    .container {
-        position: relative;
-    }
-
-    .hola {
-        width: 100%;
-        height: 100% !important;
-        background-color: white !important;
-        position: absolute;
-        top: 0%;
-        margin: 0 !important;
-        z-index: 1030;
-        left: -10000px;
-        transition: left .5s;
-        overflow: auto;
-    }
-
-    .items > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-        padding: 40px;
-    }
-
-    .general > div, .sorteos > div, .encuestas > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-    }
-
-    /* MEDIA MOBILE*/
-    small {
-        font-size: 10px;
-    }
-
-</style>
-
     @if(Auth::user() && Auth::user()->master()->count() != 0 && Auth::user()->master->posts->where('juego_id', $juego->id)->count() == 0)
         <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light">
             <span class="mx-auto">¿Quieres <a href="{{ route('master.analisis.create', $juego->id) }}">analizar</a> éste juego?</span>
@@ -252,10 +218,7 @@
                         </nav>
                 </div>
             </div>
-
-
-            <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
-
+            <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>
         </div>
     </main>
 @endsection

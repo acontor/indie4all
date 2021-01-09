@@ -35,7 +35,7 @@ class Master extends Model
     // user - 1:M - Masters
     public function usuario()
     {
-        return $this->belongsTo("App\Models\User","user_id","id");
+        return $this->belongsTo("App\Models\User", "user_id", "id");
     }
 
     // Masters - 1:N - Posts

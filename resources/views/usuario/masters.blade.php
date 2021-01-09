@@ -1,53 +1,21 @@
 @extends("layouts.usuario.base")
 
 @section('content')
-<style>
-    .container {
-        position: relative;
-    }
-
-    .hola {
-        width: 100%;
-        height: 100% !important;
-        background-color: white !important;
-        position: absolute;
-        top: 0%;
-        margin: 0 !important;
-        z-index: 1030;
-        left: -10000px;
-        transition: left .5s;
-        overflow: auto;
-    }
-
-    .items > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-        padding: 40px;
-    }
-
-    .general > div, .sorteos > div, .encuestas > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-    }
-
-    /* MEDIA MOBILE*/
-    small {
-        font-size: 10px;
-    }
-
-</style>
     <main class="p-3 pb-5">
         <div class="container box mt-4">
             <div class="row mb-4">
                 <h3 class="col-12 text-center text-uppercase font-weight-bold">Destacados</h3>
                 <div class="col-12 offset-md-2 col-md-8">
-                    <div class="owl-carousel 1 mt-3">
+                    <div class="owl-carousel owl-theme mt-3">
                         @foreach ($masters->take('10') as $master)
                             <div class="item m-2 shadow">
                                 <a href="{{ route('usuario.master.show', $master->id) }}">
                                     <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
                                         alt="{{ $master->nombre }}">
-                                    <div class="carousel-caption mb-5 d-none">
+                                    <div class="carousel-caption mb-2 d-none">
                                         <h6><strong>{{ $master->nombre }}</strong></h6>
-                                        <small class="float-left text-left">Seguidores: {{ $master->seguidores->count() }}</small>
+                                        <small>Seguidores: {{ $master->seguidores_count }}</small>
+                                        <small>Actividad: {{ $master->posts_count }}</small>
                                     </div>
                                 </a>
                             </div>
@@ -57,28 +25,29 @@
             </div>
             <hr class="mt-5 mb-5">
             <div class="row">
-                <div class="col-12 col-md-8">
+                <div class="col-12 col-md-9">
                     <nav class="bg-transparent">
                         <div class="list-group shadow">
                             <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                                <a href="" id="estados" class="list-group-item list-group-item-action list-buttons">Estados</a>
+                                <a href="" id="estados" class="list-group-item list-group-item-action list-buttons bg-dark text-white">Estados</a>
                                 <a href="" id="analisis-div" class="list-group-item list-group-item-action list-buttons">Análisis</a>
                             </ul>
-                            <div class="list-group-item list-group-item-action flex-column align-items-start listado estados">
-                                Estados
-                                <div class="items">
-                                    @foreach ($masters as $master)
-                                        @foreach ($master->posts as $post)
+                            <div class="list-group-item flex-column align-items-start listado estados">
+                                <div class="items mt-4">
+                                    @if($posts->where('juego_id', null)->count() > 0)
+                                        @foreach ($posts->where('juego_id', null) as $post)
                                             <div>
-                                                <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
-                                                <p>{!! substr($post->contenido, 0, 300) !!}</p>
-                                                <form>
-                                                    <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                    <a type="submit" class="more">Leer más</a>
-                                                </form>
+                                                <h4>{{ $post->titulo }}</h4>
+                                                <p>{!! $post->contenido !!}</p>
+                                                <div class="footer-estados mt-3">
+                                                    <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                    <small>{{ $post->created_at }}</small>
+                                                </div>
                                             </div>
                                         @endforeach
-                                    @endforeach
+                                    @else
+                                        <p>No se han encontrado estados</p>
+                                    @endif
                                 </div>
                                 <div class="pager">
                                     <div class="firstPage">&laquo;</div>
@@ -88,21 +57,31 @@
                                     <div class="lastPage">&raquo;</div>
                                 </div>
                             </div>
-                            <div class="list-group-item list-group-item-action flex-column align-items-start listado analisis-div d-none">
-                                Análisis
-                                <div class="items">
-                                    @foreach ($masters as $master)
-                                        @foreach ($master->posts as $post)
-                                            <div>
-                                                <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
+                            <div class="list-group-item flex-column align-items-start listado analisis-div d-none">
+                                <div class="items row mt-4">
+                                    @if($posts->where('juego_id', '!=', null)->count() > 0)
+                                        @foreach ($posts->where('juego_id', '!=', null) as $post)
+                                            <div class="col-12 col-md-6">
+                                                <div class="pildoras mb-3">
+                                                    <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                    <span class="badge badge-pill badge-info">{{$post->juego->genero->nombre}}</span>
+                                                </div>
+                                                <h4>{{ $post->titulo }}</h4>
                                                 <p>{!! substr($post->contenido, 0, 300) !!}</p>
                                                 <form>
                                                     <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                    <a type="submit" class="more">Leer más</a>
+                                                    <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
                                                 </form>
+                                                <div class="footer-noticias mt-3">
+                                                    <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                    <small>{{ $post->created_at }}</small>
+                                                    <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
+                                                </div>
                                             </div>
                                         @endforeach
-                                    @endforeach
+                                    @else
+                                        <p>No se han encontrado análisis</p>
+                                    @endif
                                 </div>
                                 <div class="pager">
                                     <div class="firstPage">&laquo;</div>
@@ -115,16 +94,13 @@
                         </div>
                     </nav>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-3 mt-3 mt-md-0">
                     <nav class="bg-transparent">
                         <div class="list-group shadow">
                             <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                                <li class="list-group-item w-100">Nuevo</li>
+                                <li class="list-group-item w-100 bg-dark text-white">Nuevo</li>
                                 <a href="/masters/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
                             </ul>
-                            @php
-                                $fechaHoy = date('Y-m-d');
-                            @endphp
                             @foreach ($masters->sortByDesc('created_at')->take(5) as $master)
                                 <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
                                     <div class="d-flex w-100 justify-content-between">
@@ -137,7 +113,7 @@
                     </nav>
                 </div>
             </div>
-            <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
+            <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>
         </div>
     </main>
 @endsection
@@ -147,8 +123,6 @@
     <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
-
-
             $(".more").on('click', function () {
                 let checkUser = false;
                 let user = {
@@ -164,6 +138,10 @@
                 more(url, id, config, checkUser);
             });
 
+            let owl = $('.owl-carousel');
+
+            crearOwl(owl, false, 2, 3, 4);
+
 
 
 
@@ -171,49 +149,6 @@
 
             $('img').addClass('img-fluid');
             $('img').addClass('h-auto');
-
-            var owl = $('.1');
-
-            owl.owlCarousel({
-                loop: false,
-                margin: 10,
-                dots: true,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    600: {
-                        items: 3
-                    },
-                    1000: {
-                        items: 5
-                    }
-                }
-            });
-
-            mousewheel(owl);
-
-            var owl2 = $('.2');
-
-            owl2.owlCarousel({
-                loop: true,
-                margin: 10,
-                items: 1,
-                navText : ['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>']
-            });
-
-            mousewheel(owl2);
-
-            function mousewheel(objeto) {
-                objeto.on('mousewheel', '.owl-stage', function(e) {
-                    e.preventDefault();
-                    if (e.originalEvent.wheelDelta > 0) {
-                        objeto.trigger('prev.owl');
-                    } else {
-                        objeto.trigger('next.owl');
-                    }
-                });
-            }
         });
 
     </script>

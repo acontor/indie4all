@@ -30,33 +30,33 @@ $(function () {
             }
         });
 
-        $("#busqueda").on("keyup", function() {
+        $("#busqueda").on("keyup", function () {
             $(".swal2-html-container>div").html("");
-            if($("#busqueda").val() != "") {
+            if ($("#busqueda").val() != "") {
                 $.ajax({
                     url: "/busqueda",
                     datatype: "json",
                     data: {
                         q: $("#busqueda").val(),
                     },
-                    success: function(data) {
+                    success: function (data) {
                         let html = '<div class="list-group mb-4 mt-2 mr-3">';
-                        if(data.length == 0) {
+                        if (data.length == 0) {
                             $(".swal2-html-container>div").append('<p class="mt-3">No se ha encontrado ningún resultado</p>');
                         } else {
                             data.forEach(element => {
-                                if(element.tipo == "Juego") {
-                                    if(html.indexOf("<h4 class='mt-2 mb-2'>Juegos</h4>") == -1) {
+                                if (element.tipo == "Juego") {
+                                    if (html.indexOf("<h4 class='mt-2 mb-2'>Juegos</h4>") == -1) {
                                         html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="/juegos/lista">Ver todos</a></small><div class="owl-carousel owl-theme 1">`;
                                     }
                                     html += `<div class="item"><a href="/juego/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Desarrolladora") {
-                                    if(html.indexOf("<h4 class='mt-2 mb-2'>Desarrolladoras</h4>") == -1) {
+                                    if (html.indexOf("<h4 class='mt-2 mb-2'>Desarrolladoras</h4>") == -1) {
                                         html += `</div><h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="/desarrolladoras/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
                                     }
                                     html += `<div class="item"><a href="/desarrolladora/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Master") {
-                                    if(html.indexOf("<h4 class='mt-2 mb-2'>Masters</h4>") == -1) {
+                                    if (html.indexOf("<h4 class='mt-2 mb-2'>Masters</h4>") == -1) {
                                         html += `</div><h4 class='mt-2 mb-2'>Masters</h4><small><a href="/masters/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
                                     }
                                     html += `<div class="item"><a href="/master/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
@@ -67,9 +67,9 @@ $(function () {
                             var owl = $('.1');
                             owl.owlCarousel({
                                 center: false,
-                                items:2,
-                                loop:false,
-                                margin:10,
+                                items: 2,
+                                loop: false,
+                                margin: 10,
                                 responsive: {
                                     0: {
                                         items: 2
@@ -82,10 +82,10 @@ $(function () {
                                     }
                                 }
                             });
-                            $('.item').on('mouseenter', function() {
+                            $('.item').on('mouseenter', function () {
                                 $(this).children('a').children('img').css('filter', 'brightness(0.2)');
                                 $(this).children('a').children('div').fadeToggle(0, "linear");
-                            }).on('mouseleave', function() {
+                            }).on('mouseleave', function () {
                                 $(this).children('a').children('img').css('filter', 'brightness(1)');
                                 $(this).children('a').children('div').fadeToggle(0, "linear");
                             });
@@ -109,7 +109,7 @@ $(function () {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function(data) {
+            success: function (data) {
                 $(".verify-alert").html("El correo debe haberse enviado a su bandeja de entrada. Compruebe su bandeja de spam si no le llega.")
             }
         });
@@ -125,9 +125,9 @@ $(function () {
         Swal.fire({
             title: 'Confirmar Participación',
             html: '<div id="recaptcha" class="mb-3"></div>',
-            didOpen: function() {
+            didOpen: function () {
                 grecaptcha.render('recaptcha', {
-                        'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                    'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
                 });
             },
             preConfirm: function () {
@@ -143,7 +143,7 @@ $(function () {
                         data: {
                             id: id,
                         },
-                        success: function(data) {
+                        success: function (data) {
                             $(".participar-sorteo-div").html("Ya has participado.");
                         }
                     });
@@ -159,9 +159,9 @@ $(function () {
         Swal.fire({
             title: 'Confirmar Participación',
             html: '<div id="recaptcha" class="mb-3"></div>',
-            didOpen: function() {
+            didOpen: function () {
                 grecaptcha.render('recaptcha', {
-                        'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                    'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
                 });
             },
             preConfirm: function () {
@@ -177,7 +177,7 @@ $(function () {
                         data: {
                             opcion: opcion,
                         },
-                        success: function(data) {
+                        success: function (data) {
                             $(".participar-encuesta-div").html("Ya has participado.");
                         }
                     });
@@ -190,44 +190,9 @@ $(function () {
      * COMPONENTES MASTER
      */
 
-    $(".eliminar-estado").on('click', function() {
+    $(".eliminar-estado").on('click', function () {
         $(this).parent().on('submit');
         $(this).parent().parent().remove();
-    });
-
-    $(".estado").parent().on("click", function() {
-        Swal.fire({
-            position: 'bottom',
-            title: 'Nuevo estado',
-            html: '<textarea class="form-control" name="nuevo-estado" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button>',
-            showCloseButton: false,
-            showCancelButton: false,
-            showConfirmButton: false,
-            showClass: {
-                popup: 'animate__animated animate__bounceInUp'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__backOutDown'
-            }
-        });
-        CKEDITOR.replace("nuevo-estado", {
-            customConfig: "{{ asset('js/ckeditor/config.js') }}"
-        });
-        $("#estado-form").on('click', function(e) {
-            e.preventDefault();
-            let estado = CKEDITOR.instances.editor.getData();
-            CKEDITOR.instances.editor.setData("");
-            $.ajax({
-                url: '{{ route("master.estado.store") }}',
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    estado: estado
-                }
-            });
-        });
     });
 
     /**
@@ -259,38 +224,18 @@ $(function () {
      */
 
     $(".noticias, .actualizaciones, .mensajes, .analisis-div, .estados").paginga({
-        maxPageNumbers: 3
+        maxPageNumbers: 3,
+        itemsPerPage: 6
     });
 
     /**
      * OWL
      */
 
-    let owl = $('.owl-loop');
-
-    owl.owlCarousel({
-        loop: true,
-        margin: 10,
-        dots: true,
-        responsive: {
-            0: {
-                items: 1.5
-            },
-            600: {
-                items: 3.5
-            },
-            1000: {
-                items: 4.5
-            }
-        }
-    });
-
-    mousewheel(owl);
-
-    $(".item").hover(function() {
+    $(".item").hover(function () {
         $(this).children('a').children('img').css('filter', 'brightness(0.2)');
         $(this).children('a').children('div').removeClass('d-none');
-    }, function() {
+    }, function () {
         $(this).children('a').children('img').css('filter', 'brightness(1)');
         $(this).children('a').children('div').addClass('d-none');
     });
@@ -299,14 +244,25 @@ $(function () {
      * Botones lista
      */
 
-    $('.list-buttons').on('click', function(e) {
+    $('.list-buttons').on('click', function (e) {
         e.preventDefault();
         let item = $(this).attr('id');
-        $('.listado').each(function () {
-            if (!$(this).hasClass("d-none")) {
-                $(this).addClass('d-none');
-            }
-        });
+        if (!$(this).hasClass('bg-dark')) {
+            $('.list-buttons').removeClass('bg-dark text-white');
+            $(this).addClass('bg-dark text-white');
+        }
+        $('.listado').addClass('d-none');
+        $('.' + item).removeClass('d-none');
+    });
+
+    $('.list-buttons-2').on('click', function (e) {
+        e.preventDefault();
+        let item = $(this).attr('id');
+        if (!$(this).hasClass('bg-dark')) {
+            $('.list-buttons-2').removeClass('bg-dark text-white');
+            $(this).addClass('bg-dark text-white');
+        }
+        $('.listado-2').addClass('d-none');
         $('.' + item).removeClass('d-none');
     });
 });
@@ -329,7 +285,7 @@ function compartir(event) {
         }
     });
 
-    $(".copiar").on('click', function() {
+    $(".copiar").on('click', function () {
         $("#input-link").on('select');
         document.execCommand("copy");
         $("#input-link").on('blur');
@@ -351,15 +307,15 @@ function more(url, id, config, checkUser) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
                 'content'),
         },
-        success: function(data) {
+        success: function (data) {
             let report = '';
-            if((data.post.juego_id != null || data.post.master_id != null || data.post.desarrolladora_id != null || data.post.campania_id != null) && checkUser) {
-                report = `<input id="idPost" type="hidden" value="${data.post.id}"><a class="text-danger" id='reportePost'><i class="fas fa-exclamation-triangle"></i></a>`;
+            if ((data.post.juego_id != null || data.post.master_id != null || data.post.desarrolladora_id != null || data.post.campania_id != null) && checkUser) {
+                report = `<input id="idPost" type="hidden" value="${data.post.id}"><button class="btn btn-danger btn-sm mr-1 float-right" id='reportePost'><i class="fas fa-exclamation-triangle"></i></button>`;
             }
-            let html = `<div class='post text-justify'><button class="btn btn-dark mb-3 volver">Volver</button><div class="contenido-post">${data.post.contenido}</p>${report}</div>`;
-            if(checkUser) {
-                html += `<hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
-                if(data.mensajes.length > 0) {
+            let html = `<div class='post text-justify'><h3 class="d-inline">${data.post.titulo}</h3><button class="btn btn-dark btn-sm float-right volver">Volver</button>${report}<div class="contenido-post mt-4 mb-4">${data.post.contenido}</p></div>`;
+            if (checkUser) {
+                html += `<textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
+                if (data.mensajes.length > 0) {
                     data.mensajes.forEach(element => {
                         html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><input type="hidden" value="${element.id}"><a name="${element.id}asd" class="text-danger float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p></div>`;
                     });
@@ -368,21 +324,21 @@ function more(url, id, config, checkUser) {
                 }
             }
             html += '</div></div>';
-            window.scrollTo({top: 100, behavior: 'smooth'});
-            $('.hola').html(html);
-            $('.hola').css('left', 0);
-            $('.volver').on('click', function(e) {
-                $('.hola').css('left', -10000);
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+            $('.more-div').html(html);
+            $('.more-div').css('left', 0);
+            $('.volver').on('click', function (e) {
+                $('.more-div').css('left', -10000);
             });
-            if(checkUser) {
+            if (checkUser) {
                 CKEDITOR.replace("mensaje", {
                     customConfig: config
                 });
             }
-            $('#reportePost').on('click', function(){
+            $('#reportePost').on('click', function () {
                 reporte('/reporte', $('#idPost').val(), 'post_id');
             });
-            $("#mensaje-form").on('click', function(e) {
+            $("#mensaje-form").on('click', function (e) {
                 e.preventDefault();
                 let mensaje = CKEDITOR.instances.editor.getData();
                 CKEDITOR.instances.editor.setData("");
@@ -395,7 +351,7 @@ function more(url, id, config, checkUser) {
                     data: {
                         id: data.post.id,
                         mensaje: mensaje
-                    }, success: function(data) {
+                    }, success: function (data) {
                         if ($('.mensajes').children().text() == "No hay ningún mensaje") {
                             $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
                         } else {
@@ -404,7 +360,7 @@ function more(url, id, config, checkUser) {
                     }
                 });
             });
-            $('i[name ="reportarMensaje"]').on('click', function() {
+            $('i[name ="reportarMensaje"]').on('click', function () {
                 reporte('/reporte', $(this).parent().prev().val(), 'mensaje_id');
             });
         }
@@ -426,7 +382,7 @@ function reporte(url, id, tipo) {
             autocapitalize: 'off'
         },
         html: '<div id="recaptcha" class="mb-3"></div>',
-        didOpen: function() {
+        didOpen: function () {
             grecaptcha.render('recaptcha', {
                 'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
             });
@@ -439,8 +395,8 @@ function reporte(url, id, tipo) {
                 let motivo = result;
                 $.ajax({
                     url: url,
-                    type : 'POST',
-                    headers:{
+                    type: 'POST',
+                    headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     },
                     data: {
@@ -448,11 +404,11 @@ function reporte(url, id, tipo) {
                         tipo: tipo,
                         motivo: motivo,
                     }
-                    ,success: function(data){
+                    , success: function (data) {
                         Swal.fire(data)
                     }
                 })
-            }else{
+            } else {
                 Swal.showValidationMessage(`Por favor, indica un motivo.`)
             }
         }
@@ -463,13 +419,73 @@ function reporte(url, id, tipo) {
  * OWL
  */
 
-function mousewheel(objeto) {
-    objeto.on('mousewheel', '.owl-stage', function(e) {
+function crearOwl(owl, loop, items1, items2, items3) {
+    owl.owlCarousel({
+        loop: loop,
+        margin: 10,
+        dots: true,
+        responsive: {
+            0: {
+                items: items1
+            },
+            600: {
+                items: items2
+            },
+            1000: {
+                items: items3
+            }
+        }
+    });
+
+    mousewheel(owl);
+}
+
+function mousewheel(owl) {
+    owl.on('mousewheel', '.owl-stage', function (e) {
         e.preventDefault();
         if (e.originalEvent.wheelDelta > 0) {
-            objeto.trigger('prev.owl');
+            owl.trigger('prev.owl');
         } else {
-            objeto.trigger('next.owl');
+            owl.trigger('next.owl');
         }
+    });
+}
+
+/**
+ * Componente Master
+ */
+
+function nuevoEstado(config) {
+    Swal.fire({
+        position: 'bottom',
+        title: 'Nuevo estado',
+        html: '<textarea class="form-control" name="nuevo-estado" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button>',
+        showCloseButton: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+        showClass: {
+            popup: 'animate__animated animate__bounceInUp'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__backOutDown'
+        }
+    });
+    CKEDITOR.replace("nuevo-estado", {
+        customConfig: config
+    });
+    $("#estado-form").on('click', function (e) {
+        e.preventDefault();
+        let estado = CKEDITOR.instances.editor.getData();
+        CKEDITOR.instances.editor.setData("");
+        $.ajax({
+            url: '/master/estado/nuevo',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                estado: estado
+            }
+        });
     });
 }

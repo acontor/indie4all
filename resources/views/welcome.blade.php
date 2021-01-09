@@ -1,39 +1,6 @@
 @extends("layouts.usuario.base")
 
 @section("content")
-<style>
-    .container {
-        position: relative;
-    }
-
-    .hola {
-        width: 100%;
-        height: 100% !important;
-        background-color: white !important;
-        position: absolute;
-        top: 0%;
-        margin: 0 !important;
-        z-index: 1030;
-        left: -10000px;
-        transition: left .5s;
-        overflow: auto;
-    }
-
-    .items > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-        padding: 40px;
-    }
-
-    .general > div, .sorteos > div, .encuestas > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-    }
-
-    /* MEDIA MOBILE*/
-    small {
-        font-size: 10px;
-    }
-
-</style>
     <main class="p-3 pb-5">
         <div class="container box mt-4">
             <div class="row">
@@ -90,7 +57,7 @@
                     @endforeach
                 </div>
             </div>
-            <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
+            <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>
         </div>
     </main>
 @endsection

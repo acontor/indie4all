@@ -1,41 +1,6 @@
 @extends("layouts.usuario.base")
 
 @section("content")
-
-<style>
-    .container {
-        position: relative;
-    }
-
-    .hola {
-        width: 100%;
-        height: 100% !important;
-        background-color: white !important;
-        position: absolute;
-        top: 0%;
-        margin: 0 !important;
-        z-index: 1030;
-        left: -10000px;
-        transition: left .5s;
-        overflow: auto;
-    }
-
-    .items > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-        padding: 40px;
-    }
-
-    .general > div, .sorteos > div, .encuestas > div {
-        border: 2px solid rgb(0, 0, 0, 0.1);
-    }
-
-    /* MEDIA MOBILE*/
-    small {
-        font-size: 10px;
-    }
-
-</style>
-
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
             <header>
@@ -109,49 +74,70 @@
 
 
             <div class="row">
-                <div class="col-md-8 mt-4">
+                <div class="col-12 col-md-9 mt-4">
                     <div id="contenido">
-                        <div class="estados">
+                        <div class="estados shadow p-4">
                             <h3>Estados</h3>
-                            @if ($master->posts->where('juego_id', null)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', null) as $post)
-                                    <div class="alert alert-dark">
-                                        {!! $post->contenido !!}
-                                        @if(Auth::user() && Auth::user()->master != null && $master->id == Auth::user()->master->id)
-                                            <form action="{{ route('master.estado.destroy', $post->id) }}" method="post">
-                                                @csrf
-                                                @method("DELETE")
-                                                <button class="btn btn-danger btn-sm round ml-1 eliminar-estado" type="submit">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            @else
-                                Aún no ha publicado ninguna actualización.
-                            @endif
+                            <div class="items mt-4">
+                                @if($master->posts->where('juego_id', null)->count() > 0)
+                                    @foreach ($master->posts->where('juego_id', null) as $post)
+                                        <div>
+                                            <h4>{{ $post->titulo }}</h4>
+                                            <p>{!! $post->contenido !!}</p>
+                                            <div class="footer-estados mt-3">
+                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small>{{ $post->created_at }}</small>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>aún no ha publicado ningún estado</p>
+                                @endif
+                            </div>
+                            <div class="pager">
+                                <div class="firstPage">&laquo;</div>
+                                <div class="previousPage">&lsaquo;</div>
+                                <div class="pageNumbers"></div>
+                                <div class="nextPage">&rsaquo;</div>
+                                <div class="lastPage">&raquo;</div>
+                            </div>
                         </div>
-                        <div class="analisis-div d-none">
+                        <div class="analisis-div shadow p-4 d-none">
                             <h3>Análisis</h3>
-                            @if ($master->posts->where('juego_id', '!=', null)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', '!=', null) as $post)
-                                <hr>
-                                    <div>
-                                        <h4>{{ $post->titulo }}</h4>
-                                        <p>{!! substr($post->contenido, 0, 300) !!}...</p>
-                                        <small>Comentarios: {{ $post->comentarios->count() }}</small>
-                                        <form>
-                                            <input type="hidden" name="id" value="{{ $post->id }}" />
-                                            <a type="submit" class="more">Leer más</a>
-                                        </form>
-                                    </div>
-                                @endforeach
-                            @else
-                                Aún no ha publicado ningún análisis.
-                            @endif
+                            <div class="items row mt-4">
+                                @if($master->posts->where('juego_id', '!=', null)->count() > 0)
+                                    @foreach ($master->posts->where('juego_id', '!=', null) as $post)
+                                        <div class="col-12 col-md-6">
+                                            <div class="pildoras mb-3">
+                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-info">{{$post->juego->genero->nombre}}</span>
+                                            </div>
+                                            <h4>{{ $post->titulo }}</h4>
+                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            <form>
+                                                <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                            </form>
+                                            <div class="footer-noticias mt-3">
+                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small>{{ $post->created_at }}</small>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>No ha publicado ningún análisis</p>
+                                @endif
+                            </div>
+                            <div class="pager">
+                                <div class="firstPage">&laquo;</div>
+                                <div class="previousPage">&lsaquo;</div>
+                                <div class="pageNumbers"></div>
+                                <div class="nextPage">&rsaquo;</div>
+                                <div class="lastPage">&raquo;</div>
+                            </div>
                         </div>
-                        <div class="notas d-none">
+                        <div class="notas shadow p-4 d-none">
                             <h3>Notas</h3>
                             @if ($master->posts->where('juego_id', '!=', null)->count() != 0)
                                 @foreach ($master->posts->where('juego_id', '!=', null) as $post)
@@ -166,24 +152,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 offset-md-1 mt-4">
-                    @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
-                        <h2>Top 5</h2>
-                        <hr>
-                        @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $post)
-                            {{$post->juego->nombre}}
-                        @endforeach
-                    @endif
+                <div class="col-12 col-md-3 mt-4">
+                    <nav class="bg-transparent">
+                        <div class="list-group shadow">
+                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                                <li class="list-group-item w-100 bg-dark text-white">Recomendados</li>
+                                <a href="/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
+                            </ul>
+
+                            @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
+                                @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->juego as $juego)
+                                    <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none proximo">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                            <small>{{$juego->fecha_lanzamiento}}</small>
+                                        </div>
+                                        <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                        <span class="btn btn-dark btn-sm float-right">{{$compra->juego->precio}} €</span>
+                                        <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
+                                    </a>
+                                @endforeach
+                            @else
+                                <span class="list-group-item">No ha recomendado ningún juego</span>
+                            @endif
+                        </div>
+                    </nav>
                 </div>
             </div>
-            <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
+            <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>
         </div>
     </main>
-
-
-
-
-
 @endsection
 @section("scripts")
     <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>

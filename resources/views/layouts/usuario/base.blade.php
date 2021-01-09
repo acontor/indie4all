@@ -84,6 +84,13 @@
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/usuario.js') }}"></script>
     @yield("scripts")
+    <script>
+        $(function () {
+            $(".estado").parent().on("click", function() {
+                nuevoEstado('{{ asset("js/ckeditor/config.js") }}');
+            });
+        });
+    </script>
 </body>
 
 </html>
