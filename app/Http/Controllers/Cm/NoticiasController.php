@@ -51,7 +51,7 @@ class NoticiasController extends Controller
             'contenido' => 'required',
         ]);
 
-        Post::create([
+        $post = Post::create([
             'titulo' => $request->titulo,
             'contenido' => $request->contenido,
             $tipo . '_id' => $id,
@@ -63,6 +63,12 @@ class NoticiasController extends Controller
             $url = '/cm/campania/' . $id;
         } else {
             $url = '/cm/noticias';
+        }
+
+        if ($post->exists) {
+            session()->flash('success', 'El post se ha creado.');
+        } else {
+            session()->flash('error', 'El post no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
         }
 
         return redirect()->to($url);
@@ -102,6 +108,8 @@ class NoticiasController extends Controller
         } else {
             $url = '/cm/noticias';
         }
+
+        session()->flash('success', 'El post se ha editado.');
 
         return redirect()->to($url);
     }

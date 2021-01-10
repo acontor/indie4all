@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null],['campania_id', null]])->paginate(4);
+    $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null],['campania_id', null]])->get();
     $juegos = Juego::has('seguidores')->inRandomOrder()->take(5)->get();
     $desarrolladoras = Desarrolladora::all()->take(5);
     $masters = Master::all()->take(5);
@@ -37,22 +37,22 @@ Route::get('/admin', [App\Http\Controllers\Administrador\HomeController::class, 
 
 // Noticias
 Route::get('/admin/noticias', [App\Http\Controllers\Administrador\NoticiasController::class, 'index'])->name('admin.noticias.index');
-Route::get('/admin/noticias/nueva', [App\Http\Controllers\Administrador\NoticiasController::class, 'create'])->name('admin.noticias.create');
-Route::post('/admin/noticias/upload', [App\Http\Controllers\Administrador\NoticiasController::class, 'upload'])->name('admin.noticias.upload');
-Route::post('/admin/noticias/nueva', [App\Http\Controllers\Administrador\NoticiasController::class, 'store'])->name('admin.noticias.store');
-Route::post('/admin/noticias/{id}/edit', [App\Http\Controllers\Administrador\NoticiasController::class, 'edit'])->name('admin.noticias.edit');
-Route::patch('/admin/noticias/{id}/update', [App\Http\Controllers\Administrador\NoticiasController::class, 'update'])->name('admin.noticias.update');
-Route::delete('/admin/noticias/{id}/delete', [App\Http\Controllers\Administrador\NoticiasController::class, 'destroy'])->name('admin.noticias.destroy');
+Route::get('/admin/noticia/nueva', [App\Http\Controllers\Administrador\NoticiasController::class, 'create'])->name('admin.noticias.create');
+Route::post('/admin/noticia/upload', [App\Http\Controllers\Administrador\NoticiasController::class, 'upload'])->name('admin.noticias.upload');
+Route::post('/admin/noticia/nueva', [App\Http\Controllers\Administrador\NoticiasController::class, 'store'])->name('admin.noticias.store');
+Route::get('/admin/noticia/{id}/edit', [App\Http\Controllers\Administrador\NoticiasController::class, 'edit'])->name('admin.noticias.edit');
+Route::patch('/admin/noticia/{id}/update', [App\Http\Controllers\Administrador\NoticiasController::class, 'update'])->name('admin.noticias.update');
+Route::delete('/admin/noticia/{id}/delete', [App\Http\Controllers\Administrador\NoticiasController::class, 'destroy'])->name('admin.noticias.destroy');
 
 // Usuarios
 Route::get('/admin/usuarios', [App\Http\Controllers\Administrador\UsuariosController::class, 'index'])->name('admin.usuarios.index');
-Route::get('/admin/usuarios/nuevo', [App\Http\Controllers\Administrador\UsuariosController::class, 'create'])->name('admin.usuarios.create');
-Route::post('/admin/usuarios/nuevo', [App\Http\Controllers\Administrador\UsuariosController::class, 'store'])->name('admin.usuarios.store');
-Route::post('/admin/usuarios/{id}/edit', [App\Http\Controllers\Administrador\UsuariosController::class, 'edit'])->name('admin.usuarios.edit');
-Route::patch('/admin/usuarios/{id}/update', [App\Http\Controllers\Administrador\UsuariosController::class, 'update'])->name('admin.usuarios.update');
-Route::delete('/admin/usuarios/{id}/delete', [App\Http\Controllers\Administrador\UsuariosController::class, 'destroy'])->name('admin.usuarios.destroy');
-Route::post('/admin/usuarios/{id}/ban', [App\Http\Controllers\Administrador\UsuariosController::class, 'ban'])->name('admin.usuarios.ban');
-Route::post('/admin/usuarios/{id}/unban', [App\Http\Controllers\Administrador\UsuariosController::class, 'unban'])->name('admin.usuarios.unban');
+Route::get('/admin/usuario/nuevo', [App\Http\Controllers\Administrador\UsuariosController::class, 'create'])->name('admin.usuarios.create');
+Route::post('/admin/usuario/nuevo', [App\Http\Controllers\Administrador\UsuariosController::class, 'store'])->name('admin.usuarios.store');
+Route::get('/admin/usuario/{id}/edit', [App\Http\Controllers\Administrador\UsuariosController::class, 'edit'])->name('admin.usuarios.edit');
+Route::patch('/admin/usuario/{id}/update', [App\Http\Controllers\Administrador\UsuariosController::class, 'update'])->name('admin.usuarios.update');
+Route::delete('/admin/usuario/{id}/delete', [App\Http\Controllers\Administrador\UsuariosController::class, 'destroy'])->name('admin.usuarios.destroy');
+Route::post('/admin/usuario/{id}/ban', [App\Http\Controllers\Administrador\UsuariosController::class, 'ban'])->name('admin.usuarios.ban');
+Route::post('/admin/usuario/{id}/unban', [App\Http\Controllers\Administrador\UsuariosController::class, 'unban'])->name('admin.usuarios.unban');
 
 // Desarrolladoras
 Route::get('/admin/desarrolladoras', [App\Http\Controllers\Administrador\DesarrolladorasController::class, 'index'])->name('admin.desarrolladoras.index');
@@ -61,36 +61,36 @@ Route::post('/admin/desarrolladora/{id}/unban', [App\Http\Controllers\Administra
 
 // Juegos
 Route::get('/admin/juegos', [App\Http\Controllers\Administrador\JuegosController::class, 'index'])->name('admin.juegos.index');
-Route::get('/admin/juego/{id}', [App\Http\Controllers\Administrador\JuegosController::class, 'show'])->name('admin.juego.show');
 Route::post('/admin/juego/{id}/ban', [App\Http\Controllers\Administrador\JuegosController::class, 'ban'])->name('admin.juego.ban');
 Route::post('/admin/juego/{id}/unban', [App\Http\Controllers\Administrador\JuegosController::class, 'unban'])->name('admin.juego.unban');
 
 // Campañas
 Route::get('/admin/campanias', [App\Http\Controllers\Administrador\CampaniasController::class, 'index'])->name('admin.campanias.index');
-Route::get('/admin/campania/{id}', [App\Http\Controllers\Administrador\CampaniasController::class, 'show'])->name('admin.campania.show');
 Route::post('/admin/campania/{id}/ban', [App\Http\Controllers\Administrador\CampaniasController::class, 'ban'])->name('admin.campania.ban');
 Route::post('/admin/campania/{id}/unban', [App\Http\Controllers\Administrador\CampaniasController::class, 'unban'])->name('admin.campania.unban');
 
 // Logros
 Route::get('/admin/logros', [App\Http\Controllers\Administrador\LogrosController::class, 'index'])->name('admin.logros.index');
-Route::get('/admin/logros/nuevo', [App\Http\Controllers\Administrador\LogrosController::class, 'create'])->name('admin.logros.create');
-Route::post('/admin/logros', [App\Http\Controllers\Administrador\LogrosController::class, 'store'])->name('admin.logros.store');
-Route::post('/admin/logros/{id}/edit', [App\Http\Controllers\Administrador\LogrosController::class, 'edit'])->name('admin.logros.edit');
-Route::patch('/admin/logros/{id}/update', [App\Http\Controllers\Administrador\LogrosController::class, 'update'])->name('admin.logros.update');
-Route::delete('/admin/logros/{id}/delete', [App\Http\Controllers\Administrador\LogrosController::class, 'destroy'])->name('admin.logros.destroy');
+Route::get('/admin/logro/nuevo', [App\Http\Controllers\Administrador\LogrosController::class, 'create'])->name('admin.logros.create');
+Route::post('/admin/logro/nuevo', [App\Http\Controllers\Administrador\LogrosController::class, 'store'])->name('admin.logros.store');
+Route::post('/admin/logro/{id}/edit', [App\Http\Controllers\Administrador\LogrosController::class, 'edit'])->name('admin.logros.edit');
+Route::patch('/admin/logro/{id}/update', [App\Http\Controllers\Administrador\LogrosController::class, 'update'])->name('admin.logros.update');
+Route::delete('/admin/logro/{id}/delete', [App\Http\Controllers\Administrador\LogrosController::class, 'destroy'])->name('admin.logros.destroy');
 
 // Géneros
 Route::get('/admin/generos', [App\Http\Controllers\Administrador\GenerosController::class, 'index'])->name('admin.generos.index');
-Route::get('/admin/generos/nuevo', [App\Http\Controllers\Administrador\GenerosController::class, 'create'])->name('admin.generos.create');
-Route::post('/admin/generos', [App\Http\Controllers\Administrador\GenerosController::class, 'store'])->name('admin.generos.store');
-Route::post('/admin/generos/{id}/edit', [App\Http\Controllers\Administrador\GenerosController::class, 'edit'])->name('admin.generos.edit');
-Route::patch('/admin/generos/{id}/update', [App\Http\Controllers\Administrador\GenerosController::class, 'update'])->name('admin.generos.update');
-Route::delete('/admin/generos/{id}/delete', [App\Http\Controllers\Administrador\GenerosController::class, 'destroy'])->name('admin.generos.destroy');
+Route::get('/admin/genero/nuevo', [App\Http\Controllers\Administrador\GenerosController::class, 'create'])->name('admin.generos.create');
+Route::post('/admin/genero/nuevo', [App\Http\Controllers\Administrador\GenerosController::class, 'store'])->name('admin.generos.store');
+Route::get('/admin/genero/{id}/edit', [App\Http\Controllers\Administrador\GenerosController::class, 'edit'])->name('admin.generos.edit');
+Route::patch('/admin/genero/{id}/update', [App\Http\Controllers\Administrador\GenerosController::class, 'update'])->name('admin.generos.update');
+Route::delete('/admin/genero/{id}/delete', [App\Http\Controllers\Administrador\GenerosController::class, 'destroy'])->name('admin.generos.destroy');
 
 // Solicitudes
 Route::get('/admin/solicitudes', [App\Http\Controllers\Administrador\SolicitudesController::class, 'index'])->name('admin.solicitudes.index');
 Route::post('/admin/solicitud/desarrolladora/aceptar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'aceptarDesarrolladora'])->name('admin.solicitud.aceptarDesarrolladora');
 Route::delete('/admin/solicitud/desarrolladora/rechazar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'rechazarDesarrolladora'])->name('admin.solicitud.rechazarDesarrolladora');
+Route::post('/admin/solicitud/master/aceptar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'aceptarMaster'])->name('admin.solicitud.aceptarMaster');
+Route::delete('/admin/solicitud/master/rechazar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'rechazarMaster'])->name('admin.solicitud.rechazarMaster');
 
 // Reportes
 Route::get('/admin/reportes', [App\Http\Controllers\Administrador\ReportesController::class, 'index'])->name('admin.reportes.index');
@@ -122,7 +122,7 @@ Route::get('/cm/sorteo/{id}/finish', [App\Http\Controllers\Cm\SorteosController:
 Route::get('/cm/noticias', [App\Http\Controllers\Cm\NoticiasController::class, 'index'])->name('cm.noticias.index');
 Route::get('/cm/{tipo}/noticia/{id}/nueva', [App\Http\Controllers\Cm\NoticiasController::class, 'create'])->name('cm.noticia.create');
 Route::post('/cm/{tipo}/noticia/{id}/nueva', [App\Http\Controllers\Cm\NoticiasController::class, 'store'])->name('cm.noticia.store');
-Route::post('/cm/noticia/{id}/edit', [App\Http\Controllers\Cm\NoticiasController::class, 'edit'])->name('cm.noticia.edit');
+Route::get('/cm/noticia/{id}/edit', [App\Http\Controllers\Cm\NoticiasController::class, 'edit'])->name('cm.noticia.edit');
 Route::patch('/cm/noticia/{id}/update', [App\Http\Controllers\Cm\NoticiasController::class, 'update'])->name('cm.noticia.update');
 Route::delete('/cm/noticia/{id}/delete', [App\Http\Controllers\Cm\NoticiasController::class, 'destroy'])->name('cm.noticia.destroy');
 Route::post('/cm/noticia/upload', [App\Http\Controllers\Cm\NoticiasController::class, 'upload'])->name('cm.noticia.upload');
@@ -175,7 +175,7 @@ Route::get('/master/analisis', [App\Http\Controllers\Master\AnalisisController::
 Route::get('/master/analisis/nueva/{id?}', [App\Http\Controllers\Master\AnalisisController::class, 'create'])->name('master.analisis.create');
 Route::post('/master/analisis/upload', [App\Http\Controllers\Master\AnalisisController::class, 'upload'])->name('master.analisis.upload');
 Route::post('/master/analisis/nueva', [App\Http\Controllers\Master\AnalisisController::class, 'store'])->name('master.analisis.store');
-Route::post('/master/analisis/{id}/edit', [App\Http\Controllers\Master\AnalisisController::class, 'edit'])->name('master.analisis.edit');
+Route::get('/master/analisis/{id}/edit', [App\Http\Controllers\Master\AnalisisController::class, 'edit'])->name('master.analisis.edit');
 Route::patch('/master/analisis/{id}/update', [App\Http\Controllers\Master\AnalisisController::class, 'update'])->name('master.analisis.update');
 Route::delete('/master/analisis/{id}/delete', [App\Http\Controllers\Master\AnalisisController::class, 'destroy'])->name('master.analisis.destroy');
 
@@ -208,7 +208,6 @@ Route::patch('/cuenta/usuario', [App\Http\Controllers\Usuario\CuentaController::
 Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'index'])->name('usuario.desarrolladoras.index');
 Route::get('/desarrolladoras/lista', [App\Http\Controllers\Usuario\BuscadorController::class, 'desarrolladoras'])->name('usuario.desarrolladoras.all');
 Route::get('/desarrolladora/{id}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'show'])->name('usuario.desarrolladora.show');
-Route::get('/desarrolladora/{id}/post', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'post'])->name('usuario.desarrolladora.post');
 Route::post('/desarrolladora/{id}/follow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'follow'])->name('usuario.desarrolladora.follow')->middleware('auth');
 Route::post('/desarrolladora/{id}/unfollow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'unfollow'])->name('usuario.desarrolladora.unfollow')->middleware('auth');
 Route::post('/desarrolladora/{id}/{notificacion}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'notificacion'])->name('usuario.desarrolladora.notificacion')->middleware('auth');
@@ -223,7 +222,6 @@ Route::post('/solicitud/store', [App\Http\Controllers\Usuario\SolicitudesControl
 Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index');
 Route::get('/juegos/lista/{genero?}', [App\Http\Controllers\Usuario\BuscadorController::class, 'juegos'])->name('usuario.juegos.all');
 Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class, 'show'])->name('usuario.juego.show');
-Route::get('/juego/{id}/post', [App\Http\Controllers\Usuario\JuegosController::class, 'post'])->name('usuario.juego.post');
 Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController::class, 'follow'])->name('usuario.juego.follow')->middleware('auth');
 Route::post('/juego/{id}/unfollow', [App\Http\Controllers\Usuario\JuegosController::class, 'unfollow'])->name('usuario.juego.unfollow')->middleware('auth');
 Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosController::class, 'notificacion'])->name('usuario.juego.notificacion')->middleware('auth');
@@ -232,7 +230,6 @@ Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosCo
 Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index');
 Route::get('/masters/lista', [App\Http\Controllers\Usuario\BuscadorController::class, 'masters'])->name('usuario.masters.all');
 Route::get('/master/{id}', [App\Http\Controllers\Usuario\MasterController::class, 'show'])->name('usuario.master.show');
-Route::get('/master/{id}/post', [App\Http\Controllers\Usuario\MasterController::class, 'post'])->name('usuario.master.post');
 Route::post('/master/{id}/follow', [App\Http\Controllers\Usuario\MasterController::class, 'follow'])->name('usuario.master.follow')->middleware('auth');
 Route::post('/master/{id}/unfollow', [App\Http\Controllers\Usuario\MasterController::class, 'unfollow'])->name('usuario.master.unfollow')->middleware('auth');
 Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterController::class, 'notificacion'])->name('usuario.master.notificacion')->middleware('auth');
@@ -245,10 +242,13 @@ Route::post('/campania/foro/nuevo', [App\Http\Controllers\Usuario\CampaniasContr
 Route::get('/campania/{id}/actualizacion', [App\Http\Controllers\Usuario\CampaniasController::class, 'actualizacion'])->name('usuario.campania.actualizacion');
 
 // Reportes
-Route::post('/reporte/{id}/{tipo}', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');
+Route::post('/reporte', [App\Http\Controllers\Usuario\ReportesController::class, 'reporte'])->name('usuario.reporte');
 
 // Mensajes
 Route::post('/mensaje/nuevo', [App\Http\Controllers\Usuario\MensajesController::class, 'store'])->name('usuario.mensaje.store');
+
+// Posts
+Route::post('/post', [App\Http\Controllers\Usuario\PostsController::class, 'show'])->name('usuario.post.show');
 
 // Pagos
 Route::post('/pago',[App\Http\Controllers\Usuario\PaymentController::class, 'payWithPaypal'])->name('usuario.paypal.pagar');

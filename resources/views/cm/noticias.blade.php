@@ -13,7 +13,7 @@
                     <h1 class="d-inline-block">Noticias ({{ $noticias->count() }})</h1>
                     <a href="{{ route('cm.noticia.create', ['tipo' => 'desarrolladora', 'id' => App\Models\Cm::where('user_id', Auth::id())->first()->desarrolladora_id]) }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                 </div>
-                <div class="table-responsive box">
+                <div class="box">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -29,7 +29,7 @@
                                 <tr>
                                     <td>{{ $noticia->titulo }}</td>
                                     <td>{{ $noticia->tipo }}</td>
-                                    <td class="text-center">{{ $noticia->mensajes->count() }}</td>
+                                    <td class="text-center">{{ $noticia->comentarios->count() }}</td>
                                     <td class="text-center">{{ $noticia->calificacion }}</td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
@@ -60,35 +60,18 @@
 
 @section("scripts")
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
-    <script>
-        $(function() {
-            $("table").dataTable();
+    <script src="{{ asset('js/script.js') }}"></script>
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
 
-            let sessionSuccess = {!! json_encode(session()->get("success")) !!}
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
 
-            if (sessionSuccess != undefined) {
-                notificacion(sessionSuccess)
-            }
-        });
-
-        function notificacion(sessionSuccess) {
-            Swal.fire({
-                position: "top-end",
-                title: sessionSuccess,
-                timer: 3000,
-                showConfirmButton: false,
-                showClass: {
-                    popup: "animate__animated animate__fadeInDown"
-                },
-                hideClass: {
-                    popup: "animate__animated animate__fadeOutUp"
-                },
-                allowOutsideClick: false,
-                backdrop: false,
-                width: "auto",
-            });
-        }
-
-    </script>
+        </script>
+    @endif
 @endsection

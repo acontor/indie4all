@@ -4,42 +4,25 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <br />
-                @endif
-                @if(isset($genero))
-                    <div class="box-header">
-                        <h1>Editar género</h1>
-                    </div>
-                    <div class="box">
+                <div class="box-header">
+                    <h1>@isset($genero)Editar @else Nuevo @endisset género</h1>
+                </div>
+                <div class="box">
+                    @isset($genero)
                         <form method="post" action="{{ route('admin.generos.update', $genero->id) }}">
-                        @method("PATCH")
-                @else
-                    <div class="box-header">
-                        <h1>Nuevo género</h1>
-                    </div>
-                    <div class="box">
+                            @method("PATCH")
+                    @else
                         <form method="post" action="{{ route('admin.generos.store') }}">
-                @endif
+                    @endisset
                         @csrf
                             <div class="form-group">
                                 <label for="nombre">Nombre:</label>
-                                <input type="text" class="form-control" name="nombre" @if(isset($genero)) value="{{ $genero->nombre }}" @endif />
+                                <input type="text" class="form-control" name="nombre" @isset($genero) value="{{ $genero->nombre }}" @endisset />
+                                @error('nombre')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                            <button type="submit" class="btn btn-success mb-3">
-                            @if(isset($genero))
-                                Editar
-                            @else
-                                Añadir
-                            @endif
-                            </button>
+                            <button type="submit" class="btn btn-success">@isset($genero) Editar @else Crear @endisset</button>
                         </form>
                     </div>
                 </div>

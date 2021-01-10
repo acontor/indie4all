@@ -18,13 +18,13 @@ class Post extends Model
         'titulo',
         'contenido',
         'calificacion',
-        'desarrolladora_id',
-        'juego_id',
-        'master_id',
         'reportes',
         'destacado',
         'ban',
         'motivo',
+        'desarrolladora_id',
+        'juego_id',
+        'master_id',
         'campania_id',
     ];
 
@@ -39,7 +39,7 @@ class Post extends Model
     }
 
     // Posts - 1:N - Mensajes
-    public function mensajes()
+    public function comentarios()
     {
         return $this->hasMany("App\Models\Mensaje");
     }

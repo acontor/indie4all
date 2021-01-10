@@ -44,9 +44,9 @@
                         </label>
                         <br>
                         @if($perfil->imagen_portada)
-                            <img class="img-fluid p-2" src="{{url('/images/masters/' . $perfil->nombre . '/' . $perfil->imagen_portada)}}" height="512" width="1024" id="imagen-portada" alt="Portada del master" />
+                            <img class="img-fluid p-2" src="{{ asset('/images/masters/' . $perfil->nombre . '/' . $perfil->imagen_portada) }}" height="512" width="1024" id="imagen-portada" alt="Portada del master" />
                         @else
-                            <img class="img-fluid p-2" src="{{url('/images/masters/default-portada.png')}}" height="512" width="1024" id="imagen-portada" alt="Portada del master" />
+                            <img class="img-fluid p-2" src="{{ asset('/images/masters/default-portada.png') }}" height="512" width="1024" id="imagen-portada" alt="Portada del master" />
                         @endif
                         @error('imagen_portada')
                             <small class="text-danger">{{ $message }}</small>
@@ -61,9 +61,9 @@
                         </label>
                         <br>
                         @if($perfil->imagen_logo)
-                            <img class="img-fluid" src="{{url('/images/masters/' . $perfil->nombre . '/' . $perfil->imagen_logo)}}" height="100" width="100" id="imagen-logo" alt="Logo del master" />
+                            <img class="img-fluid" src="{{ asset('/images/masters/' . $perfil->nombre . '/' . $perfil->imagen_logo) }}" height="100" width="100" id="imagen-logo" alt="Logo del master" />
                         @else
-                            <img class="img-fluid" src="{{url('/images/masters/default-logo.png')}}" height="100" width="100" id="imagen-logo" alt="Logo del master" />
+                            <img class="img-fluid" src="{{ asset('/images/masters/default-logo.png') }}" height="100" width="100" id="imagen-logo" alt="Logo del master" />
                         @endif
                         @error('imagen_logo')
                             <small class="text-danger">{{ $message }}</small>
@@ -99,20 +99,4 @@
 
         </script>
     @endif
-    <script>
-        $(function() {
-                $("#juegos").select2({
-                    language: "es",
-                    width: "auto",
-                    placeholder: "Juegos",
-                    maximumSelectionLength: 5,
-                    language: {
-                        maximumSelected: function (e) {
-                            var message = "Solo puedes seleccionar " + e.maximum + " Juegos";
-                            return message;
-                        }
-                    }
-                });
-            });
-    </script>
 @endsection

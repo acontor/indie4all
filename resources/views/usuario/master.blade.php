@@ -1,25 +1,19 @@
 @extends("layouts.usuario.base")
 
 @section("content")
-
-
-
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
             <header>
-                @if (!$master->imagen_portada)
-                    <img class="img-fluid h-auto" src="{{ url('/images/default.png') }}" style="filter: brightness(0.2)">
+                @if ($master->imagen_portada != null)
+                    <img class="img-fluid shadow" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}" alt="{{ $desarrolladora->nombre }}" style="filter: brightness(0.2)">
                 @else
-                    <img class="img-fluid h-auto" src="{{ url('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}">
+                    <img class="img-fluid shadow" src="{{ asset('/images/masters/default-portada.png') }}" alt="{{ $master->nombre }}" style="filter: brightness(0.2)">
                 @endif
                 <div class="carousel-caption ">
                     <h1><strong>{{ $master->nombre }}</strong></h1>
                     <small>{{ $master->email }}</small>
                 </div>
             </header>
-
-
-
             <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
                 <div class="navbar-nav float-right-sm">
                     <div class="d-flex">
@@ -55,8 +49,8 @@
                         @endauth
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
                         @auth
-                            @if(Auth::user() && Auth::user()->master()->count() != 0 && Auth::user()->master->id != $master->id)
-                                <a class="btn btn-danger ml-2"><i class="fas fa-exclamation-triangle mt-1" id='reporteMaster'></i></a>
+                            @if(Auth::user() && !Auth::user()->master)
+                                <a class="btn btn-danger ml-2" id='reporteMaster'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth
                     </div>
@@ -72,54 +66,71 @@
                     </ul>
                 </div>
             </nav>
-
-
-
-
             <div class="row">
-                <div class="col-md-8 mt-4">
+                <div class="col-12 col-md-9 mt-4">
                     <div id="contenido">
-                        <div class="estados">
+                        <div class="estados shadow p-4">
                             <h3>Estados</h3>
-                            @if ($master->posts->where('juego_id', null)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', null) as $post)
-                                    <div class="alert alert-dark">
-                                        {!! $post->contenido !!}
-                                        @if(Auth::user() && Auth::user()->master != null && $master->id == Auth::user()->master->id)
-                                            <form action="{{ route('master.estado.destroy', $post->id) }}" method="post">
-                                                @csrf
-                                                @method("DELETE")
-                                                <button class="btn btn-danger btn-sm round ml-1 eliminar-estado" type="submit">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            @else
-                                Aún no ha publicado ninguna actualización.
-                            @endif
+                            <div class="items mt-4">
+                                @if($master->posts->where('juego_id', null)->count() > 0)
+                                    @foreach ($master->posts->where('juego_id', null)->sortByDesc('created_at') as $post)
+                                        <div>
+                                            <h4>{{ $post->titulo }}</h4>
+                                            <p>{!! $post->contenido !!}</p>
+                                            <div class="footer-estados mt-3">
+                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small>{{ $post->created_at }}</small>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>aún no ha publicado ningún estado</p>
+                                @endif
+                            </div>
+                            <div class="pager">
+                                <div class="firstPage">&laquo;</div>
+                                <div class="previousPage">&lsaquo;</div>
+                                <div class="pageNumbers"></div>
+                                <div class="nextPage">&rsaquo;</div>
+                                <div class="lastPage">&raquo;</div>
+                            </div>
                         </div>
-                        <div class="analisis-div d-none">
+                        <div class="analisis-div shadow p-4 d-none">
                             <h3>Análisis</h3>
-                            @if ($master->posts->where('juego_id', '!=', null)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', '!=', null) as $post)
-                                <hr>
-                                    <div>
-                                        <h4>{{ $post->titulo }}</h4>
-                                        <p>{!! substr($post->contenido, 0, 300) !!}...</p>
-                                        <small>Comentarios: {{ $post->mensajes->count() }}</small>
-                                        <form>
-                                            <input type="hidden" name="id" value="{{ $post->id }}" />
-                                            <a type="submit" class="more">Leer más</a>
-                                        </form>
-                                    </div>
-                                @endforeach
-                            @else
-                                Aún no ha publicado ningún análisis.
-                            @endif
+                            <div class="items row mt-4">
+                                @if($master->posts->where('juego_id', '!=', null)->count() > 0)
+                                    @foreach ($master->posts->where('juego_id', '!=', null) as $post)
+                                        <div class="col-12 col-md-6">
+                                            <div class="pildoras mb-3">
+                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-info">{{$post->juego->genero->nombre}}</span>
+                                            </div>
+                                            <h4>{{ $post->titulo }}</h4>
+                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            <form>
+                                                <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                            </form>
+                                            <div class="footer-noticias mt-3">
+                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small>{{ $post->created_at }}</small>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>No ha publicado ningún análisis</p>
+                                @endif
+                            </div>
+                            <div class="pager">
+                                <div class="firstPage">&laquo;</div>
+                                <div class="previousPage">&lsaquo;</div>
+                                <div class="pageNumbers"></div>
+                                <div class="nextPage">&rsaquo;</div>
+                                <div class="lastPage">&raquo;</div>
+                            </div>
                         </div>
-                        <div class="notas d-none">
+                        <div class="notas shadow p-4 d-none">
                             <h3>Notas</h3>
                             @if ($master->posts->where('juego_id', '!=', null)->count() != 0)
                                 @foreach ($master->posts->where('juego_id', '!=', null) as $post)
@@ -134,266 +145,73 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 offset-md-1 mt-4">
-                    @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
-                        <h2>Top 5</h2>
-                        <hr>
-                        @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $post)
-                            {{$post->juego->nombre}}
-                        @endforeach
-                    @endif
+                <div class="col-12 col-md-3 mt-4">
+                    <nav class="bg-transparent">
+                        <div class="list-group shadow">
+                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                                <li class="list-group-item w-100 bg-dark text-white">Recomendados</li>
+                                <a href="/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
+                            </ul>
+                            @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
+                                @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $destacado)
+                                    <a href="{{route('usuario.juego.show', $destacado->juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><b>{{$destacado->juego->nombre}}</b></h6>
+                                            <small>{{$destacado->juego->fecha_lanzamiento}}</small>
+                                        </div>
+                                        <p class="mb-1">{{$destacado->juego->desarrolladora->nombre}}</p>
+                                        <span class="btn btn-dark btn-sm float-right">{{$destacado->juego->precio}} €</span>
+                                        <small class="badge badge-danger badge-pill mt-2">{{$destacado->juego->genero->nombre}}</small>
+                                    </a>
+                                @endforeach
+                            @else
+                                <span class="list-group-item">No ha recomendado ningún juego</span>
+                            @endif
+                        </div>
+                    </nav>
                 </div>
             </div>
+            <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>
         </div>
     </main>
-
-
-
-
-
 @endsection
 @section("scripts")
+    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
             let master = {!! json_encode($master) !!};
 
-            $(".compartir").click(function() {
-                Swal.fire({
-                    html: `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
-                    `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20master%20${master.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
-                    `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
-                    `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20master%20${master.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
-                    `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/master/${master.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
-                    `<small class="mt-3 float-left">¡Gracias por compartir!</small>`,
-                    showCloseButton: false,
-                    showCancelButton: false,
-                    showConfirmButton: false,
-                    showClass: {
-                        popup: 'animate__animated animate__slideInDown'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__zoomOutDown'
-                    }
-                });
-                $(".copiar").click(function() {
-                    $("#input-link").select();
-                    document.execCommand("copy");
-                    $("#input-link").blur();
-                });
+            let html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
+            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20master%20${master.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
+            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
+            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20master%20${master.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
+            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/master/${master.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
+            `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
+
+            $(".compartir").on('click', {html: html}, compartir);
+
+            $(".more").on('click', function () {
+                let checkUser = false;
+                let user = {
+                    ban: "{{{ (Auth::user()) ? Auth::user()->ban : 1 }}}",
+                    email_verified_at: "{{{ (Auth::user()) ? Auth::user()->email_verified_at : null }}}"
+                };
+                if(user.ban == 0 && user.email_verified_at != null) {
+                    checkUser = true;
+                }
+                let url = '{{ route("usuario.post.show") }}';
+                let id = $(this).prev().val();
+                let config = '{{ asset("js/ckeditor/config.js") }}';
+                more(url, id, config, checkUser);
             });
 
-            $(".submenu-items").children("li").children("a").click(function(e) {
-                e.preventDefault();
-                let item = $(this).attr("id");
-                console.log(item)
-                $("#contenido").children("div").addClass("d-none");
-                $(`.${item}`).removeClass("d-none");
+            $('#reporteMaster').on('click', function(){
+                let id = {!! $master->id !!};
+                let url = '{{ route("usuario.reporte") }}';
+                reporte(url, id, 'master_id');
             });
-
-            $(".eliminar-estado").click(function() {
-                $(this).parent().submit();
-                $(this).parent().parent().remove();
-            });
-
-            $(".more").click(function () {
-                let url = '{{ route("usuario.master.post", ":id") }}';
-                url = url.replace(':id', $(this).prev().val());
-                $.ajax({
-                    url: url,
-                    data: {
-                        id: $(this).prev().val(),
-                    },
-                    success: function(data) {
-                        let html = `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p> <input id="idPost" type="hidden" value="${data.post.id}"><a class="text-danger"><i class="fas fa-exclamation-triangle" id='reportePost'></i></a></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
-                        if(data.mensajes.length > 0) {
-                            data.mensajes.forEach(element => {
-                                console.log(element)
-                                html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><input type="hidden" value="${element.id}"><a name="${element.id}asd" class="text-danger float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p></div>`;
-                            });
-                        } else {
-                            html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
-                        }
-                        html += '</div></div>';
-                        Swal.fire({
-                            title: `<h4><strong>${data.post.titulo}</strong></h4>`,
-                            html: html,
-                            showCloseButton: false,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            width: 1000,
-                            showClass: {
-                                popup: 'animate__animated animate__slideInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__zoomOutDown'
-                            }
-                        });
-
-                        CKEDITOR.replace("mensaje", {
-                            customConfig: "{{ asset('js/ckeditor/config.js') }}"
-                        });
-                        $('#reportePost').click(function(){
-                            let postId =  $('#idPost').val();
-                            console.log(postId)
-                            let url = '{{ route("usuario.reporte", [":id" , "post_id"]) }}';
-                            url = url.replace(':id', postId);
-                            Swal.fire({
-                                title: 'Indica el motivo del reporte',
-                                showCancelButton: true,
-                                cancelButtonText: 'Cancelar',
-                                confirmButtonText: `Reportar`,
-                                input: 'text',
-                                inputAttributes: {
-                                    autocapitalize: 'off'
-                                },
-                                html: '<div id="recaptcha" class="mb-3"></div>',
-                                didOpen: function() {
-                                    grecaptcha.render('recaptcha', {
-                                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                                    });
-                                },
-                                preConfirm: function (result) {
-                                    console.log(result)
-                                    if (grecaptcha.getResponse().length === 0) {
-                                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                                    } else if (result != '') {
-                                        let motivo = result;
-                                        $.ajax({
-                                            url: url,
-                                            type : 'POST',
-                                            headers:{
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                            },
-                                            data: {
-                                                motivo: motivo,
-                                            }
-                                            ,success: function(data){
-                                                Swal.fire(data)
-                                            }
-                                        })
-                                    }else{
-                                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                                    }
-                                }
-                            })
-                        })
-                        $("#mensaje-form").click(function(e) {
-
-                            e.preventDefault();
-                            let mensaje = CKEDITOR.instances.editor.getData();
-                            CKEDITOR.instances.editor.setData("");
-
-                            $.ajax({
-                                url: '{{ route("usuario.mensaje.store") }}',
-                                type: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: {
-                                    id: data.post.id,
-                                    mensaje: mensaje
-                                }, success: function(data) {
-                                    if ($('.mensajes').children().text() == "No hay ningún mensaje") {
-                                        $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    } else {
-                                        $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    }
-                                }
-                            });
-                        });
-                        $('i[name ="reportarMensaje"]').click(function(){
-                            let mensajeId =  $(this).parent().prev().val();
-                            console.log(mensajeId)
-                            let url = '{{ route("usuario.reporte", [":id" , "mensaje_id"]) }}';
-                            url = url.replace(':id', mensajeId);
-                            Swal.fire({
-                                title: 'Indica el motivo del reporte',
-                                showCancelButton: true,
-                                cancelButtonText: 'Cancelar',
-                                confirmButtonText: `Reportar`,
-                                input: 'text',
-                                inputAttributes: {
-                                    autocapitalize: 'off'
-                                },
-                                html: '<div id="recaptcha" class="mb-3"></div>',
-                                didOpen: function() {
-                                    grecaptcha.render('recaptcha', {
-                                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                                    });
-                                },
-                                preConfirm: function (result) {
-                                    console.log(result)
-                                    if (grecaptcha.getResponse().length === 0) {
-                                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                                    } else if (result != '') {
-                                        let motivo = result;
-                                        $.ajax({
-                                            url: url,
-                                            type : 'POST',
-                                            headers:{
-                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                            },
-                                            data: {
-                                                motivo: motivo,
-                                            }
-                                            ,success: function(data){
-                                                Swal.fire(data)
-                                            }
-                                        })
-                                    }else{
-                                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                                    }
-                                }
-                            })
-                        })
-                    }
-                });
-            });
-            $('#reporteMaster').click(function(){
-                let masterId = {!! $master->id !!}
-                let url = '{{ route("usuario.reporte", [":id" , "master_id"]) }}';
-                url = url.replace(':id', masterId);
-                Swal.fire({
-                    title: 'Indica el motivo del reporte',
-                    showCancelButton: true,
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonText: `Reportar`,
-                    input: 'text',
-                    inputAttributes: {
-                        autocapitalize: 'off'
-                    },
-                    html: '<div id="recaptcha" class="mb-3"></div>',
-                    didOpen: function() {
-                        grecaptcha.render('recaptcha', {
-                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                        });
-                    },
-                    preConfirm: function (result) {
-                        console.log(result)
-                        if (grecaptcha.getResponse().length === 0) {
-                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                        } else if (result != '') {
-                            let motivo = result;
-                            $.ajax({
-                                url: url,
-                                type : 'POST',
-                                headers:{
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                },
-                                data: {
-                                    motivo: motivo,
-                                }
-                                ,success: function(data){
-                                    Swal.fire(data)
-                                }
-                            })
-                        }else{
-                            Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                        }
-                    }
-                })
-            })
         });
 
     </script>

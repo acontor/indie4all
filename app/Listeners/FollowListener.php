@@ -14,7 +14,7 @@ class FollowListener
      */
     public function __construct(User $user)
     {
-        if(Auth::user()->logros->where('logro_id', 5)->count() != 0) {
+        if(Auth::user()->logros->where('logro_id', 5)->count() == 0) {
 
             $follows = $user->desarrolladoras->count() + $user->juegos->count() + $user->masters->count();
 

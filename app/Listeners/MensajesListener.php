@@ -14,7 +14,7 @@ class MensajesListener
      */
     public function __construct(User $user)
     {
-        if(Auth::user()->logros->where('logro_id', 1)->count() != 0) {
+        if(Auth::user()->logros->where('logro_id', 1)->count() == 0) {
 
             $mensajes = $user->mensajes->count();
 

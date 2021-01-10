@@ -123,6 +123,7 @@ class SolicitudesController extends Controller
         $master = Master::create([
             'nombre' => $solicitud->nombre,
             'email' => $solicitud->email,
+            'user_id' => $solicitud->user_id,
         ]);
 
         $solicitud->forceDelete();

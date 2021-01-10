@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
-use App\Models\Campania;
 use App\Models\Desarrolladora;
 use App\Models\Juego;
-use App\Models\User;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,10 +19,23 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $usuario = User::find(Auth::id());
-        $juegos = Juego::whereDoesntHave('campania')->get();
+        $coleccion = Auth::user()->juegos;
+
+        $juegos_id = [];
+
+        if ($coleccion && $coleccion->count() > 0) {
+            foreach ($coleccion as $juego) {
+                array_push($juegos_id, $juego->id);
+            }
+        }
+
+        $juegos = Juego::whereDoesntHave('campania')->whereIn('id', $juegos_id)->get();
+
         $campanias = Auth::user()->compras->has('campania');
-        return view('usuario.home', ['usuario' => $usuario, 'juegos' => $juegos, 'campanias' => $campanias]);
+
+        $posts = Post::all();
+
+        return view('usuario.home', ['juegos' => $juegos, 'campanias' => $campanias, 'posts' => $posts]);
     }
 
     public function busqueda(Request $request)

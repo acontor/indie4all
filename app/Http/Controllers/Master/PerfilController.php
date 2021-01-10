@@ -28,7 +28,7 @@ class PerfilController extends Controller
      */
     public function index()
     {
-        $perfil = Master::find(Auth::user()->master->id);
+        $perfil = Auth::user()->master;
         $analisis = Post::where('master_id', Auth::user()->master->id)->where('juego_id', '!=', null)->get();
         return view('master.perfil', ['perfil' => $perfil, 'analisis' => $analisis]);
     }
@@ -41,7 +41,7 @@ class PerfilController extends Controller
      */
     public function update(Request $request)
     {
-        $master = Master::find(Auth::user()->master->id);
+        $master = Auth::user()->master;
 
         $request->validate([
             'nombre' => $master->nombre !== $request->nombre ? ['required', 'unique:masters', 'max:255'] : ['required', 'max:255'],

@@ -43,10 +43,6 @@
                             <label for="nombre">Título:</label>
                             <input type="text" class="form-control" name="nombre" @if (isset($campania)) value="{{ $campania->juego->nombre }}" @endif/>
                         </div>
-                        <div class="form-group">
-                            <label for="sinopsis">sinopsis:</label>
-                            <textarea class="form-control" name="sinopsis"> @if (isset($campania)){{ $campania->juego->sinopsis }}@endif</textarea>
-                        </div>
                         <div class="form-group mt-4">
                             <label for="fecha_lanzamiento">Fecha de lanzamiento:</label>
                             <input type="date" name="fecha_lanzamiento" @if (isset($campania)) value="{{ $campania->juego->fecha_lanzamiento }}" @endif>

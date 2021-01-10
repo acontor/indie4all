@@ -80,9 +80,19 @@
     @include("layouts.usuario.footer")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/usuario.js') }}"></script>
     @yield("scripts")
+    <script>
+        $(function () {
+            $(".estado").parent().on("click", function(e) {
+                e.preventDefault();
+                nuevoEstado('{{ asset("js/ckeditor/config.js") }}');
+            });
+        });
+    </script>
 </body>
 
 </html>

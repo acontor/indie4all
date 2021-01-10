@@ -29,37 +29,97 @@
                     <form method="post" action="{{ route('cm.desarrolladora.update',$desarrolladora->id) }} "enctype="multipart/form-data">
                         @method('PATCH')
                         @csrf
-                        <div class="form-group">
-                            <label for="nombre">Nombre:</label>
-                            <input type="text" class="form-control name" name="nombre" value="{{ $desarrolladora->nombre }}" />
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label for="nombre">Nombre: <i class="fas fa-info-circle pop-info"
+                                    data-content="Nombre de la desarrolladora"
+                                    rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
+                                <input type="text" class="form-control" name="nombre" value="@isset($desarrolladora->nombre){{ $desarrolladora->nombre }}@endisset" />
+                                @error('nombre')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-6 mt-3 mt-md-0">
+                                <label for="email">Email: <i class="fas fa-info-circle pop-info"
+                                    data-content="Email de contacto de la desarrolladora"
+                                    rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
+                                <input type="email" class="form-control" name="email" value="{{ $desarrolladora->email }}" />
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" class="form-control email" name="email" value="{{ $desarrolladora->email }}" />
+                        <div class="row">
+                            <div class="col-12 col-md-6 mt-3">
+                                <label for="url">Url: <i class="fas fa-info-circle pop-info"
+                                    data-content="Dirección de la desarrolladora"
+                                    rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
+                                <input type="url" class="form-control" name="url" value="@isset($desarrolladora->url){{ $desarrolladora->url }}@endisset" />
+                                @error('direccion')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-6 mt-3">
+                                <label for="email">Teléfono: <i class="fas fa-info-circle pop-info"
+                                    data-content="Teléfono de contacto de la desarrolladora"
+                                    rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
+                                <input type="text" class="form-control" name="telefono" value="{{ $desarrolladora->telefono }}" />
+                                @error('telefono')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="direccion">Dirección:</label>
-                            <input type="text" class="form-control direccion" name="direccion" value="{{ $desarrolladora->direccion }}" />
+                        <div class="form-group mt-3">
+                            <label for="nombre">Dirección: <i class="fas fa-info-circle pop-info"
+                                data-content="Dirección de la desarrolladora"
+                                rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
+                            <input type="text" class="form-control" name="direccion" value="@isset($desarrolladora->direccion){{ $desarrolladora->direccion }}@endisset" />
+                            @error('direccion')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        <div class="form-group">
-                            <label for="telefono">Teléfono:</label>
-                            <input type="text" class="form-control telefono" name="telefono" value="{{ $desarrolladora->telefono }}" />
+                        <hr class="mt-4 mb-4">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label id="btn-portada" class="btn btn-outline-dark mr-3 pop-info"
+                                data-content="La imagen de portada debe ser en formato PNG y 1024x512"
+                                rel="popover" data-placement="bottom" data-trigger="hover">
+                                    <i class="fas fa-upload"></i> Portada:
+                                    <input type="file" name="imagen_portada" onchange="readURL('portada', this);">
+                                </label>
+                                <br>
+                                @if($desarrolladora->imagen_portada)
+                                    <img class="img-fluid p-2" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_portada) }}" height="512" width="1024" id="imagen-portada" alt="Portada de la desarrolladora" />
+                                @else
+                                    <img class="img-fluid p-2" src="{{ asset('/images/desarrolladoras/default-portada-desarrolladora.png') }}" height="512" width="1024" id="imagen-portada" alt="Portada de la desarrolladora" />
+                                @endif
+                                @error('imagen_portada')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-6 mt-3 mt-md-0">
+                                <label id="btn-logo" class="btn btn-outline-dark pop-info"
+                                data-content="La imagen de logo debe ser en formato PNG y 200x256"
+                                rel="popover" data-placement="bottom" data-trigger="hover">
+                                    <i class="fas fa-upload"></i> Logo:
+                                    <input type="file" class="btn btn-primary" name="imagen_logo" onchange="readURL('logo', this);">
+                                </label>
+                                <br>
+                                @if($desarrolladora->imagen_logo)
+                                    <img class="img-fluid" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_logo) }}" height="100" width="100" id="imagen-logo" alt="Logo de la desarrolladora" />
+                                @else
+                                    <img class="img-fluid" src="{{ asset('/images/desarrolladoras/default-logo-desarrolladora.png') }}" width="100" id="imagen-logo" alt="Logo de la desarrolladora" />
+                                @endif
+                                @error('imagen_logo')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="url">Url:</label>
-                            <input type="text" class="form-control url" name="url" value="{{ $desarrolladora->url }}" />
-                        </div>
-                        <div class="form-group">
-                            <label id="btn-logo" class="btn btn-outline-dark mr-3">
-                                <i class="fas fa-upload"></i> Portada:
-                                    <input type="file" id="imagen_logo" name="imagen_logo" @if(!isset($desarrolladora)) required="required" @endif onchange="readURL(this);">
-                            </label>
-                            <img class="img-fluid" id="blah" src="{{ asset('/images/desarrolladoras/'.$desarrolladora->imagen_logo) }}" style="height: 200px;">
-                        </div>
+                        <hr class="mt-4 mb-4">
                         <div class="form-group">
                             <label>Contenido</label>
                             <textarea class="form-control" name="contenido" id="editor">
-                             {{$desarrolladora->contenido}}
+                                {{ $desarrolladora->contenido }}
                             </textarea>
                         </div>
                         <button type="submit" class="btn btn-success mb-3">Editar</button>
@@ -72,51 +132,26 @@
 
 @section("scripts")
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
     <script>
         $(function() {
             CKEDITOR.replace("contenido", {
                 filebrowserUploadUrl: "{{ route('cm.desarrolladora.upload', ['_token' => csrf_token()]) }}",
                 filebrowserUploadMethod: "form"
             });
-
-            $(".name").keyup(function() {
-                $(".desarrolladora_nombre").text($(this).val());
-            });
-
-            $(".email").keyup(function() {
-                $(".desarrolladora_email").text($(this).val());
-            });
-
-            $(".direccion").keyup(function() {
-                $(".desarrolladora_direccion").text($(this).val());
-            });
-
-            $(".url").keyup(function() {
-                $(".desarrolladora_url").text($(this).val());
-            });
-
-            $(".telefono").keyup(function() {
-                $(".desarrolladora_telefono").text($(this).val());
-            });
-
-            $(".menu").children("div").children("a").click(function(e) {
-                e.preventDefault();
-                let item = $(this).attr("id");
-                $("#contenido").children("div").addClass("d-none");
-                $(`.${item}`).removeClass("d-none");
-            });
         });
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#blah').attr('src', e.target.result);
-                    $('#blah').css('display','block');
-                    $('#btn-logo').removeClass("btn-outline-dark");
-                    $('#btn-logo').addClass('btn-primary')
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+
     </script>
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
+
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
+
+        </script>
+    @endif
 @endsection

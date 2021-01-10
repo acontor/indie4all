@@ -35,29 +35,29 @@ class DesarrolladoraController extends Controller
     public function update(Request $request, $id)
     {
         $desarrolladora = Desarrolladora::find($id);
+
         $request->validate([
-            'nombre' => 'required',
-            'email' => 'required',
-            'direccion' => 'required',
-            'telefono' => 'required',
-            'url' => 'required',
-            'imagen_portada' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=1024,height=512',
-            'imagen_logo' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=200,height=256',
+            'nombre' => $desarrolladora->nombre !== $request->nombre ? ['required', 'unique:desarrolladoras', 'max:255'] : ['required', 'max:255'],
+            'email' => $desarrolladora->email !== $request->email ? ['required', 'unique:desarrolladoras', 'max:255'] : ['required', 'max:255'],
+            'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
+            'imagen_logo' => ['mimes:png', 'dimensions:width=256,height=256'],
         ]);
 
-        $fileName = '';
-        $imagen = public_path() . '/images/desarrolladoras/' . $desarrolladora->imagen_logo;
-
-        if (@getimagesize($imagen)) {
-            unlink($imagen);
+        if ($desarrolladora->nombre != $request->nombre) {
+            rename(public_path('/images/desarrolladoras/' . $desarrolladora->nombre), public_path('/images/desarrolladoras/' . $request->nombre));
         }
 
-        if ($imagen = $request->file('imagen_logo')) {
-            $originName = $request->file('imagen_logo')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('imagen_logo')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $imagen->move('images/desarrolladoras/', $fileName);
+        $ruta = public_path('/images/desarrolladoras/' . $request->nombre);
+
+        if ($request->file('imagen_portada') != null) {
+            $imagenPortada = $this->guardarImagen($request->file('imagen_portada'), $ruta, 'portada');
+        } else {
+            $imagenPortada = $desarrolladora->imagen_portada;
+        }
+        if ($request->file('imagen_logo') != null) {
+            $imagenLogo = $this->guardarImagen($request->file('imagen_logo'), $ruta, 'logo');
+        } else {
+            $imagenLogo = $desarrolladora->imagen_logo;
         }
 
         $desarrolladora->update([
@@ -66,11 +66,14 @@ class DesarrolladoraController extends Controller
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
             'url' => $request->url,
-            'imagen_logo' => $fileName,
+            'imagen_portada' => $imagenPortada,
+            'imagen_logo' => $imagenLogo,
             'contenido' => $request->contenido,
         ]);
 
-        return redirect('/cm/desarrolladora')->with('success', 'Juego actualizado!');
+        session()->flash('success', 'El perfil se ha actualizado.');
+
+        return redirect('/cm/desarrolladora');
     }
 
     public function upload(Request $request)
@@ -89,5 +92,26 @@ class DesarrolladoraController extends Controller
             @header('Content-type: text/html; charset=utf-8');
             echo $response;
         }
+    }
+
+    /**
+     * Guarda las imágenes en la carpeta public.
+     *
+     * @param  \Illuminate\Http\Request  $imagen
+     * @param  String  $ruta
+     * @param  String  $nombre
+     * @return String
+     */
+    public function guardarImagen($imagen, $ruta, $nombre)
+    {
+        if ($imagen != null) {
+            if (@getimagesize($ruta)) {
+                unlink($ruta);
+            }
+            $extension = $imagen->getClientOriginalExtension();
+            $imagen->move($ruta, $nombre . '.' .  $extension);
+        }
+
+        return $nombre . '.' .  $extension;
     }
 }

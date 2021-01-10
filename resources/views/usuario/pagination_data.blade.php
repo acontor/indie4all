@@ -7,7 +7,7 @@
     transition:0.5s;
     cursor:pointer;
 }
-.item-card-title{  
+.item-card-title{
     font-size:15px;
     transition:1s;
     cursor:pointer;
@@ -19,15 +19,15 @@
 </style>
 @isset($juegos)
 @if($juegos->count()==0)
-<div class="box">
-    No se ha encontrado ningún resultado
-</div>
+    <div class="box">
+        No se ha encontrado ningún resultado
+    </div>
 @endif
-<div class="row mb-4 mt-2">             
+<div class="row mb-4 mt-2">
     @foreach ($juegos as $juego)
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                    <img src="{{url('/images/default.png')}}" alt="Foto de juego">
+                    <img src="{{ asset('/images/default.png') }}" alt="Foto de juego">
                     <div class="p-3">
                         <h5><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></h5>
                         <small class="float-right"> {{$juego->fecha_lanzamiento}}</small><br>
@@ -40,7 +40,7 @@
     @endforeach
 </div>
     @php
-        $data = $juegos;   
+        $data = $juegos;
     @endphp
 @endisset
 
@@ -50,13 +50,13 @@
             No se ha encontrado ningún resultado
         </div>
     @endif
-    <div class="row mb-4 mt-2">             
+    <div class="row mb-4 mt-2">
         @foreach ($masters as $master)
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
                     <img src="{{url('/images/default.png')}}" alt="Foto de portada Master">
                     <div class="p-3">
-                        <h5><a href="{{ route('usuario.master.show', $master->id) }}">{{ $master->nombre }}</a></h5> 
+                        <h5><a href="{{ route('usuario.master.show', $master->id) }}">{{ $master->nombre }}</a></h5>
                         Sequidores:<small class="float-right"> {{$master->seguidores_count}}</small><br>
                         Actividad:<small class="float-right"> {{$master->posts_count}}</small><br>
                     </div>
@@ -65,7 +65,7 @@
         @endforeach
     </div>
     @php
-        $data = $masters;   
+        $data = $masters;
     @endphp
 @endisset
 
@@ -75,13 +75,13 @@
             No se ha encontrado ningún resultado
         </div>
     @endif
-    <div class="row mb-4 mt-2">             
+    <div class="row mb-4 mt-2">
         @foreach ($desarrolladoras as $desarrolladora)
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
                     <img src="{{url('/images/default.png')}}" alt="Foto de portada Master">
                     <div class="p-3">
-                        <h5><a href="{{ route('usuario.desarrolladora.show', $desarrolladora->id) }}">{{ $desarrolladora->nombre }}</a></h5>                        
+                        <h5><a href="{{ route('usuario.desarrolladora.show', $desarrolladora->id) }}">{{ $desarrolladora->nombre }}</a></h5>
                         Sequidores:<small class="float-right"> {{$desarrolladora->users_count}}</small><br>
                         Juegos:<small class="float-right"> {{$desarrolladora->juegos_count}}</small><br>
                         Actividad:<small class="float-right"> {{$desarrolladora->posts_count}}</small><br>
@@ -91,7 +91,7 @@
         @endforeach
     </div>
     @php
-        $data = $desarrolladoras;   
+        $data = $desarrolladoras;
     @endphp
 @endisset
 @isset($campanias)
@@ -100,13 +100,13 @@
             No se ha encontrado ningún resultado
         </div>
     @endif
-    <div class="row mb-4 mt-5">             
+    <div class="row mb-4 mt-5">
         @foreach ($campanias as $campania)
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
                     <img src="{{url('/images/default.png')}}" alt="Foto de portada Master">
                     <div class="p-3">
-                        <h5><a href="{{ route('usuario.campania.show', $campania->id) }}">{{ $campania->juego->nombre }}</a></h5>                        
+                        <h5><a href="{{ route('usuario.campania.show', $campania->id) }}">{{ $campania->juego->nombre }}</a></h5>
                         Participaciones:<small class="float-right"> {{$campania->compras_count}}</small><br>
                         Recaudado:<small class="float-right"> {{$campania->recaudado}}€</small><br>
                         Meta:<small class="float-right"> {{$campania->meta}}€</small><br>
@@ -118,17 +118,14 @@
         @endforeach
     </div>
     @php
-        $data = $campanias;   
+        $data = $campanias;
     @endphp
 @endisset
 
-@if(
-    $data instanceof \Illuminate\Pagination\Paginator ||
-    $data instanceof \Illuminate\Pagination\LengthAwarePaginator
-  )
-<div class="row">  
+@if($data instanceof \Illuminate\Pagination\Paginator || $data instanceof \Illuminate\Pagination\LengthAwarePaginator)
+<div class="row">
     <div class="col-1">
-        {!! $data->links('pagination::bootstrap-4') !!}     
+        {!! $data->links('pagination::bootstrap-4') !!}
     </div>
-</div> 
+</div>
 @endif

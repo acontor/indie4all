@@ -74,7 +74,7 @@
                         @endphp
                         @foreach ($master->posts->where('juego_id', '!=', null) as $post)
                             @php
-                                $count += $post->mensajes->count();
+                                $count += $post->comentarios->count();
                             @endphp
                         @endforeach
                         <h6 class="card-title">Comentarios totales</h6>
@@ -82,7 +82,11 @@
                     </div>
                     <div class="col-sm-6 col-md-3 mb-3">
                         <h6 class="card-title">Comentarios media</h6>
-                        <p class="card-text text-center">{{ $count / $master->posts->where('juego_id', '!=', null)->count() }}</p>
+                        @if($master->posts->where('juego_id', '!=', null)->count() > 0)
+                            <p class="card-text text-center">{{ $count / $master->posts->where('juego_id', '!=', null)->count() }}</p>
+                        @else
+                            <p class="card-text text-center">-</p>
+                        @endif
                     </div>
                     <div class="col-sm-6 col-md-3 mb-3">
                         @php
@@ -94,7 +98,11 @@
                             @endphp
                         @endforeach
                         <h6 class="card-title">Calificaciones media</h6>
-                        <p class="card-text text-center">{{ $count / $master->posts->where('juego_id', '!=', null)->count() }}</p>
+                        @if($master->posts->where('juego_id', '!=', null)->count() > 0)
+                            <p class="card-text text-center">{{ $count / $master->posts->where('juego_id', '!=', null)->count() }}</p>
+                        @else
+                            <p class="card-text text-center">-</p>
+                        @endif
                     </div>
                 </div>
             </div>

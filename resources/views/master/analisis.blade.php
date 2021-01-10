@@ -27,7 +27,7 @@
                         <tr>
                             <td>{{ $post->titulo }}</td>
                             <td>{{ $post->juego->nombre }}</td>
-                            <td class="text-center">{{ $post->mensajes->count() }}</td>
+                            <td class="text-center">{{ $post->comentarios->count() }}</td>
                             <td class="text-center">{{ $post->calificacion }}</td>
                             <td class="align-middle text-center">
                                 <div class="btn-group">

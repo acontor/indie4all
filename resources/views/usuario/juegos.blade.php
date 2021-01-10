@@ -1,40 +1,21 @@
 @extends("layouts.usuario.base")
 
-@section('styles')
-<style>
-    .container {
-        position: relative;
-    }
-
-    .hola {
-        width: 100%;
-        height: 100% !important;
-        background-color: white !important;
-        position: absolute;
-        top: 0%;
-        margin: 0 !important;
-        z-index: 1030;
-        left: -10000px;
-        transition: left .5s;
-        overflow: auto;
-    }
-
-</style>
-@endsection
-
 @section('content')
     <main class="p-3 pb-5">
         <div class="container box mt-4">
             <div class="row mb-4">
                 <div class="col-12 col-md-8">
                     <h3 class="ml-3 text-uppercase font-weight-bold">Recomendaciones</h3>
-                    <div class="owl-carousel 1 mt-5">
+                    <div class="owl-carousel owl-theme mt-5">
                         @foreach ($recomendados->take('10') as $juego)
                             <div class="item m-2 shadow">
                                 <a href="{{ route('usuario.juego.show', $juego->id) }}">
-                                    <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                        alt="{{ $juego->nombre }}">
-                                    <div class="carousel-caption" style="display: none;">
+                                    @if ($juego->imagen_caratula != null)
+                                        <img src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juego->nombre }}">
+                                    @else
+                                        <img src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juego->nombre }}">
+                                    @endif
+                                    <div class="carousel-caption d-none">
                                         <h6>{{ $juego->nombre }}</h6>
                                         <small>
                                             {{ $juego->desarrolladora->nombre }}
@@ -52,64 +33,102 @@
                 <div class="col-12 col-md-4 mx-auto">
                     <h3 class="text-uppercase font-weight-bold text-center">Destacados</h3>
                     <div class="mt-4 text-center item">
-                        <a href="{{ route('usuario.juego.show', $compras->sortByDesc('ventas')->first()->juego->first()->id) }}">
-                            <img class="img-fluid shadow" height="20" src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                alt="{{ $compras->sortByDesc('ventas')->first()->juego->first()->nombre }}">
-                            <div class="carousel-caption" style="display: none;">
-                                <h6>{{ $compras->sortByDesc('ventas')->first()->juego->first()->nombre }}</h6>
+                        <a href="{{ route('usuario.juego.show', $juegos->first()->id) }}">
+                            @if ($juego->imagen_caratula != null)
+                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juegos->first()->nombre }}">
+                            @else
+                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juegos->first()->nombre }}">
+                            @endif
+                            <div class="carousel-caption mb-5 d-none">
+                                <h6>{{ $juegos->first()->nombre }}</h6>
                                 <small>
-                                    {{ $compras->sortByDesc('ventas')->first()->juego->first()->desarrolladora->nombre }}
+                                    {{ $juegos->first()->desarrolladora->nombre }}
                                     <br>
-                                    <span class="badge badge-danger">{{ $compras->sortByDesc('ventas')->first()->juego->first()->genero->nombre }}</span>
+                                    <span class="badge badge-danger">{{ $juegos->first()->genero->nombre }}</span>
                                     <br>
-                                    {{ $compras->sortByDesc('ventas')->first()->juego->first()->precio }} €
+                                    {{ $juegos->first()->precio }} €
                                 </small>
                             </div>
                         </a>
                     </div>
                 </div>
             </div>
-            <hr class="mt-5">
+            <hr class="mt-5 mb-5">
             <div class="row">
-                <div class="col-12 col-md-8 pt-5">
-                    <div class="shadow p-3">
-                        @if($coleccion->count() == 0)
-                            @auth
-                                Para obtener noticias personalizadas deberías añadir tus juegos favoritos a tu colección.
-                            @endauth
-                        @endif
-                        @if($coleccion->count() > 0)
-                            <a class="btn btn-dark" href="{{ route('usuario.cuenta.index', 'juegos') }}">Colección de juegos</a>
-                        @endif
-                        <h2>Últimas noticias</h2>
-                        <div class="noticias">
-                            <div class="items">
-                                @foreach ($posts->where('master_id', null)->sortByDesc('created_at') as $post)
-                                    <div>
-                                        <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
-                                        <p>{!! substr($post->contenido, 0, 300) !!}</p>
-                                        <form>
-                                            <input type="hidden" name="id" value="{{ $post->id }}" />
-                                            <a type="submit" class="more">Leer más</a>
-                                        </form>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="pager">
-                                <div class="firstPage">&laquo;</div>
-                                <div class="previousPage">&lsaquo;</div>
-                                <div class="pageNumbers"></div>
-                                <div class="nextPage">&rsaquo;</div>
-                                <div class="lastPage">&raquo;</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 mt-5 mt-md-0">
-                    <nav class="sticky-top pt-5 bg-transparent">
+                <div class="col-12 col-md-9">
+                    <nav class="bg-transparent">
                         <div class="list-group shadow">
                             <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                                <a href="" id="nuevos" class="list-group-item list-group-item-action list-buttons">Nuevo</a>
+                                <a href="" id="noticias" class="list-group-item list-group-item-action list-buttons-2 bg-dark text-white">Últimas noticias</a>
+                                <a href="" id="analisis-div" class="list-group-item list-group-item-action list-buttons-2">Análisis</a>
+                            </ul>
+                            <div class="list-group-item flex-column align-items-start listado-2 noticias">
+                                <div class="items mt-4">
+                                    @if($posts->where('juego_id', '!=', null)->where('master_id', null)->count() > 0)
+                                        @foreach ($posts->where('juego_id', '!=', null)->where('master_id', null) as $post)
+                                            <div>
+                                                <h4>{{ $post->titulo }}</h4>
+                                                <p>{!! $post->contenido !!}</p>
+                                                <div class="footer-estados mt-3">
+                                                    <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                    <small>{{ $post->created_at }}</small>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <p>No se han encontrado noticias</p>
+                                    @endif
+                                </div>
+                                <div class="pager">
+                                    <div class="firstPage">&laquo;</div>
+                                    <div class="previousPage">&lsaquo;</div>
+                                    <div class="pageNumbers"></div>
+                                    <div class="nextPage">&rsaquo;</div>
+                                    <div class="lastPage">&raquo;</div>
+                                </div>
+                            </div>
+                            <div class="list-group-item flex-column align-items-start listado-2 analisis-div d-none">
+                                <div class="items row mt-4">
+                                    @if($analisis->count() > 0)
+                                        @foreach ($analisis as $post)
+                                            <div class="col-12 col-md-6">
+                                                <div class="pildoras mb-3">
+                                                    <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                    <span class="badge badge-pill badge-info">{{$post->juego->genero->nombre}}</span>
+                                                </div>
+                                                <h4>{{ $post->titulo }}</h4>
+                                                <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                                <form>
+                                                    <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                    <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                                </form>
+                                                <div class="footer-noticias mt-3">
+                                                    <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                    <small>{{ $post->created_at }}</small>
+                                                    <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <p>No se han encontrado análisis</p>
+                                    @endif
+                                </div>
+                                <div class="pager">
+                                    <div class="firstPage">&laquo;</div>
+                                    <div class="previousPage">&lsaquo;</div>
+                                    <div class="pageNumbers"></div>
+                                    <div class="nextPage">&rsaquo;</div>
+                                    <div class="lastPage">&raquo;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-12 col-md-3 mt-3 mt-md-0">
+                    <nav class="bg-transparent">
+                        <div class="list-group shadow">
+                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                                <a href="" id="nuevos" class="list-group-item list-group-item-action list-buttons bg-dark text-white">Nuevo</a>
                                 <a href="" id="ventas" class="list-group-item list-group-item-action list-buttons">Venta</a>
                                 <a href="" id="proximo" class="list-group-item list-group-item-action list-buttons">Próximo</a>
                             </ul>
@@ -128,15 +147,15 @@
                                     <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
                                 </a>
                             @endforeach
-                            @foreach ($compras->sortByDesc('ventas')->take(5) as $compra)
-                                <a href="{{route('usuario.juego.show', $compra->juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none ventas">
+                            @foreach ($juegos->take(5) as $juego)
+                                <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none ventas">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1"><b>{{$compra->juego->nombre}}</b></h6>
-                                        <small>{{$compra->juego->fecha_lanzamiento}}</small>
+                                        <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                        <small>{{$juego->fecha_lanzamiento}}</small>
                                     </div>
-                                    <p class="mb-1">{{$compra->juego->desarrolladora->nombre}}</p>
-                                    <span class="btn btn-dark btn-sm float-right">{{$compra->juego->precio}} €</span>
-                                    <small class="badge badge-danger badge-pill mt-2">{{$compra->juego->genero->nombre}}</small>
+                                    <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
                                 </a>
                             @endforeach
                             @foreach ($juegos->where('fecha_lanzamiento', '>=', $fechaHoy)->sortBy('fecha_lanzamiento')->take(5) as $juego)
@@ -151,138 +170,34 @@
                                 </a>
                             @endforeach
                         </div>
-                    </header>
-                </nav>
+                    </nav>
+                </div>
             </div>
-            <div class="hola container bg-light p-3 shadow-lg rounded mt-4">Hola</div>
+            <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>
         </div>
     </main>
 @endsection
 
 @section('scripts')
     <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
-            $('.list-buttons').on('click', function(e) {
-                e.preventDefault();
-                let item = $(this).attr('id');
-                $('.listado').each(function () {
-                    if (!$(this).hasClass("d-none")) {
-                        $(this).addClass('d-none');
-                    }
-                });
-                $('.' + item).removeClass('d-none');
-            });
-
-            $(".noticias").paginga();
-
-            var owl = $('.1');
-
-            owl.owlCarousel({
-                loop: true,
-                margin: 10,
-                dots: true,
-                responsive: {
-                    0: {
-                        items: 1.5
-                    },
-                    600: {
-                        items: 3.5
-                    },
-                    1000: {
-                        items: 4.5
-                    }
+            $(".more").on('click', function () {
+                let checkUser = false;
+                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
+                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                    checkUser = true;
                 }
+                let url = '{{ route("usuario.post.show") }}';
+                let id = $(this).prev().val();
+                let config = '{{ asset("js/ckeditor/config.js") }}';
+                more(url, id, config, checkUser);
             });
 
-            mousewheel(owl);
+            let owl = $('.owl-carousel');
 
-            function mousewheel(objeto) {
-                objeto.on('mousewheel', '.owl-stage', function(e) {
-                    e.preventDefault();
-                    if (e.originalEvent.wheelDelta > 0) {
-                        objeto.trigger('prev.owl');
-                    } else {
-                        objeto.trigger('next.owl');
-                    }
-                });
-            }
-
-            $(".item").hover(function() {
-                $(this).children('a').children('img').css('filter', 'brightness(0.2)');
-                $(this).children('a').children('div').fadeToggle(0, "linear");
-            }, function() {
-                $(this).children('a').children('img').css('filter', 'brightness(1)');
-                $(this).children('a').children('div').fadeToggle(0, "linear");
-            });
-
-            $(".more").click(function () {
-                let url = '{{ route("usuario.juego.post", ":id") }}';
-                url = url.replace(':id', $(this).prev().val());
-                $.ajax({
-                    url: url,
-                    data: {
-                        id: $(this).prev().val(),
-                    },
-                    success: function(data) {
-                        let html = "<button class='btn btn-light volver'>Volver</button>";
-                        html += `<div class='post text-justify'><div class="contenido-post">${data.post.contenido}</p></div><hr><textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
-                        if(data.mensajes.length > 0) {
-                            data.mensajes.forEach(element => {
-                                html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><p>${element.contenido}</p></div>`;
-                            });
-                        } else {
-                            html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
-                        }
-                        html += '</div></div>';
-                        window.scrollTo({top: 100, behavior: 'smooth'});
-                        $('.hola').html(html);
-                        $('.hola').css('left', 0);
-                        /* Swal.fire({
-                            title: `<h4><strong>${data.post.titulo}</strong></h4>`,
-                            html: html,
-                            showCloseButton: false,
-                            showCancelButton: false,
-                            showConfirmButton: false,
-                            width: 1000,
-                            showClass: {
-                                popup: 'animate__animated animate__slideInDown'
-                            },
-                            hideClass: {
-                                popup: 'animate__animated animate__zoomOutDown'
-                            }
-                        }); */
-                        $('.volver').on('click', function(e) {
-                            $('.hola').css('left', -10000);
-                        })
-                        CKEDITOR.replace("mensaje", {
-                            customConfig: "{{ asset('js/ckeditor/config.js') }}"
-                        });
-                        $("#mensaje-form").click(function(e) {
-                            e.preventDefault();
-                            let mensaje = CKEDITOR.instances.editor.getData();
-                            CKEDITOR.instances.editor.setData("");
-                            $.ajax({
-                                url: '{{ route("usuario.mensaje.store") }}',
-                                type: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: {
-                                    id: data.post.id,
-                                    mensaje: mensaje
-                                }, success: function(data) {
-                                    if ($('.mensajes').children().text() == "No hay ningún mensaje") {
-                                        $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    } else {
-                                        $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                                    }
-                                }
-                            });
-                        });
-                    }
-                });
-            });
+            crearOwl(owl, false, 2, 3, 4);
         });
 
     </script>

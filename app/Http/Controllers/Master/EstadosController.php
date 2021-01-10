@@ -32,10 +32,16 @@ class EstadosController extends Controller
             'estado' => 'required',
         ]);
 
-        Post::create([
+        $post = Post::create([
             'contenido' => $request->estado,
             'master_id' => Auth::user()->master->id,
         ]);
+
+        if ($post->exists) {
+            return ['estado' => 'success', 'mensaje' => 'El estado se ha publicado.'];
+        } else {
+            return ['estado' => 'error', 'mensaje' => 'El estado no se ha podido. Si sigue fallando contacte con soporte@indie4all.com'];
+        }
     }
 
     /**

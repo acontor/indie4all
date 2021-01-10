@@ -21,45 +21,51 @@ class CampaniasController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra una vista con todas las campañas.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $juegos = Juego::has('campania')->get();
+
         return view('admin.campanias', ['juegos' => $juegos]);
     }
 
     /**
-     * Display the specified resource.
+     * Desactiva una campaña.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return String
      */
-    public function show($id)
-    {
-        $juego = Juego::find($id);
-        return view('admin.campania', ['juego' => $juego]);
-    }
-
     public function ban($id, Request $request)
     {
-        Campania::find($id)->update([
+        $campania = Campania::find($id);
+
+        $campania->update([
             'ban' => true,
             'motivo' => $request->motivo,
         ]);
 
-        return $request->motivo;
+        return 'La campaña de ' . $campania->juego->nombre . ' ha sido desactivada';
     }
 
+    /**
+     * Activa una campaña.
+     *
+     * @param  int  $id
+     * @return String
+     */
     public function unban($id)
     {
-        Campania::find($id)->update([
+        $campania = Campania::find($id);
+
+        $campania->update([
             'ban' => false,
             'motivo' => null,
         ]);
 
-        return "La campaña ya no está baneado";
+        return 'La campaña de ' . $campania->juego->nombre . ' ha vuelto a activarse';
     }
 }

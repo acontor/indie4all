@@ -4,20 +4,16 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                @if(isset($post))
-                    <div class="box-header">
-                        <h1>Editar noticia</h1>
-                    </div>
-                    <div class="box">
+                <div class="box-header">
+                    <h1>@isset($post)Editar @else Nueva @endisset noticia</h1>
+                </div>
+                <div class="box">
+                    @isset($post)
                         <form action="{{ route('admin.noticias.update', $post->id) }}" method='post' enctype="multipart/form-data">
-                        @method("PATCH")
+                            @method("PATCH")
                     @else
-                        <div class="box-header">
-                            <h1>Nueva noticia</h1>
-                        </div>
-                        <div class="box">
-                            <form action="{{ route('admin.noticias.create') }}" method='post' enctype="multipart/form-data">
-                    @endif
+                        <form action="{{ route('admin.noticias.create') }}" method='post' enctype="multipart/form-data">
+                    @endisset
                         @csrf
                         <div class="form-group">
                             <label>Título</label>
@@ -26,16 +22,12 @@
                         <div class="form-group">
                             <label>Contenido</label>
                             <textarea class="form-control" name="contenido" id="editor">
-                                @if(isset($post))
+                                @isset($post)
                                     {{ $post->contenido }}
-                                @endif
+                                @endisset
                             </textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="comentarios">¿Permitir comentarios?</label>
-                            <input type="checkbox" name="comentarios" id="comentarios" value="1" @if(isset($post) && $post->comentarios) checked @endif>
-                        </div>
-                        <button type="submit" class="btn btn-success">@if(isset($post)) Editar @else Crear @endif</button>
+                        <button type="submit" class="btn btn-success">@isset($post) Editar @else Crear @endisset</button>
                     </form>
                 </div>
             </div>
