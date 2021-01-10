@@ -20,30 +20,39 @@ class GenerosController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra el listado de todos los géneros.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $generos = Genero::all();
+
         $numJuegos = [];
         $numSeguidores = [];
+
         foreach ($generos as $genero) {
             array_push($numJuegos,  $genero->juegos->count());
             array_push($numSeguidores,  $genero->usuarios->count());
         }
+
         $datos = [$numJuegos, $numSeguidores];
+
         return view('admin.generos', ['generos' => $generos, 'datos' => $datos]);
     }
 
+    /**
+     * Muestra el formulario de creación de géneros.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         return view('admin.generos_editor');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena el género creado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -51,16 +60,34 @@ class GenerosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required',
+            'nombre' => ['required', 'string', 'max:255', 'unique:generos'],
         ]);
 
-        Genero::create($request->all());
+        $generos = Genero::create($request->all());
 
-        return redirect('/admin/generos')->with('success', '¡Género guardado!');
+        if ($generos->exists) {
+            session()->flash('success', 'El género ha sido creado');
+        } else {
+            session()->flash('error', 'El género no se ha podido crear');
+        }
+
+        return redirect('/admin/generos');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Muestra el formulario para editar el género seleccionado.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $genero = Genero::find($id);
+
+        return view('admin.generos_editor', ['genero' => $genero]);
+    }
+
+    /**
+     * Actualiza el género seleccionado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -68,30 +95,16 @@ class GenerosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $genero = Genero::find($id);
+
         $request->validate([
-            'nombre' => 'required',
+            'nombre' => $genero->nombre !== $request->nombre ? ['required', 'string', 'unique:generos', 'max:255'] : ['required', 'string', 'max:255'],
         ]);
 
-        Genero::find($id)->update($request->all());
+        $genero->update($request->all());
 
-        return redirect('/admin/generos')->with('success', '¡Género actualizado!');
-    }
+        session()->flash('success', 'El género se ha actualizado');
 
-    public function edit($id)
-    {
-        $genero = Genero::find($id);
-        return view('admin.generos_editor', ['genero' => $genero]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        Genero::find($id)->delete();
-        return redirect('/admin/generos')->with('success', '¡Género borrado!');
+        return redirect('/admin/generos');
     }
 }

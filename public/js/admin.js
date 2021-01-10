@@ -175,8 +175,50 @@ function graficaUsuarios(masters, cms, usuarios) {
         }],
         labels: ["Masters", "Fans", "Cms"]
     };
-    var myBarChart = new Chart(ctx, {
+
+    myBarChart = new Chart(ctx, {
         type: "doughnut",
         data: data,
+    });
+}
+
+function graficaGeneros(generos, datos) {
+    var nombreGenero = [];
+
+    generos.forEach(element => {
+        nombreGenero.push(element["nombre"])
+    });
+
+    var ctx = document.getElementById("myChart").getContext("2d");
+
+    var datos = {
+        labels: generos,
+        datasets: [{
+                label: "Juegos",
+                backgroundColor: "#ff6384",
+                data: datos[0]
+            },
+            {
+                label: "Seguidores",
+                backgroundColor: "#A086BE",
+                data: datos[1]
+            },
+        ],
+    };
+
+    myBarChart = new Chart(ctx, {
+        type: "bar",
+        data: datos,
+        options: {
+            barValueSpacing: 20,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                    }
+                }]
+            }
+        },
+        responsive: true,
     });
 }

@@ -35,17 +35,10 @@
                                     <td class="w-20 text-center">{{ $genero->juegos->count() }}</td>
                                     <td class="align-middle w-10 text-center">
                                         <div class="btn-group">
-                                            <form method="post" action="{{ route('admin.generos.edit', $genero->id) }}">
+                                            <form method="get" action="{{ route('admin.generos.edit', $genero->id) }}">
                                                 @csrf
                                                 <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                                     <i class="far fa-edit"></i>
-                                                </button>
-                                            </form>
-                                            <form action="{{ route('admin.generos.destroy', $genero->id) }}" method="post">
-                                                @csrf
-                                                @method("DELETE")
-                                                <button class="btn btn-danger btn-sm round ml-1" type="submit">
-                                                    <i class="far fa-trash-alt"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -62,110 +55,18 @@
 
 @section("scripts")
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
     <script src="{{ asset('js/chart/chart.min.js') }}"></script>
     <script>
         $(function() {
-            $('table').DataTable({
-                "responsive": true
-            });
-
-            var generos = {!! json_encode($generos) !!};
+            var generos = {!! $generos !!};
             var datos = {!! json_encode($datos) !!};
 
-            var nombreGenero = [];
+            graficaGeneros(generos, datos);
 
-            generos.forEach(element => {
-                nombreGenero.push(element["nombre"])
-            });
-
-            graficaGeneros(nombreGenero, datos);
-
-            let sessionSuccess = {!! json_encode(session()->get("success")) !!}
-
-            if (sessionSuccess != undefined) {
-                notificacion(sessionSuccess)
-            }
-
-            $('.btn-danger').click(function(e) {
-                e.preventDefault();
-                let form = $(this).parents('form');
-                Swal.fire({
-                    position: "center",
-                    title: "Cuidado",
-                    text: "¡Tendrás que volver a crear el género para recuperarlo!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Aceptar",
-                    cancelButtonText: "Cancelar",
-                    showClass: {
-                        popup: "animate__animated animate__fadeInDown"
-                    },
-                    hideClass: {
-                        popup: "animate__animated animate__fadeOutUp"
-                    },
-                    closeOnConfirm: false,
-                }).then((resultado) => {
-                    if (resultado.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
         });
-
-        function graficaGeneros(generos, datos) {
-            var ctx = document.getElementById("myChart").getContext("2d");
-
-            var datos = {
-                labels: generos,
-                datasets: [{
-                        label: "Juegos",
-                        backgroundColor: "#ff6384",
-                        data: datos[0]
-                    },
-                    {
-                        label: "Seguidores",
-                        backgroundColor: "#A086BE",
-                        data: datos[1]
-                    },
-                ],
-            };
-
-            var myBarChart = new Chart(ctx, {
-                type: "bar",
-                data: datos,
-                options: {
-                    barValueSpacing: 20,
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                min: 0,
-                            }
-                        }]
-                    }
-                },
-                responsive: true,
-            });
-        }
-
-        function notificacion(sessionSuccess) {
-            Swal.fire({
-                position: "top-end",
-                title: sessionSuccess,
-                timer: 3000,
-                showConfirmButton: false,
-                showClass: {
-                    popup: "animate__animated animate__fadeInDown"
-                },
-                hideClass: {
-                    popup: "animate__animated animate__fadeOutUp"
-                },
-                allowOutsideClick: false,
-                backdrop: false,
-                width: "auto",
-            });
-        }
 
     </script>
 @endsection
