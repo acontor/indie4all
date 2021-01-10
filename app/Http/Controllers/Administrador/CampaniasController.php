@@ -33,19 +33,6 @@ class CampaniasController extends Controller
     }
 
     /**
-     * Muesta información de una campaña.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $juego = Juego::find($id);
-
-        return view('admin.campania', ['juego' => $juego]);
-    }
-
-    /**
      * Desactiva una campaña.
      *
      * @param  \Illuminate\Http\Request  $request

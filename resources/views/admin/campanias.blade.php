@@ -35,7 +35,6 @@
                                         <td class="align-middle">{{ $juego->desarrolladora->nombre }}</td>
                                         <td class="align-middle text-center">
                                             <div class="btn-group">
-                                                <a href="{{ route('admin.campania.show', $juego->campania->id) }}" class="btn btn-primary btn-sm round mr-1"><i class="far fa-eye"></i></a><input type="hidden" name="id" value="{{ $juego->id }}">
                                                 <input type="hidden" name="id" value="{{ $juego->campania->id }}">
                                                 <div class="ban">
                                                     <input type="hidden" name="id" value="{{ $juego->campania->id }}">

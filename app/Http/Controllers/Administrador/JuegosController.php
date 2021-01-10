@@ -32,19 +32,6 @@ class JuegosController extends Controller
     }
 
     /**
-     * Muestra el juego seleccionado.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $juego = Juego::find($id);
-
-        return view('admin.juego', ['juego' => $juego]);
-    }
-
-    /**
      * Banea un juego.
      *
      * @param  \Illuminate\Http\Request  $request
