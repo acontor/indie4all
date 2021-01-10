@@ -89,9 +89,9 @@
                                 </label>
                                 <br>
                                 @if($desarrolladora->imagen_portada)
-                                    <img class="img-fluid p-2" src="{{url('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_portada)}}" height="512" width="1024" id="imagen-portada" alt="Portada de la desarrolladora" />
+                                    <img class="img-fluid p-2" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_portada) }}" height="512" width="1024" id="imagen-portada" alt="Portada de la desarrolladora" />
                                 @else
-                                    <img class="img-fluid p-2" src="{{url('/images/desarrolladoras/default-portada-desarrolladora.png')}}" height="512" width="1024" id="imagen-portada" alt="Portada de la desarrolladora" />
+                                    <img class="img-fluid p-2" src="{{ asset('/images/desarrolladoras/default-portada-desarrolladora.png') }}" height="512" width="1024" id="imagen-portada" alt="Portada de la desarrolladora" />
                                 @endif
                                 @error('imagen_portada')
                                     <small class="text-danger">{{ $message }}</small>
@@ -106,9 +106,9 @@
                                 </label>
                                 <br>
                                 @if($desarrolladora->imagen_logo)
-                                    <img class="img-fluid" src="{{url('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_logo)}}" height="100" width="100" id="imagen-logo" alt="Logo de la desarrolladora" />
+                                    <img class="img-fluid" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_logo) }}" height="100" width="100" id="imagen-logo" alt="Logo de la desarrolladora" />
                                 @else
-                                    <img class="img-fluid" src="{{url('/images/desarrolladoras/default-logo-desarrolladora.png')}}" width="100" id="imagen-logo" alt="Logo de la desarrolladora" />
+                                    <img class="img-fluid" src="{{ asset('/images/desarrolladoras/default-logo-desarrolladora.png') }}" width="100" id="imagen-logo" alt="Logo de la desarrolladora" />
                                 @endif
                                 @error('imagen_logo')
                                     <small class="text-danger">{{ $message }}</small>

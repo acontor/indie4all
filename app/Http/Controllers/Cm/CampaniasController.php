@@ -124,7 +124,6 @@ class CampaniasController extends Controller
             'meta' => 'required',
             'fecha_fin' => 'required',
             'nombre' => 'required',
-            'sinopsis' => 'required',
             'imagen_portada' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=1024,height=512',
             'fecha_lanzamiento' => 'required',
             'precio' => 'required',
@@ -141,27 +140,9 @@ class CampaniasController extends Controller
             'faq' => $request->faq,
         ]);
 
-        if ($portada = $request->file('imagen_portada')) {
-            $originNamePortada = $request->file('imagen_portada')->getClientOriginalName();
-            $fileNamePortada = pathinfo($originNamePortada, PATHINFO_FILENAME);
-            $extensionPortada = $request->file('imagen_portada')->getClientOriginalExtension();
-            $fileNamePortada = $fileNamePortada . '_' . time() . '.' . $extensionPortada;
-            $portada->move('images/juegos/portadas/', $fileNamePortada);
-        }
-
-        if ($caratula = $request->file('imagen_caratula')) {
-            $originNameCaratula = $request->file('imagen_caratula')->getClientOriginalName();
-            $fileNameCaratula = pathinfo($originNameCaratula, PATHINFO_FILENAME);
-            $extensionCaratula = $request->file('imagen_caratula')->getClientOriginalExtension();
-            $fileNameCaratula = $fileNameCaratula . '_' . time() . '.' . $extensionCaratula;
-            $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
-        }
 
         Juego::find($campania->juego_id)->update([
             'nombre' => $request->nombre,
-            'imagen_portada' => $fileNamePortada,
-            'imagen_caratula' => $fileNameCaratula,
-            'sinopsis' => $request->sinopsis,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'genero_id' => $request->genero_id,

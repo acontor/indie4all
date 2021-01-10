@@ -10,9 +10,9 @@
             <div class="row">
                 <div class="col-md-8 col-12">
                     @if (!$campania->juego->imagen_portada)
-                        <img class="img-fluid h-auto" src="{{url('/images/default.png')}}">
+                        <img class="img-fluid h-auto" src="{{ asset('/images/desarrolladoras/default-portada-juego.png') }}">
                     @else
-                        <img class="img-fluid h-auto animate__animated animate__fadeIn" src="{{url('/images/juegos/portadas/' . $campania->juego->imagen_portada)}}">
+                        <img class="img-fluid h-auto animate__animated animate__fadeIn" src="{{ asset('/images/desarrolladoras/' . $campania->juego->desarrolladora->nombre . '/' . $campania->juego->imagen_portada) }}">
                     @endif
                 </div>
                 <div class="col-12 col-md-4">
@@ -66,50 +66,24 @@
                 </div>
             </nav>
 
-            <div id="main">
-                <div id="contenido">
-                    <div class="general">
-                        <h3>Contenido</h3>
-                        {!! $campania->contenido !!}
-                    </div>
-                    <div class="actualizaciones d-none">
-                        @if ($campania->posts->count() != 0)
-                            <div class="items">
-                                @foreach ($campania->posts as $post)
-                                    <div>
-                                        <h4>{{ $post->titulo }} <small>{{$post->created_at}}</small></h4>
-                                        <p>{!! substr($post->contenido, 0, 300) !!}</p>
-                                        <form>
-                                            <input type="hidden" name="id" value="{{ $post->id }}" />
-                                            <a type="submit" class="more">Leer más</a>
-                                        </form>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="pager">
-                                <div class="firstPage">&laquo;</div>
-                                <div class="previousPage">&lsaquo;</div>
-                                <div class="pageNumbers"></div>
-                                <div class="nextPage">&rsaquo;</div>
-                                <div class="lastPage">&raquo;</div>
-                            </div>
-                        @else
-                            Aún no ha publicado ninguna actualización.
-                        @endif
-                    </div>
-                    @auth
-                    <div class="foro d-none">
-                        <h3>Foro</h3>
-                        <textarea class="form-control" name="mensaje" id="editor"></textarea>
-                        <input type="hidden" name="id" value="{{ $campania->id }}">
-                        <button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button>
-                        <div class="mensajes">
-                            @if ($campania->mensajes->count() != 0)
+            <div class="row">
+                <div class="col-12 mt-4">
+                    <div id="contenido">
+                        <div class="general shadow p-4">
+                            <h3>Contenido</h3>
+                            {!! $campania->contenido !!}
+                        </div>
+                        <div class="actualizaciones shadow p-4 d-none">
+                            @if ($campania->posts->count() != 0)
                                 <div class="items">
-                                    @foreach ($campania->mensajes as $mensaje)
+                                    @foreach ($campania->posts as $post)
                                         <div>
-                                            <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
-                                            <p class="mensaje">{!! $mensaje->contenido !!}</p>
+                                            <h4>{{ $post->titulo }} <small>{{$post->created_at}}</small></h4>
+                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            <form>
+                                                <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                <a type="submit" class="more">Leer más</a>
+                                            </form>
                                         </div>
                                     @endforeach
                                 </div>
@@ -121,14 +95,42 @@
                                     <div class="lastPage">&raquo;</div>
                                 </div>
                             @else
-                                <div class="mensaje mt-3">Aún no hay mensajes.. Sé el primero en participar!</div>
+                                Aún no ha publicado ninguna actualización.
                             @endif
                         </div>
-                    </div>
-                    @endauth
-                    <div class="faq d-none">
-                        <h3>FAQ</h3>
-                        {!! $campania->faq !!}
+                        @auth
+                        <div class="foro shadow p-4 d-none">
+                            <h3>Foro</h3>
+                            <textarea class="form-control" name="mensaje" id="editor"></textarea>
+                            <input type="hidden" name="id" value="{{ $campania->id }}">
+                            <button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button>
+                            <div class="mensajes">
+                                @if ($campania->mensajes->count() != 0)
+                                    <div class="items">
+                                        @foreach ($campania->mensajes as $mensaje)
+                                            <div>
+                                                <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
+                                                <p class="mensaje">{!! $mensaje->contenido !!}</p>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <div class="pager">
+                                        <div class="firstPage">&laquo;</div>
+                                        <div class="previousPage">&lsaquo;</div>
+                                        <div class="pageNumbers"></div>
+                                        <div class="nextPage">&rsaquo;</div>
+                                        <div class="lastPage">&raquo;</div>
+                                    </div>
+                                @else
+                                    <div class="mensaje mt-3">Aún no hay mensajes.. Sé el primero en participar!</div>
+                                @endif
+                            </div>
+                        </div>
+                        @endauth
+                        <div class="faq shadow p-4 d-none">
+                            <h3>FAQ</h3>
+                            {!! $campania->faq !!}
+                        </div>
                     </div>
                 </div>
             </div>

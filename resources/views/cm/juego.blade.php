@@ -73,7 +73,7 @@
                                         <input type="file" id="imagen_portada" name="imagen_portada" @if(!isset($juego)) required="required" @endif onchange="readURL(this);">
                                 </label>
                                 @if(isset($juego))
-                                <img  src="{{url('/images/juegos/portadas/'.$juego->imagen_portada)}}" height="100" width="100" id="blah" />
+                                <img  src="{{ asset('/images/juegos/portadas/'.$juego->imagen_portada) }}" height="100" width="100" id="blah" />
                             @else
                                 <img src=""  height="100" width="100" id="blah" style="display: none"/>
                             @endif
@@ -84,7 +84,7 @@
                                     <input type="file" class="btn btn-primary" id="imagen_caratula" name="imagen_caratula" @if(!isset($juego)) required="required" @endif onchange="readURL2(this);">
                                 </label>
                             @if(isset($juego))
-                                <img  src="{{url('/images/juegos/caratulas/'.$juego->imagen_caratula)}}" height="100" width="100" id="bloh" />
+                                <img  src="{{ asset('/images/juegos/caratulas/'.$juego->imagen_caratula) }}" height="100" width="100" id="bloh" />
                             @else
                                 <img src=""  height="100" width="100" id="bloh" style="display: none"/>
                             @endif

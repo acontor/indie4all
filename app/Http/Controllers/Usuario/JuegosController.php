@@ -7,8 +7,8 @@ use App\Listeners\FollowListener;
 use App\Models\Juego;
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class JuegosController extends Controller
 {
