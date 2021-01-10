@@ -14,8 +14,7 @@
                 </div>
                 @if ($desarrolladoras->count() > 0)
                     <div class="box desarrolladoras">
-                        <h2 class="mb-4">Desarrolladoras (<span
-                                class="numero-desarrolladoras">{{ $desarrolladoras->count() }}</span>)</h2>
+                        <h2 class="mb-4">Desarrolladoras (<span class="numero-desarrolladoras">{{ $desarrolladoras->count() }}</span>)</h2>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -51,8 +50,8 @@
                     </div>
                 @endif
                 @if ($masters->count() > 0)
-                    <div class="box">
-                        <h2>Masters</h2>
+                    <div class="box masters">
+                        <h2>Masters (<span class="numero-masters">{{ $masters->count() }}</span>)</h2>
                         <div class="table-responsive mb-3">
                             <table class="table table-striped">
                                 <thead>
@@ -92,4 +91,5 @@
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
 @endsection

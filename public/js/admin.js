@@ -62,7 +62,10 @@ function verSolicitud(tipo, fila, id, comentario) {
                     },
                     success: function (resultado) {
                         notificacionEstado(resultado.estado, resultado.mensaje);
-                        successSwal(fila, resultado);
+                        successSwal(tipo, fila, resultado);
+                    },
+                    error: function () {
+                        notificacionEstado('error', 'No se ha podido realizar la acción');
                     }
                 });
             } else {
@@ -82,19 +85,22 @@ function verSolicitud(tipo, fila, id, comentario) {
                 },
                 success: function (resultado) {
                     notificacionEstado(resultado.estado, resultado.mensaje);
-                    successSwal(fila, resultado);
+                    successSwal(tipo, fila, resultado.estado);
+                },
+                error: function () {
+                    notificacionEstado('error', 'No se ha podido realizar la acción');
                 }
             });
         }
     });
 }
 
-function successSwal(fila, resultado) {
-    if (resultado.estado != "error") {
-        if ($('.numero-desarrolladoras').text() == 1) {
-            $('.desarrolladoras').remove();
+function successSwal(tipo, fila, resultado) {
+    if (resultado != "error") {
+        if ($('.numero-' + tipo + 's').text() == 1) {
+            $('.' + tipo + 's').remove();
         } else {
-            $('.numero-desarrolladoras').text($('.numero-desarrolladoras').text() - 1);
+            $('.numero-' + tipo + 's').text($('.numero-' + tipo + 's').text() - 1);
             fila.remove();
         }
         $('.numero-solicitudes').text($('.numero-solicitudes').text() - 1);

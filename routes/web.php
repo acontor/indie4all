@@ -91,6 +91,8 @@ Route::delete('/admin/genero/{id}/delete', [App\Http\Controllers\Administrador\G
 Route::get('/admin/solicitudes', [App\Http\Controllers\Administrador\SolicitudesController::class, 'index'])->name('admin.solicitudes.index');
 Route::post('/admin/solicitud/desarrolladora/aceptar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'aceptarDesarrolladora'])->name('admin.solicitud.aceptarDesarrolladora');
 Route::delete('/admin/solicitud/desarrolladora/rechazar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'rechazarDesarrolladora'])->name('admin.solicitud.rechazarDesarrolladora');
+Route::post('/admin/solicitud/master/aceptar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'aceptarMaster'])->name('admin.solicitud.aceptarMaster');
+Route::delete('/admin/solicitud/master/rechazar', [App\Http\Controllers\Administrador\SolicitudesController::class, 'rechazarMaster'])->name('admin.solicitud.rechazarMaster');
 
 // Reportes
 Route::get('/admin/reportes', [App\Http\Controllers\Administrador\ReportesController::class, 'index'])->name('admin.reportes.index');
