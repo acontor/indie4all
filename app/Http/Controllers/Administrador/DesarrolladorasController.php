@@ -21,7 +21,7 @@ class DesarrolladorasController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra el listado de todas las desarrolladoras.
      *
      * @return \Illuminate\Http\Response
      */
@@ -29,27 +29,45 @@ class DesarrolladorasController extends Controller
     {
         $desarrolladoras = Desarrolladora::all();
         $numSolicitudes = Solicitud::where('tipo', 'Desarrolladora')->count();
+
         return view('admin.desarrolladoras', ['desarrolladoras' => $desarrolladoras, 'numSolicitudes' => $numSolicitudes]);
     }
 
+    /**
+     * Banea una desarrolladora.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return String
+     */
     public function ban($id, Request $request)
     {
+        $desarrolladora = Desarrolladora::find($id);
 
-        Desarrolladora::find($id)->update([
+        $desarrolladora->update([
             'ban' => true,
             'motivo' => $request->motivo,
         ]);
 
-        return $request->motivo;
+        return 'La desarrolladora ' . $desarrolladora->nombre . ' ha sido baneada';
     }
 
+    /**
+     * Elimina el ban a una desarrolladora.
+     *
+     * @param  int  $id
+     * @return String
+     */
     public function unban($id)
     {
-        Desarrolladora::find($id)->update([
+        $desarrolladora = Desarrolladora::find($id);
+
+        $desarrolladora->update([
             'ban' => false,
             'motivo' => null,
+            'reportes' => $desarrolladora->reportes + 1,
         ]);
 
-        return "La desarrolladora ya no está baneado";
+        return 'La desarrolladora ' . $desarrolladora->nombre . ' ya no está baneada';
     }
 }
