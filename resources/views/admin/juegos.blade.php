@@ -1,6 +1,7 @@
 @extends("layouts.admin.base")
 
 @section("styles")
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/datatable/datatable.css') }}" rel="stylesheet">
 @endsection
 
