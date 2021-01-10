@@ -10,11 +10,14 @@
                         @foreach ($masters->take('10') as $master)
                             <div class="item m-2 shadow">
                                 <a href="{{ route('usuario.master.show', $master->id) }}">
-                                    <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                        alt="{{ $master->nombre }}">
+                                    @if ($master->imagen_logo != null)
+                                        <img class="img-fluid" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_logo) }}" alt="{{ $master->nombre }}">
+                                    @else
+                                        <img class="img-fluid" src="{{ asset('/images/masters/default-logo.png') }}" alt="{{ $master->nombre }}">
+                                    @endif
                                     <div class="carousel-caption mb-2 d-none">
                                         <h6><strong>{{ $master->nombre }}</strong></h6>
-                                        <small>Seguidores: {{ $master->seguidores_count }}</small>
+                                        <small>Seguidores: {{ $master->seguidores->count() }}</small>
                                         <small>Actividad: {{ $master->posts_count }}</small>
                                     </div>
                                 </a>

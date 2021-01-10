@@ -41,4 +41,17 @@ function graficaUsuarios(seguidores) {
         },
         responsive: true,
     });
+
+    $("#juegos").select2({
+        language: "es",
+        width: "auto",
+        placeholder: "Juegos",
+        maximumSelectionLength: 5,
+        language: {
+            maximumSelected: function (e) {
+                var message = "Solo puedes seleccionar " + e.maximum + " Juegos";
+                return message;
+            }
+        }
+    });
 }

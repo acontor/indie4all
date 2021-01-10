@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Listeners\FollowListener;
 use App\Models\Juego;
 use App\Models\Post;
 use App\Models\User;
-use App\Listeners\FollowListener;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -28,7 +28,7 @@ class JuegosController extends Controller
             $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
         }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        $posts = $this->obtenerNoticias($coleccion);
+        $posts = Post::where('master_id', null)->where('juego_id', '!=', null)->orderBy('created_at', 'DESC')->get();
         $analisis = Post::where('master_id', '!=', null)->where('juego_id', '!=', null)->orderBy('created_at', 'DESC')->get();
         $recomendados = $this->obtenerJuegos($generos, $coleccion);
 
@@ -47,6 +47,14 @@ class JuegosController extends Controller
 
         $coleccion = Auth::user() ? Auth::user()->juegos : null;
 
+        $juegos_id = [];
+
+        if ($coleccion && $coleccion->count() > 0) {
+            foreach ($coleccion as $juego) {
+                array_push($juegos_id, $juego->id);
+            }
+        }
+
         $recomendados = Juego::withCount(['seguidores' => function (Builder $query) {
             $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
         }, 'compras' => function (Builder $query) {
@@ -58,6 +66,10 @@ class JuegosController extends Controller
             ->orWhere('desarrolladora_id', $juego->desarrolladora_id)
             ->where('id', '!=', $juego->id)
             ->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
+
+        if (count($juegos_id) > 0) {
+            $recomendados->whereNotIn('id', $juegos_id);
+        }
 
         return view('usuario.juego', ['juego' => $juego, 'recomendados' => $recomendados]);
     }
@@ -112,35 +124,6 @@ class JuegosController extends Controller
     }
 
     /**
-     * Obtiene últimas noticias de los juegos.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function obtenerNoticias($coleccion)
-    {
-        $juegos_id = [];
-
-        if ($coleccion && $coleccion->count() > 0) {
-            foreach ($coleccion as $juego) {
-                array_push($juegos_id, $juego->id);
-            }
-        }
-
-        if (count($juegos_id) > 0) {
-            $posts = Post::whereIn('juego_id', $juegos_id)->where('master_id', null)->get();
-        } else {
-            $posts = Post::where('juego_id', '!=', null)->where('master_id', null)->get();
-        }
-
-        if ($posts->count() == 0 || count($juegos_id)  == 0) {
-            $posts = Post::where('juego_id', '!=', null)->where('master_id', null)->get();
-        }
-
-        return $posts;
-    }
-
-    /**
      * Obtiene juegos para recomendar.
      *
      * @param  int  $id
@@ -156,6 +139,14 @@ class JuegosController extends Controller
             }
         }
 
+        $juegos_id = [];
+
+        if ($coleccion && $coleccion->count() > 0) {
+            foreach ($coleccion as $juego) {
+                array_push($juegos_id, $juego->id);
+            }
+        }
+
         $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
             $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
         }, 'compras' => function (Builder $query) {
@@ -166,7 +157,11 @@ class JuegosController extends Controller
             $juegos->whereIn('genero_id', $generos_id);
         }
 
-        if($juegos->count() < 5) {
+        if (count($juegos_id) > 0) {
+            $juegos->whereNotIn('id', $juegos_id);
+        }
+
+        if ($juegos->count() < 5) {
             $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
                 $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
             }, 'compras' => function (Builder $query) {

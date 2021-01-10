@@ -101,7 +101,7 @@ class CampaniasController extends Controller
             'genero_id' => $request->genero_id,
         ]);
 
-        Campania::create([
+        $campania = Campania::create([
             'meta' => $request->meta,
             'resultado' => $request->imagen_portada,
             'fecha_fin' => $request->fecha_fin,
@@ -109,7 +109,13 @@ class CampaniasController extends Controller
             'aporte_minimo' => 1
         ]);
 
-        return redirect('/cm/campanias')->with('success', '¡Campaña creada!');
+        if ($campania->exists && $juego->exists) {
+            session()->flash('success', 'La campaña se ha creado.');
+        } else {
+            session()->flash('error', 'La campaña no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/cm/campanias');
     }
 
     public function update(Request $request, $id)
@@ -161,12 +167,26 @@ class CampaniasController extends Controller
             'genero_id' => $request->genero_id,
         ]);
 
-        return redirect('/cm/campanias')->with('success', '¡Campaña actualizada!');
+        session()->flash('success', 'La campaña se ha actualizado.');
+
+        return redirect('/cm/campanias');
     }
 
     public function destroy($id)
     {
-        Campania::find($id)->delete();
-        return redirect('/cm/campanias')->with('success', '¡Campaña borrada!');
+        // Plantear softdelete
+        $campania = Campania::find($id);
+
+        $campania->delete();
+
+        Juego::where('id', $campania->id)->delete();
+
+        if (!$campania->exists) {
+            session()->flash('success', 'La campaña se ha retirado.');
+        } else {
+            session()->flash('error', 'La campaña no se ha podido eliminar. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/cm/campanias');
     }
 }

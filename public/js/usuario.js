@@ -317,7 +317,13 @@ function more(url, id, config, checkUser) {
                 html += `<textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
                 if (data.mensajes.length > 0) {
                     data.mensajes.forEach(element => {
-                        html += `<div class="alert alert-dark" role="alert">${element.name} <small>${element.created_at}</small><input type="hidden" value="${element.id}"><a name="${element.id}asd" class="text-danger float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p></div>`;
+                        let logros = '';
+                        data.logros.forEach(logro => {
+                            if(logro.id == element.id) {
+                                logros += `<i class="${logro.icono} ml-2"></i>`;
+                            }
+                        });
+                        html += `<div class="alert alert-dark" role="alert">${element.name}${logros} <small>${element.created_at}</small><input type="hidden" value="${element.id}"><a name="${element.id}asd" class="text-danger float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p></div>`;
                     });
                 } else {
                     html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';

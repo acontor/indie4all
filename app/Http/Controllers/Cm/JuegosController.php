@@ -60,36 +60,28 @@ class JuegosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required',
-            'sinopsis' => 'required',
-            'imagen_portada' => 'required',
-            'imagen_caratula' => 'required',
-            'sinopsis' => 'required',
+            'nombre' => ['required', 'max:255'],
+            'email' => ['required', 'max:255'],
+            'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
+            'imagen_logo' => ['mimes:png', 'dimensions:width=256,height=256'],
             'fecha_lanzamiento' => 'required',
             'precio' => 'required',
-            'genero_id' => 'required',
+            'genero_id' => 'required'
         ]);
 
-        if ($portada = $request->file('imagen_portada')) {
-            $originNamePortada = $request->file('imagen_portada')->getClientOriginalName();
-            $fileNamePortada = pathinfo($originNamePortada, PATHINFO_FILENAME);
-            $extensionPortada = $request->file('imagen_portada')->getClientOriginalExtension();
-            $fileNamePortada = $fileNamePortada . '_' . time() . '.' . $extensionPortada;
-            $portada->move('images/juegos/portadas/', $fileNamePortada);
+        $ruta = public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/' . $request->nombre);
+
+        if ($request->file('imagen_portada') != null) {
+            $imagenPortada = $this->guardarImagen($request->file('imagen_portada'), $ruta, 'portada');
+        }
+        if ($request->file('imagen_caratula') != null) {
+            $imagenCaratula = $this->guardarImagen($request->file('imagen_caratula'), $ruta, 'logo');
         }
 
-        if ($caratula = $request->file('imagen_caratula')) {
-            $originNameCaratula = $request->file('imagen_caratula')->getClientOriginalName();
-            $fileNameCaratula = pathinfo($originNameCaratula, PATHINFO_FILENAME);
-            $extensionCaratula = $request->file('imagen_caratula')->getClientOriginalExtension();
-            $fileNameCaratula = $fileNameCaratula . '_' . time() . '.' . $extensionCaratula;
-            $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
-        }
-
-        Juego::create([
+        $juego = Juego::create([
             'nombre' => $request->nombre,
-            'imagen_portada' => $fileNamePortada,
-            'imagen_caratula' => $fileNameCaratula,
+            'imagen_portada' => $imagenPortada,
+            'imagen_caratula' => $imagenCaratula,
             'sinopsis' => $request->sinopsis,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
@@ -98,49 +90,50 @@ class JuegosController extends Controller
             'genero_id' => $request->genero_id,
         ]);
 
-        return redirect('/cm/juegos')->with('success', 'Juego creado!');
+        if ($juego->exists) {
+            session()->flash('success', 'El juego se ha creado.');
+        } else {
+            session()->flash('error', 'El juego no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/cm/juegos');
     }
 
     public function update(Request $request, $id)
     {
         $juego = Juego::find($id);
+
         $request->validate([
-            'nombre' => 'required',
-            'sinopsis' => 'required',
-            'imagen_portada' => 'required',
-            'imagen_caratula' => 'required',
-            'sinopsis' => 'required',
+            'nombre' => ['required', 'max:255'],
+            'email' => ['required', 'max:255'],
+            'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
+            'imagen_logo' => ['mimes:png', 'dimensions:width=256,height=256'],
             'fecha_lanzamiento' => 'required',
             'precio' => 'required',
             'genero_id' => 'required'
         ]);
 
-        $portada = public_path() . '/images/juegos/portadas/' . $juego->imagen_portada;
-        $caratula = public_path() . '/images/juegos/caratulas/' . $juego->imagen_caratula;
-        if (@getimagesize($portada) && @getimagesize($caratula)) {
-            unlink($portada);
-            unlink($caratula);
-        }
-        if ($portada = $request->file('imagen_portada')) {
-            $originNamePortada = $request->file('imagen_portada')->getClientOriginalName();
-            $fileNamePortada = pathinfo($originNamePortada, PATHINFO_FILENAME);
-            $extensionPortada = $request->file('imagen_portada')->getClientOriginalExtension();
-            $fileNamePortada = $fileNamePortada . '_' . time() . '.' . $extensionPortada;
-            $portada->move('images/juegos/portadas/', $fileNamePortada);
+        if ($juego->nombre != $request->nombre) {
+            rename(public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/' . $juego->nombre), public_path('/images/desarrolladoras/' . '/' . Auth::user()->cm->desarrolladora->nombre . '/' . $request->nombre));
         }
 
-        if ($caratula = $request->file('imagen_caratula')) {
-            $originNameCaratula = $request->file('imagen_caratula')->getClientOriginalName();
-            $fileNameCaratula = pathinfo($originNameCaratula, PATHINFO_FILENAME);
-            $extensionCaratula = $request->file('imagen_caratula')->getClientOriginalExtension();
-            $fileNameCaratula = $fileNameCaratula . '_' . time() . '.' . $extensionCaratula;
-            $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
+        $ruta = public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/' . $request->nombre);
+
+        if ($request->file('imagen_portada') != null) {
+            $imagenPortada = $this->guardarImagen($request->file('imagen_portada'), $ruta, 'portada');
+        } else {
+            $imagenPortada = $juego->imagen_portada;
+        }
+        if ($request->file('imagen_caratula') != null) {
+            $imagenLogo = $this->guardarImagen($request->file('imagen_caratula'), $ruta, 'logo');
+        } else {
+            $imagenLogo = $juego->imagen_logo;
         }
 
         $juego = Juego::find($id)->update([
             'nombre' => $request->nombre,
-            'imagen_portada' => $fileNamePortada,
-            'imagen_caratula' => $fileNameCaratula,
+            'imagen_portada' => $imagenPortada,
+            'imagen_caratula' => $imagenLogo,
             'sinopsis' => $request->sinopsis,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
@@ -150,21 +143,32 @@ class JuegosController extends Controller
             'contenido' => $request->contenido,
         ]);
 
-        return redirect('/cm/juegos')->with('success', 'Juego actualizado!');
+        session()->flash('success', 'El juego se ha actualizado.');
+
+        return redirect('/cm/juegos');
     }
 
     public function destroy($id)
     {
         $juego = Juego::find($id);
-        $portada = public_path() . '/images/juegos/portadas/' . $juego->imagen_portada;
-        $caratula = public_path() . '/images/juegos/caratulas/' . $juego->imagen_caratula;
+
+        $portada = public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_portada);
+        $caratula = public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_caratula);
+
         if (@getimagesize($portada) && @getimagesize($caratula)) {
             unlink($portada);
             unlink($caratula);
         }
-        Juego::find($id)->delete();
 
-        return redirect('/cm/juegos')->with('success', '¡Juego borrado!');
+        $juego->delete();
+
+        if (!$juego->exists) {
+            session()->flash('success', 'El juego se ha retirado.');
+        } else {
+            session()->flash('error', 'El juego no se ha podido retirar. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/cm/juegos');
     }
 
     public function importar(Request $request)
@@ -197,5 +201,26 @@ class JuegosController extends Controller
 
         $generos = Genero::All();
         return view('cm.juego', ['juego' => $juego, 'generos' => $generos]);
+    }
+
+    /**
+     * Guarda las imágenes en la carpeta public.
+     *
+     * @param  \Illuminate\Http\Request  $imagen
+     * @param  String  $ruta
+     * @param  String  $nombre
+     * @return String
+     */
+    public function guardarImagen($imagen, $ruta, $nombre)
+    {
+        if ($imagen != null) {
+            if (@getimagesize($ruta)) {
+                unlink($ruta);
+            }
+            $extension = $imagen->getClientOriginalExtension();
+            $imagen->move($ruta, $nombre . '.' .  $extension);
+        }
+
+        return $nombre . '.' .  $extension;
     }
 }

@@ -14,7 +14,7 @@ class InvertirListener
      */
     public function __construct(User $user)
     {
-        if(Auth::user()->logros->where('logro_id', 4)->count() != 0) {
+        if(Auth::user()->logros->where('logro_id', 4)->count() == 0) {
 
             $inversiones = $user->compras->count();
 

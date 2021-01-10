@@ -10,11 +10,14 @@
                         @foreach ($desarrolladoras->take('10') as $desarrolladora)
                             <div class="item m-2 shadow">
                                 <a href="{{ route('usuario.desarrolladora.show', $desarrolladora->id) }}">
-                                    <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                        alt="{{ $desarrolladora->nombre }}">
+                                    @if ($desarrolladora->imagen_logo != null)
+                                        <img src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_logo) }}" alt="{{ $desarrolladora->nombre }}">
+                                    @else
+                                        <img src="{{ asset('/images/desarrolladoras/default-logo-desarrolladora.png') }}" alt="{{ $desarrolladora->nombre }}">
+                                    @endif
                                     <div class="carousel-caption mb-2 d-none">
                                         <h6><strong>{{ $desarrolladora->nombre }}</strong></h6>
-                                        <small>Seguidores: {{ $desarrolladora->seguidores_count }}</small>
+                                        <small>Seguidores: {{ $desarrolladora->seguidores->count() }}</small>
                                         <small>Actividad: {{ $desarrolladora->posts_count }}</small>
                                     </div>
                                 </a>

@@ -34,7 +34,7 @@ class LoginListener
 
             $usuario->update(['last_activity' => $timestamp]);
 
-            if (Auth::user()->logros->where('logro_id', 2)->count() != 0 && $date->diffInDays($usuario->created_at) >= 365 && !$usuario->logros->find(2)) {
+            if (Auth::user()->logros->where('logro_id', 2)->count() == 0 && $date->diffInDays($usuario->created_at) >= 365) {
                 $usuario->logros()->attach([
                     2
                 ]);

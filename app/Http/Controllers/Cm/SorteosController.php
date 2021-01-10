@@ -56,14 +56,20 @@ class SorteosController extends Controller
             'fecha_fin' => 'required',
         ]);
 
-        Sorteo::create([
+        $sorteo = Sorteo::create([
             'titulo' => $request->titulo,
             'descripcion' => $request->descripcion,
             'fecha_fin' => $request->fecha_fin,
             'desarrolladora_id' => Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
         ]);
 
-        return redirect('/cm/sorteos')->with('success', 'Sorteo creado!');
+        if ($sorteo->exists) {
+            session()->flash('success', 'El sorteo se ha creado.');
+        } else {
+            session()->flash('error', 'El sorteo no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/cm/sorteos');
     }
 
     public function edit($id)
@@ -86,7 +92,9 @@ class SorteosController extends Controller
             'fecha_fin' => $request->fecha_fin,
         ]);
 
-        return redirect('/cm/sorteos')->with('success', 'Sorteo creado!');
+        session()->flash('success', 'El sorteo se ha actualizado.');
+
+        return redirect('/cm/sorteos');
     }
 
     public function finish($id)
@@ -105,6 +113,10 @@ class SorteosController extends Controller
 
         Mail::to($user->email)->send(new SorteoGanador($user->name, $sorteo, $desarrolladora));
 
-        return redirect('/cm/sorteos')->with('success', 'Sorteo finalizado!');
+
+        session()->flash('success', 'Sorteo finalizado. El ganador ha sido ' .$user->name);
+
+
+        return redirect('/cm/sorteos');
     }
 }

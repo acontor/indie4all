@@ -10,8 +10,11 @@
                         @foreach ($recomendados->take('10') as $juego)
                             <div class="item m-2 shadow">
                                 <a href="{{ route('usuario.juego.show', $juego->id) }}">
-                                    <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                        alt="{{ $juego->nombre }}">
+                                    @if ($juego->imagen_caratula != null)
+                                        <img src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juego->nombre }}">
+                                    @else
+                                        <img src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juego->nombre }}">
+                                    @endif
                                     <div class="carousel-caption d-none">
                                         <h6>{{ $juego->nombre }}</h6>
                                         <small>
@@ -31,8 +34,11 @@
                     <h3 class="text-uppercase font-weight-bold text-center">Destacados</h3>
                     <div class="mt-4 text-center item">
                         <a href="{{ route('usuario.juego.show', $juegos->first()->id) }}">
-                            <img class="img-fluid shadow" height="20" src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                alt="{{ $juegos->first()->nombre }}">
+                            @if ($juego->imagen_caratula != null)
+                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juegos->first()->nombre }}">
+                            @else
+                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juegos->first()->nombre }}">
+                            @endif
                             <div class="carousel-caption mb-5 d-none">
                                 <h6>{{ $juegos->first()->nombre }}</h6>
                                 <small>

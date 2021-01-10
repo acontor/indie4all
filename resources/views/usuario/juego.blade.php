@@ -10,10 +10,10 @@
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
             <header>
-                @if (!$juego->imagen_portada)
-                    <img class="img-fluid h-auto" src="{{ url('/images/default.png') }}" style="filter: brightness(0.2)">
+                @if ($juego->imagen_portada != null)
+                    <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $juego->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_portada) }}" alt="{{ $juego->nombre }}" style="filter: brightness(0.2)">
                 @else
-                    <img class="img-fluid h-auto" src="{{ url('/images/juegos/portadas/' . $juego->imagen_portada) }}">
+                    <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-portada-juego.png') }}" alt="{{ $juego->nombre }}" style="filter: brightness(0.2)">
                 @endif
                 <div class="carousel-caption ">
                     <h1><strong>{{ $juego->nombre }}</strong></h1>

@@ -5,10 +5,10 @@
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
             <header>
-                @if (!$desarrolladora->imagen_portada)
-                    <img class="img-fluid h-auto" src="{{ url('/images/default.png') }}" style="filter: brightness(0.2)">
+                @if ($desarrolladora->imagen_portada != null)
+                    <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_portada) }}" alt="{{ $desarrolladora->nombre }}" style="filter: brightness(0.2)">
                 @else
-                    <img class="img-fluid h-auto" src="{{ url('/images/desarrolladoras/portadas/' . $desarrolladora->imagen_portada) }}">
+                    <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-portada-desarrolladora.png') }}" alt="{{ $desarrolladora->nombre }}" style="filter: brightness(0.2)">
                 @endif
                 <div class="carousel-caption ">
                     <h1><strong>{{ $desarrolladora->nombre }}</strong></h1>

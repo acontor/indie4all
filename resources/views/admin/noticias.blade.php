@@ -54,12 +54,11 @@
 
 @section("scripts")
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script>
         $(function() {
-            $('table').DataTable({
-                "responsive": true
-            });
+
 
             let sessionSuccess = {!! json_encode(session()->get("success")) !!}
 
