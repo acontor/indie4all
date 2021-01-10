@@ -18,35 +18,37 @@
                     <canvas id="myChart"></canvas>
                 </div>
                 <div class="box mt-4">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td class="w-50">Nombre</td>
-                                <td class="w-20 text-center">Seguidores</td>
-                                <td class="w-20 text-center">Juegos</td>
-                                <td class="w-10 text-center">Acciones</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($generos as $genero)
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <td class="align-middle w-50">{{ $genero->nombre }}</td>
-                                    <td class="w-20 text-center">{{ $genero->usuarios->count() }}</td>
-                                    <td class="w-20 text-center">{{ $genero->juegos->count() }}</td>
-                                    <td class="align-middle w-10 text-center">
-                                        <div class="btn-group">
-                                            <form method="get" action="{{ route('admin.generos.edit', $genero->id) }}">
-                                                @csrf
-                                                <button class="btn btn-primary btn-sm round mr-1" type="submit">
-                                                    <i class="far fa-edit"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    <td class="w-auto">Nombre</td>
+                                    <td class="w-auto text-center">Seguidores</td>
+                                    <td class="w-auto text-center">Juegos</td>
+                                    <td class="w-auto text-center">Acciones</td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($generos as $genero)
+                                    <tr>
+                                        <td class="align-middle w-auto">{{ $genero->nombre }}</td>
+                                        <td class="w-auto text-center">{{ $genero->usuarios->count() }}</td>
+                                        <td class="w-auto text-center">{{ $genero->juegos->count() }}</td>
+                                        <td class="align-middle w-auto text-center">
+                                            <div class="btn-group">
+                                                <form method="get" action="{{ route('admin.generos.edit', $genero->id) }}">
+                                                    @csrf
+                                                    <button class="btn btn-primary btn-sm round mr-1" type="submit">
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

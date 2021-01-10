@@ -13,52 +13,50 @@
                     <h1>Campañas ({{ $juegos->count() }})</h1>
                 </div>
                 <div class="box">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td>Nombre</td>
-                                <td>Fecha de fin</td>
-                                <td>Meta</td>
-                                <td>Recaudado</td>
-                                <td>Desarrolladora</td>
-                                <td class="text-center">Baneadq</td>
-                                <td class="text-center">Acciones</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($juegos as $juego)
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <td class="align-middle">{{ $juego->nombre }}</td>
-                                    <td class="align-middle">{{ $juego->campania->fecha_fin }}</td>
-                                    <td class="align-middle">{{ $juego->campania->meta }} €</td>
-                                    <td class="align-middle">{{ $juego->campania->recaudado }} €</td>
-                                    <td class="align-middle">{{ $juego->desarrolladora->nombre }}</td>
-                                    <td class="align-middle w-10 text-center">
-                                        {{ $juego->ban == 1 ? 'Si' : 'No' }}
-                                    </td>
-                                    <td class="align-middle text-center">
-                                        <div class="btn-group">
-                                            <a href="{{ route('admin.campania.show', $juego->campania->id) }}" class="btn btn-primary btn-sm round mr-1"><i class="far fa-eye"></i></a><input type="hidden" name="id" value="{{ $juego->id }}">
-                                            <input type="hidden" name="id" value="{{ $juego->campania->id }}">
-                                            <div class="ban">
-                                                <input type="hidden" name="id" value="{{ $juego->campania->id }}">
-                                                @if($juego->campania->ban == null)
-                                                    <button class="btn btn-warning btn-sm round btn-ban" type="submit">
-                                                        <i class="far fa-gavel"></i>
-                                                    </button>
-                                                @else
-                                                    <input type="hidden" name="motivo" value="{{ $juego->campania->motivo }}">
-                                                    <button class="btn btn-success btn-sm round btn-unban" type="submit">
-                                                        <i class="far fa-gavel"></i>
-                                                    </button>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td>Nombre</td>
+                                    <td>Fecha de fin</td>
+                                    <td>Meta</td>
+                                    <td>Recaudado</td>
+                                    <td>Desarrolladora</td>
+                                    <td class="text-center">Acciones</td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($juegos as $juego)
+                                    <tr>
+                                        <td class="align-middle">{{ $juego->nombre }}</td>
+                                        <td class="align-middle">{{ $juego->campania->fecha_fin }}</td>
+                                        <td class="align-middle">{{ $juego->campania->meta }} €</td>
+                                        <td class="align-middle">{{ $juego->campania->recaudado }} €</td>
+                                        <td class="align-middle">{{ $juego->desarrolladora->nombre }}</td>
+                                        <td class="align-middle text-center">
+                                            <div class="btn-group">
+                                                <a href="{{ route('admin.campania.show', $juego->campania->id) }}" class="btn btn-primary btn-sm round mr-1"><i class="far fa-eye"></i></a><input type="hidden" name="id" value="{{ $juego->id }}">
+                                                <input type="hidden" name="id" value="{{ $juego->campania->id }}">
+                                                <div class="ban">
+                                                    <input type="hidden" name="id" value="{{ $juego->campania->id }}">
+                                                    @if($juego->campania->ban == null)
+                                                        <button class="btn btn-warning btn-sm round btn-ban" type="submit">
+                                                            <i class="far fa-gavel"></i>
+                                                        </button>
+                                                    @else
+                                                        <input type="hidden" name="motivo" value="{{ $juego->campania->motivo }}">
+                                                        <button class="btn btn-success btn-sm round btn-unban" type="submit">
+                                                            <i class="far fa-gavel"></i>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

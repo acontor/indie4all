@@ -16,53 +16,51 @@
                     @endif
                 </div>
                 <div class="box">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td>Nombre</td>
-                                <td>Email</td>
-                                <td>Dirección</td>
-                                <td>Teléfono</td>
-                                <td>Url</td>
-                                <td class="text-center">Baneada</td>
-                                <td class="text-center">Strikes</td>
-                                <td class="text-center">Acciones</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($desarrolladoras as $desarrolladora)
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <td class="align-middle">{{ $desarrolladora->nombre }}</td>
-                                    <td class="align-middle">{{ $desarrolladora->email }}</td>
-                                    <td class="align-middle">{{ $desarrolladora->direccion }}</td>
-                                    <td class="align-middle">{{ $desarrolladora->telefono }}</td>
-                                    <td class="align-middle">{{ $desarrolladora->url }}</td>
-                                    <td class="align-middle w-10 text-center">
-                                        {{ $desarrolladora->ban == 1 ? 'Si' : 'No' }}
-                                    </td>
-                                    <td class="align-middle text-center">{{ $desarrolladora->reportes }}</td>
-                                    <td class="align-middle text-center">
-                                        <div class="btn-group">
-                                            <input type="hidden" name="id" value="{{ $desarrolladora->id }}">
-                                            <div class="ban">
-                                                <input type="hidden" name="id" value="{{ $desarrolladora->id }}">
-                                                @if($desarrolladora->ban == null)
-                                                    <button class="btn btn-warning btn-sm round btn-ban" type="submit">
-                                                        <i class="far fa-gavel"></i>
-                                                    </button>
-                                                @else
-                                                    <input type="hidden" name="motivo" value="{{ $desarrolladora->motivo }}">
-                                                    <button class="btn btn-success btn-sm round btn-unban" type="submit">
-                                                        <i class="far fa-gavel"></i>
-                                                    </button>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td>Nombre</td>
+                                    <td>Email</td>
+                                    <td>Dirección</td>
+                                    <td>Teléfono</td>
+                                    <td>Url</td>
+                                    <td class="text-center">Strikes</td>
+                                    <td class="text-center">Acciones</td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($desarrolladoras as $desarrolladora)
+                                    <tr>
+                                        <td class="align-middle">{{ $desarrolladora->nombre }}</td>
+                                        <td class="align-middle">{{ $desarrolladora->email }}</td>
+                                        <td class="align-middle">{{ $desarrolladora->direccion }}</td>
+                                        <td class="align-middle">{{ $desarrolladora->telefono }}</td>
+                                        <td class="align-middle">{{ $desarrolladora->url }}</td>
+                                        <td class="align-middle text-center">{{ $desarrolladora->reportes }}</td>
+                                        <td class="align-middle text-center">
+                                            <div class="btn-group">
+                                                <input type="hidden" name="id" value="{{ $desarrolladora->id }}">
+                                                <div class="ban">
+                                                    <input type="hidden" name="id" value="{{ $desarrolladora->id }}">
+                                                    @if($desarrolladora->ban == null)
+                                                        <button class="btn btn-warning btn-sm round btn-ban" type="submit">
+                                                            <i class="far fa-gavel"></i>
+                                                        </button>
+                                                    @else
+                                                        <input type="hidden" name="motivo" value="{{ $desarrolladora->motivo }}">
+                                                        <button class="btn btn-success btn-sm round btn-unban" type="submit">
+                                                            <i class="far fa-gavel"></i>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

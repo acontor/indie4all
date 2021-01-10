@@ -17,37 +17,39 @@
                     <canvas id="myChart"></canvas>
                 </div>
                 <div class="box mt-4">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td class="w-10 text-center">Icono:</td>
-                                <td class="w-30">Nombre</td>
-                                <td class="w-40">Descripción</td>
-                                <td class="w-10 text-center">Conseguido</td>
-                                <td class="w-10 text-center">Acciones</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($logros as $logro)
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <td class="align-middle w-10 text-center"><i class="{{ $logro->icono }}"></i></td>
-                                    <td class="align-middle w-30">{{ $logro->nombre }}</td>
-                                    <td class="align-middle w-40">{{ $logro->descripcion }}</td>
-                                    <td class="align-middle w-10 text-center">{{ round(Illuminate\Support\Facades\DB::table('logro_user')->where('logro_id', $logro->id)->count() * 100 / App\Models\User::count(), 2) }} %</td>
-                                    <td class="align-middle w-10 text-center">
-                                        <div class="btn-group">
-                                            <form action="{{ route('admin.logros.edit', $logro->id) }}" method="post">
-                                                @csrf
-                                                <button class="btn btn-primary btn-sm round mr-1" type="submit">
-                                                    <i class="far fa-edit"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    <td class="w-10 text-center">Icono:</td>
+                                    <td class="w-30">Nombre</td>
+                                    <td class="w-40">Descripción</td>
+                                    <td class="w-10 text-center">Conseguido</td>
+                                    <td class="w-10 text-center">Acciones</td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($logros as $logro)
+                                    <tr>
+                                        <td class="align-middle w-10 text-center"><i class="{{ $logro->icono }}"></i></td>
+                                        <td class="align-middle w-30">{{ $logro->nombre }}</td>
+                                        <td class="align-middle w-40">{{ $logro->descripcion }}</td>
+                                        <td class="align-middle w-10 text-center">{{ round(Illuminate\Support\Facades\DB::table('logro_user')->where('logro_id', $logro->id)->count() * 100 / App\Models\User::count(), 2) }} %</td>
+                                        <td class="align-middle w-10 text-center">
+                                            <div class="btn-group">
+                                                <form action="{{ route('admin.logros.edit', $logro->id) }}" method="post">
+                                                    @csrf
+                                                    <button class="btn btn-primary btn-sm round mr-1" type="submit">
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,7 +85,7 @@
                 nombreLogro.push(element["nombre"])
             });
 
-            graficaLogros(logros, datos);
+            graficaLogros(nombreLogro, datos);
         });
 
     </script>

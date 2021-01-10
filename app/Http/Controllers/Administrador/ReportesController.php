@@ -21,7 +21,7 @@ class ReportesController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra todos los reportes.
      *
      * @return \Illuminate\Http\Response
      */
@@ -58,9 +58,16 @@ class ReportesController extends Controller
             ->havingRaw('COUNT(*) >= 3')
             ->get();
         $reportes = Reporte::all();
+
         return view('admin.reportes', ['desarrolladoras' => $desarrolladoras, 'posts' => $posts, 'mensajes' => $mensajes, 'juegos' => $juegos, 'campanias' => $campanias, 'reportes' => $reportes, 'masters' => $masters]);
     }
 
+    /**
+     *  Muestra un reporte.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function show(Request $request)
     {
         $reportes = Reporte::join('users', 'users.id', 'reportes.user_id')->select('users.email', 'reportes.motivo')->where($request->tipo, $request->id)->get();
@@ -68,15 +75,38 @@ class ReportesController extends Controller
         return $reportes;
     }
 
+    /**
+     *  Acepta un reporte.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function aceptar(Request $request)
     {
-        DB::table($request->tabla)->where('id', $request->id)->increment('reportes');
+        if($request->tabla == 'mensajes') {
+            DB::table($request->tabla)->where('id', $request->id)->delete();
+        } else {
+            DB::table($request->tabla)->where('id', $request->id)->update([
+                'ban' => 1,
+                'Motivo' => 'Has sido reportado. Para más información envíe un mensaje a soporte@indie4all.com'
+            ]);
+        }
 
-        return Reporte::where($request->tipo, $request->id)->delete();
+        Reporte::where($request->tipo, $request->id)->delete();
+
+        return 'El reporte ha sido aceptado';
     }
 
+    /**
+     *  Rechaza un reporte.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function cancelar(Request $request)
     {
-        return Reporte::where($request->tipo, $request->id)->delete();
+        Reporte::where($request->tipo, $request->id)->delete();
+
+        return 'El reporte ha sido rechazado';
     }
 }

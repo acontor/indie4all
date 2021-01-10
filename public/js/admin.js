@@ -25,6 +25,18 @@ $(function () {
 
         verSolicitud('master', fila, id, comentario);
     });
+
+    /**
+     * SUBMENU CLICK EVENT
+     */
+    $(".submenu-items").children("li").children("a").on("click", function (e) {
+        e.preventDefault();
+        let item = $(this).attr("id");
+        $("#contenido").children("div").addClass("d-none");
+        $(`.${item}`).removeClass("d-none");
+        $('.navbar-toggler').addClass('collapsed');
+        $('.navbar-collapse').removeClass('show');
+    });
 });
 
 function verSolicitud(tipo, fila, id, comentario) {
@@ -108,25 +120,25 @@ function ban(elemento, url, title) {
             if (motivo != '') {
                 $.ajax({
                     url: url,
-                    type : 'POST',
-                    headers:{
+                    type: 'POST',
+                    headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     },
                     data: {
                         motivo: motivo,
                     }
-                    ,success: function(mensaje){
+                    , success: function (mensaje) {
                         elemento.removeClass('btn-warning btn-ban').addClass('btn-success btn-unban');
-                        elemento.on('click', function() {
+                        elemento.on('click', function () {
                             unban($(this), url.replace("ban", "unban"), motivo);
                         });
                         notificacionEstado('success', mensaje);
                     },
-                    error: function() {
+                    error: function () {
                         notificacionEstado('error', 'No se ha podido realizar la acción');
                     }
                 });
-            }else{
+            } else {
                 Swal.showValidationMessage(`Por favor, indica un motivo.`)
             }
         }
@@ -143,22 +155,22 @@ function unban(elemento, url, motivo, title) {
         preConfirm: function () {
             $.ajax({
                 url: url,
-                type : 'POST',
-                headers:{
+                type: 'POST',
+                headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 },
                 data: {
                     motivo: motivo,
                 },
-                success: function(mensaje){
+                success: function (mensaje) {
                     elemento.removeClass('btn-success btn-unban').addClass('btn-warning btn-ban');
-                    elemento.on('click', function() {
+                    elemento.on('click', function () {
                         ban($(this), url.replace("unban", "ban"));
                     });
                     elemento.prev().remove();
                     notificacionEstado('success', mensaje);
                 },
-                error: function() {
+                error: function () {
                     notificacionEstado('error', 'No se ha podido realizar la acción');
                 }
             });
@@ -188,15 +200,15 @@ function graficaGeneros(generos, datos) {
     var datos = {
         labels: generos,
         datasets: [{
-                label: "Juegos",
-                backgroundColor: "#ff6384",
-                data: datos[0]
-            },
-            {
-                label: "Seguidores",
-                backgroundColor: "#A086BE",
-                data: datos[1]
-            },
+            label: "Juegos",
+            backgroundColor: "#ff6384",
+            data: datos[0]
+        },
+        {
+            label: "Seguidores",
+            backgroundColor: "#A086BE",
+            data: datos[1]
+        },
         ],
     };
 
@@ -213,7 +225,7 @@ function graficaGeneros(generos, datos) {
                 }]
             }
         },
-        responsive: true,
+        responsive: true
     });
 }
 
@@ -223,10 +235,10 @@ function graficaLogros(logros, datos) {
     var datos = {
         labels: logros,
         datasets: [{
-                label: "Usuarios que lo han conseguido",
-                backgroundColor: "#ff6384",
-                data: datos
-            },
+            label: "Usuarios que lo han conseguido",
+            backgroundColor: "#ff6384",
+            data: datos
+        },
         ],
     };
 
@@ -242,6 +254,69 @@ function graficaLogros(logros, datos) {
                     }
                 }]
             }
+        },
+        responsive: true,
+    });
+}
+
+
+function notificacionAdmin(solicitudes, reportes) {
+    let mensaje = '';
+    if(solicitudes != '') {
+        mensaje += `<span class="d-block">${solicitudes}</span>`;
+    }
+    if(reportes != '') {
+        mensaje += `<span class="d-block">${reportes}</span>`;
+    }
+    Swal.fire({
+        position: "top-end",
+        icon: "info",
+        html: mensaje,
+        timer: 3000,
+        showConfirmButton: false,
+        showClass: {
+            popup: "animate__animated animate__fadeInDown"
+        },
+        hideClass: {
+            popup: "animate__animated animate__fadeOutUp"
+        },
+        allowOutsideClick: false,
+        backdrop: false,
+        width: "auto",
+    });
+}
+
+function graficaPosts(numPosts, dias) {
+    let ctx = document.getElementById("posts").getContext("2d");
+
+    let myLineChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: dias,
+            datasets: [{
+                label: "Posts",
+                data: numPosts,
+                backgroundColor: "#ff6384",
+                borderWidth: 1
+            }]
+        },
+        responsive: true,
+    });
+}
+
+function graficaMensajes(numMensajes, dias) {
+    let ctx = document.getElementById("mensajes").getContext("2d");
+
+    let myLineChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: dias,
+            datasets: [{
+                label: "Mensajes",
+                data: numMensajes,
+                backgroundColor: "#ff6384",
+                borderWidth: 1
+            }]
         },
         responsive: true,
     });
