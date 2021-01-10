@@ -183,12 +183,6 @@ function graficaUsuarios(masters, cms, usuarios) {
 }
 
 function graficaGeneros(generos, datos) {
-    var nombreGenero = [];
-
-    generos.forEach(element => {
-        nombreGenero.push(element["nombre"])
-    });
-
     var ctx = document.getElementById("myChart").getContext("2d");
 
     var datos = {
@@ -207,6 +201,36 @@ function graficaGeneros(generos, datos) {
     };
 
     let myBarChart = new Chart(ctx, {
+        type: "bar",
+        data: datos,
+        options: {
+            barValueSpacing: 20,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                    }
+                }]
+            }
+        },
+        responsive: true,
+    });
+}
+
+function graficaLogros(logros, datos) {
+    var ctx = document.getElementById("myChart").getContext("2d");
+
+    var datos = {
+        labels: logros,
+        datasets: [{
+                label: "Usuarios que lo han conseguido",
+                backgroundColor: "#ff6384",
+                data: datos
+            },
+        ],
+    };
+
+    var myBarChart = new Chart(ctx, {
         type: "bar",
         data: datos,
         options: {

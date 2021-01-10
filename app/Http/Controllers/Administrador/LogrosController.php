@@ -22,7 +22,7 @@ class LogrosController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra el listado de todos los logros.
      *
      * @return \Illuminate\Http\Response
      */
@@ -30,6 +30,7 @@ class LogrosController extends Controller
     {
         $logros = Logro::all();
         $datos = [];
+
         foreach ($logros as $logro) {
             $dato = DB::table('logro_user')->where('logro_id', $logro->id)->count();
 
@@ -39,13 +40,18 @@ class LogrosController extends Controller
         return view('admin.logros', ['logros' => $logros, 'datos' => $datos]);
     }
 
+    /**
+     * Muestra el formulario de creación de logros.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         return view('admin.logros_editor');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena el logro creado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -53,31 +59,36 @@ class LogrosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required',
-            'descripcion' => 'required',
-            'icono' => 'required',
+            'nombre' => ['required', 'string', 'max:255', 'unique:generos'],
+            'descripcion' => ['required', 'string', 'max:255', 'unique:generos'],
+            'icono' => ['required', 'string', 'max:255', 'unique:generos'],
         ]);
 
-        if ($archivo = $request->file('icono')) {
-            $originName = $request->file('icono')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('icono')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $archivo->move('images/logros', $fileName);
-            $request['icono'] = $fileName;
+        $logro = Logro::create($request->all());
+
+        if ($logro->exists) {
+            session()->flash('success', 'El logro ha sido creado');
+        } else {
+            session()->flash('error', 'El logro no se ha podido crear');
         }
 
-        Logro::create([
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'icono' => $fileName,
-        ]);
-
-        return redirect('/admin/logros')->with('success', '¡Logro guardado!');
+        return redirect('/admin/logros');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Muestra el formulario para editar el logro seleccionado.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $logro = Logro::find($id);
+
+        return view('admin.logros_editor', ['logro' => $logro]);
+    }
+
+    /**
+     * Actualiza el logro seleccionado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -85,59 +96,18 @@ class LogrosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $logro = Logro::find($id);
+
         $request->validate([
-            'nombre' => 'required',
-            'descripcion' => 'required',
-            'icono' => 'required',
+            'nombre' => $logro->nombre !== $request->nombre ? ['required', 'string', 'unique:logros', 'max:255'] : ['required', 'string', 'max:255'],
+            'descripcion' => $logro->descripcion !== $request->descripcion ? ['required', 'string', 'unique:logros', 'max:255'] : ['required', 'string', 'max:255'],
+            'icono' => $logro->icono !== $request->icono ? ['required', 'string', 'unique:logros', 'max:255'] : ['required', 'string', 'max:255'],
         ]);
 
-        $logro = Logro::find($id);
-        $image_path = public_path("images/logros/{$logro->icono}");
+        $logro->update($request->all());
 
-        if (File::exists($image_path)) {
-            unlink($image_path);
-        }
+        session()->flash('success', 'El logro se ha actualizado');
 
-        if ($archivo = $request->file('icono')) {
-            $originName = $request->file('icono')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('icono')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $archivo->move('images/logros', $fileName);
-            $request['icono'] = $fileName;
-        }
-
-        Logro::find($id)->update([
-            'nombre' => $request->nombre,
-            'descripcion' => $request->descripcion,
-            'icono' => $fileName,
-        ]);
-        return redirect('/admin/logros')->with('success', '!Logro actualizado!');
-    }
-
-    public function edit($id)
-    {
-        $logro = Logro::find($id);
-        return view('admin.logros_editor', ['logro' => $logro]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $logro = Logro::find($id);
-        $image_path = public_path("images/logros/{$logro->icono}");
-
-        if (File::exists($image_path)) {
-            unlink($image_path);
-        }
-
-        $logro->delete();
-
-        return redirect('/admin/logros')->with('success', '¡Logro borrado!');
+        return redirect('/admin/logros');
     }
 }

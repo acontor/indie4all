@@ -103,6 +103,17 @@
     <script src="{{ asset('js/chart/chart.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/admin.js') }}"></script>
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
+
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
+
+        </script>
+    @endif
     <script type="text/javascript">
         $(function() {
             let masters = "{!! $numMasters !!}";

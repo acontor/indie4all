@@ -76,7 +76,6 @@ class JuegosController extends Controller
         $juego->update([
             'ban' => false,
             'motivo' => null,
-            'reportes' => $juego->reportes + 1,
         ]);
 
         return 'El juego ' . $juego->nombre . ' ya no está baneado';

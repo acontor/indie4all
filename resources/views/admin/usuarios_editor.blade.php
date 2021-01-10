@@ -23,6 +23,13 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <label for="username">Nombre de usuario:</label>
+                                <input type="text" class="form-control" name="username" @isset($usuario) value="{{ $usuario->username }}" @endisset />
+                                @error('username')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
                                 <label for="descripcion">Email:</label>
                                 <input type="email" class="form-control" name="email" @isset($usuario) value="{{ $usuario->email }}" @endisset />
                                 @error('email')

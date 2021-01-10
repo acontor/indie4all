@@ -56,12 +56,14 @@ class UsuariosController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $usuario = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -100,11 +102,13 @@ class UsuariosController extends Controller
 
         $request->validate([
             'name' => $usuario->name !== $request->name ? ['required', 'string', 'unique:users', 'max:255'] : ['required', 'string', 'max:255'],
+            'username' => $usuario->username !== $request->username ? ['required', 'string', 'unique:users', 'max:255'] : ['required', 'string', 'max:255'],
             'email' => $usuario->email !== $request->email ? ['required', 'string', 'email', 'max:255', 'unique:users'] : ['required', 'string', 'email', 'max:255'],
         ]);
 
         $usuario->update([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
         ]);
 

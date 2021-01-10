@@ -57,15 +57,32 @@
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
     <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('js/admin.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
     <script src="{{ asset('js/chart/chart.min.js') }}"></script>
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
+
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
+
+        </script>
+    @endif
     <script>
         $(function() {
             var generos = {!! $generos !!};
             var datos = {!! json_encode($datos) !!};
 
-            graficaGeneros(generos, datos);
+            var nombreGeneros = [];
+
+            generos.forEach(element => {
+                nombreGeneros.push(element["nombre"])
+            });
+
+            graficaGeneros(nombreGeneros, datos);
 
         });
 
