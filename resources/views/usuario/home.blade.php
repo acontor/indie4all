@@ -71,7 +71,7 @@
                                 @endforeach
                             </div>
                         @else
-                            <p>¿Has pensado en participar en alguna <a href="">campaña</a>?</p>
+                            <p>¿Has pensado en participar en alguna <a href="/campanias">campaña</a>?</p>
                         @endif
                         <hr class="mb-5 mt-5">
                         <h4 class="text-uppercase font-weight-bold">Enlaces de interés</h4>

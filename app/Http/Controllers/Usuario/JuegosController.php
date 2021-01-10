@@ -50,8 +50,8 @@ class JuegosController extends Controller
         $juegos_id = [];
 
         if ($coleccion && $coleccion->count() > 0) {
-            foreach ($coleccion as $juego) {
-                array_push($juegos_id, $juego->id);
+            foreach ($coleccion as $juegoColeccion) {
+                array_push($juegos_id, $juegoColeccion->id);
             }
         }
 

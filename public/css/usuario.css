@@ -29,7 +29,6 @@ body {
 
 .swal-height>.swal2-content>.swal2-html-container {
     height: 330px;
-    overflow: auto;
     text-align: left;
 }
 

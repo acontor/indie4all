@@ -464,12 +464,14 @@ function mousewheel(owl) {
 
 function nuevoEstado(config) {
     Swal.fire({
+        showCloseButton: true,
         position: 'bottom',
         title: 'Nuevo estado',
-        html: '<textarea class="form-control" name="nuevo-estado" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button>',
-        showCloseButton: false,
+        html: '<textarea class="form-control nuevo-estado" name="nuevo-estado" id="editor" autofocus></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button>',
         showCancelButton: false,
         showConfirmButton: false,
+        backdrop: false,
+        allowOutsideClick: false,
         showClass: {
             popup: 'animate__animated animate__bounceInUp'
         },
@@ -493,8 +495,11 @@ function nuevoEstado(config) {
             data: {
                 estado: estado
             },
-            success: function () {
-                swal.close();
+            success: function (datos) {
+                notificacionEstado(datos.estado, datos.mensaje);
+            },
+            error: function () {
+                notificacionEstado('error', 'No se ha podido publicar el estado. Si sigue fallando contacta con soporte@indie4all.com');
             }
         });
     });
