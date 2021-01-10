@@ -33,24 +33,6 @@ class JuegosController extends Controller
         return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'compras' => $compras, 'posts' => $posts]);
     }
 
-    public function all(Request $request)
-    {
-        $juegos = Juego::paginate(2);
-        if ($request->ajax()) {
-            if ($request->nombre != '' || $request->genero != '') {
-                if ($request->genero != '') {
-                    $juegos = Juego::where('nombre', 'like', '%' . $request->nombre . '%')->where('genero_id', $request->genero)->paginate(200);
-                } else if ($request->nombre == '') {
-                    $juegos = Juego::where('genero_id', $request->genero)->paginate(200);
-                } else {
-                    $juegos = Juego::where('nombre', 'like', '%' . $request->nombre . '%')->paginate(200);
-                }
-            }
-            return view('usuario.pagination_data', ['juegos' => $juegos])->render();
-        }
-        return view('usuario.juegos_all', ['juegos' => $juegos]);
-    }
-
     /**
      * Display the specified resource.
      *
@@ -121,7 +103,7 @@ class JuegosController extends Controller
             $posts = Post::where('juego_id', '!=', null)->get();
         }
 
-        if($posts->count() == 0 || count($juegos_id)  == 0) {
+        if ($posts->count() == 0 || count($juegos_id)  == 0) {
             $posts = Post::where('juego_id', '!=', null)->get();
         }
 
@@ -147,7 +129,7 @@ class JuegosController extends Controller
         }
 
         if (count($generos_id) > 0) {
-            if(count($juegos_id) > 0) {
+            if (count($juegos_id) > 0) {
                 $posts = Juego::whereIn('genero_id', $generos_id)->whereNotIn('id', $juegos_id)->get();
             } else {
                 $posts = Juego::whereIn('genero_id', $generos_id)->get();
