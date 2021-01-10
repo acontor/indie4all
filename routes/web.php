@@ -206,7 +206,7 @@ Route::patch('/cuenta/usuario', [App\Http\Controllers\Usuario\CuentaController::
 
 // Desarrolladoras
 Route::get('/desarrolladoras', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'index'])->name('usuario.desarrolladoras.index');
-Route::get('/desarrolladoras/lista', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'all'])->name('usuario.desarrolladoras.all');
+Route::get('/desarrolladoras/lista', [App\Http\Controllers\Usuario\BuscadorController::class, 'desarrolladoras'])->name('usuario.desarrolladoras.all');
 Route::get('/desarrolladora/{id}', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'show'])->name('usuario.desarrolladora.show');
 Route::post('/desarrolladora/{id}/follow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'follow'])->name('usuario.desarrolladora.follow')->middleware('auth');
 Route::post('/desarrolladora/{id}/unfollow', [App\Http\Controllers\Usuario\DesarrolladorasController::class, 'unfollow'])->name('usuario.desarrolladora.unfollow')->middleware('auth');
@@ -220,7 +220,7 @@ Route::post('/solicitud/store', [App\Http\Controllers\Usuario\SolicitudesControl
 
 // Juegos
 Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index');
-Route::get('/juegos/lista', [App\Http\Controllers\Usuario\JuegosController::class, 'all'])->name('usuario.juegos.all');
+Route::get('/juegos/lista/{genero?}', [App\Http\Controllers\Usuario\BuscadorController::class, 'juegos'])->name('usuario.juegos.all');
 Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class, 'show'])->name('usuario.juego.show');
 Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController::class, 'follow'])->name('usuario.juego.follow')->middleware('auth');
 Route::post('/juego/{id}/unfollow', [App\Http\Controllers\Usuario\JuegosController::class, 'unfollow'])->name('usuario.juego.unfollow')->middleware('auth');
@@ -228,7 +228,7 @@ Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosCo
 
 // Master
 Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index');
-Route::get('/masters/lista', [App\Http\Controllers\Usuario\MasterController::class, 'all'])->name('usuario.masters.all');
+Route::get('/masters/lista', [App\Http\Controllers\Usuario\BuscadorController::class, 'masters'])->name('usuario.masters.all');
 Route::get('/master/{id}', [App\Http\Controllers\Usuario\MasterController::class, 'show'])->name('usuario.master.show');
 Route::post('/master/{id}/follow', [App\Http\Controllers\Usuario\MasterController::class, 'follow'])->name('usuario.master.follow')->middleware('auth');
 Route::post('/master/{id}/unfollow', [App\Http\Controllers\Usuario\MasterController::class, 'unfollow'])->name('usuario.master.unfollow')->middleware('auth');
@@ -236,6 +236,7 @@ Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterC
 
 // Campanias
 Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index');
+Route::get('/campanias/lista', [App\Http\Controllers\Usuario\BuscadorController::class, 'campanias'])->name('usuario.campanias.all');
 Route::get('/campania/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show');
 Route::post('/campania/foro/nuevo', [App\Http\Controllers\Usuario\CampaniasController::class, 'store'])->name('usuario.foro.store');
 Route::get('/campania/{id}/actualizacion', [App\Http\Controllers\Usuario\CampaniasController::class, 'actualizacion'])->name('usuario.campania.actualizacion');

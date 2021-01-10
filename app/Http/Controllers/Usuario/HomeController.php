@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Desarrolladora;
 use App\Models\Juego;
 use App\Models\Post;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

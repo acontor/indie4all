@@ -32,12 +32,6 @@ class MasterController extends Controller
         return view('usuario.masters', ['masters' => $masters, 'posts' => $posts]);
     }
 
-    public function all()
-    {
-        $masters = Master::all();
-        return view('usuario.masters_all', ['masters' => $masters]);
-    }
-
     /**
      * Display the specified resource.
      *
