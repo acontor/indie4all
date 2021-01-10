@@ -176,7 +176,7 @@ function graficaUsuarios(masters, cms, usuarios) {
         labels: ["Masters", "Fans", "Cms"]
     };
 
-    myBarChart = new Chart(ctx, {
+    let myBarChart = new Chart(ctx, {
         type: "doughnut",
         data: data,
     });
@@ -206,7 +206,7 @@ function graficaGeneros(generos, datos) {
         ],
     };
 
-    myBarChart = new Chart(ctx, {
+    let myBarChart = new Chart(ctx, {
         type: "bar",
         data: datos,
         options: {

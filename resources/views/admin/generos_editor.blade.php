@@ -22,7 +22,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-success">@isset($post) Editar @else Crear @endisset</button>
+                            <button type="submit" class="btn btn-success">@isset($genero) Editar @else Crear @endisset</button>
                         </form>
                     </div>
                 </div>

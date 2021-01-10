@@ -58,6 +58,7 @@
     <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/chart/chart.min.js') }}"></script>
     <script>
         $(function() {
