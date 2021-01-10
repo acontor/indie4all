@@ -19,6 +19,7 @@
                                 <td>Fecha de lanzamiento</td>
                                 <td>Precio</td>
                                 <td>Desarrolladora</td>
+                                <td class="text-center">Baneado</td>
                                 <td class="text-center">Acciones</td>
                             </tr>
                         </thead>
@@ -29,6 +30,9 @@
                                     <td class="align-middle">{{ $juego->fecha_lanzamiento }}</td>
                                     <td class="align-middle">{{ $juego->precio }} €</td>
                                     <td class="align-middle">{{ $juego->desarrolladora->nombre }}</td>
+                                    <td class="align-middle w-10 text-center">
+                                        {{ $juego->ban == 1 ? 'Si' : 'No' }}
+                                    </td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
                                             <a href="{{ route('admin.juego.show', $juego->id) }}" class="btn btn-primary btn-sm round mr-1">
@@ -36,6 +40,7 @@
                                             </a>
                                             <input type="hidden" name="id" value="{{ $juego->id }}">
                                             <div class="ban">
+                                                <input type="hidden" name="id" value="{{ $juego->id }}">
                                                 @if($juego->ban == null)
                                                     <button class="btn btn-warning btn-sm round" type="submit">
                                                         <i class="far fa-gavel"></i>
@@ -61,88 +66,27 @@
 
 @section("scripts")
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
     <script type="text/javascript">
         $(function() {
-            $('table').DataTable({
-                "responsive": true
+            $(".btn-ban").click(function() {
+                let elemento = $(this);
+                let id = elemento.prev().val();
+                let url = `/admin/juego/${id}/ban`;
+                ban(elemento, url, "Indica el motivo");
             });
 
-            $(".btn-warning").click(ban);
-
-            $(".btn-success").click(unban);
+            $(".btn-unban").click(function() {
+                let elemento = $(this);
+                let id = $(this).prev().prev().val();
+                let url = `/admin/juego/${id}/unban`;
+                let motivo = $(this).prev().val();
+                unban(elemento, url, motivo, "¿Quieres quitarle el ban al juego?");
+            });
         });
-
-        function ban() {
-            let elemento = $(this);
-            let url = '{{ route("admin.juego.ban", [":id" , "juego"]) }}';
-            url = url.replace(':id', $(this).parent().prev().val());
-            Swal.fire({
-                title: 'Indica el motivo del ban',
-                showCancelButton: true,
-                cancelButtonText: 'Cancelar',
-                confirmButtonText: `Ban`,
-                input: 'text',
-                inputAttributes: {
-                    autocapitalize: 'off'
-                },
-                preConfirm: function (result) {
-                    if (result != '') {
-                        let motivo = result;
-                        $.ajax({
-                            url: url,
-                            type : 'POST',
-                            headers:{
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            },
-                            data: {
-                                motivo: motivo,
-                            }
-                            ,success: function(data){
-                                Swal.fire(data);
-                                elemento.removeClass('btn-warning').addClass('btn-success');
-                                elemento.click(unban);
-                                elemento.parent().prepend(`<input type="hidden" name="motivo" value="${motivo}">`);
-                            }
-                        });
-                    }else{
-                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                    }
-                }
-            });
-        }
-
-        function unban() {
-            let elemento = $(this);
-            let url = '{{ route("admin.juego.unban", [":id" , "juego"]) }}';
-            url = url.replace(':id', $(this).parent().prev().val());
-            let motivo = $(this).prev().val();
-            Swal.fire({
-                title: '¿Quieres quitarle el ban a éste juego?',
-                showCancelButton: true,
-                cancelButtonText: 'Cancelar',
-                confirmButtonText: `Aceptar`,
-                html: `<p>Motivo:</p><p>${motivo}</p>`,
-                preConfirm: function () {
-                    $.ajax({
-                        url: url,
-                        type : 'POST',
-                        headers:{
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        },
-                        data: {
-                            motivo: motivo,
-                        }
-                        ,success: function(data){
-                            Swal.fire(data);
-                            elemento.removeClass('btn-success').addClass('btn-warning');
-                            elemento.click(ban);
-                            elemento.prev().remove();
-                        }
-                    });
-                }
-            });
-        }
 
     </script>
 @endsection

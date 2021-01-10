@@ -20,18 +20,19 @@ class JuegosController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra el listado de todos los juegos.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $juegos = Juego::doesnthave('campania')->get();
+
         return view('admin.juegos', ['juegos' => $juegos]);
     }
 
     /**
-     * Display the specified resource.
+     * Muestra el juego seleccionado.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -39,26 +40,45 @@ class JuegosController extends Controller
     public function show($id)
     {
         $juego = Juego::find($id);
+
         return view('admin.juego', ['juego' => $juego]);
     }
 
+    /**
+     * Banea un juego.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return String
+     */
     public function ban($id, Request $request)
     {
-        Juego::find($id)->update([
+        $juego = Juego::find($id);
+
+        $juego->update([
             'ban' => true,
             'motivo' => $request->motivo,
         ]);
 
-        return $request->motivo;
+        return 'El juego ' . $juego->nombre . ' ha sido baneado';
     }
 
+    /**
+     * Elimina el ban a un juego.
+     *
+     * @param  int  $id
+     * @return String
+     */
     public function unban($id)
     {
-        Juego::find($id)->update([
+        $juego = Juego::find($id);
+
+        $juego->update([
             'ban' => false,
             'motivo' => null,
+            'reportes' => $juego->reportes + 1,
         ]);
 
-        return "El juego ya no está baneado";
+        return 'El juego ' . $juego->nombre . ' ya no está baneado';
     }
 }

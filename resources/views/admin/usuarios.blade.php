@@ -27,7 +27,7 @@
                                 <td class="w-20">Última conexión</td>
                                 <td class="w-20">Tipo</td>
                                 <td class="w-10 text-center">Baneado</td>
-                                <td class="w-10 text-center">Reportes</td>
+                                <td class="w-10 text-center">Strikes</td>
                                 <td class="w-10 text-center">Acciones</td>
                             </tr>
                         </thead>
