@@ -165,3 +165,18 @@ function unban(elemento, url, motivo, title) {
         }
     });
 }
+
+function graficaUsuarios(masters, cms, usuarios) {
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var data = {
+        datasets: [{
+            backgroundColor: ["#ff6384", "#A086BE", "#333333"],
+            data: [masters, usuarios, cms]
+        }],
+        labels: ["Masters", "Fans", "Cms"]
+    };
+    var myBarChart = new Chart(ctx, {
+        type: "doughnut",
+        data: data,
+    });
+}

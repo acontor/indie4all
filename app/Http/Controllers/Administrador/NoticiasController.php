@@ -28,6 +28,7 @@ class NoticiasController extends Controller
     public function index()
     {
         $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null], ['campania_id', null]])->get();
+
         return view('admin.noticias', ['noticias' => $noticias]);
     }
 
@@ -77,6 +78,7 @@ class NoticiasController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
+
         return view('admin.noticias_editor', ['post' => $post]);
     }
 
@@ -99,7 +101,7 @@ class NoticiasController extends Controller
             'contenido' => $request->contenido,
         ]);
 
-        session()->flash('error', 'La noticia se ha actualizado');
+        session()->flash('success', 'La noticia se ha actualizado');
 
         return redirect('/admin/noticias');
     }
@@ -122,7 +124,7 @@ class NoticiasController extends Controller
             session()->flash('error', 'La noticia no se ha podido eliminar');
         }
 
-        return redirect('/admin/noticias')->with('success', '¡Noticia borrada!');
+        return redirect('/admin/noticias');
     }
 
     /**
