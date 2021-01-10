@@ -56,34 +56,16 @@
     <script src="{{ asset('js/datatable/datatable.js') }}"></script>
     <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
-    <script>
-        $(function() {
-
-
-            let sessionSuccess = {!! json_encode(session()->get("success")) !!}
-
-            if (sessionSuccess != undefined) {
-                notificacion(sessionSuccess)
-            }
-        });
-
-        function notificacion(sessionSuccess) {
-            Swal.fire({
-                position: "top-end",
-                title: sessionSuccess,
-                timer: 3000,
-                showConfirmButton: false,
-                showClass: {
-                    popup: "animate__animated animate__fadeInDown"
-                },
-                hideClass: {
-                    popup: "animate__animated animate__fadeOutUp"
-                },
-                allowOutsideClick: false,
-                backdrop: false,
-                width: "auto",
-            });
-        }
+    <script src="{{ asset('js/script.js') }}"></script>
+    @if (Session::has('success'))
+    <script defer>
+        notificacionEstado('success', "{{ Session::get('success') }}");
 
     </script>
+    @elseif(Session::has('error'))
+    <script defer>
+        notificacionEstado('error', "{{ Session::get('error') }}");
+
+    </script>
+    @endif
 @endsection
