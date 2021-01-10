@@ -14,9 +14,6 @@
                     <small>{{ $master->email }}</small>
                 </div>
             </header>
-
-
-
             <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
                 <div class="navbar-nav float-right-sm">
                     <div class="d-flex">
@@ -69,10 +66,6 @@
                     </ul>
                 </div>
             </nav>
-
-
-
-
             <div class="row">
                 <div class="col-12 col-md-9 mt-4">
                     <div id="contenido">
@@ -80,7 +73,7 @@
                             <h3>Estados</h3>
                             <div class="items mt-4">
                                 @if($master->posts->where('juego_id', null)->count() > 0)
-                                    @foreach ($master->posts->where('juego_id', null) as $post)
+                                    @foreach ($master->posts->where('juego_id', null)->sortByDesc('created_at') as $post)
                                         <div>
                                             <h4>{{ $post->titulo }}</h4>
                                             <p>{!! $post->contenido !!}</p>
@@ -159,17 +152,16 @@
                                 <li class="list-group-item w-100 bg-dark text-white">Recomendados</li>
                                 <a href="/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
                             </ul>
-
                             @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->juego as $juego)
-                                    <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none proximo">
+                                @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $destacado)
+                                    <a href="{{route('usuario.juego.show', $destacado->juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
-                                            <small>{{$juego->fecha_lanzamiento}}</small>
+                                            <h6 class="mb-1"><b>{{$destacado->juego->nombre}}</b></h6>
+                                            <small>{{$destacado->juego->fecha_lanzamiento}}</small>
                                         </div>
-                                        <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
-                                        <span class="btn btn-dark btn-sm float-right">{{$compra->juego->precio}} €</span>
-                                        <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
+                                        <p class="mb-1">{{$destacado->juego->desarrolladora->nombre}}</p>
+                                        <span class="btn btn-dark btn-sm float-right">{{$destacado->juego->precio}} €</span>
+                                        <small class="badge badge-danger badge-pill mt-2">{{$destacado->juego->genero->nombre}}</small>
                                     </a>
                                 @endforeach
                             @else

@@ -357,7 +357,8 @@ function more(url, id, config, checkUser) {
                     data: {
                         id: data.post.id,
                         mensaje: mensaje
-                    }, success: function (data) {
+                    },
+                    success: function (data) {
                         if ($('.mensajes').children().text() == "No hay ningún mensaje") {
                             $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
                         } else {
@@ -409,8 +410,8 @@ function reporte(url, id, tipo) {
                         id: id,
                         tipo: tipo,
                         motivo: motivo,
-                    }
-                    , success: function (data) {
+                    },
+                    success: function (data) {
                         Swal.fire(data)
                     }
                 })
@@ -491,6 +492,9 @@ function nuevoEstado(config) {
             },
             data: {
                 estado: estado
+            },
+            success: function () {
+                swal.close();
             }
         });
     });
