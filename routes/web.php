@@ -221,7 +221,7 @@ Route::post('/solicitud/store', [App\Http\Controllers\Usuario\SolicitudesControl
 
 // Juegos
 Route::get('/juegos', [App\Http\Controllers\Usuario\JuegosController::class, 'index'])->name('usuario.juegos.index');
-Route::get('/juegos/lista', [App\Http\Controllers\Usuario\BuscadorController::class, 'juegos'])->name('usuario.juegos.all');
+Route::get('/juegos/lista/{genero?}', [App\Http\Controllers\Usuario\BuscadorController::class, 'juegos'])->name('usuario.juegos.all');
 Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class, 'show'])->name('usuario.juego.show');
 Route::get('/juego/{id}/post', [App\Http\Controllers\Usuario\JuegosController::class, 'post'])->name('usuario.juego.post');
 Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController::class, 'follow'])->name('usuario.juego.follow')->middleware('auth');

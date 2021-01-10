@@ -30,8 +30,10 @@
                     <img src="{{url('/images/default.png')}}" alt="Foto de juego">
                     <div class="p-3">
                         <h5><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></h5>
+                        <small class="float-right"> {{$juego->fecha_lanzamiento}}</small><br>
                         <a href="">{{App\Models\Genero::find($juego->genero_id)->nombre}}</a><br>
-                        <p class="float-right">{{$juego->precio}}€</p>
+                        Popularidad:<small class="float-right"> {{$juego->compras->count()}}</small><br>
+                        Precio:<small class="float-right"> {{$juego->precio}}</small>
                     </div>
             </div>
         </div>
@@ -108,6 +110,7 @@
                         Participaciones:<small class="float-right"> {{$campania->compras_count}}</small><br>
                         Recaudado:<small class="float-right"> {{$campania->recaudado}}€</small><br>
                         Meta:<small class="float-right"> {{$campania->meta}}€</small><br>
+                        Aporte min:<small class="float-right"> {{$campania->aporte_minimo}}</small><br>
                         Termina:<small class="float-right"> {{$campania->fecha_fin}}</small>
                     </div>
             </div>

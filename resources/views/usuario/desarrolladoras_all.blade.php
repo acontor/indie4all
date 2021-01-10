@@ -16,9 +16,12 @@
                 <div class=" form-group mt-2 col-6 col-md-2">   
                     <select id="ordenarPor" class="form-control col-md-2 select2">
                         <option value="">Ordenar por..</option>
+                        <option value="nombre">Alfabeticamente</option>
                         <option value="posts_count">Actividad</option>
                         <option value="users_count">Seguidores</option>
                         <option value="juegos_count">Juegos</option>
+                        <option value="sorteos_count">Sorteos</option>
+                        <option value="encuestas_count">Encuestas</option>
                     </select>  
                 </div>
                 <div class=" form-group mt-2 col-6 col-md-2">

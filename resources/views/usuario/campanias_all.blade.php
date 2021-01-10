@@ -12,13 +12,14 @@
             <div class="mt-2 form-row">
                 <div class=" form-group col-12 col-md-4">
                     <input type="text" id="nombre" class="form-control" style="width:100%" placeholder="Nombre"/>
-                </div>  
+                </div> 
                 <div class=" form-group col-6 col-md-2">   
                     <select id="ordenarPor" class="form-control col-md-2 select2">
                         <option value="">Ordenar por..</option>
                         <option value="recaudado">Recaudado</option>
                         <option value="meta">Meta</option>
                         <option value="seguidores_count">Participaciones</option>
+                        <option value="aporte_minimo">Aporte mínimo</option>
                         <option value="fecha_fin">Fecha de finalización</option>
                         
                     </select>  
@@ -29,6 +30,15 @@
                         <option value="ASC">Acendiente</option>
                     </select>        
                 </div>
+            </div>
+            <div class="form-row">                 
+                <div class="form-group mt-2 col-6 col-md-2">
+                    <input type="text" id="aporteMinMin" class="form-control" style="width:100%" placeholder="Aporte desde"/>
+                </div>
+                <div class="form-group mt-2 col-6 col-md-2">
+                    <input type="text" id="aporteMinMax" class="form-control" style="width:100%" placeholder="Aporte hasta"/>
+                </div>
+                <div id='aporteError' class="text-danger"></div>
                 <div class="form-group col-md-12">
                     <button id='buscar' class=" col-sm-2 float-right form-control btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbspBuscar</button>   
                 </div>    
@@ -48,7 +58,28 @@
             var page = $(this).attr('href').split('page=')[1];
             fetch_data(page);
         });
+        $('#aporteMinMin').keyup(function(e){
+            if (/\D/g.test(this.value)){
+                this.value = this.value.replace(/\D/g, '');
+                $(this).css("border-color", "red");
+                $('#aporteError').text('Solo números.');
+            }else{
+                $(this).css("border-color", "#ced4da");
+                $('#aporteError').text('');
+            }
+        });
 
+        $('#aporteMinMax').keyup(function(e){
+            if (/\D/g.test(this.value)){
+                this.value = this.value.replace(/\D/g, '');
+                $(this).css("border-color", "red");
+                $('#aporteError').text('Solo números.');
+            }else{
+                $(this).css("border-color", "#ced4da");
+                $('#aporteError').text('');
+            }
+        });;
+        
         $('#ordenarPor').select2({
             language: 'es',
             width: '100%',
@@ -69,7 +100,9 @@
             var nombre = $("#nombre").val();
             var ordenarPor = $("#ordenarPor").val();    
             var ordenarDe = $("#ordenarDe").val();
-            buscar(nombre,ordenarPor,ordenarDe)
+            var aporteMinMin = $('#aporteMinMin').val()
+            var aporteMinMax = $('#aporteMinMax').val()
+            buscar(nombre,ordenarPor,ordenarDe,aporteMinMin,aporteMinMax)
         });
 
         function fetch_data(page){
@@ -81,9 +114,9 @@
                 }
             });
         }   
-        function buscar(nombre,ordenarPor,ordenarDe){
+        function buscar(nombre,ordenarPor,ordenarDe,aporteMinMin,aporteMinMax){
             $.ajax({
-                url:"/campanias/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe,
+                url:"/campanias/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe+'&aporteMinMin='+aporteMinMin+'&aporteMinMax='+aporteMinMax,
                 
                 success:function(data){
                     $('#campania_data').html(data);
