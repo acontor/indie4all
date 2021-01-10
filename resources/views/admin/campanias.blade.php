@@ -1,6 +1,7 @@
 @extends("layouts.admin.base")
 
 @section("styles")
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/datatable/datatable.css') }}" rel="stylesheet">
 @endsection
 
@@ -19,6 +20,8 @@
                                 <td>Fecha de fin</td>
                                 <td>Meta</td>
                                 <td>Recaudado</td>
+                                <td>Desarrolladora</td>
+                                <td class="text-center">Baneadq</td>
                                 <td class="text-center">Acciones</td>
                             </tr>
                         </thead>
@@ -29,6 +32,10 @@
                                     <td class="align-middle">{{ $juego->campania->fecha_fin }}</td>
                                     <td class="align-middle">{{ $juego->campania->meta }} €</td>
                                     <td class="align-middle">{{ $juego->campania->recaudado }} €</td>
+                                    <td class="align-middle">{{ $juego->desarrolladora->nombre }}</td>
+                                    <td class="align-middle w-10 text-center">
+                                        {{ $juego->ban == 1 ? 'Si' : 'No' }}
+                                    </td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
                                             <a href="{{ route('admin.campania.show', $juego->campania->id) }}" class="btn btn-primary btn-sm round mr-1"><i class="far fa-eye"></i></a><input type="hidden" name="id" value="{{ $juego->id }}">
@@ -59,6 +66,11 @@
 @endsection
 
 @section("scripts")
+    <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
     <script type="text/javascript">
         $(function() {
             $(".btn-ban").click(function() {

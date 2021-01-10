@@ -28,6 +28,7 @@ class CampaniasController extends Controller
     public function index()
     {
         $juegos = Juego::has('campania')->get();
+
         return view('admin.campanias', ['juegos' => $juegos]);
     }
 
@@ -40,6 +41,7 @@ class CampaniasController extends Controller
     public function show($id)
     {
         $juego = Juego::find($id);
+
         return view('admin.campania', ['juego' => $juego]);
     }
 
