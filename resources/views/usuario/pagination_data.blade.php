@@ -109,15 +109,15 @@
         @else
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                    <img src="{{url('/images/default.png')}}" alt="Foto de portada de la campaña">
-                    <div class="p-3">
-                        <h5><a href="{{ route('usuario.campania.show', $campania->id) }}">{{ $campania->juego->nombre }}</a></h5>
-                        Participaciones:<small class="float-right"> {{$campania->compras_count}}</small><br>
-                        Recaudado:<small class="float-right"> {{$campania->recaudado}}€</small><br>
-                        Meta:<small class="float-right"> {{$campania->meta}}€</small><br>
-                        Aporte min:<small class="float-right"> {{$campania->aporte_minimo}}</small><br>
-                        Termina:<small class="float-right"> {{$campania->fecha_fin}}</small>
-                    </div>
+                <img src="{{url('/images/default.png')}}" alt="Foto de portada de la campaña">
+                <div class="p-3">
+                    <h5><a href="{{ route('usuario.campania.show', $campania->id) }}">{{ $campania->juego->nombre }}</a></h5>
+                    Participaciones:<small class="float-right"> {{$campania->compras_count}}</small><br>
+                    Recaudado:<small class="float-right"> {{$campania->recaudado}}€</small><br>
+                    Meta:<small class="float-right"> {{$campania->meta}}€</small><br>
+                    Aporte min:<small class="float-right"> {{$campania->aporte_minimo}}</small><br>
+                    Termina:<small class="float-right"> {{$campania->fecha_fin}}</small>
+                </div>
             </div>
         </div>
         @endif

@@ -36,13 +36,13 @@
         <ul class="nav navbar-nav">
             @guest
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">{{ __("Login") }} / {{ __("Register") }}</a>
+                    <a class="nav-link btn btn-dark" href="{{ route('login') }}">Iniciar sesión</a>
                 </li>
             @else
                 <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-dark" href="#" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }}
+                        {{ Auth::user()->username }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('usuario.cuenta.index') }}">

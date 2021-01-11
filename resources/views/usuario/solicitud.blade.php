@@ -82,6 +82,5 @@
 @endsection
 
 @section('scripts')
-    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 @endsection

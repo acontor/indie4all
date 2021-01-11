@@ -266,9 +266,6 @@
     </main>
 @endsection
 @section("scripts")
-    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
             $('.general p img').addClass('w-100');

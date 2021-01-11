@@ -112,9 +112,7 @@
 @endsection
 
 @section("scripts")
-    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
     <script src="{{ asset('js/calendar/jquery.simple-calendar.min.js') }}"></script>
-    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function () {
             $(".more").on('click', function () {

@@ -28,16 +28,14 @@
                                 @enderror
                                 <div class="form-group first">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" class="form-control" id="email" required
+                                    <input type="email" name="email" class="form-control" required
                                         autocomplete="email" autofocus>
                                 </div>
                                 <div class="form-group last mb-4">
                                     <label for="password">Contraseña</label>
-                                    <input type="password" name="password" class="form-control" id="password" required
+                                    <input type="password" name="password" class="form-control" required
                                         autocomplete="current-password">
                                 </div>
-                                <div id="recaptcha"></div>
-                                <span class="error-recaptcha text-danger"></span>
                                 <div class="d-flex mb-4 align-items-center mt-4">
                                     <input type="submit" value="Iniciar" class="btn btn-primary">
                                     <span class="ml-auto"><a href="#" class="forgot-pass">
@@ -56,34 +54,33 @@
                                 @enderror
                                 <div class="form-group first">
                                     <label for="name">Nombre</label>
-                                    <input type="text" name="name" class="form-control" id="name" required
+                                    <input type="text" name="name" class="form-control" required
                                         autocomplete="name">
                                 </div>
                                 <div class="form-group first">
                                     <label for="username">Nombre de usuario</label>
-                                    <input type="text" name="username" class="form-control" id="username" required
+                                    <input type="text" name="username" class="form-control" required
                                         autocomplete="username">
                                 </div>
                                 <div class="form-group first">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" class="form-control" id="email" required
+                                    <input type="email" name="email" class="form-control" required
                                         autocomplete="email">
                                 </div>
                                 <div class="form-group first">
                                     <label for="password">Contraseña</label>
-                                    <input type="password" name="password" class="form-control" id="password" required>
+                                    <input type="password" name="password" class="form-control" required>
                                 </div>
                                 <div class="form-group last mb-4">
                                     <label for="password-confirm">Repetir contraseña</label>
-                                    <input type="password" name="password-confirm" class="form-control"
-                                        id="password-confirm" required>
+                                    <input type="password" name="password-confirm" class="form-control" required>
                                 </div>
-                                <div id="recaptcha"></div>
-                                <span class="error-recaptcha text-danger"></span>
                                 <div class="d-flex mb-4 align-items-center mt-4">
                                     <input type="submit" value="Registrar" class="btn btn-primary">
                                 </div>
                             </form>
+                            <div id="recaptcha"></div>
+                            <span class="error-recaptcha text-danger"></span>
                             <span class="d-block text-left my-4 text-muted">&mdash; o iniciar con &mdash;</span>
                             <div class="social-login">
                                 <a href="{{ url('auth/facebook') }}" class="facebook">
@@ -102,7 +99,6 @@
 @endsection
 
 @section('scripts')
-    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
             'use strict';
