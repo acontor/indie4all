@@ -201,7 +201,7 @@
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script>
         $(function() {
-            $(".menu").children("div").children("a").click(function(e) {
+            $(".menu").children("div").children("a").on('click', function(e) {
                 console.log($(this).attr("id"))
                 e.preventDefault();
                 let item = $(this).attr("id");

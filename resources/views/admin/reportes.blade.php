@@ -263,7 +263,7 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script type="text/javascript">
         $(function() {
-            $(".ver").click(function(e) {
+            $(".ver").on('click', function(e) {
                 e.preventDefault();
                 $.ajax({
                     url: '{{ route("admin.reporte.show") }}',
@@ -288,7 +288,7 @@
                 });
             });
 
-            $(".aceptar").click(function(e) {
+            $(".aceptar").on('click', function(e) {
                 e.preventDefault();
                 let tr = $(this).parents('tr');
                 let table = $(this).parents('table');
@@ -311,7 +311,7 @@
                 });
             });
 
-            $(".rechazar").click(function(e) {
+            $(".rechazar").on('click', function(e) {
                 e.preventDefault();
                 let tr = $(this).parents('tr');
                 let table = $(this).parents('table');

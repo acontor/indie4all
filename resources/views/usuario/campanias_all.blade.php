@@ -12,8 +12,8 @@
             <div class="mt-2 form-row">
                 <div class=" form-group col-12 col-md-4">
                     <input type="text" id="nombre" class="form-control" style="width:100%" placeholder="Nombre"/>
-                </div> 
-                <div class=" form-group col-6 col-md-2">   
+                </div>
+                <div class=" form-group col-6 col-md-2">
                     <select id="ordenarPor" class="form-control col-md-2 select2">
                         <option value="">Ordenar por..</option>
                         <option value="recaudado">Recaudado</option>
@@ -21,17 +21,17 @@
                         <option value="seguidores_count">Participaciones</option>
                         <option value="aporte_minimo">Aporte mínimo</option>
                         <option value="fecha_fin">Fecha de finalización</option>
-                        
-                    </select>  
+
+                    </select>
                 </div>
                 <div class=" form-group col-6 col-md-2">
                     <select id="ordenarDe" class="form-control col-md-2 select2">
                         <option value="DESC" selected>Descendiente</option>
                         <option value="ASC">Acendiente</option>
-                    </select>        
+                    </select>
                 </div>
             </div>
-            <div class="form-row">                 
+            <div class="form-row">
                 <div class="form-group mt-2 col-6 col-md-2">
                     <input type="text" id="aporteMinMin" class="form-control" style="width:100%" placeholder="Aporte desde"/>
                 </div>
@@ -40,9 +40,9 @@
                 </div>
                 <div id='aporteError' class="text-danger"></div>
                 <div class="form-group col-md-12">
-                    <button id='buscar' class=" col-sm-2 float-right form-control btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbspBuscar</button>   
-                </div>    
-            </div> 
+                    <button id='buscar' class=" col-sm-2 float-right form-control btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbspBuscar</button>
+                </div>
+            </div>
         </div>
 
         <div id="campania_data">
@@ -53,8 +53,8 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
-        $(document).on('click', '.pagination a', function(event){    
-            event.preventDefault(); 
+        $(document).on('click', '.pagination a', function(event){
+            event.preventDefault();
             var page = $(this).attr('href').split('page=')[1];
             fetch_data(page);
         });
@@ -79,7 +79,7 @@
                 $('#aporteError').text('');
             }
         });;
-        
+
         $('#ordenarPor').select2({
             language: 'es',
             width: '100%',
@@ -96,9 +96,9 @@
             dropdownAutoWidth: true
         });
 
-        $("#buscar").click(function() {
+        $("#buscar").on('click', function() {
             var nombre = $("#nombre").val();
-            var ordenarPor = $("#ordenarPor").val();    
+            var ordenarPor = $("#ordenarPor").val();
             var ordenarDe = $("#ordenarDe").val();
             var aporteMinMin = $('#aporteMinMin').val()
             var aporteMinMax = $('#aporteMinMax').val()
@@ -113,16 +113,16 @@
                     $('#campania_data').html(data);
                 }
             });
-        }   
+        }
         function buscar(nombre,ordenarPor,ordenarDe,aporteMinMin,aporteMinMax){
             $.ajax({
                 url:"/campanias/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe+'&aporteMinMin='+aporteMinMin+'&aporteMinMax='+aporteMinMax,
-                
+
                 success:function(data){
                     $('#campania_data').html(data);
                 }
             });
-        }     
+        }
     });
         </script>
 @endsection

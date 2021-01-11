@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campania;
 use App\Models\Desarrolladora;
 use App\Models\Juego;
+use App\Models\Master;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,11 +16,41 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * Muestra el inicio de la web.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
+    {
+        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null], ['campania_id', null]])->get();
+
+        $juegos = Juego::doesnthave('campania')->take(3)->get();
+        $juegosVentas = Juego::withCount(['compras' => function (Builder $query) {
+            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+        }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->take(3)->get();
+
+        $campanias = Campania::take(3)->get();
+        $campaniasVentas = Campania::withCount(['compras' => function (Builder $query) {
+            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+        }])->orderBy('compras_count', 'DESC')->take(3)->get();
+
+        $masters = Master::take(3)->get();
+
+        $mastersTops = Master::withCount(['seguidores' => function (Builder $query) {
+            $query->whereBetween('master_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+        }, 'posts' => function (Builder $query) {
+            $query->whereBetween('posts.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+        }])->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->take(3)->get();
+
+        return view('welcome', ['noticias' => $noticias, 'juegos' => $juegos, 'juegosVentas' => $juegosVentas, 'campanias' => $campanias, 'campaniasVentas' => $campaniasVentas, 'masters' => $masters, 'mastersTops', $mastersTops]);
+    }
+
+    /**
+     * Muestra el portal personalizado para cada usuario.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function home()
     {
         $coleccion = Auth::user()->juegos;
 

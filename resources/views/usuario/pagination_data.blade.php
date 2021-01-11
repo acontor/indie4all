@@ -82,7 +82,7 @@
                     <img src="{{url('/images/default.png')}}" alt="Foto de portada Master">
                     <div class="p-3">
                         <h5><a href="{{ route('usuario.desarrolladora.show', $desarrolladora->id) }}">{{ $desarrolladora->nombre }}</a></h5>
-                        Sequidores:<small class="float-right"> {{$desarrolladora->users_count}}</small><br>
+                        Sequidores:<small class="float-right"> {{$desarrolladora->seguidores_count}}</small><br>
                         Juegos:<small class="float-right"> {{$desarrolladora->juegos_count}}</small><br>
                         Actividad:<small class="float-right"> {{$desarrolladora->posts_count}}</small><br>
                     </div>

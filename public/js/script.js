@@ -18,8 +18,9 @@ function notificacionEstado(estado, mensaje) {
         timer: 3000,
         showConfirmButton: false,
         allowOutsideClick: false,
+        width: 'auto',
         showClass: {
-            popup: "animate__animated animate__fadeInDown"
+            popup: "animate__animated animate__backInDown"
         },
         hideClass: {
             popup: "animate__animated animate__fadeOutUp"

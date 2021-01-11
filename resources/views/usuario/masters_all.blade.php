@@ -12,24 +12,24 @@
             <div class="form-row mt-2">
                 <div class=" form-group col-12 col-md-4">
                     <input type="text" id="nombre" class="form-control" style="width:100%" placeholder="Nombre"/>
-                </div>  
-                <div class=" form-group col-6 col-md-2">   
+                </div>
+                <div class=" form-group col-6 col-md-2">
                     <select id="ordenarPor" class="form-control col-md-2 select2">
                         <option value="">Ordenar por..</option>
                         <option value="posts_count">Actividad</option>
                         <option value="seguidores_count">Seguidores</option>
-                    </select>  
+                    </select>
                 </div>
                 <div class=" form-group col-6 col-md-2">
                     <select id="ordenarDe" class="form-control col-md-2 select2">
                         <option value="DESC" selected>Descendiente</option>
                         <option value="ASC">Acendiente</option>
-                    </select>        
-                </div>                  
+                    </select>
+                </div>
                 <div class="form-group col-md-12">
-                    <button id='buscar' class=" col-sm-2 float-right form-control btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbspBuscar</button>   
-                </div>  
-            </div>            
+                    <button id='buscar' class=" col-sm-2 float-right form-control btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbspBuscar</button>
+                </div>
+            </div>
         </div>
 
         <div id="masters_data">
@@ -40,8 +40,8 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
-        $(document).on('click', '.pagination a', function(event){    
-            event.preventDefault(); 
+        $(document).on('click', '.pagination a', function(event){
+            event.preventDefault();
             var page = $(this).attr('href').split('page=')[1];
             fetch_data(page);
         });
@@ -62,9 +62,9 @@
             dropdownAutoWidth: true
         });
 
-        $("#buscar").click(function() {
+        $("#buscar").on('click', function() {
             var nombre = $("#nombre").val();
-            var ordenarPor = $("#ordenarPor").val();    
+            var ordenarPor = $("#ordenarPor").val();
             var ordenarDe = $("#ordenarDe").val();
             buscar(nombre,ordenarPor,ordenarDe)
         });
@@ -77,16 +77,16 @@
                     $('#masters_data').html(data);
                 }
             });
-        }   
+        }
         function buscar(nombre,ordenarPor,ordenarDe){
             $.ajax({
                 url:"/masters/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe,
-                
+
                 success:function(data){
                     $('#masters_data').html(data);
                 }
             });
-        }     
+        }
     });
         </script>
 @endsection

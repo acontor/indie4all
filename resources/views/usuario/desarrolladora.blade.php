@@ -296,7 +296,7 @@
                 more(url, id, config, checkUser);
             });
 
-            $('#reporteDesarrolladora').click(function(){
+            $('#reporteDesarrolladora').on('click', function(){
                 let id = {!! $desarrolladora->id !!};
                 let url = '{{ route("usuario.reporte") }}';
                 reporte(url, id, 'desarrolladora_id');

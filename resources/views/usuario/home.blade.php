@@ -9,42 +9,40 @@
         <div class="container box mt-4">
             <div class="row">
                 <div class="col-12 col-md-8">
-                    <nav class="bg-transparent">
-                        <div class="list-group shadow">
-                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                                <li class="list-group-item bg-dark text-white">Últimas noticias</li>
-                            </ul>
-                            <div class="list-group-item flex-column align-items-start noticias">
-                                <div class="items row mt-4">
-                                    @if($posts->count() > 0)
-                                        @foreach ($posts->where('titulo', '!=', null)->sortByDesc('created_at') as $post)
-                                            <div class="col-12 col-md-6">
-                                                <h4>{{ $post->titulo }}</h4>
-                                                <p>{!! substr($post->contenido, 0, 100) !!}</p>
-                                                <form>
-                                                    <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                    <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
-                                                </form>
-                                                <div class="footer-noticias mt-3">
-                                                    <small>{{ $post->created_at }}</small>
-                                                    <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
-                                                </div>
+                    <div class="list-group shadow">
+                        <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                            <li class="list-group-item bg-dark text-white">Últimas noticias</li>
+                        </ul>
+                        <div class="list-group-item flex-column align-items-start noticias">
+                            <div class="items row mt-4">
+                                @if($posts->count() > 0)
+                                    @foreach ($posts->where('titulo', '!=', null)->sortByDesc('created_at') as $post)
+                                        <div class="col-12 col-md-6">
+                                            <h4>{{ $post->titulo }}</h4>
+                                            <p>{!! substr($post->contenido, 0, 100) !!}</p>
+                                            <form>
+                                                <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                            </form>
+                                            <div class="footer-noticias mt-3">
+                                                <small>{{ $post->created_at }}</small>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
-                                        @endforeach
-                                    @else
-                                        <p>No se han encontrado noticias</p>
-                                    @endif
-                                </div>
-                                <div class="pager">
-                                    <div class="firstPage">&laquo;</div>
-                                    <div class="previousPage">&lsaquo;</div>
-                                    <div class="pageNumbers"></div>
-                                    <div class="nextPage">&rsaquo;</div>
-                                    <div class="lastPage">&raquo;</div>
-                                </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>No se han encontrado noticias</p>
+                                @endif
+                            </div>
+                            <div class="pager">
+                                <div class="firstPage">&laquo;</div>
+                                <div class="previousPage">&lsaquo;</div>
+                                <div class="pageNumbers"></div>
+                                <div class="nextPage">&rsaquo;</div>
+                                <div class="lastPage">&raquo;</div>
                             </div>
                         </div>
-                    </nav>
+                    </div>
                 </div>
 
 

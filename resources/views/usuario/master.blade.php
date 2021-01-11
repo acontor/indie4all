@@ -146,29 +146,27 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-3 mt-4">
-                    <nav class="bg-transparent">
-                        <div class="list-group shadow">
-                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                                <li class="list-group-item w-100 bg-dark text-white">Recomendados</li>
-                                <a href="/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
-                            </ul>
-                            @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $destacado)
-                                    <a href="{{route('usuario.juego.show', $destacado->juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><b>{{$destacado->juego->nombre}}</b></h6>
-                                            <small>{{$destacado->juego->fecha_lanzamiento}}</small>
-                                        </div>
-                                        <p class="mb-1">{{$destacado->juego->desarrolladora->nombre}}</p>
-                                        <span class="btn btn-dark btn-sm float-right">{{$destacado->juego->precio}} €</span>
-                                        <small class="badge badge-danger badge-pill mt-2">{{$destacado->juego->genero->nombre}}</small>
-                                    </a>
-                                @endforeach
-                            @else
-                                <span class="list-group-item">No ha recomendado ningún juego</span>
-                            @endif
-                        </div>
-                    </nav>
+                    <div class="list-group shadow">
+                        <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                            <li class="list-group-item w-100 bg-dark text-white">Recomendados</li>
+                            <a href="/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
+                        </ul>
+                        @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
+                            @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $destacado)
+                                <a href="{{route('usuario.juego.show', $destacado->juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$destacado->juego->nombre}}</b></h6>
+                                        <small>{{$destacado->juego->fecha_lanzamiento}}</small>
+                                    </div>
+                                    <p class="mb-1">{{$destacado->juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$destacado->juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$destacado->juego->genero->nombre}}</small>
+                                </a>
+                            @endforeach
+                        @else
+                            <span class="list-group-item">No ha recomendado ningún juego</span>
+                        @endif
+                    </div>
                 </div>
             </div>
             <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>

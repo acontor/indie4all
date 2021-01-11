@@ -215,7 +215,7 @@
             customConfig: "{{ asset('js/ckeditor/config.js') }}"
         });
 
-        $("#mensaje-form").click(function(e) {
+        $("#mensaje-form").on('click', function(e) {
             e.preventDefault();
             let mensaje = CKEDITOR.instances.editor.getData();
             CKEDITOR.instances.editor.setData("");

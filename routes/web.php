@@ -18,14 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null],['campania_id', null]])->get();
-    $juegos = Juego::has('seguidores')->inRandomOrder()->take(5)->get();
-    $desarrolladoras = Desarrolladora::all()->take(5);
-    $masters = Master::all()->take(5);
-    return view('welcome', ['noticias' => $noticias, 'juegos' => $juegos, 'desarrolladoras' => $desarrolladoras, 'masters' => $masters]);
-});
-
 Auth::routes(['verify' => true]);
 
 /**
@@ -190,8 +182,8 @@ Route::delete('/master/posts/{id}/delete', [App\Http\Controllers\Master\EstadosC
  */
 
 // Inicio
-
-Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('index');
+Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'home'])->name('home')->middleware('auth');
 Route::get('/busqueda', [App\Http\Controllers\Usuario\HomeController::class, 'busqueda'])->name('usuario.busqueda');
 Route::get('/acerca', [App\Http\Controllers\Usuario\HomeController::class, 'acerca'])->name('usuario.acerca');
 Route::get('/faq', [App\Http\Controllers\Usuario\HomeController::class, 'faq'])->name('usuario.faq');

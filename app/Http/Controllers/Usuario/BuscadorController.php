@@ -68,7 +68,7 @@ class BuscadorController extends Controller
     /**
      * Muestra todas los masters y cuando es llamada con un objeto Request aplica un filtro de búsqueda
      *
-     * @param  Request opciones por ajax para la búsqueda 
+     * @param  Request opciones por ajax para la búsqueda
      * @return \Illuminate\Http\Response
      */
     public function masters(Request $request)
@@ -96,13 +96,13 @@ class BuscadorController extends Controller
     /**
      * Muestra todas las desarrolladoras y cuando es llamada con un objeto Request aplica un filtro de búsqueda
      *
-     * @param  Request opciones por ajax para la búsqueda 
+     * @param  Request opciones por ajax para la búsqueda
      * @return \Illuminate\Http\Response
      */
     public function desarrolladoras(Request $request)
     {
         $desarrolladoras = Desarrolladora::query();
-        $desarrolladoras->withCount('users', 'posts', 'juegos', 'sorteos', 'encuestas');
+        $desarrolladoras->withCount('seguidores', 'posts', 'juegos', 'sorteos', 'encuestas');
         if ($request->ajax()) {
             if ($request->page == '' && $request->nombre != '' || $request->ordenarPor != '' || $request->desarrolladora != '' || $request->ordenarPor != 'null') {
                 if ($request->ordenarPor != 'null' && $request->ordenarDe != 'null') {
@@ -128,7 +128,7 @@ class BuscadorController extends Controller
     /**
      * Muestra todas las campañas y cuando es llamada con un objeto Request aplica un filtro de búsqueda
      *
-     * @param  Request opciones por ajax para la búsqueda 
+     * @param  Request opciones por ajax para la búsqueda
      * @return \Illuminate\Http\Response
      */
     public function campanias(Request $request)

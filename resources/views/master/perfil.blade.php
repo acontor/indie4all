@@ -1,6 +1,7 @@
 @extends("layouts.master.base")
 
 @section('styles')
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 
@@ -99,4 +100,14 @@
 
         </script>
     @endif
+    <script>
+        $(function() {
+            $("#juegos").select2({
+                language: "es",
+                width: "auto",
+                placeholder: "Juegos recomendados",
+            });
+        });
+
+    </script>
 @endsection

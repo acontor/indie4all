@@ -194,7 +194,7 @@
                 ]
             });
 
-            $(".menu").children("div").children("a").click(function(e) {
+            $(".menu").children("div").children("a").on('click', function(e) {
                 e.preventDefault();
                 let item = $(this).attr("id");
                 $("#main").children("div").addClass("d-none");

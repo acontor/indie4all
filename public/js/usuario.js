@@ -119,7 +119,7 @@ $(function () {
      * COMPONENTES DESARROLLADORA
      */
 
-    $(".participar-sorteo").click(function (e) {
+    $(".participar-sorteo").on('click', function (e) {
         e.preventDefault();
         let id = $(this).parent().prev().val();
         Swal.fire({
@@ -152,7 +152,7 @@ $(function () {
         })
     });
 
-    $(".participar-encuesta").click(function (e) {
+    $(".participar-encuesta").on('click', function (e) {
         e.preventDefault();
         let encuesta = $(this).parent().prev().val();
         let opcion = $(`input[name=respuesta${encuesta}]:checked`).val();
@@ -263,6 +263,27 @@ $(function () {
             $(this).addClass('bg-dark text-white');
         }
         $('.listado-2').addClass('d-none');
+        $('.' + item).removeClass('d-none');
+    });
+
+    $('.list-buttons-juegos, .list-buttons-campanias, .list-buttons-masters').on('click', function (e) {
+        e.preventDefault();
+        let tipo = "";
+        if($(this).hasClass('list-buttons-juegos')) {
+            tipo = 'juegos';
+        } else if ($(this).hasClass('list-buttons-campanias')) {
+            tipo = 'campanias';
+        } else if ($(this).hasClass('list-buttons-masters')) {
+            tipo = 'masters';
+        }
+        let item = $(this).attr('id');
+        if (!$(this).hasClass('bg-dark')) {
+            $('.list-buttons-' + tipo).removeClass('bg-dark text-white');
+            $(this).addClass('bg-dark text-white');
+        }
+        console.log(item + tipo);
+
+        $('.listado-' + tipo).addClass('d-none');
         $('.' + item).removeClass('d-none');
     });
 });

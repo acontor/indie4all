@@ -78,10 +78,12 @@ class PerfilController extends Controller
             'destacado' => 0,
         ]);
 
-        foreach ($request->juegos as $value) {
-            Post::where('master_id', Auth::user()->master->id)->where('juego_id', $value)->update([
-                'destacado' => 1,
-            ]);
+        if ($request->juegos != null) {
+            foreach ($request->juegos as $value) {
+                Post::where('master_id', Auth::user()->master->id)->where('juego_id', $value)->update([
+                    'destacado' => 1,
+                ]);
+            }
         }
 
         session()->flash('success', 'Perfil modificado.');

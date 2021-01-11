@@ -27,7 +27,6 @@
                                     <td class="w-20">Email</td>
                                     <td class="w-20">Última conexión</td>
                                     <td class="w-20">Tipo</td>
-                                    <td class="w-10 text-center">Baneado</td>
                                     <td class="w-10 text-center">Strikes</td>
                                     <td class="w-10 text-center">Acciones</td>
                                 </tr>
@@ -50,9 +49,6 @@
                                             @else
                                                 Fan
                                             @endif
-                                        </td>
-                                        <td class="align-middle w-10 text-center">
-                                            {{ $usuario->ban == 1 ? 'Si' : 'No' }}
                                         </td>
                                         <td class="align-middle w-10 text-center">{{ $usuario->reportes }}</td>
                                         <td class="align-middle w-10 text-center">
@@ -124,14 +120,14 @@
 
             graficaUsuarios(masters, cms, usuarios);
 
-            $(".btn-ban").click(function() {
+            $(".btn-ban").on('click', function() {
                 let elemento = $(this);
                 let id = elemento.prev().val();
                 let url = `/admin/usuario/${id}/ban`;
                 ban(elemento, url, "Indica el motivo");
             });
 
-            $(".btn-unban").click(function() {
+            $(".btn-unban").on('click', function() {
                 let elemento = $(this);
                 let id = $(this).prev().prev().val();
                 let url = `/admin/usuario/${id}/unban`;
