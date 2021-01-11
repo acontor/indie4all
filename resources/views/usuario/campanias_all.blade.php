@@ -1,56 +1,56 @@
 @extends("layouts.usuario.base")
 @section('styles')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 
 @section("content")
-    <div class="container">
-        <div class="box-header mt-2">
-            <h1>Campañas ({{ App\Models\Campania::count() }})</h1>
-        </div>
-        <div class="box p-3 mb-2">
-            <div class="mt-2 form-row">
-                <div class=" form-group col-12 col-md-4">
-                    <input type="text" id="nombre" class="form-control" style="width:100%" placeholder="Nombre"/>
-                </div>
-                <div class=" form-group col-6 col-md-2">
-                    <select id="ordenarPor" class="form-control col-md-2 select2">
-                        <option value="">Ordenar por..</option>
-                        <option value="recaudado">Recaudado</option>
-                        <option value="meta">Meta</option>
-                        <option value="seguidores_count">Participaciones</option>
-                        <option value="aporte_minimo">Aporte mínimo</option>
-                        <option value="fecha_fin">Fecha de finalización</option>
-
-                    </select>
-                </div>
-                <div class=" form-group col-6 col-md-2">
-                    <select id="ordenarDe" class="form-control col-md-2 select2">
-                        <option value="DESC" selected>Descendiente</option>
-                        <option value="ASC">Acendiente</option>
-                    </select>
+    <main class="p-4">
+        <div class="container mt-4">
+            <div class="box-header mt-2">
+                <h1>Campañas ({{ App\Models\Campania::where('ban', 0)->count() }})</h1>
+            </div>
+            <div class="box mt-4">
+                <nav class="navbar navbar-expand-md navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
+                    <button class="navbar-toggler mx-auto" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                        Filtros <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar">
+                        <ul class="navbar-nav mx-auto submenu-items">
+                            <li class="nav-item m-2"><input type="text" id="nombre" class="form-control" style="width:100%" placeholder="Nombre"/></li>
+                            <li class="nav-item m-2">
+                                <input type="text" id="aporteMinMin" class="form-control" style="width:100%" placeholder="Aporte desde"/>
+                            </li>
+                            <li class="nav-item m-2">
+                                <input type="text" id="aporteMinMax" class="form-control" style="width:100%" placeholder="Aporte hasta"/>
+                            </li>
+                            <li class="nav-item m-2">
+                                <select id="ordenarPor" class="form-control">
+                                    <option value="" selected>Ordenar por..</option>
+                                    <option value="recaudado">Recaudado</option>
+                                    <option value="meta">Meta</option>
+                                    <option value="seguidores_count">Participaciones</option>
+                                    <option value="aporte_minimo">Aporte mínimo</option>
+                                    <option value="fecha_fin">Fecha de finalización</option>
+                                </select>
+                            </li>
+                            <li class="nav-item m-2">
+                                <select id="ordenarDe" class="form-control select2">
+                                    <option value="DESC" selected>Descendiente</option>
+                                    <option value="ASC">Acendiente</option>
+                                </select>
+                            </li>
+                            <li class="nav-item m-2">
+                                <button id='buscar' class="float-right form-control btn btn-sm btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div id="campania_data">
+                    @include('usuario.pagination_data')
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group mt-2 col-6 col-md-2">
-                    <input type="text" id="aporteMinMin" class="form-control" style="width:100%" placeholder="Aporte desde"/>
-                </div>
-                <div class="form-group mt-2 col-6 col-md-2">
-                    <input type="text" id="aporteMinMax" class="form-control" style="width:100%" placeholder="Aporte hasta"/>
-                </div>
-                <div id='aporteError' class="text-danger"></div>
-                <div class="form-group col-md-12">
-                    <button id='buscar' class=" col-sm-2 float-right form-control btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>&nbspBuscar</button>
-                </div>
-            </div>
         </div>
+    </main>
 
-        <div id="campania_data">
-            @include('usuario.pagination_data')
-        </div>
-    </div>
-
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
         $(document).on('click', '.pagination a', function(event){
@@ -78,22 +78,6 @@
                 $(this).css("border-color", "#ced4da");
                 $('#aporteError').text('');
             }
-        });;
-
-        $('#ordenarPor').select2({
-            language: 'es',
-            width: '100%',
-            placeholder: 'Ordenar por...',
-            allowClear: true,
-            dropdownAutoWidth: true
-        });
-
-        $('#ordenarDe').select2({
-            language: 'es',
-            width: '100%',
-            placeholder: 'Ordenar de forma...',
-            allowClear: true,
-            dropdownAutoWidth: true
         });
 
         $("#buscar").on('click', function() {

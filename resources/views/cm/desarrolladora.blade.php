@@ -26,6 +26,14 @@
                     <h1 class="d-inline-block">Desarrolladora {{ $desarrolladora->nombre }}</h1>
                 </div>
                 <div class="box">
+                    @if($desarrolladora->ban)
+                        <div class="row">
+                            <span class="alert alert-danger w-100">
+                                <p>Su desarrolladora está suspendida por el siguiente motivo. Puedes corregir los problemas y contactar con soporte@indie4all.com para volver a publicarlo.</p>
+                                <small>{{$desarrolladora->motivo}}</small>
+                            </span>
+                        </div>
+                    @endif
                     <form method="post" action="{{ route('cm.desarrolladora.update',$desarrolladora->id) }} "enctype="multipart/form-data">
                         @method('PATCH')
                         @csrf

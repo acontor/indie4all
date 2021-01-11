@@ -228,7 +228,6 @@ Route::post('/master/{id}/unfollow', [App\Http\Controllers\Usuario\MasterControl
 Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterController::class, 'notificacion'])->name('usuario.master.notificacion')->middleware('auth');
 
 // Campanias
-Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index');
 Route::get('/campanias/lista', [App\Http\Controllers\Usuario\BuscadorController::class, 'campanias'])->name('usuario.campanias.all');
 Route::get('/campania/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show');
 Route::post('/campania/foro/nuevo', [App\Http\Controllers\Usuario\CampaniasController::class, 'store'])->name('usuario.foro.store');

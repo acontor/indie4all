@@ -25,9 +25,14 @@ class MasterController extends Controller
             $query->whereBetween('master_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
         }, 'posts' => function (Builder $query) {
             $query->whereBetween('posts.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
-        }])->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
+        }])->join('users', 'users.id', '=', 'masters.user_id')->where('users.ban', 0)->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        $posts = Post::where('master_id', '!=', null)->orderBy('created_at', 'DESC')->get();
+        $posts = Post::where('master_id', '!=', null)
+            ->join('masters', 'masters.id', '=', 'posts.master_id')
+            ->join('users', 'users.id', '=', 'masters.user_id')
+            ->where('posts.ban', 0)
+            ->where('users.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
 
         return view('usuario.masters', ['masters' => $masters, 'posts' => $posts]);
     }
@@ -41,6 +46,12 @@ class MasterController extends Controller
     public function show($id)
     {
         $master = Master::find($id);
+
+        if ($master->usuario->ban) {
+            session()->flash('error', 'La desarrolladora está suspendida');
+            return redirect()->back();
+        }
+
         return view('usuario.master', ['master' => $master]);
     }
 

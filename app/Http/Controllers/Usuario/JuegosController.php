@@ -26,10 +26,21 @@ class JuegosController extends Controller
             $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
         }, 'compras' => function (Builder $query) {
             $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
-        }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
+        }])->where('ban', 0)->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        $posts = Post::where('master_id', null)->where('juego_id', '!=', null)->orderBy('created_at', 'DESC')->get();
-        $analisis = Post::where('master_id', '!=', null)->where('juego_id', '!=', null)->orderBy('created_at', 'DESC')->get();
+        $posts = Post::where('master_id', null)
+            ->where('juego_id', '!=', null)
+            ->join('juegos', 'juegos.id', '=', 'posts.juego_id')
+            ->where('posts.ban', 0)
+            ->where('juegos.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
+        $analisis = Post::where('master_id', '!=', null)
+            ->where('juego_id', '!=', null)
+            ->join('masters', 'masters.id', '=', 'posts.master_id')
+            ->join('users', 'users.id', '=', 'masters.user_id')
+            ->where('posts.ban', 0)
+            ->where('users.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
         $recomendados = $this->obtenerJuegos($generos, $coleccion);
 
         return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'posts' => $posts, 'analisis' => $analisis]);
@@ -63,15 +74,30 @@ class JuegosController extends Controller
             ->doesnthave('campania')
             ->where('id', '!=', $juego->id)
             ->where('genero_id', $juego->genero_id)
+            ->where('ban', 0)
             ->orWhere('desarrolladora_id', $juego->desarrolladora_id)
             ->where('id', '!=', $juego->id)
+            ->where('ban', 0)
             ->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
         if (count($juegos_id) > 0) {
             $recomendados->whereNotIn('id', $juegos_id);
         }
 
-        return view('usuario.juego', ['juego' => $juego, 'recomendados' => $recomendados]);
+        if ($juego->ban) {
+            session()->flash('error', 'El juego está suspendido');
+            return redirect()->back();
+        }
+
+        $analisis = Post::where('master_id', '!=', null)
+            ->where('juego_id', $id)
+            ->join('masters', 'masters.id', '=', 'posts.master_id')
+            ->join('users', 'users.id', '=', 'masters.user_id')
+            ->where('posts.ban', 0)
+            ->where('users.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
+
+        return view('usuario.juego', ['juego' => $juego, 'recomendados' => $recomendados, 'analisis' => $analisis]);
     }
 
     /**
@@ -169,6 +195,6 @@ class JuegosController extends Controller
             }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC');
         }
 
-        return $juegos->inRandomOrder()->get();
+        return $juegos->where('ban', 0)->inRandomOrder()->get();
     }
 }

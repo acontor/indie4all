@@ -66,7 +66,8 @@
                                         <div class="col-12 col-md-6">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-info">{{$post->juego->genero->nombre}}</span>
+                                                <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             <p>{!! substr($post->contenido, 0, 300) !!}</p>

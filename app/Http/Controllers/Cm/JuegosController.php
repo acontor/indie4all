@@ -34,7 +34,7 @@ class JuegosController extends Controller
      */
     public function index()
     {
-        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->doesntHave('campania')->get();
+        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->doesntHave('campania')->orderByDesc('ban')->get();
         return view('cm.juegos', ['juegos' => $juegos]);
     }
 

@@ -36,14 +36,16 @@
                                     <input type="password" name="password" class="form-control" id="password" required
                                         autocomplete="current-password">
                                 </div>
-                                <div class="d-flex mb-4 align-items-center">
+                                <div id="recaptcha"></div>
+                                <span class="error-recaptcha text-danger"></span>
+                                <div class="d-flex mb-4 align-items-center mt-4">
                                     <input type="submit" value="Iniciar" class="btn btn-primary">
                                     <span class="ml-auto"><a href="#" class="forgot-pass">
-                                            @if (Route::has('password.request'))
-                                                <a class="forms_buttons-forgot" href="{{ route('password.request') }}">
-                                                    Recordar Contraseña
-                                                </a>
-                                            @endif
+                                        @if (Route::has('password.request'))
+                                            <a class="forms_buttons-forgot" href="{{ route('password.request') }}">
+                                                Recuperar Contraseña
+                                            </a>
+                                        @endif
                                     </span>
                                 </div>
                             </form>
@@ -76,7 +78,9 @@
                                     <input type="password" name="password-confirm" class="form-control"
                                         id="password-confirm" required>
                                 </div>
-                                <div class="d-flex mb-4 align-items-center">
+                                <div id="recaptcha"></div>
+                                <span class="error-recaptcha text-danger"></span>
+                                <div class="d-flex mb-4 align-items-center mt-4">
                                     <input type="submit" value="Registrar" class="btn btn-primary">
                                 </div>
                             </form>
@@ -98,9 +102,24 @@
 @endsection
 
 @section('scripts')
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
         $(function() {
             'use strict';
+
+            var interval = setInterval(function(){
+                grecaptcha.render('recaptcha', {
+                    'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                });
+                clearInterval(interval);
+            }, 100);
+
+            $('form').on('submit', function(e) {
+                if (grecaptcha.getResponse().length === 0) {
+                    e.preventDefault();
+                    $('.error-recaptcha').text('Completa el captcha');
+                }
+            });
 
             $('.form-control').on('input', function() {
                 var $field = $(this).closest('.form-group');

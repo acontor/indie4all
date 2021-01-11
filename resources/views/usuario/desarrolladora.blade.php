@@ -91,9 +91,12 @@
                         </div>
                         <div class="noticias shadow p-4 d-none">
                             <div class="items row mt-4">
-                                @if($desarrolladora->posts->count() > 0)
-                                    @foreach ($desarrolladora->posts->sortByDesc('created_at') as $post)
+                                @if($desarrolladora->posts->where('ban', 0)->count() > 0)
+                                    @foreach ($desarrolladora->posts->where('ban', 0)->sortByDesc('created_at') as $post)
                                         <div class="col-12 col-md-6">
+                                            <div class="pildoras mb-3">
+                                                <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                            </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             <p>{!! substr($post->contenido, 0, 100) !!}</p>
                                             <form>
@@ -213,45 +216,42 @@
                     </div>
                 </div>
                 <div class="col-md-3 mt-4 pr-3 pr-md-4">
-                    <h4>Juegos</h4>
-                    <hr>
-                    <div class="owl-carousel owl-theme juegos">
-                        @foreach ($desarrolladora->juegos as $juego)
-                            @empty($juego->campania)
-                                <div class="item">
-                                    <a href="{{ route('usuario.juego.show', $juego->id) }}">
-                                        <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                            alt="{{ $juego->nombre }}">
-                                        <div class="carousel-caption d-none">
-                                            <h6>{{ $juego->nombre }}</h6>
-                                            <small>
-                                                <span class="badge badge-danger">{{ $juego->genero->nombre }}</span>
-                                                <span class="d-block">{{ $juego->precio }} €</span>
-                                            </small>
-                                        </div>
-                                    </a>
-                                </div>
-                            @endempty
-                        @endforeach
-                    </div>
-                    @if($desarrolladora->juegos()->has('campania')->count() > 0)
+                    @if($desarrolladora->juegos()->has('campania')->where('ban', 0)->count() > 0)
+                        <h4>Juegos</h4>
+                        <hr>
+                        <div class="owl-carousel owl-theme juegos">
+                            @foreach ($desarrolladora->juegos->where('ban', 0) as $juego)
+                                @empty($juego->campania)
+                                    <div class="item">
+                                        <a href="{{ route('usuario.juego.show', $juego->id) }}">
+                                            <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
+                                                alt="{{ $juego->nombre }}">
+                                            <div class="carousel-caption d-none">
+                                                <h6>{{ $juego->nombre }}</h6>
+                                                <small>
+                                                    <span class="badge badge-danger">{{ $juego->genero->nombre }}</span>
+                                                    <span class="d-block">{{ $juego->precio }} €</span>
+                                                </small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endempty
+                            @endforeach
+                        </div>
+                    @endif
+                    @if($campanias->count() > 0)
                         <h4 class="mt-5">Campañas</h4>
                         <hr>
                         <div class="owl-carousel owl-theme campanias">
-                            @foreach ($desarrolladora->juegos()->has('campania')->get() as $juego)
+                            @foreach ($campanias as $campania)
                                 <div class="item">
-                                    <a href="{{ route('usuario.campania.show', $juego->campania->id) }}">
+                                    <a href="{{ route('usuario.campania.show', $campania->id) }}">
                                         <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                            alt="{{ $juego->nombre }}">
-                                        <div class="carousel-caption" style="display: none;">
-                                            <h6><strong>{{ $juego->nombre }}</strong></h6>
-                                            <small>{{ $juego->desarrolladora->nombre }}</small>
-                                            <hr>
-                                            <small class="float-left text-left">{{ $juego->genero->nombre }}
-                                                <br>
-                                                {{ $juego->precio }} €
-                                                <br>
-                                                {{ $juego->fecha_lanzamiento }}
+                                            alt="{{ $campania->juego->nombre }}">
+                                        <div class="carousel-caption d-none">
+                                            <h6>{{ $campania->juego->nombre }}</h6>
+                                            <small>
+                                                <span class="badge badge-danger">{{ $campania->juego->genero->nombre }}</span>
                                             </small>
                                         </div>
                                     </a>

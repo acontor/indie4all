@@ -30,7 +30,7 @@
                 <a class="nav-link" href="{{ route('usuario.juegos.index') }}">Juegos</a>
             </li>
             <li class="nav-item mt-1">
-                <a class="nav-link" href="{{ route('usuario.campanias.index') }}">Campañas</a>
+                <a class="nav-link" href="{{ route('usuario.campanias.all') }}">Campañas</a>
             </li>
         </ul>
         <ul class="nav navbar-nav">

@@ -32,7 +32,7 @@ class CampaniasController extends Controller
      */
     public function index()
     {
-        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->has('campania')->get();
+        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->has('campania')->orderByDesc('ban')->get();
         return view('cm.campanias', ['juegos' => $juegos]);
     }
 

@@ -18,22 +18,20 @@
                         <thead>
                             <tr>
                                 <td class="w-30">Título</td>
-                                <td class="w-25">Tipo</td>
                                 <td class="w-10 text-center">Comentarios</td>
-                                <td class="w-10 text-center">Calificación</td>
+                                <td class="w-10 text-center">Suspendida</td>
                                 <td class="w-25 text-center">Acciones</td>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($noticias as $noticia)
                                 <tr>
-                                    <td>{{ $noticia->titulo }}</td>
-                                    <td>{{ $noticia->tipo }}</td>
-                                    <td class="text-center">{{ $noticia->comentarios->count() }}</td>
-                                    <td class="text-center">{{ $noticia->calificacion }}</td>
+                                    <td class="align-middle">{{ $noticia->titulo }}</td>
+                                    <td class="align-middle text-center">{{ $noticia->comentarios->count() }}</td>
+                                    <td class="align-middle text-center">{{ $noticia->ban == 0 ? 'No' : 'Si' }}</td>
                                     <td class="align-middle text-center">
                                         <div class="btn-group">
-                                            <form action="{{ route('cm.noticia.edit', $noticia->id) }}" method="post">
+                                            <form action="{{ route('cm.noticia.edit', $noticia->id) }}" method="get">
                                                 @csrf
                                                 <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                                     <i class="far fa-edit"></i>

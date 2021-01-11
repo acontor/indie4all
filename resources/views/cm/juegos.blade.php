@@ -25,7 +25,10 @@
                             <p class="card-text">
                                 {{ $juego->sinopsis }}
                             </p>
-                            <div class="row">
+                            @if($juego->ban)
+                                <small class="text-danger">¡El juego está suspendido!</small>
+                            @endif
+                            <div class="row mt-3">
                                 <a class="btn btn-primary btn-sm round ml-1" title="Ver Juego"
                                     href="{{ route('cm.juego.show', $juego->id) }}">
                                     <i class="fa fa-eye"></i>

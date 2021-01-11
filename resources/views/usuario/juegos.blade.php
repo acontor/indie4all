@@ -65,13 +65,16 @@
                             <div class="items mt-4">
                                 @if($posts->where('juego_id', '!=', null)->where('master_id', null)->count() > 0)
                                     @foreach ($posts->where('juego_id', '!=', null)->where('master_id', null) as $post)
-                                        <div>
-                                            <h4>{{ $post->titulo }}</h4>
-                                            <p>{!! $post->contenido !!}</p>
-                                            <div class="footer-estados mt-3">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
-                                                <small>{{ $post->created_at }}</small>
-                                            </div>
+                                        <div class="pildoras mb-3">
+                                            <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                            <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                            <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                        </div>
+                                        <h4>{{ $post->titulo }}</h4>
+                                        <p>{!! $post->contenido !!}</p>
+                                        <div class="footer-estados mt-3">
+                                            <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                            <small>{{ $post->created_at }}</small>
                                         </div>
                                     @endforeach
                                 @else
@@ -93,7 +96,8 @@
                                         <div class="col-12 col-md-6">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-info">{{$post->juego->genero->nombre}}</span>
+                                                <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             <p>{!! substr($post->contenido, 0, 300) !!}</p>

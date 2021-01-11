@@ -24,15 +24,15 @@ class HomeController extends Controller
     {
         $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null], ['campania_id', null]])->get();
 
-        $juegos = Juego::doesnthave('campania')->take(3)->get();
+        $juegos = Juego::doesnthave('campania')->where('ban', 0)->take(3)->get();
         $juegosVentas = Juego::withCount(['compras' => function (Builder $query) {
             $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
-        }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->take(3)->get();
+        }])->doesnthave('campania')->where('ban', 0)->orderBy('compras_count', 'DESC')->take(3)->get();
 
         $campanias = Campania::take(3)->get();
         $campaniasVentas = Campania::withCount(['compras' => function (Builder $query) {
             $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
-        }])->orderBy('compras_count', 'DESC')->take(3)->get();
+        }])->where('ban', 0)->orderBy('compras_count', 'DESC')->take(3)->get();
 
         $masters = Master::take(3)->get();
 
@@ -62,11 +62,39 @@ class HomeController extends Controller
             }
         }
 
-        $juegos = Juego::doesntHave('campania')->whereIn('id', $juegos_id)->get();
+        $juegos = Juego::doesntHave('campania')->where('ban', 0)->whereIn('id', $juegos_id)->get();
 
         $campanias = Auth::user()->compras->has('campania');
 
-        $posts = Post::all();
+
+
+
+        $desarrolladoras = Auth::user()->desarrolladoras->where('ban', 0);
+
+        $desarrolladoras_id = [];
+
+        if ($desarrolladoras && $desarrolladoras->count() > 0) {
+            foreach ($desarrolladoras as $desarrolladora) {
+                array_push($desarrolladoras_id, $desarrolladora->id);
+            }
+        }
+
+        $masters = Auth::user()->masters;
+
+        $masters_id = [];
+
+        if ($masters && $masters->count() > 0) {
+            foreach ($masters as $master) {
+                array_push($masters_id, $master->id);
+            }
+        }
+
+        $posts = Post::whereIn('desarrolladora_id', $desarrolladoras)
+            ->orwhereIn('master_id', $masters)
+            ->orwhereIn('juego_id', $juegos)
+            ->orderByDesc('created_at')
+            ->where('ban', 0)
+            ->get();
 
         return view('usuario.home', ['juegos' => $juegos, 'campanias' => $campanias, 'posts' => $posts]);
     }
@@ -76,12 +104,12 @@ class HomeController extends Controller
         $data = [];
         if ($request->has('q')) {
             $search = $request->q;
-            $juegos = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->doesntHave('campania')->take(5)->get();
-            $campanias = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->has('campania')->take(5)->get();
-            $desarrolladoras = Desarrolladora::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->take(5)->get();
+            $juegos = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->where('ban', 0)->doesntHave('campania')->take(5)->get();
+            $campanias = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->where('ban', 0)->has('campania')->take(5)->get();
+            $desarrolladoras = Desarrolladora::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->where('ban', 0)->take(5)->get();
             $masters = DB::table('users')
                 ->join('masters', 'users.id', '=', 'masters.user_id')
-                ->select('masters.id', 'users.name')->where('users.name', 'LIKE', "%$search%")->take(5)->get();
+                ->select('masters.id', 'users.name')->where('users.name', 'LIKE', "%$search%")->where('users.ban', 0)->take(5)->get();
             foreach ($juegos as $juego) {
                 $temp = ['id' => $juego->id, 'nombre' => $juego->nombre, 'tipo' => 'Juego'];
                 array_push($data, $temp);

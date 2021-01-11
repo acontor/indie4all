@@ -145,8 +145,8 @@
                         <div class="noticias shadow p-4 d-none">
                             <h2>Noticias</h2>
                             <div class="items">
-                                @if ($juego->posts->where('master_id', null)->count() != 0)
-                                    @foreach ($juego->posts->where('master_id', null) as $post)
+                                @if ($juego->posts->where('master_id', null)->where('ban', 0)->count() != 0)
+                                    @foreach ($juego->posts->where('master_id', null)->where('ban', 0)->sortByDesc('created_at') as $post)
                                         <div>
                                             <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
                                             <p>{!! substr($post->contenido, 0, 300) !!}</p>
@@ -171,8 +171,8 @@
                         <div class="analisis-div shadow p-4 d-none">
                             <h2>Análisis</h2>
                             <div class="items">
-                                @if ($juego->posts->where('master_id', '!=', null)->count() != 0)
-                                    @foreach ($juego->posts->where('master_id', '!=', null) as $post)
+                                @if ($analisis->count() != 0)
+                                    @foreach ($analisis as $post)
                                         <div>
                                             <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
                                             <p>{!! substr($post->contenido, 0, 300) !!}</p>

@@ -460,3 +460,25 @@ footer {
     transition: left .5s;
     overflow: auto;
 }
+
+
+.card>img {
+    height: 150px;
+    width: 100%;
+}
+
+.item-card {
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.item-card-title {
+    font-size: 15px;
+    transition: 1s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+}

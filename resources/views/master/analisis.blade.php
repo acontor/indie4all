@@ -16,22 +16,24 @@
                 <thead>
                     <tr>
                         <td class="w-30">Título</td>
-                        <td class="w-25">Juego</td>
+                        <td class="w-15">Juego</td>
                         <td class="w-10 text-center">Comentarios</td>
                         <td class="w-10 text-center">Calificación</td>
+                        <td class="w-10 text-center">Suspendido</td>
                         <td class="w-25 text-center">Acciones</td>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($analisis as $post)
                         <tr>
-                            <td>{{ $post->titulo }}</td>
-                            <td>{{ $post->juego->nombre }}</td>
-                            <td class="text-center">{{ $post->comentarios->count() }}</td>
-                            <td class="text-center">{{ $post->calificacion }}</td>
+                            <td class="align-middle">{{ $post->titulo }}</td>
+                            <td class="align-middle">{{ $post->juego->nombre }}</td>
+                            <td class="align-middle text-center">{{ $post->comentarios->count() }}</td>
+                            <td class="align-middle text-center">{{ $post->calificacion }}</td>
+                            <td class="align-middle text-center">{{ $post->ban == 0 ? 'No' : 'Si' }}</td>
                             <td class="align-middle text-center">
                                 <div class="btn-group">
-                                    <form action="{{ route('master.analisis.edit', $post->id) }}" method="post">
+                                    <form action="{{ route('master.analisis.edit', $post->id) }}" method="get">
                                         @csrf
                                         <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                             <i class="far fa-edit"></i>

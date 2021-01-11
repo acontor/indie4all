@@ -33,7 +33,15 @@
                     <h1 class="mb-4">Nuevo Juego</h1>
         @endif
         @if (isset($juego))
-                    <form action="{{ route('cm.juego.update', $juego->id) }}" method="post" enctype="multipart/form-data">
+                    @if($juego->ban)
+                        <div class="row">
+                            <span class="alert alert-danger w-100">
+                                <p>Su juego está suspendido por el siguiente motivo. Puedes corregir los problemas y contactar con soporte@indie4all.com para volver a publicarlo.</p>
+                                <small>{{$juego->motivo}}</small>
+                            </span>
+                        </div>
+                    @endif
+                    <form class="mt-3" action="{{ route('cm.juego.update', $juego->id) }}" method="post" enctype="multipart/form-data">
                     @method("PATCH")
         @else
                     <form action="{{ route('cm.juego.store') }}" method="post" enctype="multipart/form-data">

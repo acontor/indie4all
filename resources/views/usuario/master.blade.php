@@ -98,12 +98,13 @@
                         <div class="analisis-div shadow p-4 d-none">
                             <h3>Análisis</h3>
                             <div class="items row mt-4">
-                                @if($master->posts->where('juego_id', '!=', null)->count() > 0)
-                                    @foreach ($master->posts->where('juego_id', '!=', null) as $post)
+                                @if($master->posts->where('juego_id', '!=', null)->where('ban', 0)->count() > 0)
+                                    @foreach ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->sortByDesc('created_at') as $post)
                                         <div class="col-12 col-md-6">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-info">{{$post->juego->genero->nombre}}</span>
+                                                <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             <p>{!! substr($post->contenido, 0, 300) !!}</p>
@@ -132,10 +133,10 @@
                         </div>
                         <div class="notas shadow p-4 d-none">
                             <h3>Notas</h3>
-                            @if ($master->posts->where('juego_id', '!=', null)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', '!=', null) as $post)
+                            @if ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->count() != 0)
+                                @foreach ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->sortByDesc('created_at') as $post)
                                     <div>
-                                        <h4>{{ $post->titulo }}</h4>
+                                        <h4>{{ $post->juego->nombre }}</h4>
                                         <p>{!! $post->calificacion !!}</p>
                                     </div>
                                 @endforeach

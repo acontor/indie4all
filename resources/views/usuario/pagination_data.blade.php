@@ -52,9 +52,11 @@
     @endif
     <div class="row mb-4 mt-2">
         @foreach ($masters as $master)
+        @if($master->usuario->ban)
+        @else
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                    <img src="{{url('/images/default.png')}}" alt="Foto de portada Master">
+                    <img src="{{url('/images/default.png')}}" alt="Foto de portada del master">
                     <div class="p-3">
                         <h5><a href="{{ route('usuario.master.show', $master->id) }}">{{ $master->nombre }}</a></h5>
                         Sequidores:<small class="float-right"> {{$master->seguidores_count}}</small><br>
@@ -62,6 +64,7 @@
                     </div>
             </div>
         </div>
+        @endif
         @endforeach
     </div>
     @php
@@ -79,7 +82,7 @@
         @foreach ($desarrolladoras as $desarrolladora)
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                    <img src="{{url('/images/default.png')}}" alt="Foto de portada Master">
+                    <img src="{{url('/images/default.png')}}" alt="Foto de portada de la desarrolladora">
                     <div class="p-3">
                         <h5><a href="{{ route('usuario.desarrolladora.show', $desarrolladora->id) }}">{{ $desarrolladora->nombre }}</a></h5>
                         Sequidores:<small class="float-right"> {{$desarrolladora->seguidores_count}}</small><br>
@@ -102,9 +105,11 @@
     @endif
     <div class="row mb-4 mt-5">
         @foreach ($campanias as $campania)
+        @if($campania->ban)
+        @else
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                    <img src="{{url('/images/default.png')}}" alt="Foto de portada Master">
+                    <img src="{{url('/images/default.png')}}" alt="Foto de portada de la campaña">
                     <div class="p-3">
                         <h5><a href="{{ route('usuario.campania.show', $campania->id) }}">{{ $campania->juego->nombre }}</a></h5>
                         Participaciones:<small class="float-right"> {{$campania->compras_count}}</small><br>
@@ -115,6 +120,7 @@
                     </div>
             </div>
         </div>
+        @endif
         @endforeach
     </div>
     @php

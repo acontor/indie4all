@@ -20,7 +20,7 @@ class BuscadorController extends Controller
      */
     public function juegos(Request $request)
     {
-        $juegos = Juego::query()->doesntHave('campania');
+        $juegos = Juego::query()->doesntHave('campania')->where('ban', 0);
         if ($request->ajax()) {
             if ($request->page == '' && $request->ordenarPor != 'null' || $request->nombre != '' || $request->genero != '' || $request->desarrolladora != '' || $request->precioMin != '' || $request->precioMax != '' || $request->fechaDesde != '' || $request->fechaHasta != '') {
                 if ($request->ordenarPor != 'null' && $request->ordenarDe != 'null') {
@@ -101,7 +101,7 @@ class BuscadorController extends Controller
      */
     public function desarrolladoras(Request $request)
     {
-        $desarrolladoras = Desarrolladora::query();
+        $desarrolladoras = Desarrolladora::query()->where('ban', 0);
         $desarrolladoras->withCount('seguidores', 'posts', 'juegos', 'sorteos', 'encuestas');
         if ($request->ajax()) {
             if ($request->page == '' && $request->nombre != '' || $request->ordenarPor != '' || $request->desarrolladora != '' || $request->ordenarPor != 'null') {
@@ -135,21 +135,22 @@ class BuscadorController extends Controller
     {
 
         $fechHoy = date('Y-m-d');
-        $campanias = Campania::query();
-        $campanias->where('fecha_fin', '>=', $fechHoy)->withCount('compras', 'posts');
+        $campanias = Campania::query()
+        ->join('juegos', 'juegos.id', '=', 'campanias.juego_id')
+        ->where('campanias.fecha_fin', '>=', $fechHoy)->withCount('compras', 'posts');
         if ($request->ajax()) {
             if ($request->page == '' && $request->nombre != '' || $request->ordenarPor != '' || $request->desarrolladora != '' || $request->ordenarPor != 'null' || $request->aporteMinMax != '' || $request->aporteMinMin != '') {
-                if ($request->ordenarPor != 'null' && $request->ordenarDe != 'null') {
+                if ($request->ordenarPor != '' && $request->ordenarDe != '') {
                     $campanias = $campanias->orderBy($request->ordenarPor, $request->ordenarDe);
                 }
                 if ($request->nombre != '') {
-                    $campanias = $campanias->where('nombre', 'like', '%' . $request->nombre . '%');
+                    $campanias = $campanias->where('juegos.nombre', 'like', '%' . $request->nombre . '%');
                 }
                 if ($request->aporteMinMin != '') {
-                    $campanias = $campanias->where('aporte_minimo', '>=', $request->aporteMinMin);
+                    $campanias = $campanias->where('campanias.aporte_minimo', '>=', $request->aporteMinMin);
                 }
                 if ($request->aporteMinMax != '') {
-                    $campanias = $campanias->where('aporte_minimo', '<=', $request->aporteMinMax);
+                    $campanias = $campanias->where('campanias.aporte_minimo', '<=', $request->aporteMinMax);
                 }
                 $campanias = $campanias->get();
             } else {

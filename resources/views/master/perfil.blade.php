@@ -11,6 +11,14 @@
             <h1>Master @isset($perfil->nombre){{ $perfil->nombre }}@endisset</h1>
         </div>
         <div class="box">
+            @if($perfil->usuario->ban)
+                <div class="row">
+                    <span class="alert alert-danger w-100">
+                        <p>Su perfil está suspendido por el siguiente motivo. Puedes corregir los problemas y contactar con soporte@indie4all.com para volver a publicarlo.</p>
+                        <small>{{$perfil->usuario->motivo}}</small>
+                    </span>
+                </div>
+            @endif
             <form method="post" action="{{ route('master.perfil.update', $perfil->id) }}" enctype="multipart/form-data">
                 @method('PATCH')
                 @csrf

@@ -33,6 +33,14 @@
                     <h1 class="mb-4">Nueva Campaña</h1>
         @endif
         @if (isset($campania))
+                        @if($campania->ban)
+                            <div class="row">
+                                <span class="alert alert-danger w-100">
+                                    <p>Su campaña está suspendida por el siguiente motivo. Puedes corregir los problemas y contactar con soporte@indie4all.com para volver a publicarlo.</p>
+                                    <small>{{$campania->motivo}}</small>
+                                </span>
+                            </div>
+                        @endif
                         <form action="{{ route('cm.campania.update', $campania->id) }}" method="post" enctype="multipart/form-data">
                         @method("PATCH")
         @else

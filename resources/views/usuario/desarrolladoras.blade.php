@@ -38,6 +38,9 @@
                                 @if($posts->count() > 0)
                                     @foreach ($posts->sortByDesc('created_at') as $post)
                                         <div class="col-12 col-md-6">
+                                            <div class="pildoras mb-3">
+                                                <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                            </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             <p>{!! substr($post->contenido, 0, 100) !!}</p>
                                             <form>
@@ -52,7 +55,7 @@
                                         </div>
                                     @endforeach
                                 @else
-                                    <p>No se han encontrado análisis</p>
+                                    <p>No se han encontrado noticias</p>
                                 @endif
                             </div>
                             <div class="pager">
