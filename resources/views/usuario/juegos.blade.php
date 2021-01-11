@@ -166,7 +166,7 @@
                                     <small>{{$juego->fecha_lanzamiento}}</small>
                                 </div>
                                 <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
-                                <span class="btn btn-dark btn-sm float-right">{{$compra->juego->precio}} €</span>
+                                <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
                                 <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
                             </a>
                         @endforeach

@@ -78,19 +78,17 @@ class DesarrolladoraController extends Controller
 
     public function upload(Request $request)
     {
-        // Mover imagen a temp
         if ($request->hasFile('upload')) {
-            $originName = $request->file('upload')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $nombreOriginal = $request->file('upload')->getClientOriginalName();
+            $nombreImagen = pathinfo($nombreOriginal, PATHINFO_FILENAME);
             $extension = $request->file('upload')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $request->file('upload')->move(public_path('images/posts'), $fileName);
+            $nombreImagen = $nombreImagen . '_' . time() . '.' . $extension;
+            $request->file('upload')->move(public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/contenido'), $nombreImagen);
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
-            $url = asset('images/posts/' . $fileName);
-            $msg = 'Image successfully uploaded';
-            $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
+            $url = asset('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/contenido/' . $nombreImagen);
+            $respuesta = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url')</script>";
             @header('Content-type: text/html; charset=utf-8');
-            echo $response;
+            echo $respuesta;
         }
     }
 

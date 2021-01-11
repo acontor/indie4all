@@ -11,7 +11,7 @@
                 <h1>Juegos ({{ App\Models\Juego::where('ban', 0)->doesntHave('campania')->count() }})</h1>
             </div>
             <div class="box mt-4">
-                <nav class="navbar navbar-expand-md navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
+                <nav class="navbar navbar-expand-md  navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
                     <button class="navbar-toggler mx-auto" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
                         Filtros <span class="navbar-toggler-icon"></span>
                     </button>

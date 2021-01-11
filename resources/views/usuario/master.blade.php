@@ -131,13 +131,16 @@
                                 <div class="lastPage">&raquo;</div>
                             </div>
                         </div>
-                        <div class="notas shadow p-4 d-none">
-                            <h3>Notas</h3>
+                        <div class="notas d-none">
                             @if ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->count() != 0)
                                 @foreach ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->sortByDesc('created_at') as $post)
-                                    <div>
-                                        <h4>{{ $post->juego->nombre }}</h4>
-                                        <p>{!! $post->calificacion !!}</p>
+                                    <div class="berber mb-2">
+                                        <div class="berber-image d-none d-md-block">
+                                            <img class="img-fluid mr-2" src="{{ asset('/images/logo.png') }}" alt="{{ $master->nombre }}"/>
+                                        </div>
+                                        <div class="circle-lista float-right">{{$post->calificacion}}</div>
+                                        <div class="berber-fullname">{{$post->juego->nombre}}</div>
+                                        <div class="berber-dukkan">análisis sobre un juego de terror</div>
                                     </div>
                                 @endforeach
                             @else

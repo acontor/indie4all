@@ -10,21 +10,21 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-4 mt-2">
             @foreach ($juegos as $juego)
-                <div class="col-3 mt-4 mr-4">
-                    <div class="card">
-                        <img src="{{ asset('/images/default.png') }}" height="100" />
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a>
-                            </h5>
-                            <p class="date-lanzamiento"> {{ $juego->fecha_lanzamiento }}
-                                <span class="genero">{{ $juego->genero->nombre }}</span>
-                            </p>
-                            <p class="card-text">
-                                {{ $juego->sinopsis }}
-                            </p>
+                <div class="col-md-3 col-sm-6 mt-4 item">
+                    <div class="card item-card card-block">
+                        @if($juego->imagen_portada)
+                            <img class="w-100" src="{{ asset('/images/desarrolladoras/' . $juego->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_portada) }}" id="imagen-portada" alt="Portada del juego" />
+                        @else
+                            <img class="img-fluid" src="{{ asset('/images/desarrolladoras/default-portada-juego.png') }}" id="imagen-portada" alt="Portada del juego" />
+                        @endif
+                        <div class="p-3">
+                            <h5><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></h5>
+                            <small class="float-right"> {{$juego->fecha_lanzamiento}}</small><br>
+                            <a href="">{{App\Models\Genero::find($juego->genero_id)->nombre}}</a><br>
+                            Popularidad:<small class="float-right"> {{$juego->compras->count()}}</small><br>
+                            Precio:<small class="float-right"> {{$juego->precio}}</small><br>
                             @if($juego->ban)
                                 <small class="text-danger">¡El juego está suspendido!</small>
                             @endif
@@ -46,7 +46,6 @@
                 </div>
             @endforeach
         </div>
-    </div>
 @endsection
 
 @section("scripts")

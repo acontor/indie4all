@@ -292,8 +292,6 @@ $(function () {
             $('.list-buttons-' + tipo).removeClass('bg-dark text-white');
             $(this).addClass('bg-dark text-white');
         }
-        console.log(item + tipo);
-
         $('.listado-' + tipo).addClass('d-none');
         $('.' + item).removeClass('d-none');
     });

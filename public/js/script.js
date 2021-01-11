@@ -36,7 +36,6 @@ function readURL(imagen, input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            console.log(imagen)
             $('#imagen-' + imagen).attr('src', e.target.result);
             $('#imagen-' + imagen).css('display', 'block');
             $('#btn-').removeClass("btn-outline-dark");

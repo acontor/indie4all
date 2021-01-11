@@ -99,33 +99,37 @@
                             @endif
                         </div>
                         @auth
-                        <div class="foro shadow p-4 d-none">
-                            <h3>Foro</h3>
-                            <textarea class="form-control" name="mensaje" id="editor"></textarea>
-                            <input type="hidden" name="id" value="{{ $campania->id }}">
-                            <button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button>
-                            <div class="mensajes">
-                                @if ($campania->mensajes->count() != 0)
-                                    <div class="items">
-                                        @foreach ($campania->mensajes as $mensaje)
-                                            <div>
-                                                <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
-                                                <p class="mensaje">{!! $mensaje->contenido !!}</p>
+                            <div class="foro shadow p-4 d-none">
+                                @if(Auth::user()->compras->where('campania_id', $campania->id)->count() > 0)
+                                    <h3>Foro</h3>
+                                    <textarea class="form-control" name="mensaje" id="editor"></textarea>
+                                    <input type="hidden" name="id" value="{{ $campania->id }}">
+                                    <button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button>
+                                    <div class="mensajes">
+                                        @if ($campania->mensajes->count() != 0)
+                                            <div class="items">
+                                                @foreach ($campania->mensajes as $mensaje)
+                                                    <div>
+                                                        <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
+                                                        <p class="mensaje">{!! $mensaje->contenido !!}</p>
+                                                    </div>
+                                                @endforeach
                                             </div>
-                                        @endforeach
-                                    </div>
-                                    <div class="pager">
-                                        <div class="firstPage">&laquo;</div>
-                                        <div class="previousPage">&lsaquo;</div>
-                                        <div class="pageNumbers"></div>
-                                        <div class="nextPage">&rsaquo;</div>
-                                        <div class="lastPage">&raquo;</div>
+                                            <div class="pager">
+                                                <div class="firstPage">&laquo;</div>
+                                                <div class="previousPage">&lsaquo;</div>
+                                                <div class="pageNumbers"></div>
+                                                <div class="nextPage">&rsaquo;</div>
+                                                <div class="lastPage">&raquo;</div>
+                                            </div>
+                                        @else
+                                            <div class="mensaje mt-3">Aún no hay mensajes.. Sé el primero en participar!</div>
+                                        @endif
                                     </div>
                                 @else
-                                    <div class="mensaje mt-3">Aún no hay mensajes.. Sé el primero en participar!</div>
+                                    <span class="text-danger">Participa en la campaña para poder acceder al foro</span>
                                 @endif
                             </div>
-                        </div>
                         @endauth
                         <div class="faq shadow p-4 d-none">
                             <h3>FAQ</h3>
@@ -140,150 +144,151 @@
 @endsection
 
 @section('scripts')
-<script src="http://momentjs.com/downloads/moment.min.js"></script>
-<script>
-    $(function() {
-        let recaudado = {{json_encode($campania->recaudado)}};
-        let meta = {{json_encode($campania->meta)}};
-        const fechaFin = @json($campania).fecha_fin;
-        let fechaHoy = moment();
-        let fechaFinal = moment(fechaFin,);
-        let porcentaje = (100*recaudado)/meta;
+    <script src="http://momentjs.com/downloads/moment.min.js"></script>
+    <script>
+        $(function() {
+            let campania = {!! $campania !!};
+            let recaudado = campania.recaudado;
+            let meta = campania.meta;
+            const fechaFin = campania.fecha_fin;
+            let fechaHoy = moment();
+            let fechaFinal = moment(fechaFin);
+            let porcentaje = (100*recaudado)/meta;
 
-        $('.progress-bar').css('width',porcentaje+'%');
-        if(fechaFinal.diff(fechaHoy) < 0) {
-            $('#diasRestantes').html('<h5>¡La campaña ha terminado!</h5>');
-            $('.participar-div').remove();
-        } else if (fechaFinal.diff(fechaHoy) < 8,64e+7) {
-            $('#diasRestantes').html(`<h5>Quedan</h5><small class="text-danger">¡Último día!</small></h5>`);
-        } else {
-            $('#diasRestantes').html(`<h5>Quedan</h5><small class="text-danger">${fechaFinal.diff(fechaHoy, 'days')} días</small>`);
-        }
+            $('.progress-bar').css('width',porcentaje+'%');
 
-        $(".participar").on('click', function() {
-            $("#precio").focus();
-        });
-
-        $('#reporteMensaje').on('click', function(){
-            let id = $(this).attr('dataset');
-            let url = '{{ route("usuario.reporte", [":id" , "mensaje_id"]) }}';
-            url = url.replace(':id', id);
-            Swal.fire({
-                title: 'Indica el motivo del reporte',
-                showCancelButton: true,
-                cancelButtonText: 'Cancelar',
-                confirmButtonText: `Reportar`,
-                input: 'text',
-                inputAttributes: {
-                    autocapitalize: 'off'
-                },
-                html: '<div id="recaptcha" class="mb-3"></div>',
-                didOpen: function() {
-                    grecaptcha.render('recaptcha', {
-                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                    });
-                },
-                preConfirm: function (result) {
-                    if (grecaptcha.getResponse().length === 0) {
-                        Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                    } else if (result != '') {
-                        let motivo = result;
-                        $.ajax({
-                            url: url,
-                            type : 'POST',
-                            headers:{
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            },
-                            data: {
-                                motivo: motivo,
-                            }
-                            ,success: function(data){
-                                Swal.fire(data)
-                            }
-                        })
-                    }else{
-                        Swal.showValidationMessage(`Por favor, indica un motivo.`)
-                    }
-                }
-            });
-        });
-
-        CKEDITOR.replace("mensaje", {
-            customConfig: "{{ asset('js/ckeditor/config.js') }}"
-        });
-
-        $("#mensaje-form").on('click', function(e) {
-            e.preventDefault();
-            let mensaje = CKEDITOR.instances.editor.getData();
-            CKEDITOR.instances.editor.setData("");
-            let id = $(this).prev().val();
-            $.ajax({
-                url: '{{ route("usuario.foro.store") }}',
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    id: id,
-                    mensaje: mensaje
-                }, success: function(data) {
-                    if ($('.mensajes').children().text() == "Aún no hay mensajes.. Sé el primero en participar!") {
-                        $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                    } else {
-                        $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
-                    }
-                }
-            });
-        });
-
-        let campania = {!! json_encode($campania) !!};
-
-        html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
-        `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!?&url=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
-        `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
-        `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!%20http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
-        `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/campania/${campania.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
-        `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
-
-        $(".compartir").on('click', {html: html}, compartir);
-
-        $(".more").on('click', function () {
-            let checkUser = false;
-            let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
-            if(user != '' && user.ban == 0 && user.email_verified_at != null) {
-                checkUser = true;
+            if(fechaFinal.diff(fechaHoy) < 0) {
+                $('#diasRestantes').html('<h5>¡La campaña ha terminado!</h5>');
+                $('.participar-div').remove();
+            } else if (fechaFinal.diff(fechaHoy) < 8.64e+7) {
+                $('#diasRestantes').html(`<h5>Quedan</h5><small class="text-danger">¡Último día!</small></h5>`);
+            } else {
+                $('#diasRestantes').html(`<h5>Quedan</h5><small class="text-danger">${fechaFinal.diff(fechaHoy, 'days')} días</small>`);
             }
-            let url = '{{ route("usuario.post.show") }}';
-            let id = $(this).prev().val();
-            let config = '{{ asset("js/ckeditor/config.js") }}';
-            more(url, id, config, checkUser);
-        });
 
-        $('#reporteCampania').on('click', function(){
-            let id = {!! $campania->id !!};
-            let url = '{{ route("usuario.reporte") }}';
-            reporte(url, id, 'campania_id');
-        });
+            $(".participar").on('click', function() {
+                $("#precio").focus();
+            });
 
-        $(".participar").on('click', function() {
-            Swal.fire({
-                html: `<form action="{{ route('usuario.paypal.pagar') }}" method="post">` +
-                `@csrf` +
-                `@method('POST')` +
-                `<input type="hidden" name="tipo" value="1"/><input type="hidden" name="campaniaId" value="${campania.id}"><input type="text" name="precio" id="precio">` +
-                `<button type="submit" class="btn btn-primary"> Participar</button></form>`,
-                showCloseButton: false,
-                showCancelButton: false,
-                showConfirmButton: false,
-                showClass: {
-                    popup: 'animate__animated animate__slideInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__zoomOutDown'
+            $('#reporteMensaje').on('click', function(){
+                let id = $(this).attr('dataset');
+                let url = '{{ route("usuario.reporte", [":id" , "mensaje_id"]) }}';
+                url = url.replace(':id', id);
+                Swal.fire({
+                    title: 'Indica el motivo del reporte',
+                    showCancelButton: true,
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: `Reportar`,
+                    input: 'text',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    html: '<div id="recaptcha" class="mb-3"></div>',
+                    didOpen: function() {
+                        grecaptcha.render('recaptcha', {
+                                'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                        });
+                    },
+                    preConfirm: function (result) {
+                        if (grecaptcha.getResponse().length === 0) {
+                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                        } else if (result != '') {
+                            let motivo = result;
+                            $.ajax({
+                                url: url,
+                                type : 'POST',
+                                headers:{
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                },
+                                data: {
+                                    motivo: motivo,
+                                }
+                                ,success: function(data){
+                                    Swal.fire(data)
+                                }
+                            })
+                        }else{
+                            Swal.showValidationMessage(`Por favor, indica un motivo.`)
+                        }
+                    }
+                });
+            });
+            if($('#editor').length > 0) {
+                CKEDITOR.replace("mensaje", {
+                    customConfig: "{{ asset('js/ckeditor/config.js') }}"
+                });
+            }
+            $("#mensaje-form").on('click', function(e) {
+                e.preventDefault();
+                let mensaje = CKEDITOR.instances.editor.getData();
+                CKEDITOR.instances.editor.setData("");
+                let id = $(this).prev().val();
+                $.ajax({
+                    url: '{{ route("usuario.foro.store") }}',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        id: id,
+                        mensaje: mensaje
+                    }, success: function(data) {
+                        if ($('.mensajes').children().text() == "Aún no hay mensajes.. Sé el primero en participar!") {
+                            $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                        } else {
+                            $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                        }
+                    }
+                });
+            });
+
+            html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
+            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!?&url=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
+            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
+            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!%20http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
+            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/campania/${campania.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
+            `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
+
+            $(".compartir").on('click', {html: html}, compartir);
+
+            $(".more").on('click', function () {
+                let checkUser = false;
+                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
+                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                    checkUser = true;
                 }
+                let url = '{{ route("usuario.post.show") }}';
+                let id = $(this).prev().val();
+                let config = '{{ asset("js/ckeditor/config.js") }}';
+                more(url, id, config, checkUser);
+            });
+
+            $('#reporteCampania').on('click', function(){
+                let id = {!! $campania->id !!};
+                let url = '{{ route("usuario.reporte") }}';
+                reporte(url, id, 'campania_id');
+            });
+
+            $(".participar").on('click', function() {
+                Swal.fire({
+                    html: `<p>El aporte mínimo para conseguir una copia es de ${campania.aporte_minimo} €` +
+                    `<form action="{{ route('usuario.paypal.pagar') }}" method="post">` +
+                    `@csrf` +
+                    `@method('POST')` +
+                    `<input type="hidden" name="tipo" value="1"/><input type="hidden" name="campaniaId" value="${campania.id}"><input type="text" class="form-control" name="precio" id="precio" placeholder="${campania.aporte_minimo}">` +
+                    `<button type="submit" class="btn btn-primary mt-3"> Participar</button></form>`,
+                    showCloseButton: false,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    showClass: {
+                        popup: 'animate__animated animate__slideInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOutDown'
+                    }
+                });
             });
         });
-    });
 
-</script>
+    </script>
 @endsection

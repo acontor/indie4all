@@ -107,7 +107,7 @@
                             </div>
                             <div class="col-12 col-md-6 mt-3 mt-md-0">
                                 <label id="btn-logo" class="btn btn-outline-dark pop-info"
-                                data-content="La imagen de logo debe ser en formato PNG y 200x256"
+                                data-content="La imagen de logo debe ser en formato PNG y 256x256"
                                 rel="popover" data-placement="bottom" data-trigger="hover">
                                     <i class="fas fa-upload"></i> Logo:
                                     <input type="file" class="btn btn-primary" name="imagen_logo" onchange="readURL('logo', this);">
