@@ -47,7 +47,7 @@
                             </div>
                             <div class="col-md-4 mt-3 mt-md-0">
                                 <label for="username">Nombre de usuario:</label>
-                                <input type="text" name="username" class="form-control" id="username">
+                                <input type="text" name="username" class="form-control" id="username" value="{{ $usuario->username }}">
                             </div>
                             <div class="col-md-4 mt-3 mt-md-0">
                                 <label for="email">Email:</label>

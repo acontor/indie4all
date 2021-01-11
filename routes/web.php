@@ -1,9 +1,5 @@
 <?php
 
-use App\Models\Desarrolladora;
-use App\Models\Juego;
-use App\Models\Master;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes(['verify' => true]);
+
+Route::get('auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
+Route::get('auth/facebook', [App\Http\Controllers\Auth\FacebookController::class, 'redirectToProvider']);
+Route::get('auth/facebook/callback', [App\Http\Controllers\Auth\FacebookController::class, 'handleProviderCallback']);
 
 /**
  * Admin Routes

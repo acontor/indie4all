@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'reportes',
         'ban',
         'motivo',
+        'google_id',
     ];
 
     /**

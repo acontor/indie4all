@@ -82,10 +82,10 @@
                             </form>
                             <span class="d-block text-left my-4 text-muted">&mdash; o iniciar con &mdash;</span>
                             <div class="social-login">
-                                <a href="#" class="facebook">
+                                <a href="{{ url('auth/facebook') }}" class="facebook">
                                     <span class="fab fa-facebook-f mr-3"></span>
                                 </a>
-                                <a href="#" class="google">
+                                <a href="{{ url('auth/google') }}" class="google">
                                     <span class="fab fa-google mr-3"></span>
                                 </a>
                             </div>
