@@ -18,7 +18,7 @@
                 <div class="carousel-caption ">
                     <h1><strong>{{ $juego->nombre }}</strong></h1>
                     <a class="nav-link mb-0" href="{{ route('usuario.desarrolladora.show', $juego->desarrolladora->id) }}"><small>{{ $juego->desarrolladora->nombre }}</small></a>
-                    <a class="nav-link mb-0" href="Enlace a todos los juegos con filtro aventura"><small class="badge badge-danger">{{ $juego->genero->nombre }}</small></a>
+                    <a class="nav-link mb-0" href="/juegos/lista/{{$juego->genero->id}}"><small class="badge badge-danger">{{ $juego->genero->nombre }}</small></a>
                 </div>
             </header>
 

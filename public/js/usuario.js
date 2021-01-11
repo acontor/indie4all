@@ -1,6 +1,12 @@
 "use strict"
 
 $(function () {
+    $('.js-cookie-consent-agree').addClass('btn btn-light');
+
+    $('.js-cookie-consent-agree').on('click', function() {
+        $('.nav-cookie').remove();
+    })
+
     /**
      * BUSCADOR
      */
@@ -50,6 +56,11 @@ $(function () {
                                         html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="/juegos/lista">Ver todos</a></small><div class="owl-carousel owl-theme 1">`;
                                     }
                                     html += `<div class="item"><a href="/juego/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                } else if (element.tipo == "Campaña") {
+                                    if (html.indexOf("<h4 class='mt-2 mb-2'>Campañas</h4>") == -1) {
+                                        html += `</div><h4 class='mt-2 mb-2'>Campañas</h4><small><a href="/campanias/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
+                                    }
+                                    html += `<div class="item"><a href="/campania/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Desarrolladora") {
                                     if (html.indexOf("<h4 class='mt-2 mb-2'>Desarrolladoras</h4>") == -1) {
                                         html += `</div><h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="/desarrolladoras/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
@@ -416,7 +427,6 @@ function reporte(url, id, tipo) {
             });
         },
         preConfirm: function (result) {
-            console.log(result)
             if (grecaptcha.getResponse().length === 0) {
                 Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
             } else if (result != '') {

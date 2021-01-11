@@ -69,7 +69,7 @@ body {
     color: #333;
     padding-right: 15px;
     right: -20px;
-    bottom: 170px;
+    bottom: 350px;
     height: 50px;
     width: 50px;
     border-radius: 100px;
@@ -80,6 +80,7 @@ body {
     overflow: hidden;
     transition: all .1s ease;
     cursor: pointer;
+    z-index: 2;
 }
 
 .perfil:hover {
@@ -99,7 +100,7 @@ body {
     color: #333;
     padding-right: 15px;
     right: -20px;
-    bottom: 100px;
+    bottom: 280px;
     height: 50px;
     width: 50px;
     border-radius: 100px;
@@ -110,6 +111,7 @@ body {
     overflow: hidden;
     transition: all .1s ease;
     cursor: pointer;
+    z-index: 2;
 }
 
 .analisis:hover {
@@ -129,7 +131,7 @@ body {
     color: #333;
     padding-right: 15px;
     right: -20px;
-    bottom: 30px;
+    bottom: 210px;
     height: 50px;
     width: 50px;
     border-radius: 100px;
@@ -140,6 +142,7 @@ body {
     overflow: hidden;
     transition: all .1s ease;
     cursor: pointer;
+    z-index: 2;
 }
 
 .estado:hover {
@@ -159,7 +162,7 @@ body {
     color: #333;
     padding-right: 15px;
     right: -20px;
-    bottom: 100px;
+    bottom: 280px;
     height: 50px;
     width: 50px;
     border-radius: 100px;
@@ -170,6 +173,7 @@ body {
     overflow: hidden;
     transition: all .1s ease;
     cursor: pointer;
+    z-index: 2;
 }
 
 .juego:hover {
@@ -189,7 +193,7 @@ body {
     color: #333;
     padding-right: 15px;
     right: -20px;
-    bottom: 30px;
+    bottom: 210px;
     height: 50px;
     width: 50px;
     border-radius: 100px;
@@ -200,6 +204,7 @@ body {
     overflow: hidden;
     transition: all .1s ease;
     cursor: pointer;
+    z-index: 2;
 }
 
 .campania:hover {
@@ -431,7 +436,9 @@ header .carousel-caption {
 
 
 
-
+footer {
+    z-index: 1;
+}
 
 
 

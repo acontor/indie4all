@@ -9,7 +9,6 @@ use App\Models\Campania;
 use App\Models\Compra;
 use App\Models\Genero;
 use App\Models\Juego;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 

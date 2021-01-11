@@ -35,7 +35,7 @@ class HomeController extends Controller
     public function index()
     {
         $numUsuarios = User::count();
-        $numJuegos = Juego::count();
+        $numJuegos = Juego::doesntHave('campania')->count();
         $numDesarrolladoras = Desarrolladora::count();
         $numCampanias = Campania::count();
         $numGeneros = Genero::count();
@@ -65,8 +65,7 @@ class HomeController extends Controller
 
         // Notificación de solicitudes y reportes
         $solicitudes = Solicitud::count();
-        $reportes = Reporte::all()->groupBy('campania_id', 'desarrolladora_id', 'juego_id', 'master_id', 'mensaje_id', 'post_id')->count();
-
+        $reportes = DB::table('reportes')->select('desarrolladora_id')->where('desarrolladora_id', '!=', null)->where('deleted_at', null)->groupBy('desarrolladora_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('post_id')->where('post_id', '!=', null)->where('deleted_at', null)->groupBy('post_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('mensaje_id')->where('mensaje_id', '!=', null)->where('deleted_at', null)->groupBy('mensaje_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('juego_id')->where('juego_id', '!=', null)->where('deleted_at', null)->groupBy('juego_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('campania_id')->where('campania_id', '!=', null)->where('deleted_at', null)->groupBy('campania_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('master_id')->where('master_id', '!=', null)->where('deleted_at', null)->groupBy('master_id')->havingRaw('COUNT(*) >= 3')->get()->count();
         if ($solicitudes > 0) {
             session()->flash('solicitudes', 'Hay pendientes ' . $solicitudes . ' solicitudes');
         }

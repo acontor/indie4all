@@ -271,7 +271,7 @@
     <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
-            $('img').addClass('img-fluid');
+            $('.general p img').addClass('w-100');
 
             let desarrolladora = {!! json_encode($desarrolladora) !!};
 
@@ -302,9 +302,9 @@
                 reporte(url, id, 'desarrolladora_id');
             });
 
-            crearOwl($('.owl-carousel.juegos'), false, 1, 1, 2);
+            crearOwl($('.owl-carousel.juegos'), false, 2, 2, 2);
 
-            crearOwl($('.owl-carousel.campanias'), false, 1, 1, 2);
+            crearOwl($('.owl-carousel.campanias'), false, 2, 2, 2);
         });
 
     </script>

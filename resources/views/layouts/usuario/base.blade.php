@@ -31,6 +31,12 @@
 <body>
     <div id="app">
         @include("layouts.usuario.nav")
+        @if(Cookie::get('laravel_cookie_consent') != 1)
+            {{\Cookie::queue(\Cookie::forget('laravel_cookie_consent'))}}
+            <nav class="navbar navbar-expand-md footer fixed-bottom navbar-dark shadow-sm bg-danger text-light nav-alert nav-cookie">
+                <span class="mx-auto">@include('cookieConsent::index')</span>
+            </nav>
+        @endif
         @if (Auth::user() != null && Auth::user()->ban)
             <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light nav-alert">
                 <span class="mx-auto">Su cuenta se encuentra baneada. No podrá hacer uso de las funciones sociales de la plataforma. Accede a <a href="{{ route('usuario.cuenta.index') }}">Mi Cuenta</a> para ver el motivo.</span>

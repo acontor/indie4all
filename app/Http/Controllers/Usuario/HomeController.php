@@ -62,7 +62,7 @@ class HomeController extends Controller
             }
         }
 
-        $juegos = Juego::whereDoesntHave('campania')->whereIn('id', $juegos_id)->get();
+        $juegos = Juego::doesntHave('campania')->whereIn('id', $juegos_id)->get();
 
         $campanias = Auth::user()->compras->has('campania');
 
@@ -76,13 +76,18 @@ class HomeController extends Controller
         $data = [];
         if ($request->has('q')) {
             $search = $request->q;
-            $juegos = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->take(5)->get();
+            $juegos = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->doesntHave('campania')->take(5)->get();
+            $campanias = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->has('campania')->take(5)->get();
             $desarrolladoras = Desarrolladora::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->take(5)->get();
             $masters = DB::table('users')
                 ->join('masters', 'users.id', '=', 'masters.user_id')
                 ->select('masters.id', 'users.name')->where('users.name', 'LIKE', "%$search%")->take(5)->get();
             foreach ($juegos as $juego) {
                 $temp = ['id' => $juego->id, 'nombre' => $juego->nombre, 'tipo' => 'Juego'];
+                array_push($data, $temp);
+            }
+            foreach ($campanias as $juego) {
+                $temp = ['id' => $juego->campania->id, 'nombre' => $juego->nombre, 'tipo' => 'Campaña'];
                 array_push($data, $temp);
             }
             foreach ($desarrolladoras as $desarrolladora) {

@@ -62,7 +62,7 @@ class BuscadorController extends Controller
         } else {
             $juegos = $juegos->paginate(8);
         }
-        return view('usuario.juegos_all', ['juegos' => $juegos ,'genero'=>$request->genero]);
+        return view('usuario.juegos_all', ['juegos' => $juegos ,'generoSelect'=>$request->genero]);
     }
 
     /**

@@ -6,7 +6,7 @@
 @section("content")
     <div class="container">
         <div class="box-header mt-2">
-            <h1>Juegos ({{ App\Models\Juego::count() }})</h1>
+            <h1>Juegos ({{ App\Models\Juego::doesnthave('campania')->count() }})</h1>
         </div>
         <div class="box p-3 rounded">
             <div class="mt-2 form-row">
@@ -27,7 +27,7 @@
                     <select id="genero" class="form-control select2">
                         <option value="">Género</option>
                         @foreach(App\Models\Genero::all(); as $genero)
-                        <option class="extra" value="{{ $genero->id }}">{{ $genero->nombre }}</option>
+                            <option class="extra" value="{{ $genero->id }}" @if($genero->id == $generoSelect) selected @endif>{{ $genero->nombre }}</option>
                         @endforeach
                     </select>
                 </div>
