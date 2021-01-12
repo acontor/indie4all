@@ -554,3 +554,10 @@ footer {
     transform: scale(1.05);
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
 }
+
+main {
+
+    display: flex;
+    flex-direction: column;
+    min-height: 78vh;
+}

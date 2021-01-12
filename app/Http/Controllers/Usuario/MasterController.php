@@ -62,7 +62,7 @@ class MasterController extends Controller
 
         event(new FollowListener($user));
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function unfollow($id)
@@ -71,7 +71,7 @@ class MasterController extends Controller
 
         $user->masters()->detach($id);
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function notificacion($id, $notificacion)
@@ -82,7 +82,7 @@ class MasterController extends Controller
             $id => ['notificacion' => $notificacion]
         ], false);
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function post(Request $request)

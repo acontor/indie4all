@@ -71,7 +71,7 @@ class DesarrolladorasController extends Controller
 
         event(new FollowListener($user));
 
-        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function unfollow($id)
@@ -80,7 +80,7 @@ class DesarrolladorasController extends Controller
 
         $user->desarrolladoras()->detach($id);
 
-        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function notificacion($id, $notificacion)
@@ -91,7 +91,7 @@ class DesarrolladorasController extends Controller
             $id => ['notificacion' => $notificacion]
         ], false);
 
-        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function post(Request $request)

@@ -91,15 +91,43 @@
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/usuario.js') }}"></script>
-    @yield("scripts")
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
+
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
+
+        </script>
+    @endif
     <script>
         $(function () {
             $(".estado").parent().on("click", function(e) {
+                let csrf = '<input type="hidden" name="_token" value="{{ csrf_token() }}" />';
                 e.preventDefault();
-                nuevoEstado('{{ asset("js/ckeditor/config.js") }}');
+                nuevoEstado(csrf, '{{ asset("js/ckeditor/config.js") }}');
             });
+
+            $(".verify-link").on("click", verificar);
         });
+
+        function verificar() {
+            $.ajax({
+                url: "{{ route('verification.resend') }}",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $(".verify-alert").html("El correo debe haberse enviado a su bandeja de entrada. Compruebe su bandeja de spam si no le llega.")
+                }
+            });
+        }
+
     </script>
+    @yield("scripts")
 </body>
 
 </html>

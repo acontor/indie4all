@@ -113,7 +113,7 @@ class JuegosController extends Controller
 
         event(new FollowListener($user));
 
-        return redirect()->route('usuario.juego.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     /**
@@ -129,7 +129,7 @@ class JuegosController extends Controller
 
         $user->juegos()->detach($id);
 
-        return redirect()->route('usuario.juego.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     /**
@@ -146,7 +146,7 @@ class JuegosController extends Controller
             $id => ['notificacion' => $notificacion]
         ], false);
 
-        return redirect()->route('usuario.juego.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     /**

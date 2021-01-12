@@ -18,9 +18,9 @@
                             <li class="nav-item"><a class="nav-link" id="solicitud" href="">Solicitud</a></li>
                         @endif
                         <li class="nav-item"><a class="nav-link" id="compras" href="">Compras</a></li>
-                        <li class="nav-item"><a class="nav-link" id="desarrolladoras" href="">Desarrolladoras</a></li>
                         <li class="nav-item"><a class="nav-link" id="juegos" href="">Colección de juegos</a></li>
                         <li class="nav-item"><a class="nav-link" id="campanias" href="">Campañas</a></li>
+                        <li class="nav-item"><a class="nav-link" id="desarrolladoras" href="">Desarrolladoras</a></li>
                         <li class="nav-item"><a class="nav-link" id="masters" href="">Masters</a></li>
                     </ul>
                 </div>

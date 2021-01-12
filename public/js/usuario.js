@@ -108,25 +108,6 @@ $(function () {
     }
 
     /**
-     * VERIFICAR
-     */
-
-    $(".verify-link").on("click", verificar);
-
-    function verificar() {
-        $.ajax({
-            url: "{{ route('verification.resend') }}",
-            type: "POST",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (data) {
-                $(".verify-alert").html("El correo debe haberse enviado a su bandeja de entrada. Compruebe su bandeja de spam si no le llega.")
-            }
-        });
-    }
-
-    /**
      * COMPONENTES DESARROLLADORA
      */
 
@@ -491,12 +472,12 @@ function mousewheel(owl) {
  * Componente Master
  */
 
-function nuevoEstado(config) {
+function nuevoEstado(csrf, config) {
     Swal.fire({
         showCloseButton: true,
         position: 'bottom',
         title: 'Nuevo estado',
-        html: '<textarea class="form-control nuevo-estado" name="nuevo-estado" id="editor" autofocus></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button>',
+        html: `<form action="/master/estado/nuevo" method="post">${csrf}<textarea class="form-control nuevo-estado" name="estado" id="editor" autofocus></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button></form>`,
         showCancelButton: false,
         showConfirmButton: false,
         backdrop: false,
@@ -508,28 +489,7 @@ function nuevoEstado(config) {
             popup: 'animate__animated animate__backOutDown'
         }
     });
-    CKEDITOR.replace("nuevo-estado", {
+    CKEDITOR.replace("estado", {
         customConfig: config
-    });
-    $("#estado-form").on('click', function (e) {
-        e.preventDefault();
-        let estado = CKEDITOR.instances.editor.getData();
-        CKEDITOR.instances.editor.setData("");
-        $.ajax({
-            url: '/master/estado/nuevo',
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                estado: estado
-            },
-            success: function (datos) {
-                notificacionEstado(datos.estado, datos.mensaje);
-            },
-            error: function () {
-                notificacionEstado('error', 'No se ha podido publicar el estado. Si sigue fallando contacta con soporte@indie4all.com');
-            }
-        });
     });
 }
