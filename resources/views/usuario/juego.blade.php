@@ -26,25 +26,25 @@
                 <div class="col-12 col-md-3 offset-md-2 p-4 mt-5">
                     <div class="shadow p-4">
                         <h3 class="text-center">Usuarios</h3>
-                        <div class="circle mx-auto">
-                            @if ($juego->seguidores->avg('calificacion') == null)
-                                -
+                        <div class="circle mx-auto nota-usuarios">
+                            @if ($juego->seguidores->avg('pivot.calificacion') == null)
+                                <span>-</span>
                             @else
-                                {{ $juego->seguidores->avg('calificacion') }}
+                                <span>{{ number_format($juego->seguidores->avg('pivot.calificacion'), 2, '.', '') }}</span>
                             @endif
                             @if (Auth::user() != null && Auth::user()->email_verified_at != null && !Auth::user()->ban)
                                 <select class="btn btn-dark btn-circle select-nota" name="" id="">
-                                    <option value="">-</option>
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                    <option value="">4</option>
-                                    <option value="">5</option>
-                                    <option value="">6</option>
-                                    <option value="">7</option>
-                                    <option value="">8</option>
-                                    <option value="">9</option>
-                                    <option value="">10</option>
+                                    <option value="null">-</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
                                 </select>
                             @endif
                         </div>
@@ -271,6 +271,28 @@
                 let id = {!! $juego->id !!};
                 let url = '{{ route("usuario.reporte") }}';
                 reporte(url, id, 'juego_id');
+            });
+
+            $('.select-nota').on('change', function() {
+                let nota = $('.select-nota option:selected').val();
+                $.ajax({
+                    url: `/juego/calificar`,
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    data: {
+                        id: juego.id,
+                        calificacion: nota,
+                    },
+                    success: function (resultado) {
+                        $('.nota-usuarios span').text(resultado.calificacion);
+                        notificacionEstado(resultado.estado, resultado.mensaje);
+                    },
+                    error: function () {
+                        notificacionEstado('error', 'No se ha podido calificar el juego');
+                    }
+                });
             });
         });
 

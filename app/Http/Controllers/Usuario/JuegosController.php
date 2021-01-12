@@ -8,6 +8,7 @@ use App\Models\Juego;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class JuegosController extends Controller
@@ -199,5 +200,22 @@ class JuegosController extends Controller
         }
 
         return $juegos->where('ban', 0)->inRandomOrder()->get();
+    }
+
+    public function calificar(Request $request)
+    {
+        $user = User::find(Auth::id());
+
+        $user->juegos()->sync(
+            [$request->id => [
+                'notificacion' => false,
+                'calificacion' => $request->calificacion
+            ]],
+            false
+        );
+
+        $calificacion = Juego::find($request->id)->seguidores->avg('pivot.calificacion');
+
+        return array('calificacion' => number_format($calificacion, 2, '.', ''), 'estado' => 'success', 'mensaje' => 'Gracias por calificarnos');
     }
 }

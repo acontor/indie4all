@@ -219,6 +219,7 @@ Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class,
 Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController::class, 'follow'])->name('usuario.juego.follow')->middleware('auth');
 Route::post('/juego/{id}/unfollow', [App\Http\Controllers\Usuario\JuegosController::class, 'unfollow'])->name('usuario.juego.unfollow')->middleware('auth');
 Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosController::class, 'notificacion'])->name('usuario.juego.notificacion')->middleware('auth');
+Route::post('/juego/calificar', [App\Http\Controllers\Usuario\JuegosController::class, 'calificar'])->name('usuario.juego.calificar')->middleware('auth');
 
 // Master
 Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index');
