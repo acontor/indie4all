@@ -5,7 +5,7 @@
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
             <header>
                 @if ($master->imagen_portada != null)
-                    <img class="img-fluid shadow" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}" alt="{{ $desarrolladora->nombre }}" style="filter: brightness(0.2)">
+                    <img class="img-fluid shadow" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}" alt="{{ $master->nombre }}" style="filter: brightness(0.2)">
                 @else
                     <img class="img-fluid shadow" src="{{ asset('/images/masters/default-portada.png') }}" alt="{{ $master->nombre }}" style="filter: brightness(0.2)">
                 @endif
@@ -49,7 +49,7 @@
                         @endauth
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
                         @auth
-                            @if(Auth::user() && !Auth::user()->master)
+                            @if(Auth::user() && !Auth::user()->master && !Auth::user()->ban && Auth::user()->email_verified_at != null)
                                 <a class="btn btn-danger ml-2" id='reporteMaster'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth

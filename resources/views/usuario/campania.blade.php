@@ -47,7 +47,7 @@
                             <button class="btn btn-primary participar ml-2">Participar</button>
                         @endauth
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
-                        @if(Auth::user() && !Auth::user()->cm)
+                        @if(Auth::user() && !Auth::user()->cm && !Auth::user()->ban && Auth::user()->email_verified_at != null)
                             <a class="btn btn-danger ml-2" id='reporteCampania'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                         @endif
                     </div>
@@ -103,7 +103,7 @@
                         </div>
                         @auth
                             <div class="foro shadow p-4 d-none">
-                                @if(Auth::user()->compras->where('campania_id', $campania->id)->count() > 0)
+                                @if(Auth::user()->compras->where('campania_id', $campania->id)->count() > 0 || Auth::user()->cm && Auth::user()->cm->desarrolladora_id == $campania->juego->desarrolladora_id || Auth::user()->administrador)
                                     <h3>Foro</h3>
                                     <textarea class="form-control" name="mensaje" id="editor"></textarea>
                                     <input type="hidden" name="id" value="{{ $campania->id }}">
@@ -112,8 +112,8 @@
                                         @if ($campania->mensajes->count() != 0)
                                             <div class="items">
                                                 @foreach ($campania->mensajes as $mensaje)
-                                                    <div>
-                                                        <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
+                                                    <div>                                                        
+                                                        <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small>@if($mensaje->user->cm && $mensaje->user->cm->desarrolladora_id == $campania->juego->desarrolladora_id)<small class="badge badge-danger badge-pill ml-2">CM</small>@endif @if($mensaje->user->administrador)<small class="badge badge-primary badge-pill ml-2">Admin</small>  @endif</h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
                                                         <p class="mensaje">{!! $mensaje->contenido !!}</p>
                                                     </div>
                                                 @endforeach
@@ -256,8 +256,11 @@
 
             $(".more").on('click', function () {
                 let checkUser = false;
-                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
-                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                let user = {
+                    ban: "{{{ (Auth::user()) ? Auth::user()->ban : 1 }}}",
+                    email_verified_at: "{{{ (Auth::user()) ? Auth::user()->email_verified_at : null }}}"
+                };
+                if(user.ban == 0 && user.email_verified_at != null) {
                     checkUser = true;
                 }
                 let url = '{{ route("usuario.post.show") }}';

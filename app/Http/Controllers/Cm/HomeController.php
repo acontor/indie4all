@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Cm;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campania;
+use App\Models\Encuesta;
+use App\Models\Juego;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,6 +28,33 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('cm.home');
+        $encuestasList = Encuesta::where('desarrolladora_id', Auth::user()->cm->desarrolladora->id)->get();
+        $juegosList = Juego::where('desarrolladora_id', Auth::user()->cm->desarrolladora->id)->doesntHave('campania')->get();
+        $campaniasList = Juego::where('desarrolladora_id', Auth::user()->cm->desarrolladora->id)->has('campania')->get();
+
+        $juegos = [];
+        $campanias = [];
+        $encuestas = [];
+        $datosVentas = [];
+        $datosEncuestas = [];
+        $datosCampania = [];
+
+        foreach ($juegosList as $juego) {
+            array_push($juegos, $juego->nombre);
+            array_push($datosVentas, $juego->compras->count());
+        }
+        foreach ($campaniasList as $campania) {
+            array_push($campanias, $juego->nombre);
+            array_push($datosCampania, $juego->compras->count());
+        }
+        foreach ($encuestasList as $encuesta) {
+            array_push($encuestas, $encuesta->pregunta);
+            $participantes = 0;
+            foreach ($encuesta->opciones as $opcion) {
+                $participantes += $opcion->participantes->count();
+            }
+            array_push($datosEncuestas, $participantes);
+        }
+        return view('cm.home', ['juegos' => $juegos, 'datosVentas' => $datosVentas, 'encuestas' => $encuestas, 'datosEncuestas' => $datosEncuestas, 'campanias' => $campanias, 'datosCampania' => $datosCampania]);
     }
 }
