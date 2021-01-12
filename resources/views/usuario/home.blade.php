@@ -14,9 +14,9 @@
                             <li class="list-group-item bg-dark text-white">Últimas noticias</li>
                         </ul>
                         <div class="list-group-item flex-column align-items-start noticias">
-                            <div class="items row mt-4">
+                            <div class="items row mt-4 p-4">
                                 @if($posts->count() > 0)
-                                    @foreach ($posts->where('titulo', '!=', null)->sortByDesc('created_at') as $post)
+                                    @foreach ($posts->sortByDesc('created_at') as $post)
                                         <div class="col-12 col-md-6">
                                             @if ($post->master_id != null)
                                                 <div class="pildoras mb-3">

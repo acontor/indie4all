@@ -4,43 +4,49 @@
     <main class="p-3 pb-5">
         <div class="container box mt-4">
             <div class="row">
-                <div class="col-12 col-md-7">
-                    <h2>Noticias generales</h2>
-                    <div class="noticias">
-                        <div class="items">
-                            @if ($noticias->count() != 0)
-                                @foreach ($noticias as $noticia)
-                                    <div>
-                                        <h4>{{ $noticia->titulo }}</h4>
-                                        @php
-                                            $resumen = explode('</p>', $noticia->contenido)
-                                        @endphp
-                                        <p>{!! $resumen[0] !!}</p>
-                                        {{ $noticia->created_at }}
-                                        @if ($noticia->comentarios)
-                                            <small>Comentarios: {{ $noticia->comentarios->count() }}</small>
-                                        @endif
-                                        <form>
-                                            <input type="hidden" name="id" value="{{ $noticia->id }}" />
-                                            <a type="submit" class="more">Leer más</a>
-                                        </form>
-                                    </div>
-                                @endforeach
-                            @else
-                                Aún no hay publicada ninguna noticia.
-                            @endif
-                        </div>
-                        <div class="pager">
-                            <div class="firstPage">&laquo;</div>
-                            <div class="previousPage">&lsaquo;</div>
-                            <div class="pageNumbers"></div>
-                            <div class="nextPage">&rsaquo;</div>
-                            <div class="lastPage">&raquo;</div>
+                <div class="col-12 col-md-8">
+                    <div class="list-group shadow">
+                        <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                            <li class="list-group-item bg-dark text-white">Noticias generales</li>
+                        </ul>
+                        <div class="list-group-item flex-column align-items-start noticias">
+                            <div class="items row mt-4 p-4">
+                                @if($noticias->where('titulo', '!=', null)->count() > 0)
+                                    @foreach ($noticias->where('titulo', '!=', null)->sortByDesc('created_at') as $post)
+                                        <div class="col-12">
+                                            <div class="pildoras mb-3">
+                                                <span class="badge badge-pill badge-primary text-white">Administración</span>
+                                            </div>
+                                            <h4>{{ $post->titulo }}</h4>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
+                                            <form>
+                                                <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                            </form>
+                                            <div class="footer-noticias mt-3">
+                                                <small>{{ $post->created_at }}</small>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>No se han publicado noticias.</p>
+                                @endif
+                            </div>
+                            <div class="pager">
+                                <div class="firstPage">&laquo;</div>
+                                <div class="previousPage">&lsaquo;</div>
+                                <div class="pageNumbers"></div>
+                                <div class="nextPage">&rsaquo;</div>
+                                <div class="lastPage">&raquo;</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12 col-md-4 offset-md-1 mt-5 mt-md-0">
+                <div class="col-12 col-md-4 mt-5 mt-md-0">
                     <h5 class="font-weight-bold text-uppercase">Juegos</h5>
                     <div class="list-group shadow">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
