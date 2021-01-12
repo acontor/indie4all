@@ -38,10 +38,12 @@ class EstadosController extends Controller
         ]);
 
         if ($post->exists) {
-            return ['estado' => 'success', 'mensaje' => 'El estado se ha publicado.'];
+            session()->flash('success', 'El estado ha sido publicado');
         } else {
-            return ['estado' => 'error', 'mensaje' => 'El estado no se ha podido. Si sigue fallando contacte con soporte@indie4all.com'];
+            session()->flash('error', 'El estado no se ha publicado. Si sigue fallando contacte con soporte@indie4all.com');
         }
+
+        return redirect('/master/' . Auth::user()->master->id);
     }
 
     /**

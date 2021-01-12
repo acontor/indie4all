@@ -9,47 +9,68 @@
         <div class="container box mt-4">
             <div class="row">
                 <div class="col-12 col-md-8">
-                    <nav class="bg-transparent">
-                        <div class="list-group shadow">
-                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                                <li class="list-group-item bg-dark text-white">Últimas noticias</li>
-                            </ul>
-                            <div class="list-group-item flex-column align-items-start noticias">
-                                <div class="items row mt-4">
-                                    @if($posts->count() > 0)
-                                        @foreach ($posts->where('titulo', '!=', null)->sortByDesc('created_at') as $post)
-                                            <div class="col-12 col-md-6">
-                                                <h4>{{ $post->titulo }}</h4>
-                                                <p>{!! substr($post->contenido, 0, 100) !!}</p>
-                                                <form>
-                                                    <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                    <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
-                                                </form>
-                                                <div class="footer-noticias mt-3">
-                                                    <small>{{ $post->created_at }}</small>
-                                                    <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
+                    <div class="list-group shadow">
+                        <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                            <li class="list-group-item bg-dark text-white">Últimas noticias</li>
+                        </ul>
+                        <div class="list-group-item flex-column align-items-start noticias">
+                            <div class="items row mt-4 p-4">
+                                @if($posts->count() > 0)
+                                    @foreach ($posts->sortByDesc('created_at') as $post)
+                                        <div class="col-12 col-md-6">
+                                            @if ($post->master_id != null)
+                                                <div class="pildoras mb-3">
+                                                    <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                    <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                    <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                                 </div>
+                                            @elseif ($post->juego_id != null && $post->master_id == null)
+                                                <div class="pildoras mb-3">
+                                                    <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                    <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                    <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                                </div>
+                                            @elseif ($post->desarrolladora_id != null)
+                                                <div class="pildoras mb-3">
+                                                    <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                                </div>
+                                            @endif
+                                            <h4>{{ $post->titulo }}</h4>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
+                                            <form>
+                                                <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                            </form>
+                                            <div class="footer-noticias mt-3">
+                                                @if ($post->master_id != null && $post->juego_id != null)
+                                                    <a class="text-decoration-none text-dark" href="{{ route('usuario.master.show', $post->master->id) }}">{{$post->master->nombre}}</a>
+                                                @elseif ($post->juego_id != null && $post->master_id == null)
+                                                    <a class="text-decoration-none text-dark" href="{{ route('usuario.desarrolladora.show', $post->juego->desarrolladora->id) }}">{{$post->juego->desarrolladora->nombre}}</a>
+                                                @elseif ($post->desarrolladora_id != null)
+                                                    <a class="text-decoration-none text-dark" href="{{ route('usuario.desarrolladora.show', $post->desarrolladora->id) }}">{{$post->desarrolladora->nombre}}</a>
+                                                @endif
+                                                <small>{{ $post->created_at }}</small>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
-                                        @endforeach
-                                    @else
-                                        <p>No se han encontrado noticias</p>
-                                    @endif
-                                </div>
-                                <div class="pager">
-                                    <div class="firstPage">&laquo;</div>
-                                    <div class="previousPage">&lsaquo;</div>
-                                    <div class="pageNumbers"></div>
-                                    <div class="nextPage">&rsaquo;</div>
-                                    <div class="lastPage">&raquo;</div>
-                                </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>No se han encontrado noticias. Sigue a desarrolladoras, masters y juegos para enterarte de las últimas noticias.</p>
+                                @endif
+                            </div>
+                            <div class="pager">
+                                <div class="firstPage">&laquo;</div>
+                                <div class="previousPage">&lsaquo;</div>
+                                <div class="pageNumbers"></div>
+                                <div class="nextPage">&rsaquo;</div>
+                                <div class="lastPage">&raquo;</div>
                             </div>
                         </div>
-                    </nav>
+                    </div>
                 </div>
-
-
-
-
                 <div class="col-12 col-md-4 mt-5 mt-md-0 px-4">
                     <div class="shadow p-4">
                         <h4 class="text-uppercase font-weight-bold">Próximos juegos</h4>
@@ -90,9 +111,7 @@
 @endsection
 
 @section("scripts")
-    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
     <script src="{{ asset('js/calendar/jquery.simple-calendar.min.js') }}"></script>
-    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function () {
             $(".more").on('click', function () {

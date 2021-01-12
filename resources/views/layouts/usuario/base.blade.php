@@ -31,6 +31,12 @@
 <body>
     <div id="app">
         @include("layouts.usuario.nav")
+        @if(Cookie::get('laravel_cookie_consent') != 1)
+            {{\Cookie::queue(\Cookie::forget('laravel_cookie_consent'))}}
+            <nav class="navbar navbar-expand-md footer fixed-bottom navbar-dark shadow-sm bg-danger text-light nav-alert nav-cookie">
+                <span class="mx-auto">@include('cookieConsent::index')</span>
+            </nav>
+        @endif
         @if (Auth::user() != null && Auth::user()->ban)
             <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light nav-alert">
                 <span class="mx-auto">Su cuenta se encuentra baneada. No podrá hacer uso de las funciones sociales de la plataforma. Accede a <a href="{{ route('usuario.cuenta.index') }}">Mi Cuenta</a> para ver el motivo.</span>
@@ -81,18 +87,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="{{ asset('js/usuario.js') }}"></script>
-    @yield("scripts")
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
+
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
+
+        </script>
+    @endif
     <script>
         $(function () {
             $(".estado").parent().on("click", function(e) {
+                let csrf = '<input type="hidden" name="_token" value="{{ csrf_token() }}" />';
                 e.preventDefault();
-                nuevoEstado('{{ asset("js/ckeditor/config.js") }}');
+                nuevoEstado(csrf, '{{ asset("js/ckeditor/config.js") }}');
             });
+
+            $(".verify-link").on("click", verificar);
         });
+
+        function verificar() {
+            $.ajax({
+                url: "{{ route('verification.resend') }}",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $(".verify-alert").html("El correo debe haberse enviado a su bandeja de entrada. Compruebe su bandeja de spam si no le llega.")
+                }
+            });
+        }
+
     </script>
+    @yield("scripts")
 </body>
 
 </html>

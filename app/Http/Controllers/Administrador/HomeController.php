@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Administrador;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Actualizaciones\CorreoDiario;
 use App\Models\Campania;
 use App\Models\Desarrolladora;
 use App\Models\Genero;
 use App\Models\Juego;
 use App\Models\Logro;
-use App\Models\Reporte;
+use App\Models\Post;
 use App\Models\Solicitud;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -35,7 +38,7 @@ class HomeController extends Controller
     public function index()
     {
         $numUsuarios = User::count();
-        $numJuegos = Juego::count();
+        $numJuegos = Juego::doesntHave('campania')->count();
         $numDesarrolladoras = Desarrolladora::count();
         $numCampanias = Campania::count();
         $numGeneros = Genero::count();
@@ -65,8 +68,7 @@ class HomeController extends Controller
 
         // Notificación de solicitudes y reportes
         $solicitudes = Solicitud::count();
-        $reportes = Reporte::all()->groupBy('campania_id', 'desarrolladora_id', 'juego_id', 'master_id', 'mensaje_id', 'post_id')->count();
-
+        $reportes = DB::table('reportes')->select('desarrolladora_id')->where('desarrolladora_id', '!=', null)->where('deleted_at', null)->groupBy('desarrolladora_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('post_id')->where('post_id', '!=', null)->where('deleted_at', null)->groupBy('post_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('mensaje_id')->where('mensaje_id', '!=', null)->where('deleted_at', null)->groupBy('mensaje_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('juego_id')->where('juego_id', '!=', null)->where('deleted_at', null)->groupBy('juego_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('campania_id')->where('campania_id', '!=', null)->where('deleted_at', null)->groupBy('campania_id')->havingRaw('COUNT(*) >= 3')->get()->count() + DB::table('reportes')->select('master_id')->where('master_id', '!=', null)->where('deleted_at', null)->groupBy('master_id')->havingRaw('COUNT(*) >= 3')->get()->count();
         if ($solicitudes > 0) {
             session()->flash('solicitudes', 'Hay pendientes ' . $solicitudes . ' solicitudes');
         }
@@ -75,5 +77,83 @@ class HomeController extends Controller
         }
 
         return view('admin.home', ['numUsuarios' => $numUsuarios, 'numJuegos' => $numJuegos, 'numCampanias' => $numCampanias, 'numGeneros' => $numGeneros, 'numLogros' => $numLogros, 'numDesarrolladoras' => $numDesarrolladoras, 'numPosts' => $arrayPosts, 'numMensajes' => $arrayMensajes]);
+    }
+
+    /**
+     * Función para enviar un resumen diario a los usuarios
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function actualizacionDiaria()
+    {
+        $usuario = User::find(1);
+
+        $juegos = $usuario->select('juego_user.juego_id as id')
+            ->join('juego_user', 'users.id', 'juego_user.user_id')
+            ->where('juego_user.notificacion', 1)
+            ->where('juego_user.user_id', $usuario->id)
+            ->get();
+
+        $juegos_id = [];
+
+        foreach ($juegos as $juego) {
+            array_push($juegos_id, $juego->id);
+        }
+
+        $estrenos = Juego::whereIn('id', $juegos_id)
+            ->whereDate('fecha_lanzamiento', '=', date('Y-m-d'))
+            ->get();
+
+        $desarrolladoras = $usuario->select('desarrolladora_user.desarrolladora_id as id')
+            ->join('desarrolladora_user', 'users.id', 'desarrolladora_user.user_id')
+            ->where('desarrolladora_user.notificacion', 1)
+            ->where('desarrolladora_user.user_id', $usuario->id)
+            ->get();
+
+        $desarrolladoras_id = [];
+
+        foreach ($desarrolladoras as $desarrolladora) {
+            array_push($desarrolladoras_id, $desarrolladora->id);
+        }
+
+        $masters = $usuario->select('master_user.master_id as id')
+            ->join('master_user', 'users.id', 'master_user.user_id')
+            ->where('master_user.notificacion', 1)
+            ->where('master_user.user_id', $usuario->id)
+            ->get();
+
+        $masters_id = [];
+
+        foreach ($masters as $master) {
+            array_push($masters_id, $master->id);
+        }
+
+        $postsJuegos = Post::whereDate('created_at', '=', date('Y-m-d'))
+            ->whereIn('juego_id', $juegos_id)
+            ->where('master_id', null)
+            ->withCount('comentarios')
+            ->orderByDesc('comentarios_count')
+            ->get();
+
+        $postsDesarrolladoras = Post::whereDate('created_at', '=', date('Y-m-d'))
+            ->whereIn('desarrolladora_id', $desarrolladoras_id)
+            ->withCount('comentarios')
+            ->orderByDesc('comentarios_count')
+            ->get();
+
+        $postsMasters = Post::whereDate('created_at', '=', date('Y-m-d'))
+            ->whereIn('master_id', $masters_id)
+            ->where('juego_id', '!=', null)
+            ->withCount('comentarios')
+            ->orderByDesc('comentarios_count')
+            ->get();
+
+        if ($postsJuegos->count() + $postsDesarrolladoras->count() + $postsMasters->count() > 0 + $estrenos->count()) {
+            Mail::to($usuario->email)->send(new CorreoDiario($usuario->name, $postsJuegos, $postsDesarrolladoras, $postsMasters, $estrenos));
+        }
+
+        session()->flash('success', 'Resumen diario enviado');
+
+        return redirect('/admin');
     }
 }

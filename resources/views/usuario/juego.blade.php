@@ -18,7 +18,7 @@
                 <div class="carousel-caption ">
                     <h1><strong>{{ $juego->nombre }}</strong></h1>
                     <a class="nav-link mb-0" href="{{ route('usuario.desarrolladora.show', $juego->desarrolladora->id) }}"><small>{{ $juego->desarrolladora->nombre }}</small></a>
-                    <a class="nav-link mb-0" href="Enlace a todos los juegos con filtro aventura"><small class="badge badge-danger">{{ $juego->genero->nombre }}</small></a>
+                    <a class="nav-link mb-0" href="/juegos/lista/{{$juego->genero->id}}"><small class="badge badge-danger">{{ $juego->genero->nombre }}</small></a>
                 </div>
             </header>
 
@@ -26,14 +26,26 @@
                 <div class="col-12 col-md-3 offset-md-2 p-4 mt-5">
                     <div class="shadow p-4">
                         <h3 class="text-center">Usuarios</h3>
-                        <div class="circle mx-auto">
-                            @if ($juego->seguidores->avg('calificacion') == null)
-                                -
+                        <div class="circle mx-auto nota-usuarios">
+                            @if ($juego->seguidores->avg('pivot.calificacion') == null)
+                                <span>-</span>
                             @else
-                                {{ $juego->seguidores->avg('calificacion') }}
+                                <span>{{ number_format($juego->seguidores->avg('pivot.calificacion'), 2, '.', '') }}</span>
                             @endif
                             @if (Auth::user() != null && Auth::user()->email_verified_at != null && !Auth::user()->ban)
-                                <button class="btn btn-dark btn-circle">-</button>
+                                <select class="btn btn-dark btn-circle select-nota" name="" id="">
+                                    <option value="null">-</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
                             @endif
                         </div>
                     </div>
@@ -145,11 +157,14 @@
                         <div class="noticias shadow p-4 d-none">
                             <h2>Noticias</h2>
                             <div class="items">
-                                @if ($juego->posts->where('master_id', null)->count() != 0)
-                                    @foreach ($juego->posts->where('master_id', null) as $post)
+                                @if ($juego->posts->where('master_id', null)->where('ban', 0)->count() != 0)
+                                    @foreach ($juego->posts->where('master_id', null)->where('ban', 0)->sortByDesc('created_at') as $post)
                                         <div>
                                             <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
                                             <form>
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
                                                 <a type="submit" class="more">Leer más</a>
@@ -171,11 +186,14 @@
                         <div class="analisis-div shadow p-4 d-none">
                             <h2>Análisis</h2>
                             <div class="items">
-                                @if ($juego->posts->where('master_id', '!=', null)->count() != 0)
-                                    @foreach ($juego->posts->where('master_id', '!=', null) as $post)
+                                @if ($analisis->count() != 0)
+                                    @foreach ($analisis as $post)
                                         <div>
                                             <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
                                             <form>
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
                                                 <a type="submit" class="more">Leer más</a>
@@ -224,9 +242,6 @@
 @endsection
 
 @section("scripts")
-    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
             let juego = {!! $juego !!};
@@ -256,6 +271,28 @@
                 let id = {!! $juego->id !!};
                 let url = '{{ route("usuario.reporte") }}';
                 reporte(url, id, 'juego_id');
+            });
+
+            $('.select-nota').on('change', function() {
+                let nota = $('.select-nota option:selected').val();
+                $.ajax({
+                    url: `/juego/calificar`,
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    data: {
+                        id: juego.id,
+                        calificacion: nota,
+                    },
+                    success: function (resultado) {
+                        $('.nota-usuarios span').text(resultado.calificacion);
+                        notificacionEstado(resultado.estado, resultado.mensaje);
+                    },
+                    error: function () {
+                        notificacionEstado('error', 'No se ha podido calificar el juego');
+                    }
+                });
             });
         });
 

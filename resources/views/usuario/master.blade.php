@@ -98,15 +98,19 @@
                         <div class="analisis-div shadow p-4 d-none">
                             <h3>Análisis</h3>
                             <div class="items row mt-4">
-                                @if($master->posts->where('juego_id', '!=', null)->count() > 0)
-                                    @foreach ($master->posts->where('juego_id', '!=', null) as $post)
+                                @if($master->posts->where('juego_id', '!=', null)->where('ban', 0)->count() > 0)
+                                    @foreach ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->sortByDesc('created_at') as $post)
                                         <div class="col-12 col-md-6">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-info">{{$post->juego->genero->nombre}}</span>
+                                                <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
                                             <form>
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
                                                 <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
@@ -130,13 +134,19 @@
                                 <div class="lastPage">&raquo;</div>
                             </div>
                         </div>
-                        <div class="notas shadow p-4 d-none">
-                            <h3>Notas</h3>
-                            @if ($master->posts->where('juego_id', '!=', null)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', '!=', null) as $post)
-                                    <div>
-                                        <h4>{{ $post->titulo }}</h4>
-                                        <p>{!! $post->calificacion !!}</p>
+                        <div class="notas d-none">
+                            @if ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->count() != 0)
+                                @foreach ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->sortByDesc('created_at') as $post)
+                                    <div class="berber mb-2">
+                                        <div class="berber-image d-none d-md-block">
+                                            <img class="img-fluid mr-2" src="{{ asset('/images/logo.png') }}" alt="{{ $master->nombre }}"/>
+                                        </div>
+                                        <div class="circle-lista float-right">{{$post->calificacion}}</div>
+                                        <div class="berber-fullname"><a href="/juego/{{$post->juego->id}}">{{$post->juego->nombre}}</a></div>
+                                        <div class="berber-dukkan">
+                                            <input type="hidden" name="id" value="{{ $post->id }}" />
+                                            <a type="submit" class="more">{{$post->titulo}}</a>
+                                        </div>
                                     </div>
                                 @endforeach
                             @else
@@ -146,29 +156,27 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-3 mt-4">
-                    <nav class="bg-transparent">
-                        <div class="list-group shadow">
-                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                                <li class="list-group-item w-100 bg-dark text-white">Recomendados</li>
-                                <a href="/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
-                            </ul>
-                            @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
-                                @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $destacado)
-                                    <a href="{{route('usuario.juego.show', $destacado->juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><b>{{$destacado->juego->nombre}}</b></h6>
-                                            <small>{{$destacado->juego->fecha_lanzamiento}}</small>
-                                        </div>
-                                        <p class="mb-1">{{$destacado->juego->desarrolladora->nombre}}</p>
-                                        <span class="btn btn-dark btn-sm float-right">{{$destacado->juego->precio}} €</span>
-                                        <small class="badge badge-danger badge-pill mt-2">{{$destacado->juego->genero->nombre}}</small>
-                                    </a>
-                                @endforeach
-                            @else
-                                <span class="list-group-item">No ha recomendado ningún juego</span>
-                            @endif
-                        </div>
-                    </nav>
+                    <div class="list-group shadow">
+                        <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                            <li class="list-group-item w-100 bg-dark text-white">Recomendados</li>
+                            <a href="/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
+                        </ul>
+                        @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
+                            @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $destacado)
+                                <a href="{{route('usuario.juego.show', $destacado->juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$destacado->juego->nombre}}</b></h6>
+                                        <small>{{$destacado->juego->fecha_lanzamiento}}</small>
+                                    </div>
+                                    <p class="mb-1">{{$destacado->juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$destacado->juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$destacado->juego->genero->nombre}}</small>
+                                </a>
+                            @endforeach
+                        @else
+                            <span class="list-group-item">No ha recomendado ningún juego</span>
+                        @endif
+                    </div>
                 </div>
             </div>
             <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>
@@ -176,9 +184,6 @@
     </main>
 @endsection
 @section("scripts")
-    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script src="{{ asset('js/usuario.js') }}"></script>
     <script>
         $(function() {
             let master = {!! json_encode($master) !!};

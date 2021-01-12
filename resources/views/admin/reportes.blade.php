@@ -31,7 +31,7 @@
                     <div class="desarrolladoras">
                         <h2>Desarrolladoras</h2>
                         <div class="table-responsive mt-3">
-                            <table class="table table-striped">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Nombre</td>
@@ -68,7 +68,7 @@
                     <div class="posts d-none">
                         <h2>Posts</h2>
                         <div class="table-responsive mt-3">
-                            <table class="table table-striped">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Título</td>
@@ -105,7 +105,7 @@
                     <div class="mensajes d-none">
                         <h2>Mensajes</h2>
                         <div class="table-responsive mt-3">
-                            <table class="table table-striped">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Título</td>
@@ -142,7 +142,7 @@
                     <div class="juegos d-none">
                         <h2>Juegos</h2>
                         <div class="table-responsive mt-3">
-                            <table class="table table-striped">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Nombre</td>
@@ -179,7 +179,7 @@
                     <div class="campanias d-none">
                         <h2>Campañas</h2>
                         <div class="table-responsive mt-3">
-                            <table class="table table-striped">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Nombre</td>
@@ -216,7 +216,7 @@
                     <div class="masters d-none">
                         <h2>Masters</h2>
                         <div class="table-responsive mt-3">
-                            <table class="table table-striped">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Nombre</td>
@@ -261,9 +261,10 @@
     <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
     <script type="text/javascript">
         $(function() {
-            $(".ver").click(function(e) {
+            $(".ver").on('click', function(e) {
                 e.preventDefault();
                 $.ajax({
                     url: '{{ route("admin.reporte.show") }}',
@@ -288,7 +289,7 @@
                 });
             });
 
-            $(".aceptar").click(function(e) {
+            $(".aceptar").on('click', function(e) {
                 e.preventDefault();
                 let tr = $(this).parents('tr');
                 let table = $(this).parents('table');
@@ -311,7 +312,7 @@
                 });
             });
 
-            $(".rechazar").click(function(e) {
+            $(".rechazar").on('click', function(e) {
                 e.preventDefault();
                 let tr = $(this).parents('tr');
                 let table = $(this).parents('table');

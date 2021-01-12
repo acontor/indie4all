@@ -1,9 +1,5 @@
 <?php
 
-use App\Models\Desarrolladora;
-use App\Models\Juego;
-use App\Models\Master;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,15 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null],['campania_id', null]])->get();
-    $juegos = Juego::has('seguidores')->inRandomOrder()->take(5)->get();
-    $desarrolladoras = Desarrolladora::all()->take(5);
-    $masters = Master::all()->take(5);
-    return view('welcome', ['noticias' => $noticias, 'juegos' => $juegos, 'desarrolladoras' => $desarrolladoras, 'masters' => $masters]);
-});
-
 Auth::routes(['verify' => true]);
+
+Route::get('auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback']);
+Route::get('auth/facebook', [App\Http\Controllers\Auth\FacebookController::class, 'redirectToProvider']);
+Route::get('auth/facebook/callback', [App\Http\Controllers\Auth\FacebookController::class, 'handleProviderCallback']);
 
 /**
  * Admin Routes
@@ -34,6 +27,7 @@ Auth::routes(['verify' => true]);
 
 // Inicio
 Route::get('/admin', [App\Http\Controllers\Administrador\HomeController::class, 'index'])->name('admin.index');
+Route::get('/actualizacion/diaria', [App\Http\Controllers\Administrador\HomeController::class, 'actualizacionDiaria'])->name('admin.actualizacion.diaria');
 
 // Noticias
 Route::get('/admin/noticias', [App\Http\Controllers\Administrador\NoticiasController::class, 'index'])->name('admin.noticias.index');
@@ -190,8 +184,8 @@ Route::delete('/master/posts/{id}/delete', [App\Http\Controllers\Master\EstadosC
  */
 
 // Inicio
-
-Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/', [App\Http\Controllers\Usuario\HomeController::class, 'index'])->name('index');
+Route::get('/home', [App\Http\Controllers\Usuario\HomeController::class, 'home'])->name('home')->middleware('auth');
 Route::get('/busqueda', [App\Http\Controllers\Usuario\HomeController::class, 'busqueda'])->name('usuario.busqueda');
 Route::get('/acerca', [App\Http\Controllers\Usuario\HomeController::class, 'acerca'])->name('usuario.acerca');
 Route::get('/faq', [App\Http\Controllers\Usuario\HomeController::class, 'faq'])->name('usuario.faq');
@@ -225,6 +219,7 @@ Route::get('/juego/{id}', [App\Http\Controllers\Usuario\JuegosController::class,
 Route::post('/juego/{id}/follow', [App\Http\Controllers\Usuario\JuegosController::class, 'follow'])->name('usuario.juego.follow')->middleware('auth');
 Route::post('/juego/{id}/unfollow', [App\Http\Controllers\Usuario\JuegosController::class, 'unfollow'])->name('usuario.juego.unfollow')->middleware('auth');
 Route::post('/juego/{id}/{notificacion}', [App\Http\Controllers\Usuario\JuegosController::class, 'notificacion'])->name('usuario.juego.notificacion')->middleware('auth');
+Route::post('/juego/calificar', [App\Http\Controllers\Usuario\JuegosController::class, 'calificar'])->name('usuario.juego.calificar')->middleware('auth');
 
 // Master
 Route::get('/masters', [App\Http\Controllers\Usuario\MasterController::class, 'index'])->name('usuario.masters.index');
@@ -235,7 +230,6 @@ Route::post('/master/{id}/unfollow', [App\Http\Controllers\Usuario\MasterControl
 Route::post('/master/{id}/{notificacion}', [App\Http\Controllers\Usuario\MasterController::class, 'notificacion'])->name('usuario.master.notificacion')->middleware('auth');
 
 // Campanias
-Route::get('/campanias', [App\Http\Controllers\Usuario\CampaniasController::class, 'index'])->name('usuario.campanias.index');
 Route::get('/campanias/lista', [App\Http\Controllers\Usuario\BuscadorController::class, 'campanias'])->name('usuario.campanias.all');
 Route::get('/campania/{i}', [App\Http\Controllers\Usuario\CampaniasController::class, 'show'])->name('usuario.campania.show');
 Route::post('/campania/foro/nuevo', [App\Http\Controllers\Usuario\CampaniasController::class, 'store'])->name('usuario.foro.store');

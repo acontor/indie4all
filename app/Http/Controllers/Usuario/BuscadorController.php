@@ -20,7 +20,7 @@ class BuscadorController extends Controller
      */
     public function juegos(Request $request)
     {
-        $juegos = Juego::query()->doesntHave('campania');
+        $juegos = Juego::query()->doesntHave('campania')->where('ban', 0);
         if ($request->ajax()) {
             if ($request->page == '' && $request->ordenarPor != 'null' || $request->nombre != '' || $request->genero != '' || $request->desarrolladora != '' || $request->precioMin != '' || $request->precioMax != '' || $request->fechaDesde != '' || $request->fechaHasta != '') {
                 if ($request->ordenarPor != 'null' && $request->ordenarDe != 'null') {
@@ -62,13 +62,13 @@ class BuscadorController extends Controller
         } else {
             $juegos = $juegos->paginate(8);
         }
-        return view('usuario.juegos_all', ['juegos' => $juegos ,'genero'=>$request->genero]);
+        return view('usuario.juegos_all', ['juegos' => $juegos ,'generoSelect'=>$request->genero]);
     }
 
     /**
      * Muestra todas los masters y cuando es llamada con un objeto Request aplica un filtro de búsqueda
      *
-     * @param  Request opciones por ajax para la búsqueda 
+     * @param  Request opciones por ajax para la búsqueda
      * @return \Illuminate\Http\Response
      */
     public function masters(Request $request)
@@ -96,13 +96,13 @@ class BuscadorController extends Controller
     /**
      * Muestra todas las desarrolladoras y cuando es llamada con un objeto Request aplica un filtro de búsqueda
      *
-     * @param  Request opciones por ajax para la búsqueda 
+     * @param  Request opciones por ajax para la búsqueda
      * @return \Illuminate\Http\Response
      */
     public function desarrolladoras(Request $request)
     {
-        $desarrolladoras = Desarrolladora::query();
-        $desarrolladoras->withCount('users', 'posts', 'juegos', 'sorteos', 'encuestas');
+        $desarrolladoras = Desarrolladora::query()->where('ban', 0);
+        $desarrolladoras->withCount('seguidores', 'posts', 'juegos', 'sorteos', 'encuestas');
         if ($request->ajax()) {
             if ($request->page == '' && $request->nombre != '' || $request->ordenarPor != '' || $request->desarrolladora != '' || $request->ordenarPor != 'null') {
                 if ($request->ordenarPor != 'null' && $request->ordenarDe != 'null') {
@@ -128,28 +128,29 @@ class BuscadorController extends Controller
     /**
      * Muestra todas las campañas y cuando es llamada con un objeto Request aplica un filtro de búsqueda
      *
-     * @param  Request opciones por ajax para la búsqueda 
+     * @param  Request opciones por ajax para la búsqueda
      * @return \Illuminate\Http\Response
      */
     public function campanias(Request $request)
     {
 
         $fechHoy = date('Y-m-d');
-        $campanias = Campania::query();
-        $campanias->where('fecha_fin', '>=', $fechHoy)->withCount('compras', 'posts');
+        $campanias = Campania::query()
+        ->join('juegos', 'juegos.id', '=', 'campanias.juego_id')
+        ->where('campanias.fecha_fin', '>=', $fechHoy)->withCount('compras', 'posts');
         if ($request->ajax()) {
             if ($request->page == '' && $request->nombre != '' || $request->ordenarPor != '' || $request->desarrolladora != '' || $request->ordenarPor != 'null' || $request->aporteMinMax != '' || $request->aporteMinMin != '') {
-                if ($request->ordenarPor != 'null' && $request->ordenarDe != 'null') {
+                if ($request->ordenarPor != '' && $request->ordenarDe != '') {
                     $campanias = $campanias->orderBy($request->ordenarPor, $request->ordenarDe);
                 }
                 if ($request->nombre != '') {
-                    $campanias = $campanias->where('nombre', 'like', '%' . $request->nombre . '%');
+                    $campanias = $campanias->where('juegos.nombre', 'like', '%' . $request->nombre . '%');
                 }
                 if ($request->aporteMinMin != '') {
-                    $campanias = $campanias->where('aporte_minimo', '>=', $request->aporteMinMin);
+                    $campanias = $campanias->where('campanias.aporte_minimo', '>=', $request->aporteMinMin);
                 }
                 if ($request->aporteMinMax != '') {
-                    $campanias = $campanias->where('aporte_minimo', '<=', $request->aporteMinMax);
+                    $campanias = $campanias->where('campanias.aporte_minimo', '<=', $request->aporteMinMax);
                 }
                 $campanias = $campanias->get();
             } else {

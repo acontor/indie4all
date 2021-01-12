@@ -8,6 +8,7 @@ use App\Models\Juego;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class JuegosController extends Controller
@@ -23,13 +24,27 @@ class JuegosController extends Controller
         $generos = Auth::user() ? Auth::user()->generos : null;
 
         $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('juego_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('juego_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'compras' => function (Builder $query) {
-            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
-        }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
+            $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
+        }])->where('ban', 0)->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        $posts = Post::where('master_id', null)->where('juego_id', '!=', null)->orderBy('created_at', 'DESC')->get();
-        $analisis = Post::where('master_id', '!=', null)->where('juego_id', '!=', null)->orderBy('created_at', 'DESC')->get();
+        $posts = Post::select('posts.*')
+            ->where('master_id', null)
+            ->where('juego_id', '!=', null)
+            ->join('juegos', 'juegos.id', '=', 'posts.juego_id')
+            ->where('posts.ban', 0)
+            ->where('juegos.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
+
+        $analisis = Post::where('master_id', '!=', null)
+            ->where('juego_id', '!=', null)
+            ->join('masters', 'masters.id', '=', 'posts.master_id')
+            ->join('users', 'users.id', '=', 'masters.user_id')
+            ->where('posts.ban', 0)
+            ->where('users.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
+
         $recomendados = $this->obtenerJuegos($generos, $coleccion);
 
         return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'posts' => $posts, 'analisis' => $analisis]);
@@ -56,22 +71,37 @@ class JuegosController extends Controller
         }
 
         $recomendados = Juego::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('juego_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('juego_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'compras' => function (Builder $query) {
-            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])
             ->doesnthave('campania')
             ->where('id', '!=', $juego->id)
             ->where('genero_id', $juego->genero_id)
+            ->where('ban', 0)
             ->orWhere('desarrolladora_id', $juego->desarrolladora_id)
             ->where('id', '!=', $juego->id)
+            ->where('ban', 0)
             ->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
         if (count($juegos_id) > 0) {
             $recomendados->whereNotIn('id', $juegos_id);
         }
 
-        return view('usuario.juego', ['juego' => $juego, 'recomendados' => $recomendados]);
+        if ($juego->ban) {
+            session()->flash('error', 'El juego está suspendido');
+            return redirect()->back();
+        }
+
+        $analisis = Post::where('master_id', '!=', null)
+            ->where('juego_id', $id)
+            ->join('masters', 'masters.id', '=', 'posts.master_id')
+            ->join('users', 'users.id', '=', 'masters.user_id')
+            ->where('posts.ban', 0)
+            ->where('users.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
+
+        return view('usuario.juego', ['juego' => $juego, 'recomendados' => $recomendados, 'analisis' => $analisis]);
     }
 
     /**
@@ -87,7 +117,7 @@ class JuegosController extends Controller
 
         event(new FollowListener($user));
 
-        return redirect()->route('usuario.juego.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     /**
@@ -103,7 +133,7 @@ class JuegosController extends Controller
 
         $user->juegos()->detach($id);
 
-        return redirect()->route('usuario.juego.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     /**
@@ -120,7 +150,7 @@ class JuegosController extends Controller
             $id => ['notificacion' => $notificacion]
         ], false);
 
-        return redirect()->route('usuario.juego.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     /**
@@ -148,9 +178,9 @@ class JuegosController extends Controller
         }
 
         $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('juego_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('juego_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'compras' => function (Builder $query) {
-            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC');
 
         if (count($generos_id) > 0) {
@@ -163,12 +193,29 @@ class JuegosController extends Controller
 
         if ($juegos->count() < 5) {
             $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
-                $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+                $query->where('juego_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('juego_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
             }, 'compras' => function (Builder $query) {
-                $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+                $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
             }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC');
         }
 
-        return $juegos->inRandomOrder()->get();
+        return $juegos->where('ban', 0)->inRandomOrder()->get();
+    }
+
+    public function calificar(Request $request)
+    {
+        $user = User::find(Auth::id());
+
+        $user->juegos()->sync(
+            [$request->id => [
+                'notificacion' => false,
+                'calificacion' => $request->calificacion
+            ]],
+            false
+        );
+
+        $calificacion = Juego::find($request->id)->seguidores->avg('pivot.calificacion');
+
+        return array('calificacion' => number_format($calificacion, 2, '.', ''), 'estado' => 'success', 'mensaje' => 'Gracias por calificarnos');
     }
 }

@@ -2,20 +2,24 @@
 
 @section("content")
     <div class="container">
-        @isset($analisis)
-            <div class="box-header">
-                <h1>Editar análisis de {{ $analisis->juego->nombre }}</h1>
-            </div>
-            <div class="box">
+        <div class="box-header">
+            <h1>@isset($analisis) Editar @else Nuevo @endisset análisis</h1>
+        </div>
+        <div class="box">
+            @isset($analisis)
+                @if($analisis->ban)
+                    <div class="row">
+                        <span class="alert alert-danger w-100">
+                            <p>Su noticia está suspendida por el siguiente motivo. Puedes corregir los problemas y contactar con soporte@indie4all.com para volver a publicarlo.</p>
+                            <small>{{$analisis->motivo}}</small>
+                        </span>
+                    </div>
+                @endif
                 <form action="{{ route('master.analisis.update', $analisis->id) }}" method='post' enctype="multipart/form-data">
-                @method("PATCH")
-        @else
-            <div class="box-header">
-                <h1>Nuevo análisis</h1>
-            </div>
-            <div class="box">
+                    @method("PATCH")
+            @else
                 <form action="{{ route('master.analisis.store') }}" method='post' enctype="multipart/form-data">
-        @endif
+            @endif
                 @csrf
                 @empty($analisis)
                     <div class="form-group">

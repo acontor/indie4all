@@ -34,18 +34,3 @@
         </div>
     </main>
 @endsection
-
-@section('scripts')
-    <script src="{{ asset('js/script.js') }}"></script>
-    @if (Session::has('success'))
-        <script defer>
-            notificacionEstado('success', "{{ Session::get('success') }}");
-
-        </script>
-    @elseif(Session::has('error'))
-        <script defer>
-            notificacionEstado('error', "{{ Session::get('error') }}");
-
-        </script>
-    @endif
-@endsection

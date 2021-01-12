@@ -41,7 +41,7 @@ class AnalisisController extends Controller
      */
     public function create($id = null)
     {
-        $juegos = Juego::all();
+        $juegos = Juego::doesntHave('campania')->get();
         return view('master.analisis_editor', ['juegos' => $juegos, 'id' => $id]);
     }
 
@@ -91,7 +91,7 @@ class AnalisisController extends Controller
      */
     public function edit($id)
     {
-        $juegos = Juego::all();
+        $juegos = Juego::doesntHave('campania')->count();
         $analisis = Post::find($id);
         return view('master.analisis_editor', ['analisis' => $analisis, 'juegos' => $juegos, 'id' => $analisis->juego_id]);
     }

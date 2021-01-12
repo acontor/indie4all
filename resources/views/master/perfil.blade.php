@@ -1,6 +1,7 @@
 @extends("layouts.master.base")
 
 @section('styles')
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
 
@@ -10,6 +11,14 @@
             <h1>Master @isset($perfil->nombre){{ $perfil->nombre }}@endisset</h1>
         </div>
         <div class="box">
+            @if($perfil->usuario->ban)
+                <div class="row">
+                    <span class="alert alert-danger w-100">
+                        <p>Su perfil está suspendido por el siguiente motivo. Puedes corregir los problemas y contactar con soporte@indie4all.com para volver a publicarlo.</p>
+                        <small>{{$perfil->usuario->motivo}}</small>
+                    </span>
+                </div>
+            @endif
             <form method="post" action="{{ route('master.perfil.update', $perfil->id) }}" enctype="multipart/form-data">
                 @method('PATCH')
                 @csrf
@@ -99,4 +108,14 @@
 
         </script>
     @endif
+    <script>
+        $(function() {
+            $("#juegos").select2({
+                language: "es",
+                width: "auto",
+                placeholder: "Juegos recomendados",
+            });
+        });
+
+    </script>
 @endsection

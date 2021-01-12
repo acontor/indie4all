@@ -79,7 +79,7 @@
     <script src="{{ asset('js/script.js') }}"></script>
     <script>
         $(function() {
-            $('.btn-danger').click(function(e) {
+            $('.btn-danger').on('click', function(e) {
                 e.preventDefault();
                 let form = $(this).parents('form');
                 Swal.fire({

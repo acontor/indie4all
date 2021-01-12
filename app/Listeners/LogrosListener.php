@@ -14,13 +14,13 @@ class LogrosListener
      */
     public function __construct(User $user)
     {
-        if(Auth::user()->logros->where('logro_id', 6)->count() == 0) {
+        if(Auth::user()->logros->where('logro_id', 8)->count() == 0) {
 
             $logros = $user->logros->count();
 
-            if ($logros == 5) {
+            if ($logros == 7) {
                 $user->logros()->attach([
-                    6
+                    8
                 ]);
             }
         }

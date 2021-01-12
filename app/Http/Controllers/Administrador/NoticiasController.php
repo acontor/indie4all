@@ -140,9 +140,9 @@ class NoticiasController extends Controller
             $nombreImagen = pathinfo($nombreOriginal, PATHINFO_FILENAME);
             $extension = $request->file('upload')->getClientOriginalExtension();
             $nombreImagen = $nombreImagen . '_' . time() . '.' . $extension;
-            $request->file('upload')->move(public_path('images/posts'), $nombreImagen);
+            $request->file('upload')->move(public_path('/images/administracion/noticias'), $nombreImagen);
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
-            $url = asset('images/administracion/noticias' . $nombreImagen);
+            $url = asset('/images/administracion/noticias/' . $nombreImagen);
             $respuesta = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url')</script>";
             @header('Content-type: text/html; charset=utf-8');
             echo $respuesta;

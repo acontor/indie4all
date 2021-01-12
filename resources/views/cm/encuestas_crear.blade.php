@@ -54,7 +54,7 @@
 @section("scripts")
     <script>
         $(function() {
-            $(".mas-opciones").click((e) => {
+            $(".mas-opciones").on('click', (e) => {
                 e.preventDefault();
                 if(!$(".mas-opciones").hasClass("disabled")) {
                     let num_opciones = $(".opcion").length;
@@ -68,7 +68,7 @@
                 }
             });
 
-            $(".menos-opciones").click((e) => {
+            $(".menos-opciones").on('click', (e) => {
                 e.preventDefault(e);
                 if(!$(".menos-opciones").hasClass("disabled")) {
                 let num_opciones = $(".opcion").length;

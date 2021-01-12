@@ -16,7 +16,8 @@ class PostsController extends Controller
         $mensajes = DB::table('mensajes')
             ->join('users', 'users.id', '=', 'mensajes.user_id')
             ->select('mensajes.contenido', 'mensajes.created_at', 'users.id as id', 'users.name')
-            ->where('mensajes.post_id', $post->id)->get();
+            ->where('mensajes.post_id', $post->id)
+            ->where('users.ban', 0)->get();
 
         $users_id = [];
 

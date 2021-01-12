@@ -9,7 +9,6 @@ use App\Models\Cm;
 use App\Models\Desarrolladora;
 use App\Models\Genero;
 use App\Models\Juego;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -34,7 +33,7 @@ class JuegosController extends Controller
      */
     public function index()
     {
-        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->doesntHave('campania')->get();
+        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->doesntHave('campania')->orderByDesc('ban')->get();
         return view('cm.juegos', ['juegos' => $juegos]);
     }
 
@@ -61,9 +60,8 @@ class JuegosController extends Controller
     {
         $request->validate([
             'nombre' => ['required', 'max:255'],
-            'email' => ['required', 'max:255'],
             'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
-            'imagen_logo' => ['mimes:png', 'dimensions:width=256,height=256'],
+            'imagen_caratula' => ['mimes:png', 'dimensions:width=200,height=256'],
             'fecha_lanzamiento' => 'required',
             'precio' => 'required',
             'genero_id' => 'required'
@@ -82,11 +80,9 @@ class JuegosController extends Controller
             'nombre' => $request->nombre,
             'imagen_portada' => $imagenPortada,
             'imagen_caratula' => $imagenCaratula,
-            'sinopsis' => $request->sinopsis,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
-            'genero_id' => $request->genero,
             'genero_id' => $request->genero_id,
         ]);
 
@@ -105,9 +101,8 @@ class JuegosController extends Controller
 
         $request->validate([
             'nombre' => ['required', 'max:255'],
-            'email' => ['required', 'max:255'],
             'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
-            'imagen_logo' => ['mimes:png', 'dimensions:width=256,height=256'],
+            'imagen_caratula' => ['mimes:png', 'dimensions:width=200,height=256'],
             'fecha_lanzamiento' => 'required',
             'precio' => 'required',
             'genero_id' => 'required'
@@ -130,15 +125,12 @@ class JuegosController extends Controller
             $imagenLogo = $juego->imagen_logo;
         }
 
-        $juego = Juego::find($id)->update([
+        $juego->update([
             'nombre' => $request->nombre,
             'imagen_portada' => $imagenPortada,
             'imagen_caratula' => $imagenLogo,
-            'sinopsis' => $request->sinopsis,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
-            'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
-            'genero_id' => $request->genero,
             'genero_id' => $request->genero_id,
             'contenido' => $request->contenido,
         ]);

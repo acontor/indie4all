@@ -43,7 +43,7 @@
                         <a href="{{ route('usuario.juegos.index') }}" class="text-dark">Juegos</a>
                     </li>
                     <li>
-                        <a href="{{ route('usuario.campanias.index') }}" class="text-dark">Campañas</a>
+                        <a href="{{ route('usuario.campanias.all') }}" class="text-dark">Campañas</a>
                     </li>
                 </ul>
             </div>

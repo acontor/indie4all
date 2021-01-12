@@ -22,12 +22,17 @@ class MasterController extends Controller
     public function index()
     {
         $masters = Master::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('master_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('master_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('master_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'posts' => function (Builder $query) {
-            $query->whereBetween('posts.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
-        }])->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
+            $query->where('posts.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('posts.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
+        }])->join('users', 'users.id', '=', 'masters.user_id')->where('users.ban', 0)->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        $posts = Post::where('master_id', '!=', null)->orderBy('created_at', 'DESC')->get();
+        $posts = Post::where('master_id', '!=', null)
+            ->join('masters', 'masters.id', '=', 'posts.master_id')
+            ->join('users', 'users.id', '=', 'masters.user_id')
+            ->where('posts.ban', 0)
+            ->where('users.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
 
         return view('usuario.masters', ['masters' => $masters, 'posts' => $posts]);
     }
@@ -41,6 +46,12 @@ class MasterController extends Controller
     public function show($id)
     {
         $master = Master::find($id);
+
+        if ($master->usuario->ban) {
+            session()->flash('error', 'La desarrolladora está suspendida');
+            return redirect()->back();
+        }
+
         return view('usuario.master', ['master' => $master]);
     }
 
@@ -51,7 +62,7 @@ class MasterController extends Controller
 
         event(new FollowListener($user));
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function unfollow($id)
@@ -60,7 +71,7 @@ class MasterController extends Controller
 
         $user->masters()->detach($id);
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function notificacion($id, $notificacion)
@@ -71,7 +82,7 @@ class MasterController extends Controller
             $id => ['notificacion' => $notificacion]
         ], false);
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function post(Request $request)

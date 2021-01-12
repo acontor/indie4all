@@ -70,14 +70,14 @@
     <script src="{{ asset('js/admin.js') }}"></script>
     <script type="text/javascript">
         $(function() {
-            $(".btn-ban").click(function() {
+            $(".btn-ban").on('click', function() {
                 let elemento = $(this);
                 let id = elemento.prev().val();
                 let url = `/admin/campania/${id}/ban`;
                 ban(elemento, url, 'Indica el motivo');
             });
 
-            $(".btn-unban").click(function() {
+            $(".btn-unban").on('click', function() {
                 let elemento = $(this);
                 let id = $(this).prev().prev().val();
                 let url = `/admin/usuario/${id}/unban`;
