@@ -27,14 +27,18 @@
     @foreach ($juegos as $juego)
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                    <img src="{{ asset('/images/default.png') }}" alt="Foto de juego">
-                    <div class="p-3">
-                        <h5><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></h5>
-                        <small class="float-right"> {{$juego->fecha_lanzamiento}}</small><br>
-                        <a href="">{{App\Models\Genero::find($juego->genero_id)->nombre}}</a><br>
-                        Popularidad:<small class="float-right"> {{$juego->compras->count()}}</small><br>
-                        Precio:<small class="float-right"> {{$juego->precio}}</small>
-                    </div>
+                @if ($juego->imagen_caratula != null)
+                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juego->nombre }}">
+                @else
+                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juego->nombre }}">
+                @endif
+                <div class="p-3">
+                    <h5><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></h5>
+                    <small class="float-right"> {{$juego->fecha_lanzamiento}}</small><br>
+                    <a href="">{{App\Models\Genero::find($juego->genero_id)->nombre}}</a><br>
+                    Popularidad:<small class="float-right"> {{$juego->compras->count()}}</small><br>
+                    Precio:<small class="float-right"> {{$juego->precio}}</small>
+                </div>
             </div>
         </div>
     @endforeach
@@ -56,12 +60,16 @@
         @else
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                    <img src="{{url('/images/default.png')}}" alt="Foto de portada del master">
-                    <div class="p-3">
-                        <h5><a href="{{ route('usuario.master.show', $master->id) }}">{{ $master->nombre }}</a></h5>
-                        Sequidores:<small class="float-right"> {{$master->seguidores_count}}</small><br>
-                        Actividad:<small class="float-right"> {{$master->posts_count}}</small><br>
-                    </div>
+                @if ($master->imagen_portada != null)
+                    <img class="w-100 h-100" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}" alt="{{ $master->nombre }}">
+                @else
+                    <img class="w-100 h-100" src="{{ asset('/images/masters/default-portada.png') }}" alt="{{ $master->nombre }}">
+                @endif
+                <div class="p-3">
+                    <h5><a href="{{ route('usuario.master.show', $master->id) }}">{{ $master->nombre }}</a></h5>
+                    Sequidores:<small class="float-right"> {{$master->seguidores_count}}</small><br>
+                    Actividad:<small class="float-right"> {{$master->posts_count}}</small><br>
+                </div>
             </div>
         </div>
         @endif
@@ -82,13 +90,17 @@
         @foreach ($desarrolladoras as $desarrolladora)
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                    <img src="{{url('/images/default.png')}}" alt="Foto de portada de la desarrolladora">
-                    <div class="p-3">
-                        <h5><a href="{{ route('usuario.desarrolladora.show', $desarrolladora->id) }}">{{ $desarrolladora->nombre }}</a></h5>
-                        Sequidores:<small class="float-right"> {{$desarrolladora->seguidores_count}}</small><br>
-                        Juegos:<small class="float-right"> {{$desarrolladora->juegos_count}}</small><br>
-                        Actividad:<small class="float-right"> {{$desarrolladora->posts_count}}</small><br>
-                    </div>
+                @if ($desarrolladora->imagen_logo != null)
+                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_logo) }}" alt="{{ $desarrolladora->nombre }}">
+                @else
+                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/default-logo-desarrolladora.png') }}" alt="{{ $desarrolladora->nombre }}">
+                @endif
+                <div class="p-3">
+                    <h5><a href="{{ route('usuario.desarrolladora.show', $desarrolladora->id) }}">{{ $desarrolladora->nombre }}</a></h5>
+                    Sequidores:<small class="float-right"> {{$desarrolladora->seguidores_count}}</small><br>
+                    Juegos:<small class="float-right"> {{$desarrolladora->juegos_count}}</small><br>
+                    Actividad:<small class="float-right"> {{$desarrolladora->posts_count}}</small><br>
+                </div>
             </div>
         </div>
         @endforeach
@@ -109,7 +121,11 @@
         @else
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
-                <img src="{{url('/images/default.png')}}" alt="Foto de portada de la campaña">
+                @if ($campania->juego->imagen_caratula != null)
+                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/' . $campania->juego->first()->desarrolladora->nombre . '/' . $campania->juego->nombre . '/' . $campania->juego->imagen_caratula) }}" alt="{{ $campania->juego->nombre }}">
+                @else
+                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $campania->juego->nombre }}">
+                @endif
                 <div class="p-3">
                     <h5><a href="{{ route('usuario.campania.show', $campania->id) }}">{{ $campania->juego->nombre }}</a></h5>
                     Participaciones:<small class="float-right"> {{$campania->compras_count}}</small><br>
