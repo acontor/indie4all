@@ -23,7 +23,7 @@ $(function () {
         Swal.fire({
             position: 'top',
             title: '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-search"></i></span></div><input type="text" class="form-control" placeholder="Buscar" id="busqueda" autocomplete="off"></div>',
-            html: '<small><span class="badge badge-secondary d-none d-md-inline">Tab</span> Moverse entre los resultados <span class="badge badge-secondary ml-3">Esc</span> Cerrar búsqueda</small><div></div>',
+            html: '<small class="d-none d-md-inline"><span class="badge badge-secondary">Tab</span> Moverse entre los resultados <span class="badge badge-secondary ml-3">Esc</span> Cerrar búsqueda</small><div><p class="mt-4">Busca Juegos, Campañas, Desarrolladoras y Masters</p></div>',
             showCloseButton: false,
             showCancelButton: false,
             showConfirmButton: false,
@@ -51,26 +51,31 @@ $(function () {
                             $(".swal2-html-container>div").append('<p class="mt-3">No se ha encontrado ningún resultado</p>');
                         } else {
                             data.forEach(element => {
+                                let img = '';
                                 if (element.tipo == "Juego") {
-                                    if (html.indexOf("<h4 class='mt-2 mb-2'>Juegos</h4>") == -1) {
-                                        html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="/juegos/lista">Ver todos</a></small><div class="owl-carousel owl-theme 1">`;
+                                    if (html.indexOf("<h4 class='d-inline'>Juegos</h4>") == -1) {
+                                        html += `<div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Juegos</h4><a class="btn btn-dark btn-sm float-right" href="/juegos/lista">Ver todos</a></div><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    html += `<div class="item"><a href="/juego/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.desarrolladora.nombre }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
+                                    html += `<div class="item"><a href="/juego/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Campaña") {
-                                    if (html.indexOf("<h4 class='mt-2 mb-2'>Campañas</h4>") == -1) {
-                                        html += `</div><h4 class='mt-2 mb-2'>Campañas</h4><small><a href="/campanias/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
+                                    if (html.indexOf("<h4 class='d-inline'>Campañas</h4>") == -1) {
+                                        html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline"><h4 class='d-inline'>Campañas</h4><a class="btn btn-dark btn-sm float-right" href="/juegos/lista">Ver todas</a></div><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    html += `<div class="item"><a href="/campania/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.desarrolladora.nombre }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
+                                    html += `<div class="item"><a href="/campania/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Desarrolladora") {
-                                    if (html.indexOf("<h4 class='mt-2 mb-2'>Desarrolladoras</h4>") == -1) {
-                                        html += `</div><h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="/desarrolladoras/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
+                                    if (html.indexOf("<h4 class='d-inline'>Desarrolladoras</h4>") == -1) {
+                                        html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Desarrolladoras</h4><a class="btn btn-dark btn-sm float-right" href="/juegos/lista">Ver todas</a></div><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    html += `<div class="item"><a href="/desarrolladora/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    img = element.imagen_logo == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-desarrolladora.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.nombre }/${ element.imagen_logo }" alt="${ element.nombre }"></img>`;
+                                    html += `<div class="item"><a href="/desarrolladora/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Master") {
-                                    if (html.indexOf("<h4 class='mt-2 mb-2'>Masters</h4>") == -1) {
-                                        html += `</div><h4 class='mt-2 mb-2'>Masters</h4><small><a href="/masters/lista">Ver todas</a></small><div class="owl-carousel owl-theme 1">`;
+                                    if (html.indexOf("<h4 class='d-inline'>Masters</h4>") == -1) {
+                                        html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Masters</h4><a class="btn btn-dark btn-sm float-right" href="/juegos/lista">Ver todos</a></div><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    html += `<div class="item"><a href="/master/${element.id}"><img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg" alt="${element.nombre}"><div class="carousel-caption mb-2" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    img = element.imagen_logo == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/masters/default-logo.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/masters/${ element.nombre }/${ element.imagen_logo }" alt="${ element.nombre }"></img>`;
+                                    html += `<div class="item"><a href="/master/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 }
                             });
                             html += '</div>';

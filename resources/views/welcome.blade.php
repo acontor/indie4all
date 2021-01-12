@@ -5,7 +5,7 @@
         <div class="container box mt-4">
             <div class="row">
                 <div class="col-12 col-md-7">
-                    <h2>Últimas noticias</h2>
+                    <h2>Noticias generales</h2>
                     <div class="noticias">
                         <div class="items">
                             @if ($noticias->count() != 0)

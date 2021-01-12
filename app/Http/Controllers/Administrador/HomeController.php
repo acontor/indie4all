@@ -79,6 +79,11 @@ class HomeController extends Controller
         return view('admin.home', ['numUsuarios' => $numUsuarios, 'numJuegos' => $numJuegos, 'numCampanias' => $numCampanias, 'numGeneros' => $numGeneros, 'numLogros' => $numLogros, 'numDesarrolladoras' => $numDesarrolladoras, 'numPosts' => $arrayPosts, 'numMensajes' => $arrayMensajes]);
     }
 
+    /**
+     * Función para enviar un resumen diario a los usuarios
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function actualizacionDiaria()
     {
         $usuario = User::find(1);
