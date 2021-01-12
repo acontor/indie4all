@@ -123,7 +123,6 @@
                             </div>
                         </div>
                         <div class="sorteos shadow p-4 d-none">
-                            <h3>Sorteos</h3>
                             <div class="row">
                                 @auth
                                     @foreach ($desarrolladora->sorteos as $sorteo)
@@ -149,7 +148,9 @@
                                                     </div>
                                                 @endif
                                             @endisset
-                                            <p class="mt-3">{{ $sorteo->fecha_fin }}</p>
+                                            <div class="sorteo-footer mt-3">
+                                                <small class="mb-4">Termina el {{ $sorteo->fecha_fin }}</small>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @else
@@ -158,7 +159,6 @@
                             </div>
                         </div>
                         <div class="encuestas shadow p-4 d-none">
-                            <h3>Encuestas</h3>
                             <div class="row">
                                 @auth
                                     @foreach ($desarrolladora->encuestas as $encuesta)
@@ -170,28 +170,56 @@
                                                 @endphp
                                                 @foreach ($encuesta->opciones as $opcion)
                                                     @php
-                                                        $total+=$opcion->participantes->count()
+                                                        $total += $opcion->participantes->count()
                                                     @endphp
                                                 @endforeach
                                                 @if($total == 0)
-                                                    Aún no ha participaciones
+                                                    Aún no hay participaciones
                                                 @else
-                                                    @foreach ($encuesta->opciones as $opcion)
-
-                                                        @if($opcion->participantes->where('id',Auth::id())->count() > 0)
-                                                            <span class="bg-primary">{{$opcion->descripcion}}</span>
-                                                        @else
-                                                            {{$opcion->descripcion}}
-                                                        @endif
-                                                        {{($opcion->participantes->count() / $total) * 100}} %
-                                                        <br>
-                                                    @endforeach
+                                                    <div class="row mt-3">
+                                                        @foreach ($encuesta->opciones as $opcion)
+                                                            <div class="col-6-col-md-6 d-flex justify-content-center text-center">
+                                                                @php
+                                                                    $porcentaje = ($opcion->participantes->count() / $total) * 100;
+                                                                @endphp
+                                                                @if($opcion->participantes->where('id', Auth::id())->count() > 0)
+                                                                    <div class="row">
+                                                                        <div class="col-12 d-flex justify-content-center text-center">
+                                                                            <p class="font-weight-bold">{{$opcion->descripcion}}</p>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <div class="progress progress-bar-vertical">
+                                                                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @else
+                                                                    <div class="row">
+                                                                        <div class="col-12 d-flex justify-content-center text-center">
+                                                                            <p class="font-weight-bold">{{$opcion->descripcion}}</p>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <div class="progress progress-bar-vertical">
+                                                                                <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        @endforeach
+                                                        <div class="encuesta-info mt-3 ml-3">
+                                                            <span class="badge badge-danger">Opción escogida</span>
+                                                            <span class="badge badge-dark">Optras opciones</span>
+                                                        </div>
+                                                    </div>
                                                 @endif
                                             @else
                                                 <div class="opciones">
                                                     @foreach ($encuesta->opciones as $opcion)
-                                                        <label for="respuesta">{{ $opcion->descripcion }}</label>
-                                                        <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}">
+                                                        <label class="radio-button mod-label-below ">
+                                                            <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}" style="appearance: none;" />
+                                                            <div class="btn btn-dark">{{ $opcion->descripcion }}</div>
+                                                        </label>
                                                     @endforeach
                                                 </div>
                                                 <input type="hidden" name="id" value="{{ $encuesta->id }}">
@@ -205,7 +233,9 @@
                                                     </div>
                                                 @endif
                                             @endif
-                                            <p>{{ $encuesta->fecha_fin }}</p>
+                                            <div class="encuesta-footer mt-3">
+                                                <small class="mb-4">Termina el {{ $encuesta->fecha_fin }}</small>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @else
@@ -302,6 +332,40 @@
             crearOwl($('.owl-carousel.juegos'), false, 2, 2, 2);
 
             crearOwl($('.owl-carousel.campanias'), false, 2, 2, 2);
+
+            $(".participar-encuesta").on('click', function (e) {
+                e.preventDefault();
+                let encuesta = $(this).parent().prev().val();
+                let opcion = $(`input[name=respuesta${encuesta}]:checked`).val();
+                Swal.fire({
+                    title: 'Confirmar Participación',
+                    html: '<div id="recaptcha" class="mb-3"></div>',
+                    didOpen: function () {
+                        grecaptcha.render('recaptcha', {
+                            'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                        });
+                    },
+                    preConfirm: function () {
+                        if (grecaptcha.getResponse().length === 0) {
+                            Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
+                        } else {
+                            $.ajax({
+                                url: '{{ route("usuario.desarrolladora.encuesta") }}',
+                                type: 'post',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                data: {
+                                    opcion: opcion,
+                                },
+                                success: function (data) {
+                                    $(".participar-encuesta-div").html("Ya has participado.");
+                                }
+                            });
+                        }
+                    }
+                });
+            });
         });
 
     </script>

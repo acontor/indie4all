@@ -144,40 +144,6 @@ $(function () {
         })
     });
 
-    $(".participar-encuesta").on('click', function (e) {
-        e.preventDefault();
-        let encuesta = $(this).parent().prev().val();
-        let opcion = $(`input[name=respuesta${encuesta}]:checked`).val();
-        Swal.fire({
-            title: 'Confirmar Participación',
-            html: '<div id="recaptcha" class="mb-3"></div>',
-            didOpen: function () {
-                grecaptcha.render('recaptcha', {
-                    'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                });
-            },
-            preConfirm: function () {
-                if (grecaptcha.getResponse().length === 0) {
-                    Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                } else {
-                    $.ajax({
-                        url: '{{ route("usuario.desarrolladora.encuesta") }}',
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            opcion: opcion,
-                        },
-                        success: function (data) {
-                            $(".participar-encuesta-div").html("Ya has participado.");
-                        }
-                    });
-                }
-            }
-        });
-    });
-
     /**
      * COMPONENTES MASTER
      */

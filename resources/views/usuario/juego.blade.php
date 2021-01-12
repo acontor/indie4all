@@ -33,7 +33,19 @@
                                 {{ $juego->seguidores->avg('calificacion') }}
                             @endif
                             @if (Auth::user() != null && Auth::user()->email_verified_at != null && !Auth::user()->ban)
-                                <button class="btn btn-dark btn-circle">-</button>
+                                <select class="btn btn-dark btn-circle select-nota" name="" id="">
+                                    <option value="">-</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                    <option value="">4</option>
+                                    <option value="">5</option>
+                                    <option value="">6</option>
+                                    <option value="">7</option>
+                                    <option value="">8</option>
+                                    <option value="">9</option>
+                                    <option value="">10</option>
+                                </select>
                             @endif
                         </div>
                     </div>

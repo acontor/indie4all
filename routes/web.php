@@ -27,6 +27,7 @@ Route::get('auth/facebook/callback', [App\Http\Controllers\Auth\FacebookControll
 
 // Inicio
 Route::get('/admin', [App\Http\Controllers\Administrador\HomeController::class, 'index'])->name('admin.index');
+Route::get('/actualizacion/diaria', [App\Http\Controllers\Administrador\HomeController::class, 'actualizacionDiaria'])->name('admin.actualizacion.diaria');
 
 // Noticias
 Route::get('/admin/noticias', [App\Http\Controllers\Administrador\NoticiasController::class, 'index'])->name('admin.noticias.index');

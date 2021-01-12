@@ -72,10 +72,6 @@
                                         </div>
                                         <h4>{{ $post->titulo }}</h4>
                                         <p>{!! $post->contenido !!}</p>
-                                        <div class="footer-estados mt-3">
-                                            <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
-                                            <small>{{ $post->created_at }}</small>
-                                        </div>
                                     @endforeach
                                 @else
                                     <p>No se han encontrado noticias</p>
