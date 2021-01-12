@@ -26,20 +26,20 @@ class HomeController extends Controller
 
         $juegos = Juego::doesnthave('campania')->where('ban', 0)->take(3)->get();
         $juegosVentas = Juego::withCount(['compras' => function (Builder $query) {
-            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->doesnthave('campania')->where('ban', 0)->orderBy('compras_count', 'DESC')->take(3)->get();
 
         $campanias = Campania::take(3)->get();
         $campaniasVentas = Campania::withCount(['compras' => function (Builder $query) {
-            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->where('ban', 0)->orderBy('compras_count', 'DESC')->take(3)->get();
 
         $masters = Master::take(3)->get();
 
         $mastersTops = Master::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('master_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('master_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('master_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'posts' => function (Builder $query) {
-            $query->whereBetween('posts.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('posts.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('posts.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->take(3)->get();
 
         return view('welcome', ['noticias' => $noticias, 'juegos' => $juegos, 'juegosVentas' => $juegosVentas, 'campanias' => $campanias, 'campaniasVentas' => $campaniasVentas, 'masters' => $masters, 'mastersTops', $mastersTops]);

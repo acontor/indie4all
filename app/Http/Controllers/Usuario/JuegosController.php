@@ -23,9 +23,9 @@ class JuegosController extends Controller
         $generos = Auth::user() ? Auth::user()->generos : null;
 
         $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('juego_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('juego_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'compras' => function (Builder $query) {
-            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->where('ban', 0)->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
         $posts = Post::where('master_id', null)
@@ -67,9 +67,9 @@ class JuegosController extends Controller
         }
 
         $recomendados = Juego::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('juego_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('juego_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'compras' => function (Builder $query) {
-            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])
             ->doesnthave('campania')
             ->where('id', '!=', $juego->id)
@@ -174,9 +174,9 @@ class JuegosController extends Controller
         }
 
         $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('juego_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('juego_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'compras' => function (Builder $query) {
-            $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC');
 
         if (count($generos_id) > 0) {
@@ -189,9 +189,9 @@ class JuegosController extends Controller
 
         if ($juegos->count() < 5) {
             $juegos = Juego::withCount(['seguidores' => function (Builder $query) {
-                $query->whereBetween('juego_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+                $query->where('juego_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('juego_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
             }, 'compras' => function (Builder $query) {
-                $query->whereBetween('fecha_compra', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+                $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
             }])->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC');
         }
 

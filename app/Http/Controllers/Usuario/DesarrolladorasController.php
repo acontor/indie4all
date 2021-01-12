@@ -26,9 +26,9 @@ class DesarrolladorasController extends Controller
     public function index()
     {
         $desarrolladoras = Desarrolladora::withCount(['seguidores' => function (Builder $query) {
-            $query->whereBetween('desarrolladora_user.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('desarrolladora_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('desarrolladora_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }, 'posts' => function (Builder $query) {
-            $query->whereBetween('posts.created_at', [date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')), date('Y-m-d')]);
+            $query->where('posts.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('posts.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->where('ban', 0)->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
         $posts = Post::select('posts.*')

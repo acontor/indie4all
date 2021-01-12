@@ -139,8 +139,11 @@
                                             <img class="img-fluid mr-2" src="{{ asset('/images/logo.png') }}" alt="{{ $master->nombre }}"/>
                                         </div>
                                         <div class="circle-lista float-right">{{$post->calificacion}}</div>
-                                        <div class="berber-fullname">{{$post->juego->nombre}}</div>
-                                        <div class="berber-dukkan">análisis sobre un juego de terror</div>
+                                        <div class="berber-fullname"><a href="/juego/{{$post->juego->id}}">{{$post->juego->nombre}}</a></div>
+                                        <div class="berber-dukkan">
+                                            <input type="hidden" name="id" value="{{ $post->id }}" />
+                                            <a type="submit" class="more">{{$post->titulo}}</a>
+                                        </div>
                                     </div>
                                 @endforeach
                             @else

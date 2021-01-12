@@ -17,7 +17,7 @@
                                     @endif
                                     <div class="carousel-caption mb-2 d-none">
                                         <h6><strong>{{ $master->nombre }}</strong></h6>
-                                        <small>Seguidores: {{ $master->seguidores->count() }}</small>
+                                        <small>Seguidores: {{ $master->seguidores_count }}</small>
                                         <small>Actividad: {{ $master->posts_count }}</small>
                                     </div>
                                 </a>
