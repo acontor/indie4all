@@ -27,7 +27,7 @@
                                 </li>
                                 <li class="nav-item m-2">
                                     <select id="ordenarPor" class="form-control">
-                                        <option value="nombre">Alfabeticamente</option>
+                                        <option value="nombre" selected>Alfabeticamente</option>
                                         <option value="precio">Precio</option>
                                         <option value="fecha_lanzamiento">Fecha de lanzamiento</option>
                                         <option value="genero_id">Género</option>
@@ -35,8 +35,8 @@
                                 </li>
                                 <li class="nav-item m-2">
                                     <select id="ordenarDe" class="form-control">
-                                        <option value="DESC" selected>Descendiente</option>
-                                        <option value="ASC">Acendiente</option>
+                                        <option value="ASC" selected>Acendente</option>
+                                        <option value="DESC">Descendente</option>
                                     </select>
                                 </li>
                                 <li class="nav-item m-2">
@@ -70,7 +70,7 @@
                         </ul>
                     </div>
                 </nav>
-                <div id="campania_data">
+                <div id="juegos_data" class="mt-4">
                     @include('usuario.pagination_data')
                 </div>
             </div>

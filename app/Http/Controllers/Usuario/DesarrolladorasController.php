@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Listeners\EncuestaListener;
 use App\Listeners\FollowListener;
+use App\Listeners\SorteoListener;
 use App\Mail\Sorteos\SorteoConfirmacion;
 use App\Models\Campania;
 use App\Models\Desarrolladora;
@@ -116,6 +118,8 @@ class DesarrolladorasController extends Controller
         $desarrolladora = $sorteo->desarrolladora->nombre;
 
         Mail::to($user->email)->send(new SorteoConfirmacion($user->name, $sorteo, $desarrolladora));
+
+        event(new SorteoListener($user));
     }
 
     public function encuesta(Request $request)
@@ -123,5 +127,7 @@ class DesarrolladorasController extends Controller
         $user = User::find(Auth::id());
 
         $user->opciones()->attach([$request->opcion => ['opcion_id' => $request->opcion]]);
+
+        event(new EncuestaListener($user));
     }
 }

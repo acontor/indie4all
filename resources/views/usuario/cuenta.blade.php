@@ -2,6 +2,7 @@
 
 @section('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('css/datatable/datatable.css') }}" rel="stylesheet">
 @endsection
 
 @section("content")
@@ -112,9 +113,28 @@
                         <h1>Compras</h1>
                         <hr>
                         @if ($usuario->compras->count() > 0)
-                            @foreach ($usuario->compras as $compra)
-                                {{ $compra }}
-                            @endforeach
+                            <div class="table-responsive p-3">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <td>Juego</td>
+                                            <td>Precio</td>
+                                            <td>Fecha</td>
+                                            <td>Clave</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($usuario->compras->where('campania_id', null) as $compra)
+                                            <tr>
+                                                <td class="align-middle">{{ $compra->juego->nombre }}</td>
+                                                <td class="align-middle">{{ $compra->precio }}</td>
+                                                <td class="align-middle">{{ $compra->fecha_compra }}</td>
+                                                <td class="align-middle">{{ $compra->key }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         @else
                             No has realizado ninguna compra.
                         @endif
@@ -298,6 +318,8 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
         $(function() {

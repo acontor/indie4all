@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class LogrosListener
+class SorteoListener
 {
     /**
      * Create the event listener.
@@ -14,14 +14,16 @@ class LogrosListener
      */
     public function __construct(User $user)
     {
-        if(Auth::user()->logros->where('logro_id', 8)->count() == 0) {
+        if(Auth::user()->logros->where('logro_id', 7)->count() == 0) {
 
-            $logros = $user->logros->count();
+            $sorteos = $user->sorteos->count();
 
-            if ($logros == 7) {
+            if ($sorteos >= 5) {
                 $user->logros()->attach([
-                    8
+                    7
                 ]);
+
+                event(new LogrosListener($user));
             }
         }
     }

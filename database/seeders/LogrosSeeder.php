@@ -42,6 +42,16 @@ class LogrosSeeder extends Seeder
             'icono'=> 'far fa-heart',
         ]);
         DB::table('logros')->insert([
+            'nombre' => 'El contestador',
+            'descripcion' => '¡Tranquilo, pronto habrá más encuestas para tí titán!',
+            'icono'=> 'fas fa-poll',
+        ]);
+        DB::table('logros')->insert([
+            'nombre' => '¿El ganador?',
+            'descripcion' => '¡Espero que hayas ganado algunos de esos sorteos!',
+            'icono'=> 'fas fa-dice-d20',
+        ]);
+        DB::table('logros')->insert([
             'nombre' => 'El mejor',
             'descripcion' => 'Ahora si estoy impresionado, ¡has conseguido todos los logros!',
             'icono'=> 'fas fa-medal',

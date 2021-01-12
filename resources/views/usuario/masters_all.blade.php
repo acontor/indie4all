@@ -16,15 +16,15 @@
                             <li class="nav-item m-2"><input type="text" id="nombre" class="form-control" style="width:100%" placeholder="Nombre"/></li>
                             <li class="nav-item m-2">
                                 <select id="ordenarPor" class="form-control">
-                                    <option value="">Ordenar por..</option>
+                                    <option value="nombre" selected>Alfabeticamente</option>
                                     <option value="posts_count">Actividad</option>
                                     <option value="seguidores_count">Seguidores</option>
                                 </select>
                             </li>
                             <li class="nav-item m-2">
                                 <select id="ordenarDe" class="form-control">
-                                    <option value="DESC" selected>Descendiente</option>
-                                    <option value="ASC">Acendiente</option>
+                                    <option value="ASC" selected>Acendente</option>
+                                    <option value="DESC">Descendente</option>
                                 </select>
                             </li>
                             <li class="nav-item m-2">
@@ -33,7 +33,7 @@
                         </ul>
                     </div>
                 </nav>
-                <div id="masters_data" class="box mt-4">
+                <div id="masters_data" class="mt-4">
                     @include('usuario.pagination_data')
                 </div>
             </div>

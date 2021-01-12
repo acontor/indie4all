@@ -24,7 +24,7 @@
                             </li>
                             <li class="nav-item m-2">
                                 <select id="ordenarPor" class="form-control">
-                                    <option value="" selected>Ordenar por..</option>
+                                    <option value="juegos.nombre" selected>Alfabeticamente</option>
                                     <option value="recaudado">Recaudado</option>
                                     <option value="meta">Meta</option>
                                     <option value="seguidores_count">Participaciones</option>
@@ -34,8 +34,8 @@
                             </li>
                             <li class="nav-item m-2">
                                 <select id="ordenarDe" class="form-control select2">
-                                    <option value="DESC" selected>Descendiente</option>
-                                    <option value="ASC">Acendiente</option>
+                                    <option value="ASC" selected>Acendente</option>
+                                    <option value="DESC">Descendente</option>
                                 </select>
                             </li>
                             <li class="nav-item m-2">
@@ -44,7 +44,7 @@
                         </ul>
                     </div>
                 </nav>
-                <div id="campania_data">
+                <div id="campanias_data" class="mt-4">
                     @include('usuario.pagination_data')
                 </div>
             </div>
@@ -94,7 +94,7 @@
                 url:"/campanias/lista?page="+page,
 
                 success:function(data){
-                    $('#campania_data').html(data);
+                    $('#campanias_data').html(data);
                 }
             });
         }
@@ -103,7 +103,7 @@
                 url:"/campanias/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe+'&aporteMinMin='+aporteMinMin+'&aporteMinMax='+aporteMinMax,
 
                 success:function(data){
-                    $('#campania_data').html(data);
+                    $('#campanias_data').html(data);
                 }
             });
         }

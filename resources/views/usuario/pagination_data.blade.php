@@ -19,7 +19,7 @@
 </style>
 @isset($juegos)
 @if($juegos->count()==0)
-    <div class="box">
+    <div>
         No se ha encontrado ningún resultado
     </div>
 @endif
@@ -46,7 +46,7 @@
 
 @isset($masters)
     @if($masters->count()==0)
-        <div class="box">
+        <div>
             No se ha encontrado ningún resultado
         </div>
     @endif
@@ -74,7 +74,7 @@
 
 @isset($desarrolladoras)
     @if($desarrolladoras->count()==0)
-        <div class="box">
+        <div>
             No se ha encontrado ningún resultado
         </div>
     @endif
@@ -99,7 +99,7 @@
 @endisset
 @isset($campanias)
     @if($campanias->count()==0)
-        <div class="box">
+        <div>
             No se ha encontrado ningún resultado
         </div>
     @endif

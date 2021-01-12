@@ -134,6 +134,7 @@ class PaymentController extends Controller
                     'juego_id' => $id,
                 ]);
                 event(new ComprarListener($user));
+
                 Mail::to($user->email)->send(new CompraRealizada($clave, $user->name, $mensaje));
 
                 $user = User::find(Auth::id());
