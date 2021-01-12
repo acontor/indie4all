@@ -79,7 +79,10 @@
                                     @foreach ($campania->posts as $post)
                                         <div>
                                             <h4>{{ $post->titulo }} <small>{{$post->created_at}}</small></h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
                                             <form>
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
                                                 <a type="submit" class="more">Leer más</a>

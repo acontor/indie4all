@@ -36,7 +36,10 @@
                                                 </div>
                                             @endif
                                             <h4>{{ $post->titulo }}</h4>
-                                            <p>{!! substr($post->contenido, 0, 100) !!}</p>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
                                             <form>
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
                                                 <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
@@ -68,10 +71,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
                 <div class="col-12 col-md-4 mt-5 mt-md-0 px-4">
                     <div class="shadow p-4">
                         <h4 class="text-uppercase font-weight-bold">Próximos juegos</h4>

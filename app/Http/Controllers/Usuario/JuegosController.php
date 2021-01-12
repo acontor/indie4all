@@ -28,12 +28,14 @@ class JuegosController extends Controller
             $query->where('fecha_compra', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('fecha_compra', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->where('ban', 0)->doesnthave('campania')->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        $posts = Post::where('master_id', null)
+        $posts = Post::select('posts.*')
+            ->where('master_id', null)
             ->where('juego_id', '!=', null)
             ->join('juegos', 'juegos.id', '=', 'posts.juego_id')
             ->where('posts.ban', 0)
             ->where('juegos.ban', 0)
             ->orderBy('posts.created_at', 'DESC')->get();
+
         $analisis = Post::where('master_id', '!=', null)
             ->where('juego_id', '!=', null)
             ->join('masters', 'masters.id', '=', 'posts.master_id')
@@ -41,6 +43,7 @@ class JuegosController extends Controller
             ->where('posts.ban', 0)
             ->where('users.ban', 0)
             ->orderBy('posts.created_at', 'DESC')->get();
+
         $recomendados = $this->obtenerJuegos($generos, $coleccion);
 
         return view('usuario.juegos', ['recomendados' => $recomendados, 'juegos' => $juegos, 'coleccion' => $coleccion, 'posts' => $posts, 'analisis' => $analisis]);

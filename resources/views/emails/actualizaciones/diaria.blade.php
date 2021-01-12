@@ -6,7 +6,10 @@
         @if ($postsJuegos->count() > 0)
             @foreach ($postsJuegos->take(2) as $post)
                 <h4>{{ $post->titulo }}</h4>
-                <p>{!! substr($post->contenido, 0, 100) !!}</p>
+                @php
+                    $resumen = explode('</p>', $post->contenido)
+                @endphp
+                <p>{!! $resumen[0] !!}</p>
                 <small>Noticia de {{ $post->juego->nombre }}</small>
                 <a href="http:127.0.0.1:8000/juego/{{ $post->juego->id }}">Visitar juego</a>
                 <hr>
@@ -15,7 +18,10 @@
         @if ($postsDesarrolladoras->count() > 0)
             @foreach ($postsDesarrolladoras->take(2) as $post)
                 <h4>{{ $post->titulo }}</h4>
-                <p>{!! substr($post->contenido, 0, 100) !!}</p>
+                @php
+                    $resumen = explode('</p>', $post->contenido)
+                @endphp
+                <p>{!! $resumen[0] !!}</p>
                 <small>Noticia de {{ $post->desarrolladora->nombre }}</small>
                 <a href="http:127.0.0.1:8000/desarrolladora/{{ $post->desarrolladora->id }}">Visitar desarrolladora</a>
                 <hr>
@@ -24,7 +30,10 @@
         @if ($postsMasters->count() > 0)
             @foreach ($postsMasters->take(2) as $post)
                 <h4>{{ $post->titulo }}</h4>
-                <p>{!! substr($post->contenido, 0, 100) !!}</p>
+                @php
+                    $resumen = explode('</p>', $post->contenido)
+                @endphp
+                <p>{!! $resumen[0] !!}</p>
                 <small>Análisis de {{ $post->master->nombre }}</small>
                 <a href="/master/{{ $post->master->id }}">Visitar master</a>
                 <hr>

@@ -108,43 +108,6 @@ $(function () {
     }
 
     /**
-     * COMPONENTES DESARROLLADORA
-     */
-
-    $(".participar-sorteo").on('click', function (e) {
-        e.preventDefault();
-        let id = $(this).parent().prev().val();
-        Swal.fire({
-            title: 'Confirmar Participación',
-            html: '<div id="recaptcha" class="mb-3"></div>',
-            didOpen: function () {
-                grecaptcha.render('recaptcha', {
-                    'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
-                });
-            },
-            preConfirm: function () {
-                if (grecaptcha.getResponse().length === 0) {
-                    Swal.showValidationMessage(`Por favor, verifica que no eres un robot`)
-                } else {
-                    $.ajax({
-                        url: '{{ route("usuario.desarrolladora.sorteo") }}',
-                        type: 'post',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            id: id,
-                        },
-                        success: function (data) {
-                            $(".participar-sorteo-div").html("Ya has participado.");
-                        }
-                    });
-                }
-            }
-        })
-    });
-
-    /**
      * COMPONENTES MASTER
      */
 

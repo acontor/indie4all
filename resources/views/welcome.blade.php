@@ -12,7 +12,10 @@
                                 @foreach ($noticias as $noticia)
                                     <div>
                                         <h4>{{ $noticia->titulo }}</h4>
-                                        <p>{!! substr($noticia->contenido, 0, 300) !!}...</p>
+                                        @php
+                                            $resumen = explode('</p>', $noticia->contenido)
+                                        @endphp
+                                        <p>{!! $resumen[0] !!}</p>
                                         {{ $noticia->created_at }}
                                         @if ($noticia->comentarios)
                                             <small>Comentarios: {{ $noticia->comentarios->count() }}</small>

@@ -70,7 +70,10 @@
                                                 <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
                                             <form>
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
                                                 <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>

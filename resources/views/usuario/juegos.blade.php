@@ -62,16 +62,28 @@
                             <a href="" id="analisis-div" class="list-group-item list-group-item-action list-buttons-2">Análisis</a>
                         </ul>
                         <div class="list-group-item flex-column align-items-start listado-2 noticias">
-                            <div class="items mt-4">
-                                @if($posts->where('juego_id', '!=', null)->where('master_id', null)->count() > 0)
-                                    @foreach ($posts->where('juego_id', '!=', null)->where('master_id', null) as $post)
-                                        <div class="pildoras mb-3">
-                                            <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                            <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
-                                            <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                            <div class="items row mt-4">
+                                @if($posts->count() > 0)
+                                    @foreach ($posts as $post)
+                                        <div class="col-12 col-md-6">
+                                            <div class="pildoras mb-3">
+                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                            </div>
+                                            <h4>{{ $post->titulo }}</h4>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
+                                            <form>
+                                                <input type="hidden" name="id" value="{{ $post->id }}" />
+                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                            </form>
+                                            <div class="footer-estados mt-3">
+                                                <small>{{ $post->created_at }}</small>
+                                            </div>
                                         </div>
-                                        <h4>{{ $post->titulo }}</h4>
-                                        <p>{!! $post->contenido !!}</p>
                                     @endforeach
                                 @else
                                     <p>No se han encontrado noticias</p>
@@ -96,7 +108,10 @@
                                                 <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
-                                            <p>{!! substr($post->contenido, 0, 300) !!}</p>
+                                            @php
+                                                $resumen = explode('</p>', $post->contenido)
+                                            @endphp
+                                            <p>{!! $resumen[0] !!}</p>
                                             <form>
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
                                                 <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
