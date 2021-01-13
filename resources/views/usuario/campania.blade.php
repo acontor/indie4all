@@ -112,7 +112,7 @@
                                             <div class="items">
                                                 @foreach ($campania->mensajes as $mensaje)
                                                     <div class="berber">
-                                                        <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
+                                                        <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small>@if($mensaje->user->cm && $mensaje->user->cm->desarrolladora_id == $campania->juego->desarrolladora_id)<small class="badge badge-danger badge-pill ml-2">CM</small>@endif @if($mensaje->user->administrador)<small class="badge badge-primary badge-pill ml-2">Admin</small>  @endif</h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
                                                         <p class="mensaje">{!! $mensaje->contenido !!}</p>
                                                     </div>
                                                 @endforeach
