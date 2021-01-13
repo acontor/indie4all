@@ -37,7 +37,8 @@ class JuegosController extends Controller
             ->where('juegos.ban', 0)
             ->orderBy('posts.created_at', 'DESC')->get();
 
-        $analisis = Post::where('master_id', '!=', null)
+        $analisis = Post::select('posts.*')
+            ->where('master_id', '!=', null)
             ->where('juego_id', '!=', null)
             ->join('masters', 'masters.id', '=', 'posts.master_id')
             ->join('users', 'users.id', '=', 'masters.user_id')

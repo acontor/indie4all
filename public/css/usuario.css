@@ -248,16 +248,6 @@ nav {
     margin-bottom: 20px;
 }
 
-.items>div::after {
-    background: #2E3647 none repeat scroll 0 0;
-    content: "";
-    display: block;
-    height: 2px;
-    margin: auto;
-    margin-top: 15px !important;
-    width: 100%;
-}
-
 .pager div {
     float: left;
     border: 1px solid gray;
@@ -313,7 +303,6 @@ header {
     color: white;
     position: relative;
     border-radius: 2px;
-    box-shadow: 3px 3px 3px 0 #333;
 }
 
 header img {
@@ -363,18 +352,23 @@ header div ul li a {
 
 .berber {
     padding: 30px;
-    background-color: #302e2e;
+    background-color: #343a40;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
-    transform: scale(1.00);
+    transform: scale(0.95);
     box-shadow: 0;
     transition: 0.2s;
+    color: white;
+}
+
+.berber a {
+    color: white;
 }
 
 .berber:hover {
-    transform: scale(1.03);
+    transform: scale(0.97);
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
-    transition: 1s;
+    transition: .8s;
 }
 
 .berber-image {
@@ -401,47 +395,13 @@ header div ul li a {
     color: #FFF;
 }
 
-/**
- * MEDIA QUERIES
- */
-
-@media (max-width: 480px) {
-
-    header div {
-        position: absolute;
-        top: 50%;
-        left: 20px;
-        transform: translate(0, -50%);
-    }
-
-    header div h1 {
-        font-size: 16px !important;
-    }
-
-    header div ul li {
-        color: #f0f0f0;
-        font-size: 11px !important;
-    }
-
-    .berber-fullname {
-        font-size: 14px;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: bold;
-        color: #b2bec3;
-    }
-
-    .circle-lista {
-        margin: 5px 5px;
-    }
-
-    .berber {
-        padding: 5px;
-    }
-}
-
-
 header .carousel-caption {
     bottom: initial;
+}
+
+.footer-noticias {
+    position: absolute;
+    bottom: 0;
 }
 
 .nav-alert {
@@ -604,17 +564,6 @@ thead {
     transition: height 0.6s ease;
 }
 
-.encuesta-footer::after,
-.sorteo-footer::after {
-    background: #2E3647 none repeat scroll 0 0;
-    content: "";
-    display: block;
-    height: 2px;
-    margin: auto;
-    margin-top: 15px !important;
-    width: 100%;
-}
-
 .select-nota {
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -631,4 +580,54 @@ thead {
     height: 1px;
     background: #000;
     margin: auto;
+}
+
+.header-imagen {
+    padding: 50px;
+}
+
+/**
+ * MEDIA QUERIES
+ */
+
+@media (max-width: 480px) {
+
+    header div {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translate(0, -50%);
+    }
+
+    header div h1 {
+        font-size: 16px !important;
+    }
+
+    header div ul li {
+        color: #f0f0f0;
+        font-size: 11px !important;
+    }
+
+    .berber-fullname {
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: bold;
+        color: #b2bec3;
+    }
+
+    .circle-lista {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        line-height: 35px;
+        margin: 5px 5px;
+    }
+
+    .berber {
+        padding: 5px;
+    }
+
+    .header-imagen {
+        padding: 10px;
+    }
 }

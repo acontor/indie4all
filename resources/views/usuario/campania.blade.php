@@ -44,7 +44,7 @@
                                 <a class="btn btn-primary" href="{{ route('cm.campania.show', $campania->id) }}"><i class="fas fa-user-edit mt-1"></i></a>
                         @endif
                         @auth
-                            <button class="btn btn-primary participar ml-2">Participar</button>
+                            <button class="btn btn-primary participar ml-2"><i class="fab fa-paypal"></i></button>
                         @endauth
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
                         @if(Auth::user() && !Auth::user()->cm)
@@ -61,7 +61,7 @@
                         <li class="nav-item"><a class="nav-link" id="actualizaciones" href="">Actualizaciones</a></li>
                         <li class="nav-item"><a class="nav-link" id="foro" href="">Foro</a></li>
                         <li class="nav-item"><a class="nav-link" id="faq" href="">FAQ</a></li>
-                        <a class="nav-link" id="contacto" href="{{ route('usuario.desarrolladora.show', $campania->juego->desarrolladora_id) }}" target="_blank">Desarrolladora</a>
+                        <a class="btn btn-dark" id="contacto" href="{{ route('usuario.desarrolladora.show', $campania->juego->desarrolladora_id) }}">Desarrolladora</a>
                     </ul>
                 </div>
             </nav>
@@ -69,23 +69,23 @@
             <div class="row">
                 <div class="col-12 mt-4">
                     <div id="contenido">
-                        <div class="general shadow p-4">
+                        <div class="general berber p-4">
                             <h3>Contenido</h3>
                             {!! $campania->contenido !!}
                         </div>
-                        <div class="actualizaciones shadow p-4 d-none">
+                        <div class="actualizaciones mt-3 d-none">
                             @if ($campania->posts->count() != 0)
                                 <div class="items">
                                     @foreach ($campania->posts as $post)
-                                        <div>
-                                            <h4>{{ $post->titulo }} <small>{{$post->created_at}}</small></h4>
+                                        <div class="berber">
+                                            <h4>{{ $post->titulo }} <small class="float-right">{{$post->created_at}}</small></h4>
                                             @php
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
                                         </div>
                                     @endforeach
@@ -102,9 +102,8 @@
                             @endif
                         </div>
                         @auth
-                            <div class="foro shadow p-4 d-none">
+                            <div class="foro px-md-4 mt-3 d-none">
                                 @if(Auth::user()->compras->where('campania_id', $campania->id)->count() > 0)
-                                    <h3>Foro</h3>
                                     <textarea class="form-control" name="mensaje" id="editor"></textarea>
                                     <input type="hidden" name="id" value="{{ $campania->id }}">
                                     <button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button>
@@ -112,7 +111,7 @@
                                         @if ($campania->mensajes->count() != 0)
                                             <div class="items">
                                                 @foreach ($campania->mensajes as $mensaje)
-                                                    <div>
+                                                    <div class="berber">
                                                         <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small></h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
                                                         <p class="mensaje">{!! $mensaje->contenido !!}</p>
                                                     </div>
@@ -126,15 +125,15 @@
                                                 <div class="lastPage">&raquo;</div>
                                             </div>
                                         @else
-                                            <div class="mensaje mt-3">Aún no hay mensajes.. Sé el primero en participar!</div>
+                                            <div class="berber">Aún no hay mensajes.. Sé el primero en participar!</div>
                                         @endif
                                     </div>
                                 @else
-                                    <span class="text-danger">Participa en la campaña para poder acceder al foro</span>
+                                    <div class="berber">Participa en la campaña para poder acceder al foro</div>
                                 @endif
                             </div>
                         @endauth
-                        <div class="faq shadow p-4 d-none">
+                        <div class="faq berber p-4 d-none">
                             <h3>FAQ</h3>
                             {!! $campania->faq !!}
                         </div>
@@ -235,11 +234,11 @@
                     data: {
                         id: id,
                         mensaje: mensaje
-                    }, success: function(data) {
-                        if ($('.mensajes').children().text() == "Aún no hay mensajes.. Sé el primero en participar!") {
-                            $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                    }, success: function (data) {
+                        if ($('.mensajes').children().text() == "No hay ningún mensaje") {
+                            $('.mensaje').html(`<div class="berber">${data.autor}<p>${data.contenido}</p></div>`);
                         } else {
-                            $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                            $('.mensajes').append(`<div class="berber">${data.autor}<p>${data.contenido}</p></div>`);
                         }
                     }
                 });

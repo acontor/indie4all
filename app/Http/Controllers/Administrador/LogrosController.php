@@ -59,9 +59,9 @@ class LogrosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => ['required', 'string', 'max:255', 'unique:generos'],
-            'descripcion' => ['required', 'string', 'max:255', 'unique:generos'],
-            'icono' => ['required', 'string', 'max:255', 'unique:generos'],
+            'nombre' => ['required', 'string', 'max:255', 'unique:logros'],
+            'descripcion' => ['required', 'string', 'max:255', 'unique:logros'],
+            'icono' => ['required', 'string', 'max:255', 'unique:logros'],
         ]);
 
         $logro = Logro::create($request->all());

@@ -211,7 +211,7 @@
                                                 <td class="align-middle">{{ $post->titulo }}</td>
                                                 <td class="align-middle text-center">
                                                     <div class="btn-group">
-                                                        <form action="{{ route('cm.noticia.edit', $post->id) }}" method="post">
+                                                        <form action="{{ route('cm.noticia.edit', $post->id) }}" method="get">
                                                             @csrf
                                                             <button class="btn btn-primary btn-sm round mr-1" type="submit">
                                                                 <i class="far fa-edit"></i>

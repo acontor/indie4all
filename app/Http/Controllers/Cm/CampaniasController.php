@@ -65,12 +65,11 @@ class CampaniasController extends Controller
     {
         $request->validate([
             'meta' => 'required',
-            'fecha_fin' => 'required',
             'nombre' => 'required',
             'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
             'imagen_caratula' => ['mimes:png', 'dimensions:width=200,height=256'],
-            'fecha_lanzamiento' => 'required',
-            'precio' => 'required',
+            'fecha_fin' => 'required',
+            'aporte_minimo' => 'required',
             'genero_id' => 'required',
         ]);
 
@@ -85,8 +84,8 @@ class CampaniasController extends Controller
 
         $juego = Juego::create([
             'nombre' => $request->nombre,
-            'imagen_portada' => $imagenPortada,
-            'imagen_caratula' => $imagenCaratula,
+            'imagen_portada' => $imagenPortada ?? null,
+            'imagen_caratula' => $imagenCaratula ?? null,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
@@ -117,9 +116,8 @@ class CampaniasController extends Controller
             'nombre' => 'required',
             'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
             'imagen_caratula' => ['mimes:png', 'dimensions:width=200,height=256'],
-            'fecha_lanzamiento' => 'required',
-            'precio' => 'required',
             'genero_id' => 'required',
+            'aporte_minimo' => 'required',
         ]);
 
         $campania = Campania::find($id);
@@ -153,8 +151,8 @@ class CampaniasController extends Controller
 
         $juego->update([
             'nombre' => $request->nombre,
-            'imagen_portada' => $imagenPortada,
-            'imagen_caratula' => $imagenLogo,
+            'imagen_portada' => $imagenPortada ?? null,
+            'imagen_caratula' => $imagenLogo ?? null,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'genero_id' => $request->genero_id,
@@ -168,7 +166,6 @@ class CampaniasController extends Controller
 
     public function destroy($id)
     {
-        // Plantear softdelete
         $campania = Campania::find($id);
 
         $campania->delete();

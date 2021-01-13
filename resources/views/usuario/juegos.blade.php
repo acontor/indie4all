@@ -32,61 +32,66 @@
                 </div>
                 <div class="col-12 col-md-4 mx-auto">
                     <h3 class="text-uppercase font-weight-bold text-center">Destacados</h3>
-                    <div class="mt-4 text-center item">
-                        <a href="{{ route('usuario.juego.show', $juegos->first()->id) }}">
-                            @if ($juego->imagen_caratula != null)
-                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juegos->first()->nombre }}">
-                            @else
-                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juegos->first()->nombre }}">
-                            @endif
-                            <div class="carousel-caption mb-5 d-none">
-                                <h6>{{ $juegos->first()->nombre }}</h6>
-                                <small>
-                                    {{ $juegos->first()->desarrolladora->nombre }}
-                                    <br>
-                                    <span class="badge badge-danger">{{ $juegos->first()->genero->nombre }}</span>
-                                    <br>
-                                    {{ $juegos->first()->precio }} €
-                                </small>
-                            </div>
-                        </a>
-                    </div>
+                    @if($juegos->count() > 0)
+                        <div class="mt-4 text-center item">
+                            <a href="{{ route('usuario.juego.show', $juegos->first()->id) }}">
+                                @if ($juego->imagen_caratula != null)
+                                    <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juegos->first()->nombre }}">
+                                @else
+                                    <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juegos->first()->nombre }}">
+                                @endif
+                                <div class="carousel-caption mb-5 d-none">
+                                    <h6>{{ $juegos->first()->nombre }}</h6>
+                                    <small>
+                                        {{ $juegos->first()->desarrolladora->nombre }}
+                                        <br>
+                                        <span class="badge badge-danger">{{ $juegos->first()->genero->nombre }}</span>
+                                        <br>
+                                        {{ $juegos->first()->precio }} €
+                                    </small>
+                                </div>
+                            </a>
+                        </div>
+                    @else
+                        <span class="text-danger">No hay juegos destacados</span>
+                    @endisset
                 </div>
             </div>
             <hr class="mt-5 mb-5">
             <div class="row">
                 <div class="col-12 col-md-9">
-                    <div class="list-group shadow">
+                    <div class="list-group">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                            <a href="" id="noticias" class="list-group-item list-group-item-action list-buttons-2 bg-dark text-white">Últimas noticias</a>
-                            <a href="" id="analisis-div" class="list-group-item list-group-item-action list-buttons-2">Análisis</a>
+                            <a href="" id="noticias" class="list-group-item list-buttons-2 bg-dark text-white text-decoration-none">Últimas noticias</a>
+                            <a href="" id="analisis-div" class="list-group-item list-buttons-2 text-dark text-decoration-none">Análisis</a>
                         </ul>
                         <div class="list-group-item flex-column align-items-start listado-2 noticias">
                             <div class="items row mt-4">
                                 @if($posts->count() > 0)
                                     @foreach ($posts as $post)
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-6 berber">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             @php
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
-                                            <div class="footer-estados mt-3">
+                                            <div class="footer-noticias mt-3">
                                                 <small>{{ $post->created_at }}</small>
                                             </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    <p>No se han encontrado noticias</p>
+                                    <div class="col-12 berber">No se han encontrado noticias</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -101,30 +106,30 @@
                             <div class="items row mt-4">
                                 @if($analisis->count() > 0)
                                     @foreach ($analisis as $post)
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-6 berber">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Análisis</span>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             @php
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
                                             <div class="footer-noticias mt-3">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
-                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    <p>No se han encontrado análisis</p>
+                                    <div class="col-12 berber">No se han encontrado análisis</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -148,39 +153,51 @@
                         @php
                             $fechaHoy = date('Y-m-d');
                         @endphp
-                        @foreach ($juegos->where('fecha_lanzamiento', '<=', $fechaHoy)->sortByDesc('fecha_lanzamiento')->take(5) as $juego)
-                            <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado nuevos">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
-                                    <small>{{$juego->fecha_lanzamiento}}</small>
-                                </div>
-                                <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
-                                <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
-                                <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
-                            </a>
-                        @endforeach
-                        @foreach ($juegos->take(5) as $juego)
-                            <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none ventas">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
-                                    <small>{{$juego->fecha_lanzamiento}}</small>
-                                </div>
-                                <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
-                                <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
-                                <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
-                            </a>
-                        @endforeach
-                        @foreach ($juegos->where('fecha_lanzamiento', '>=', $fechaHoy)->sortBy('fecha_lanzamiento')->take(5) as $juego)
-                            <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none proximo">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
-                                    <small>{{$juego->fecha_lanzamiento}}</small>
-                                </div>
-                                <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
-                                <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
-                                <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
-                            </a>
-                        @endforeach
+                        @if ($juegos->where('fecha_lanzamiento', '<=', $fechaHoy)->count() > 0)
+                            @foreach ($juegos->where('fecha_lanzamiento', '<=', $fechaHoy)->sortByDesc('fecha_lanzamiento')->take(5) as $juego)
+                                <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado nuevos">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                        <small>{{$juego->fecha_lanzamiento}}</small>
+                                    </div>
+                                    <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="list-group-item">No hay recomendaciones</div>
+                        @endif
+                        @if ($juegos->count() > 0)
+                            @foreach ($juegos->take(5) as $juego)
+                                <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none ventas">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                        <small>{{$juego->fecha_lanzamiento}}</small>
+                                    </div>
+                                    <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="list-group-item">No hay recomendaciones</div>
+                        @endif
+                        @if ($juegos->where('fecha_lanzamiento', '>=', $fechaHoy)->count() > 0)
+                            @foreach ($juegos->where('fecha_lanzamiento', '>=', $fechaHoy)->sortBy('fecha_lanzamiento')->take(5) as $juego)
+                                <a href="{{route('usuario.juego.show', $juego->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado d-none proximo">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$juego->nombre}}</b></h6>
+                                        <small>{{$juego->fecha_lanzamiento}}</small>
+                                    </div>
+                                    <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
+                                    <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="list-group-item">No hay recomendaciones</div>
+                        @endif
                     </div>
                 </div>
             </div>

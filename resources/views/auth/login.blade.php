@@ -72,8 +72,8 @@
                                     <input type="password" name="password" class="form-control" required>
                                 </div>
                                 <div class="form-group last mb-4">
-                                    <label for="password-confirm">Repetir contraseña</label>
-                                    <input type="password" name="password-confirm" class="form-control" required>
+                                    <label for="password_confirmation">Repetir contraseña</label>
+                                    <input type="password" name="password_confirmation" class="form-control" required>
                                 </div>
                                 <div class="d-flex mb-4 align-items-center mt-4">
                                     <input type="submit" value="Registrar" class="btn btn-primary">

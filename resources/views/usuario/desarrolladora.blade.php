@@ -4,7 +4,7 @@
 @section("content")
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
-            <header>
+            <header class="header-imagen">
                 @if ($desarrolladora->imagen_portada != null)
                     <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $desarrolladora->imagen_portada) }}" alt="{{ $desarrolladora->nombre }}" style="filter: brightness(0.2)">
                 @else
@@ -19,10 +19,7 @@
                     <small>{{ $desarrolladora->telefono }}</small>
                 </div>
             </header>
-
-
-
-            <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3 px-md-5">
+            <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mt-md-0 mb-4 pt-3 pb-3 px-md-5">
                 <div class="navbar-nav float-right-sm">
                     <div class="d-flex">
                         @auth
@@ -33,25 +30,25 @@
                                     @if (Auth::user()->desarrolladoras->where('id', $desarrolladora->id)->count() == 0)
                                         <form action="{{ route('usuario.desarrolladora.follow', $desarrolladora->id) }}" method="post">
                                             @csrf
-                                            <button type="submit" class="btn text-primary"><i class="far fa-check-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-primary"><i class="far fa-check-circle"></i></button>
                                         </form>
                                     @else
                                         <form action="{{ route('usuario.desarrolladora.unfollow', $desarrolladora->id) }}"
                                             method="post">
                                             @csrf
-                                            <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-danger"><i class="far fa-times-circle"></i></button>
                                         </form>
                                         @if (Auth::user()->desarrolladoras->where('id', $desarrolladora->id)->first()->pivot->notificacion == 0)
                                             <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 1]) }}"
                                                 method="post">
                                                 @csrf
-                                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
+                                                <button type="submit" class="btn btn-light text-primary"><i class="far fa-bell"></i></button>
                                             </form>
                                         @else
                                             <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 0]) }}"
                                                 method="post">
                                                 @csrf
-                                                <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
+                                                <button type="submit" class="btn btn-light text-danger"><i class="far fa-bell-slash"></i></button>
                                             </form>
                                         @endif
                                     @endif
@@ -80,41 +77,38 @@
                     </ul>
                 </div>
             </nav>
-
-
-
             <div class="row">
-                <div class="col-md-9 mt-4">
+                <div class="col-md-9 px-3">
                     <div id="contenido">
-                        <div class="general shadow p-4">
+                        <div class="general berber mt-4">
                             {!! $desarrolladora->contenido !!}
                         </div>
-                        <div class="noticias shadow p-4 d-none">
+                        <div class="noticias px-4 d-none">
                             <div class="items row mt-4">
                                 @if($desarrolladora->posts->where('ban', 0)->count() > 0)
                                     @foreach ($desarrolladora->posts->where('ban', 0)->sortByDesc('created_at') as $post)
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 berber col-md-6">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             @php
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
-                                            <div class="footer-noticias mt-3">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.desarrolladora.show', $post->desarrolladora->id) }}">{{ $post->desarrolladora->nombre }}</a></small>
+                                            <div class="footer-noticias ">
+                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none" href="{{ route('usuario.desarrolladora.show', $post->desarrolladora->id) }}">{{ $post->desarrolladora->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
-                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    <p>No ha publicado ninguna noticia</p>
+                                    <div class="col-12 berber">No ha publicado ninguna noticia</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -125,131 +119,139 @@
                                 <div class="lastPage">&raquo;</div>
                             </div>
                         </div>
-                        <div class="sorteos shadow p-4 d-none">
-                            <div class="row">
+                        <div class="sorteos px-3 d-none">
+                            <div class="items row mt-4">
                                 @auth
-                                    @foreach ($desarrolladora->sorteos as $sorteo)
-                                        <div class="col-12 col-md-6">
-                                            <h4>{{ $sorteo->titulo }}</h4>
-                                            <p>{{ $sorteo->descripcion }}</p>
-                                            @isset($sorteo->user_id)
-                                                El sorteo ha finalizado.
-                                                Ganador: {{$sorteo->ganador->username}}
-                                            @else
-                                                <input type="hidden" name="id" value="{{ $sorteo->id }}">
-                                                @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
-                                                    Eres CM de ésta desarrolladora
-                                                @elseif(Auth::user()->ban)
-                                                    Tu cuenta está baneada
-                                                @elseif(Auth::user()->email_verified_at == null)
-                                                    Tu cuenta no está verificada
-                                                @elseif(Auth::user()->sorteos->where('id', $sorteo->id)->count() != 0)
-                                                    Ya has participado
+                                    @if ($desarrolladora->sorteos->count() > 0)
+                                        @foreach ($desarrolladora->sorteos as $sorteo)
+                                            <div class="col-12 col-md-6 berber">
+                                                <h4>{{ $sorteo->titulo }}</h4>
+                                                <p>{{ $sorteo->descripcion }}</p>
+                                                @isset($sorteo->user_id)
+                                                    El sorteo ha finalizado.
+                                                    Ganador: {{$sorteo->ganador->username}}
                                                 @else
-                                                    <div class="participar-sorteo-div">
-                                                        <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
-                                                    </div>
-                                                @endif
-                                            @endisset
-                                            <div class="sorteo-footer mt-3">
-                                                <small class="mb-4">Termina el {{ $sorteo->fecha_fin }}</small>
+                                                    <input type="hidden" name="id" value="{{ $sorteo->id }}">
+                                                    @if(Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
+                                                        Eres CM de ésta desarrolladora
+                                                    @elseif(Auth::user()->ban)
+                                                        Tu cuenta está baneada
+                                                    @elseif(Auth::user()->email_verified_at == null)
+                                                        Tu cuenta no está verificada
+                                                    @elseif(Auth::user()->sorteos->where('id', $sorteo->id)->count() != 0)
+                                                        Ya has participado
+                                                    @else
+                                                        <div class="participar-sorteo-div">
+                                                            <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
+                                                        </div>
+                                                    @endif
+                                                @endisset
+                                                <div class="sorteo-footer mt-3">
+                                                    <small class="mb-4">Termina el {{ $sorteo->fecha_fin }}</small>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    @else
+                                        <div class="col-12 berber">Aún no se han publicado sorteos.</div>
+                                    @endif
                                 @else
-                                    <div class="col-12">Tienes que registrarte para participar en los sorteos.</div>
+                                    <div class="col-12 berber">Tienes que registrarte para participar en los sorteos.</div>
                                 @endauth
                             </div>
                         </div>
-                        <div class="encuestas shadow p-4 d-none">
-                            <div class="row">
+                        <div class="encuestas px-3 d-none">
+                            <div class="items row mt-4">
                                 @auth
-                                    @foreach ($desarrolladora->encuestas as $encuesta)
-                                        <div class="col-12 col-md-6">
-                                            <h4>{{ $encuesta->pregunta }}</h4>
-                                            @if (Auth::user()->opciones->where('encuesta_id', $encuesta->id)->count() > 0 || Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
-                                                @php
-                                                    $total = 0
-                                                @endphp
-                                                @foreach ($encuesta->opciones as $opcion)
+                                    @if ($desarrolladora->encuestas->count() > 0)
+                                        @foreach ($desarrolladora->encuestas as $encuesta)
+                                            <div class="col-12 col-md-6 berber">
+                                                <h4 class="mb-4">{{ $encuesta->pregunta }}</h4>
+                                                @if (Auth::user()->opciones->where('encuesta_id', $encuesta->id)->count() > 0 || Auth::user()->cm && Auth::user()->cm->where('desarrolladora_id', $desarrolladora->id))
                                                     @php
-                                                        $total += $opcion->participantes->count()
+                                                        $total = 0
                                                     @endphp
-                                                @endforeach
-                                                @if($total == 0)
-                                                    Aún no hay participaciones
-                                                @else
-                                                    <div class="row mt-3">
-                                                        @foreach ($encuesta->opciones as $opcion)
-                                                            <div class="col-6-col-md-6 d-flex justify-content-center text-center">
-                                                                @php
-                                                                    $porcentaje = ($opcion->participantes->count() / $total) * 100;
-                                                                @endphp
-                                                                @if($opcion->participantes->where('id', Auth::id())->count() > 0)
-                                                                    <div class="row">
-                                                                        <div class="col-12 d-flex justify-content-center text-center">
-                                                                            <p class="font-weight-bold">{{$opcion->descripcion}}</p>
-                                                                        </div>
-                                                                        <div class="col-12">
-                                                                            <div class="progress progress-bar-vertical">
-                                                                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @else
-                                                                    <div class="row">
-                                                                        <div class="col-12 d-flex justify-content-center text-center">
-                                                                            <p class="font-weight-bold">{{$opcion->descripcion}}</p>
-                                                                        </div>
-                                                                        <div class="col-12">
-                                                                            <div class="progress progress-bar-vertical">
-                                                                                <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
-                                                        <div class="encuesta-info mt-3 ml-3">
-                                                            <span class="badge badge-danger">Opción escogida</span>
-                                                            <span class="badge badge-dark">Optras opciones</span>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            @else
-                                                <div class="opciones">
                                                     @foreach ($encuesta->opciones as $opcion)
-                                                        <label class="radio-button mod-label-below ">
-                                                            <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}" style="appearance: none;" />
-                                                            <div class="btn btn-dark">{{ $opcion->descripcion }}</div>
-                                                        </label>
+                                                        @php
+                                                            $total += $opcion->participantes->count()
+                                                        @endphp
                                                     @endforeach
-                                                </div>
-                                                <input type="hidden" name="id" value="{{ $encuesta->id }}">
-                                                @if(Auth::user()->ban)
-                                                    Tu cuenta está baneada
-                                                @elseif(Auth::user()->email_verified_at == null)
-                                                    Tu cuenta no está verificada
+                                                    @if($total == 0)
+                                                        Aún no hay participaciones
+                                                    @else
+                                                        <div class="row">
+                                                            @foreach ($encuesta->opciones as $opcion)
+                                                                <div class="col-6-col-md-6 d-flex justify-content-center text-center">
+                                                                    @php
+                                                                        $porcentaje = ($opcion->participantes->count() / $total) * 100;
+                                                                    @endphp
+                                                                    @if($opcion->participantes->where('id', Auth::id())->count() > 0)
+                                                                        <div class="row">
+                                                                            <div class="col-12 d-flex justify-content-center text-center">
+                                                                                <p class="font-weight-bold">{{$opcion->descripcion}}</p>
+                                                                            </div>
+                                                                            <div class="col-12">
+                                                                                <div class="progress progress-bar-vertical">
+                                                                                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @else
+                                                                        <div class="row">
+                                                                            <div class="col-12 d-flex justify-content-center text-center">
+                                                                                <p class="font-weight-bold">{{$opcion->descripcion}}</p>
+                                                                            </div>
+                                                                            <div class="col-12">
+                                                                                <div class="progress progress-bar-vertical">
+                                                                                    <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            @endforeach
+                                                            <div class="encuesta-info mt-3 ml-3">
+                                                                <span class="badge badge-danger">Opción escogida</span>
+                                                                <span class="badge badge-light">Optras opciones</span>
+                                                            </div>
+                                                        </div>
+                                                    @endif
                                                 @else
-                                                    <div class="participar-encuesta-div">
-                                                        <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
+                                                    <div class="opciones">
+                                                        @foreach ($encuesta->opciones as $opcion)
+                                                            <label class="radio-button mod-label-below ">
+                                                                <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}" style="appearance: none;" />
+                                                                <div class="btn btn-light font-weight-bold">{{ $opcion->descripcion }}</div>
+                                                            </label>
+                                                        @endforeach
                                                     </div>
+                                                    <input type="hidden" name="id" value="{{ $encuesta->id }}">
+                                                    @if(Auth::user()->ban)
+                                                        Tu cuenta está baneada
+                                                    @elseif(Auth::user()->email_verified_at == null)
+                                                        Tu cuenta no está verificada
+                                                    @else
+                                                        <div class="participar-encuesta-div mt-4">
+                                                            <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
+                                                        </div>
+                                                    @endif
                                                 @endif
-                                            @endif
-                                            <div class="encuesta-footer mt-3">
-                                                <small class="mb-4">Termina el {{ $encuesta->fecha_fin }}</small>
+                                                <div class="encuesta-footer mt-3">
+                                                    <small class="mb-4">Termina el {{ $encuesta->fecha_fin }}</small>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    @else
+                                        <div class="col-12 berber">Aún no se han publicado encuestas.</div>
+                                    @endif
                                 @else
-                                    <div class="col-12">Tienes que registrarte para participar en las encuestas.</div>
+                                    <div class="col-12 berber">Tienes que registrarte para participar en las encuestas.</div>
                                 @endauth
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 mt-4 pr-3 pr-md-4">
-                    @if($desarrolladora->juegos()->has('campania')->where('ban', 0)->count() > 0)
+                    @if($desarrolladora->juegos()->doesnthave('campania')->where('ban', 0)->count() > 0)
                         <h4>Juegos</h4>
                         <hr>
                         <div class="owl-carousel owl-theme juegos">
@@ -257,8 +259,11 @@
                                 @empty($juego->campania)
                                     <div class="item">
                                         <a href="{{ route('usuario.juego.show', $juego->id) }}">
-                                            <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                                alt="{{ $juego->nombre }}">
+                                            @if ($juego->imagen_caratula != null)
+                                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_caratula) }}" alt="{{ $juego->nombre }}">
+                                            @else
+                                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juego->nombre }}">
+                                            @endif
                                             <div class="carousel-caption d-none">
                                                 <h6>{{ $juego->nombre }}</h6>
                                                 <small>
