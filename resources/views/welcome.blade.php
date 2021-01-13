@@ -174,20 +174,24 @@
                             $fechaHoy = date('Y-m-d');
                         @endphp
                         @foreach ($masters->sortByDesc('created_at') as $master)
-                            <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado-masters nuevos-masters">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1"><b>{{$master->nombre}}</b></h6>
-                                    <small>{{$master->created_at}}</small>
-                                </div>
-                            </a>
+                            @if ($master->usuario->ban != 1)
+                                <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado-masters nuevos-masters">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$master->nombre}}</b></h6>
+                                        <small>{{$master->created_at}}</small>
+                                    </div>
+                                </a>
+                            @endif
                         @endforeach
                         @foreach ($masters as $master)
-                            <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado-masters tops-masters d-none">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1"><b>{{$master->nombre}}</b></h6>
-                                    <small>{{$master->created_at}}</small>
-                                </div>
-                            </a>
+                            @if ($master->usuario->ban != 1)
+                                <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado-masters tops-masters d-none">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$master->nombre}}</b></h6>
+                                        <small>{{$master->created_at}}</small>
+                                    </div>
+                                </a>
+                            @endif
                         @endforeach
                     </div>
                 </div>

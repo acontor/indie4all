@@ -81,6 +81,7 @@ class JuegosController extends Controller
             ->where('genero_id', $juego->genero_id)
             ->where('ban', 0)
             ->orWhere('desarrolladora_id', $juego->desarrolladora_id)
+            ->doesnthave('campania')
             ->where('id', '!=', $juego->id)
             ->where('ban', 0)
             ->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();

@@ -138,7 +138,7 @@ class PaymentController extends Controller
                 Mail::to($user->email)->send(new CompraRealizada($clave, $user->name, $mensaje));
 
                 $user = User::find(Auth::id());
-                $user->juegos()->attach([$id => ['notificacion' => false]]);
+                $user->juegos()->sync([$id => ['notificacion' => false]]);
 
                 event(new FollowListener($user));
 

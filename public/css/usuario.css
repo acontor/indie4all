@@ -585,6 +585,11 @@ thead {
     padding: 50px;
 }
 
+.list-group-item {
+    border: 0 !important;
+    border-top: 1px solid rgba(0,0,0,.125) !important;
+}
+
 /**
  * MEDIA QUERIES
  */

@@ -212,7 +212,7 @@
                                                                             </div>
                                                                             <div class="col-12">
                                                                                 <div class="progress progress-bar-vertical">
-                                                                                    <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
+                                                                                    <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -221,14 +221,14 @@
                                                             @endforeach
                                                             <div class="encuesta-info mt-3 ml-3">
                                                                 <span class="badge badge-danger">Opción escogida</span>
-                                                                <span class="badge badge-light">Optras opciones</span>
+                                                                <span class="badge badge-primary">Otras opciones</span>
                                                             </div>
                                                         </div>
                                                     @endif
                                                 @else
                                                     <div class="opciones">
                                                         @foreach ($encuesta->opciones as $opcion)
-                                                            <label class="radio-button mod-label-below ">
+                                                            <label class="radio-button mod-label-below">
                                                                 <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}" style="appearance: none;" />
                                                                 <div class="btn btn-light font-weight-bold pop-info"
                                                                 data-content="Haz click aquí para escoger esta opcion" rel="popover" data-placement="bottom" data-trigger="hover">{{ $opcion->descripcion }}</div>
@@ -359,6 +359,11 @@
 
             crearOwl($('.owl-carousel.campanias'), false, 2, 2, 2);
 
+            $('.mod-label-below').on('click', function() {
+                $('.mod-label-below').children().removeClass('btn-primary').addClass('btn-light');
+                $(this).children().removeClass('btn-light').addClass('btn-primary');
+            });
+
             $(".participar-encuesta").on('click', function (e) {
                 e.preventDefault();
                 let encuesta = $(this).parent().prev().val();
@@ -384,13 +389,18 @@
                                 data: {
                                     opcion: opcion,
                                 },
-                                success: function (data) {
-                                    $(".participar-encuesta-div").html("Ya has participado.");
+                                success: function () {
+                                    $(".participar-encuesta-div").html("Gracias por participar");
+                                    notificacionEstado('success', 'Participación registrada')
+                                },
+                                error: function () {
+                                    notificacionEstado('error', 'No ha podido participar')
                                 }
                             });
                         }
                     }
                 });
+                $('.opciones').remove();
             });
 
             $(".participar-sorteo").on('click', function (e) {
@@ -417,8 +427,12 @@
                                 data: {
                                     id: id,
                                 },
-                                success: function (data) {
-                                    $(".participar-sorteo-div").html("Ya has participado.");
+                                success: function () {
+                                    $(".participar-sorteo-div").html("Participación registrada");
+                                    notificacionEstado('success', 'Participación registrada')
+                                },
+                                error: function () {
+                                    notificacionEstado('error', 'No ha podido participar')
                                 }
                             });
                         }

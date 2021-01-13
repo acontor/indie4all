@@ -127,7 +127,7 @@ class DesarrolladorasController extends Controller
     {
         $user = User::find(Auth::id());
 
-        $user->opciones()->attach([$request->opcion => ['opcion_id' => $request->opcion]]);
+        $user->opciones()->sync([$request->opcion => ['opcion_id' => $request->opcion]], false);
 
         event(new EncuestaListener($user));
     }

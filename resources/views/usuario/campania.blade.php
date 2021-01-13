@@ -26,7 +26,7 @@
                         </li>
                         <li class="list-group-item">
                             <h5>GÉNERO</h5>
-                           <a href="/juegos/lista/{{$campania->juego->genero->id}}" class="pop-info"
+                            <a href="/juegos/lista/{{$campania->juego->genero->id}}" class="pop-info"
                             data-content="Haz click aquí para ver todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover"> <small>{{ $campania->juego->genero->nombre }}</small></a>
                         </li>
                         <li class="list-group-item">
@@ -110,7 +110,7 @@
                         </div>
                         @auth
                             <div class="foro px-md-4 mt-3 d-none">
-                                @if(Auth::user()->compras->where('campania_id', $campania->id)->count() > 0 || Auth::user()->administrador)
+                                @if(Auth::user()->compras->where('campania_id', $campania->id)->count() > 0 || Auth::user()->administrador || Auth::user()->cm && Auth::user()->cm->desarrolladora_id == $campania->juego->desarrolladora_id)
                                     <textarea class="form-control" name="mensaje" id="editor"></textarea>
                                     <input type="hidden" name="id" value="{{ $campania->id }}">
                                     <button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button>
