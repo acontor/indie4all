@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Models\Campania;
+use App\Models\Compra;
 use App\Models\Desarrolladora;
 use App\Models\Juego;
 use App\Models\Master;
@@ -22,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null], ['campania_id', null]])->get();
+        $noticias = Post::where([['desarrolladora_id', null], ['juego_id', null], ['master_id', null], ['campania_id', null]])->where('titulo', '!=', null)->orderByDesc('destacado')->orderByDesc('created_at')->get();
 
         $juegos = Juego::doesnthave('campania')->where('ban', 0)->take(3)->get();
         $juegosVentas = Juego::withCount(['compras' => function (Builder $query) {
@@ -64,10 +65,7 @@ class HomeController extends Controller
 
         $juegos = Juego::doesntHave('campania')->where('ban', 0)->whereIn('id', $juegos_id)->get();
 
-        $campanias = Auth::user()->compras->has('campania');
-
-
-
+        $compras = Compra::has('campania')->where('user_id', Auth::id())->take(3)->get();
 
         $desarrolladoras = Auth::user()->desarrolladoras->where('ban', 0);
 
@@ -89,14 +87,14 @@ class HomeController extends Controller
             }
         }
 
-        $posts = Post::whereIn('desarrolladora_id', $desarrolladoras)
-            ->orwhereIn('master_id', $masters)
-            ->orwhereIn('juego_id', $juegos)
+        $posts = Post::whereIn('desarrolladora_id', $desarrolladoras_id)
+            ->orwhereIn('master_id', $masters_id)
+            ->orwhereIn('juego_id', $juegos_id)
             ->orderByDesc('created_at')
             ->where('ban', 0)
             ->get();
 
-        return view('usuario.home', ['juegos' => $juegos, 'campanias' => $campanias, 'posts' => $posts]);
+        return view('usuario.home', ['juegos' => $juegos, 'compras' => $compras, 'posts' => $posts]);
     }
 
     public function busqueda(Request $request)

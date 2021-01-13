@@ -23,17 +23,19 @@
                 @csrf
                 <div class="form-group">
                     <label>Título</label>
-                    <input type="text" class="form-control" name="titulo" value="@if(isset($noticia)) {{ $noticia->titulo }} @endif" />
+                    <input type="text" class="form-control" name="titulo" value="@isset($noticia) {{ $noticia->titulo }} @endisset" />
                 </div>
                 <div class="form-group">
                     <label>Contenido</label>
                     <textarea class="form-control" name="contenido" id="editor">
-                        @if(isset($noticia))
+                        @isset($noticia)
                             {{ $noticia->contenido }}
-                        @endif
+                        @else
+                            {{ App\Models\Post::where('titulo',null)->where('master_id', null)->first()->contenido }}
+                        @endisset
                     </textarea>
                 </div>
-                <button type="submit" class="btn btn-success">@if(isset($noticia)) Editar @else Crear @endif</button>
+                <button type="submit" class="btn btn-success">@isset($noticia) Editar @else Crear @endisset</button>
             </form>
         </div>
     </div>

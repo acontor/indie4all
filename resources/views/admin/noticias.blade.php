@@ -25,22 +25,45 @@
                             <tbody>
                                 @foreach ($noticias as $noticia)
                                     <tr>
-                                        <td class="align-middle">{{ $noticia->titulo }}</td>
+                                        <td class="align-middle">
+                                            @if ($noticia->titulo != '')
+                                                {{ $noticia->titulo }}
+                                            @else
+                                                Mensaje de ayuda para los usuarios
+                                            @endif
+                                        </td>
                                         <td class="align-middle text-center">
                                             <div class="btn-group">
+                                                @if($noticia->titulo != '')
+                                                    <form action="{{ route('admin.noticias.destacar', $noticia->id) }}" method="post">
+                                                        @method("PATCH")
+                                                        @csrf
+                                                        @if($noticia->destacado)
+                                                            <button class="btn btn-warning btn-sm round" type="submit">
+                                                                <i class="far fa-star"></i>
+                                                            </button>
+                                                        @else
+                                                            <button class="btn btn-success btn-sm round" type="submit">
+                                                                <i class="far fa-star"></i>
+                                                            </button>
+                                                        @endif
+                                                    </form>
+                                                @endif
                                                 <form action="{{ route('admin.noticias.edit', $noticia->id) }}" method="get">
                                                     @csrf
-                                                    <button class="btn btn-primary btn-sm round mr-1" type="submit">
+                                                    <button class="btn btn-primary btn-sm round mr-1 ml-1" type="submit">
                                                         <i class="far fa-edit"></i>
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('admin.noticias.destroy', $noticia->id) }}" method="post">
-                                                    @csrf
-                                                    @method("DELETE")
-                                                    <button class="btn btn-danger btn-sm round ml-1" type="submit">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
+                                                @if($noticia->titulo != '')
+                                                    <form action="{{ route('admin.noticias.destroy', $noticia->id) }}" method="post">
+                                                        @csrf
+                                                        @method("DELETE")
+                                                        <button class="btn btn-danger btn-sm round ml-1" type="submit">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

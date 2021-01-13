@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UsuariosSeeder::class,
-            DesarrolladorasSeeder::class,
+           /*  DesarrolladorasSeeder::class,
             GenerosSeeder::class,
             JuegosSeeder::class,
             LogrosSeeder::class,
             GeneroUsuarioSeeder::class,
             JuegoUsuarioSeeder::class,
-            PostsSeeders::class,
+            PostsSeeders::class, */
         ]);
     }
 }

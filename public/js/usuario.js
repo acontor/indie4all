@@ -149,7 +149,7 @@ $(function () {
      * PAGINGA NOTICIAS
      */
 
-    $(".noticias, .actualizaciones, .mensajes, .analisis-div, .estados").paginga({
+    $(".noticias, .actualizaciones, .mensajes, .analisis-div, .estados, .masters, .desarrolladoras, .juegos").paginga({
         maxPageNumbers: 3,
         itemsPerPage: 6
     });
@@ -174,8 +174,8 @@ $(function () {
         e.preventDefault();
         let item = $(this).attr('id');
         if (!$(this).hasClass('bg-dark')) {
-            $('.list-buttons').removeClass('bg-dark text-white');
-            $(this).addClass('bg-dark text-white');
+            $('.list-buttons').removeClass('bg-dark text-white').addClass('text-dark');
+            $(this).addClass('bg-dark text-white').removeClass('text-dark');
         }
         $('.listado').addClass('d-none');
         $('.' + item).removeClass('d-none');
@@ -185,8 +185,8 @@ $(function () {
         e.preventDefault();
         let item = $(this).attr('id');
         if (!$(this).hasClass('bg-dark')) {
-            $('.list-buttons-2').removeClass('bg-dark text-white');
-            $(this).addClass('bg-dark text-white');
+            $('.list-buttons-2').removeClass('bg-dark text-white').addClass('text-dark');
+            $(this).addClass('bg-dark text-white').removeClass('text-dark');
         }
         $('.listado-2').addClass('d-none');
         $('.' + item).removeClass('d-none');
@@ -257,7 +257,7 @@ function more(url, id, config, checkUser) {
             if ((data.post.juego_id != null || data.post.master_id != null || data.post.desarrolladora_id != null || data.post.campania_id != null) && checkUser) {
                 report = `<input id="idPost" type="hidden" value="${data.post.id}"><button class="btn btn-danger btn-sm mr-1 float-right" id='reportePost'><i class="fas fa-exclamation-triangle"></i></button>`;
             }
-            let html = `<div class='post text-justify'><h3 class="d-inline">${data.post.titulo}</h3><button class="btn btn-dark btn-sm float-right volver">Volver</button>${report}<div class="contenido-post mt-4 mb-4">${data.post.contenido}</p></div>`;
+            let html = `<div class='post text-justify'><h3 class="d-inline">${data.post.titulo}</h3><button class="btn btn-dark btn-sm float-right volver">Volver</button>${report}<div class="contenido-post m-4 p-4">${data.post.contenido}</p></div>`;
             if (checkUser) {
                 html += `<textarea class="form-control" name="mensaje" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button><h4>Comentarios</h4><div class="mensajes">`;
                 if (data.mensajes.length > 0) {
@@ -268,7 +268,7 @@ function more(url, id, config, checkUser) {
                                 logros += `<i class="${logro.icono} ml-2"></i>`;
                             }
                         });
-                        html += `<div class="alert alert-dark" role="alert">${element.name}${logros} <small>${element.created_at}</small><input type="hidden" value="${element.id}"><a name="${element.id}asd" class="text-danger float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p></div>`;
+                        html += `<div class="berber">${element.name}${logros}<input type="hidden" value="${element.id}"><a name="${element.id}" class="btn btn-danger btn-sm text-white float-right"><i class="fas fa-exclamation-triangle" name='reportarMensaje'></i></a><p>${element.contenido}</p><small> ${element.created_at}</small></div>`;
                     });
                 } else {
                     html += '<div class="mensaje mt-3">No hay ningún mensaje</div>';
@@ -305,9 +305,9 @@ function more(url, id, config, checkUser) {
                     },
                     success: function (data) {
                         if ($('.mensajes').children().text() == "No hay ningún mensaje") {
-                            $('.mensaje').html(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                            $('.mensaje').html(`<div class="berber">${data.autor}<p>${data.contenido}</p></div>`);
                         } else {
-                            $('.mensajes').append(`<div class="alert alert-dark" role="alert">${data.autor} <small>${data.created_at}</small><p>${data.contenido}</p></div>`);
+                            $('.mensajes').append(`<div class="berber">${data.autor}<p>${data.contenido}</p></div>`);
                         }
                     }
                 });

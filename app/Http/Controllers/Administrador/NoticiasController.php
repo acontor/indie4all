@@ -51,8 +51,8 @@ class NoticiasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo' => ['required', 'max:255'],
-            'contenido' => ['required', 'max:255'],
+            'titulo' => ['max:255'],
+            'contenido' => 'required',
         ]);
 
         $post = Post::create([
@@ -92,8 +92,8 @@ class NoticiasController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'titulo' => ['required', 'max:255'],
-            'contenido' => ['required', 'max:255'],
+            'titulo' => ['max:255'],
+            'contenido' => 'required',
         ]);
 
         Post::find($id)->update([
@@ -147,5 +147,27 @@ class NoticiasController extends Controller
             @header('Content-type: text/html; charset=utf-8');
             echo $respuesta;
         }
+    }
+
+    public function destacar(Request $request)
+    {
+
+        $post = Post::find($request->id);
+
+        $destacado = $post->destacado == 1 ? 0 : 1;
+
+        if($destacado) {
+            Post::where('destacado', 1)->update([
+                'destacado' => 0,
+            ]);
+        }
+
+        $post->update([
+            'destacado' => $destacado,
+        ]);
+
+        session()->flash('success', 'La noticia se ha actualizado');
+
+        return redirect('/admin/noticias');
     }
 }

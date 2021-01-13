@@ -9,8 +9,8 @@ use App\Models\Cm;
 use App\Models\Desarrolladora;
 use App\Models\Genero;
 use App\Models\Juego;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class JuegosController extends Controller
@@ -78,8 +78,8 @@ class JuegosController extends Controller
 
         $juego = Juego::create([
             'nombre' => $request->nombre,
-            'imagen_portada' => $imagenPortada,
-            'imagen_caratula' => $imagenCaratula,
+            'imagen_portada' => $imagenPortada ?? null,
+            'imagen_caratula' => $imagenCaratula ?? null,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,

@@ -29,7 +29,7 @@
             <hr class="mt-5 mb-5">
             <div class="row">
                 <div class="col-12 col-md-9">
-                    <div class="list-group shadow">
+                    <div class="list-group">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
                             <li class="list-group-item bg-dark text-white">Últimas noticias</li>
                         </ul>
@@ -37,28 +37,28 @@
                             <div class="items row mt-4">
                                 @if($posts->count() > 0)
                                     @foreach ($posts->sortByDesc('created_at') as $post)
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-6 berber">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             @php
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
-                                            <div class="footer-noticias mt-3">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.desarrolladora.show', $post->desarrolladora->id) }}">{{ $post->desarrolladora->nombre }}</a></small>
+                                            <div class="footer-noticias">
+                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none" href="{{ route('usuario.desarrolladora.show', $post->desarrolladora->id) }}">{{ $post->desarrolladora->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
-                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    <p>No se han encontrado noticias</p>
+                                    <div class="col-12 berber">No se han encontrado noticias</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -77,14 +77,18 @@
                             <li class="list-group-item w-100 bg-dark text-white">Nuevo</li>
                             <a href="/desarrolladoras/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
                         </ul>
-                        @foreach ($desarrolladoras->sortByDesc('created_at')->take(5) as $desarrolladora)
-                            <a href="{{route('usuario.desarrolladora.show', $desarrolladora->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1"><b>{{$desarrolladora->nombre}}</b></h6>
-                                    <small>{{$desarrolladora->created_at}}</small>
-                                </div>
-                            </a>
-                        @endforeach
+                        @if ($desarrolladoras->count() > 0)
+                            @foreach ($desarrolladoras->sortByDesc('created_at')->take(5) as $desarrolladora)
+                                <a href="{{route('usuario.desarrolladora.show', $desarrolladora->id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$desarrolladora->nombre}}</b></h6>
+                                        <small>{{$desarrolladora->created_at}}</small>
+                                    </div>
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="list-group-item">No hay recomendaciones</div>
+                        @endif
                     </div>
                 </div>
             </div>

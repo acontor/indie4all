@@ -9,27 +9,27 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar2">
-        <ul class="navbar-nav mx-auto text-md-center text-left">
-            <li class="nav-item">
+        <ul class="navbar-nav mx-auto ml-auto text-md-center text-left align-items-center font-weight-bold">
+            <li class="nav-item h-100">
                 <a href="{{ url('/') }}" class="nav-link navbar-brand mx-0 d-none d-md-inline">
                     <img src="{{ asset('images/logo.png') }}" class="img-fluid" width="50" alt="">
                 </a>
             </li>
             @auth
-                <li class="nav-item mt-1">
+                <li class="nav-item mt-1 h-100">
                     <a class="nav-link" href="{{ route('home') }}">Portal</a>
                 </li>
             @endauth
-            <li class="nav-item mt-1">
+            <li class="nav-item mt-1 h-100">
                 <a class="nav-link" href="{{ route('usuario.masters.index') }}">Masters</a>
             </li>
-            <li class="nav-item mt-1">
+            <li class="nav-item mt-1 h-100">
                 <a class="nav-link" href="{{ route('usuario.desarrolladoras.index') }}">Desarrolladoras</a>
             </li>
-            <li class="nav-item mt-1">
+            <li class="nav-item mt-1 h-100">
                 <a class="nav-link" href="{{ route('usuario.juegos.index') }}">Juegos</a>
             </li>
-            <li class="nav-item mt-1">
+            <li class="nav-item mt-1 h-100">
                 <a class="nav-link" href="{{ route('usuario.campanias.all') }}">Campañas</a>
             </li>
         </ul>
@@ -62,7 +62,7 @@
                             </a>
                         @endif
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            {{ __("Logout") }}
+                            Cerrar sesión
                         </a>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

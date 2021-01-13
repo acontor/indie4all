@@ -9,7 +9,7 @@
 
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
-            <header>
+            <header class="header-imagen">
                 @if ($juego->imagen_portada != null)
                     <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $juego->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_portada) }}" alt="{{ $juego->nombre }}" style="filter: brightness(0.2)">
                 @else
@@ -21,9 +21,8 @@
                     <a class="nav-link mb-0" href="/juegos/lista/{{$juego->genero->id}}"><small class="badge badge-danger">{{ $juego->genero->nombre }}</small></a>
                 </div>
             </header>
-
             <div class="row mb-5">
-                <div class="col-12 col-md-3 offset-md-2 p-4 mt-5">
+                <div class="col-12 col-md-3 offset-md-2 p-4">
                     <div class="shadow p-4">
                         <h3 class="text-center">Usuarios</h3>
                         <div class="circle mx-auto nota-usuarios">
@@ -50,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-3 offset-md-2 p-4 mt-5">
+                <div class="col-12 col-md-3 offset-md-2 p-4">
                     <div class="shadow p-4">
                         <h3 class="text-center">Masters</h3>
                         <div class="circle mx-auto">
@@ -127,52 +126,58 @@
             </nav>
 
             <div class="row">
-                <div class="col-12 col-md-9 mt-4">
+                <div class="col-md-9 px-3">
                     <div id="contenido">
-                        <div class="general shadow p-4">
-                            <h2>General</h2>
+                        <div class="general berber mt-4">
                             {!! $juego->contenido !!}
                         </div>
-                        <div class="comprar shadow p-4 d-none">
-                            <h2>Comprar</h2>
+                        <div class="comprar px-4 mt-4 berber d-none">
                             @auth
-                            <form action="{{ route('usuario.paypal.pagar') }}" method="post">
-                                @csrf
-                                @method('POST')
-                                <p>Stock: {{$juego->claves->count()}}</p>
-                                <p>El precio es de {{ $juego->precio }}</p>
-                                @if($juego->claves->count() > 0)
-                                <input type="hidden" name="tipo" value="0" />
-                                <input type="hidden" name="precio" value="{{ $juego->precio }}">
-                                <input type="hidden" name="juegoId" value="{{ $juego->id }}">
-                                <button type="submit" class="btn btn-primary"> Pagar con Paypal</button>
-                                @else
-                                <p class="text-danger">No hay stock en estos momentos</p>
-                                @endif
-                            </form>
+                                <form action="{{ route('usuario.paypal.pagar') }}" method="post">
+                                    @csrf
+                                    @method('POST')
+                                    <p>Stock: {{$juego->claves->count()}}</p>
+                                    <p>El precio es de {{ $juego->precio }} €</p>
+                                    @if($juego->claves->count() > 0)
+                                    <input type="hidden" name="tipo" value="0" />
+                                    <input type="hidden" name="precio" value="{{ $juego->precio }}">
+                                    <input type="hidden" name="juegoId" value="{{ $juego->id }}">
+                                    <button type="submit" class="btn btn-primary"><i class="fab fa-paypal"></i></button>
+                                    @else
+                                    <p class="text-danger">No hay stock en estos momentos</p>
+                                    @endif
+                                </form>
                             @else
-                            <p>Tienes que estar registrado para comprar.</p>
+                                <div class="col-12 berber">Tienes que estar registrado para comprar</div>
                             @endauth
                         </div>
-                        <div class="noticias shadow p-4 d-none">
-                            <h2>Noticias</h2>
-                            <div class="items">
-                                @if ($juego->posts->where('master_id', null)->where('ban', 0)->count() != 0)
-                                    @foreach ($juego->posts->where('master_id', null)->where('ban', 0)->sortByDesc('created_at') as $post)
-                                        <div>
-                                            <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
+                        <div class="noticias px-4 d-none">
+                            <div class="items row mt-4">
+                                @if($juego->posts->where('ban', 0)->where('master_id', null)->count() > 0)
+                                    @foreach ($juego->posts->where('ban', 0)->where('master_id', null)->sortByDesc('created_at') as $post)
+                                        <div class="col-12 col-md-6 berber">
+                                            <div class="pildoras mb-3">
+                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-primary text-white">Noticia</span>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
+                                            </div>
+                                            <h4>{{ $post->titulo }}</h4>
                                             @php
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
+                                            <div class="footer-noticias mt-3">
+                                                <small>{{ $post->created_at }}</small>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    Aún no ha publicado ninguna actualización.
+                                    <div class="col-12 berber">No ha publicado ninguna noticia</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -183,25 +188,34 @@
                                 <div class="lastPage">&raquo;</div>
                             </div>
                         </div>
-                        <div class="analisis-div shadow p-4 d-none">
-                            <h2>Análisis</h2>
-                            <div class="items">
+                        <div class="analisis-div px-4 d-none">
+                            <div class="items row mt-4">
                                 @if ($analisis->count() != 0)
                                     @foreach ($analisis as $post)
-                                        <div>
-                                            <h4>{{ $post->titulo }} <small>{{ $post->created_at }}</small></h4>
+                                        <div class="col-12 col-md-6 berber">
+                                            <div class="pildoras mb-3">
+                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-primary text-white">Análisis</span>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
+                                            </div>
+                                            <h4>{{ $post->titulo }}</h4>
                                             @php
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
+                                            <div class="footer-noticias mt-3">
+                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small>{{ $post->created_at }}</small>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    Aún no se han publicado análisis del juego.
+                                    <div class="col-12 berber">No se ha publicado ningún análisis del juego</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -215,12 +229,13 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-3 mt-4">
-                        <nav class="sticky-top bg-transparent">
-                            <div class="list-group shadow">
-                                <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                                    <li class="list-group-item list-buttons">Recomendados</a>
-                                </ul>
-                                <a href="/juegos/lista" class="btn btn-danger rounded-0">Ver todos</a>
+                    <nav class="bg-transparent">
+                        <div class="list-group shadow">
+                            <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
+                                <li class="list-group-item list-buttons bg-dark text-light">Recomendados</a>
+                            </ul>
+                            <a href="/juegos/lista" class="btn btn-danger rounded-0">Ver todos</a>
+                            @if ($recomendados->count() > 0)
                                 @foreach ($recomendados->take('5') as $recomendado)
                                     <a href="{{route('usuario.juego.show', $recomendado->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado nuevos">
                                         <div class="d-flex w-100 justify-content-between">
@@ -232,8 +247,11 @@
                                         <small class="badge badge-danger badge-pill mt-2">{{$recomendado->genero->nombre}}</small>
                                     </a>
                                 @endforeach
-                            </div>
-                        </nav>
+                            @else
+                                <div class="list-group-item">No hay recomendaciones</div>
+                            @endif
+                        </div>
+                    </nav>
                 </div>
             </div>
             <div class="more-div container bg-light p-5 shadow-lg rounded mt-4"></div>

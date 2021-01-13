@@ -27,7 +27,8 @@ class MasterController extends Controller
             $query->where('posts.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('posts.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
         }])->join('users', 'users.id', '=', 'masters.user_id')->where('users.ban', 0)->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        $posts = Post::where('master_id', '!=', null)
+        $posts = Post::select('posts.*')
+            ->where('master_id', '!=', null)
             ->join('masters', 'masters.id', '=', 'posts.master_id')
             ->join('users', 'users.id', '=', 'masters.user_id')
             ->where('posts.ban', 0)

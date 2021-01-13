@@ -37,6 +37,7 @@ Route::post('/admin/noticia/nueva', [App\Http\Controllers\Administrador\Noticias
 Route::get('/admin/noticia/{id}/edit', [App\Http\Controllers\Administrador\NoticiasController::class, 'edit'])->name('admin.noticias.edit');
 Route::patch('/admin/noticia/{id}/update', [App\Http\Controllers\Administrador\NoticiasController::class, 'update'])->name('admin.noticias.update');
 Route::delete('/admin/noticia/{id}/delete', [App\Http\Controllers\Administrador\NoticiasController::class, 'destroy'])->name('admin.noticias.destroy');
+Route::patch('/admin/noticia/{id}/destacar', [App\Http\Controllers\Administrador\NoticiasController::class, 'destacar'])->name('admin.noticias.destacar');
 
 // Usuarios
 Route::get('/admin/usuarios', [App\Http\Controllers\Administrador\UsuariosController::class, 'index'])->name('admin.usuarios.index');

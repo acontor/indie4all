@@ -3,18 +3,18 @@
 @section("content")
     <main class="p-3 pb-5">
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
-            <header>
+            <header class="header-imagen">
                 @if ($master->imagen_portada != null)
-                    <img class="img-fluid shadow" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}" alt="{{ $master->nombre }}" style="filter: brightness(0.2)">
+                    <img class="img-fluid" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}" alt="{{ $desarrolladora->nombre }}" style="filter: brightness(0.2)">
                 @else
-                    <img class="img-fluid shadow" src="{{ asset('/images/masters/default-portada.png') }}" alt="{{ $master->nombre }}" style="filter: brightness(0.2)">
+                    <img class="img-fluid" src="{{ asset('/images/masters/default-portada.png') }}" alt="{{ $master->nombre }}" style="filter: brightness(0.2)">
                 @endif
                 <div class="carousel-caption ">
                     <h1><strong>{{ $master->nombre }}</strong></h1>
                     <small>{{ $master->email }}</small>
                 </div>
             </header>
-            <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3">
+            <nav id="submenu" class="navbar navbar-expand-md sticky-top navbar-light shadow bg-white mt-4 mt-md-0 mb-4 pt-3 pb-3 px-md-5">
                 <div class="navbar-nav float-right-sm">
                     <div class="d-flex">
                         @auth
@@ -25,22 +25,22 @@
                                     @if (Auth::user()->masters->where('id', $master->id)->count() == 0)
                                         <form method="post" action="{{ route('usuario.master.follow', $master->id) }}">
                                             @csrf
-                                            <button type="submit" class="btn text-primary"><i class="far fa-check-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-primary"><i class="far fa-check-circle"></i></button>
                                         </form>
                                     @else
                                         <form method="post" action="{{ route('usuario.master.unfollow', $master->id) }}">
                                             @csrf
-                                            <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-danger"><i class="far fa-times-circle"></i></button>
                                         </form>
                                         @if (Auth::user()->masters->where('id', $master->id)->first()->pivot->notificacion == 0)
                                             <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 1]) }}">
                                                 @csrf
-                                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></i></button>
+                                                <button type="submit" class="btn btn-light text-primary"><i class="far fa-bell"></i></i></button>
                                             </form>
                                         @else
                                             <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 0]) }}">
                                                 @csrf
-                                                <button type="submit" class=" btn text-danger"><i class="far fa-bell-slash"></i></button>
+                                                <button type="submit" class=" btn btn-light text-danger"><i class="far fa-bell-slash"></i></button>
                                             </form>
                                         @endif
                                     @endif
@@ -67,24 +67,23 @@
                 </div>
             </nav>
             <div class="row">
-                <div class="col-12 col-md-9 mt-4">
+                <div class="col-12 col-md-9 px-3">
                     <div id="contenido">
-                        <div class="estados shadow p-4">
-                            <h3>Estados</h3>
+                        <div class="estados">
                             <div class="items mt-4">
                                 @if($master->posts->where('juego_id', null)->count() > 0)
                                     @foreach ($master->posts->where('juego_id', null)->sortByDesc('created_at') as $post)
-                                        <div>
+                                        <div class="berber">
                                             <h4>{{ $post->titulo }}</h4>
                                             <p>{!! $post->contenido !!}</p>
                                             <div class="footer-estados mt-3">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small class="text-uppercase font-weight-bold"><a class="text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
                                             </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    <p>aún no ha publicado ningún estado</p>
+                                    <div class="col-12 berber">No ha publicado ningún estado</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -95,35 +94,34 @@
                                 <div class="lastPage">&raquo;</div>
                             </div>
                         </div>
-                        <div class="analisis-div shadow p-4 d-none">
-                            <h3>Análisis</h3>
+                        <div class="analisis-div px-4 d-none">
                             <div class="items row mt-4">
                                 @if($master->posts->where('juego_id', '!=', null)->where('ban', 0)->count() > 0)
                                     @foreach ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->sortByDesc('created_at') as $post)
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 berber col-md-6">
                                             <div class="pildoras mb-3">
-                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-dark"><a class="text-white text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-primary text-white">Análisis</span>
+                                                <span class="badge badge-pill badge-danger"><a class="text-white font-weight-bold text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark font-weight-bold text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-primary text-white font-weight-bold">Análisis</span>
+                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                             <h4>{{ $post->titulo }}</h4>
                                             @php
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
-                                            <div class="footer-noticias mt-3">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-dark text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                            <div class="footer-noticias">
+                                                <small class="text-uppercase font-weight-bold"><a class="text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
-                                                <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    <p>No ha publicado ningún análisis</p>
+                                    <div class="col-12 berber">No ha publicado ningún análisis</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -134,12 +132,16 @@
                                 <div class="lastPage">&raquo;</div>
                             </div>
                         </div>
-                        <div class="notas d-none">
+                        <div class="notas d-none mt-4">
                             @if ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->count() != 0)
                                 @foreach ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->sortByDesc('created_at') as $post)
                                     <div class="berber mb-2">
                                         <div class="berber-image d-none d-md-block">
-                                            <img class="img-fluid mr-2" src="{{ asset('/images/logo.png') }}" alt="{{ $master->nombre }}"/>
+                                            @if ($post->juego->imagen_caratula != null)
+                                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $post->juego->desarrolladora->nombre . '/' . $post->juego->nombre . '/' . $post->juego->imagen_caratula) }}" alt="{{ $post->juego->nombre }}">
+                                            @else
+                                                <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $post->juego->nombre }}">
+                                            @endif
                                         </div>
                                         <div class="circle-lista float-right">{{$post->calificacion}}</div>
                                         <div class="berber-fullname"><a href="/juego/{{$post->juego->id}}">{{$post->juego->nombre}}</a></div>
@@ -150,7 +152,7 @@
                                     </div>
                                 @endforeach
                             @else
-                                Aún no ha publicado ningún análisis.
+                                <div class="col-12 berber">No ha publicado ningún análisis</div>
                             @endif
                         </div>
                     </div>

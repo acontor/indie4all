@@ -5,15 +5,15 @@
         <div class="container box mt-4">
             <div class="row">
                 <div class="col-12 col-md-8">
-                    <div class="list-group shadow">
+                    <div class="list-group">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
                             <li class="list-group-item bg-dark text-white">Noticias generales</li>
                         </ul>
                         <div class="list-group-item flex-column align-items-start noticias">
-                            <div class="items row mt-4 p-4">
-                                @if($noticias->where('titulo', '!=', null)->count() > 0)
-                                    @foreach ($noticias->where('titulo', '!=', null)->sortByDesc('created_at') as $post)
-                                        <div class="col-12">
+                            <div class="items row mt-4">
+                                @if($noticias->count() > 0)
+                                    @foreach ($noticias as $post)
+                                        <div class="col-12 berber">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-primary text-white">Administración</span>
                                             </div>
@@ -22,17 +22,17 @@
                                                 $resumen = explode('</p>', $post->contenido)
                                             @endphp
                                             <p>{!! $resumen[0] !!}</p>
-                                            <form>
+                                            <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-dark btn-sm more">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
                                             </form>
-                                            <div class="footer-noticias mt-3">
+                                            <div class="footer-noticias">
                                                 <small>{{ $post->created_at }}</small>
                                             </div>
                                         </div>
                                     @endforeach
                                 @else
-                                    <p>No se han publicado noticias.</p>
+                                    <div class="col-12 berber">No se han publicado noticias.</div>
                                 @endif
                             </div>
                             <div class="pager">
@@ -88,7 +88,7 @@
                                         <small>{{$juego->fecha_lanzamiento}}</small>
                                     </div>
                                     <p class="mb-1">{{$juego->desarrolladora->nombre}}</p>
-                                    <span class="btn btn-dark btn-sm float-right">{{$compra->juego->precio}} €</span>
+                                    <span class="btn btn-dark btn-sm float-right">{{$juego->precio}} €</span>
                                     <small class="badge badge-danger badge-pill mt-2">{{$juego->genero->nombre}}</small>
                                 </a>
                             @endforeach
