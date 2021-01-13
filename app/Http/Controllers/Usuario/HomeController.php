@@ -102,26 +102,26 @@ class HomeController extends Controller
         $data = [];
         if ($request->has('q')) {
             $search = $request->q;
-            $juegos = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->where('ban', 0)->doesntHave('campania')->take(5)->get();
-            $campanias = Juego::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->where('ban', 0)->has('campania')->take(5)->get();
-            $desarrolladoras = Desarrolladora::select("id", "nombre")->where('nombre', 'LIKE', "%$search%")->where('ban', 0)->take(5)->get();
+            $juegos = Juego::where('nombre', 'LIKE', "%$search%")->where('ban', 0)->doesntHave('campania')->take(5)->get();
+            $campanias = Juego::where('nombre', 'LIKE', "%$search%")->where('ban', 0)->has('campania')->take(5)->get();
+            $desarrolladoras = Desarrolladora::select("id", "nombre", "imagen_logo")->where('nombre', 'LIKE', "%$search%")->where('ban', 0)->take(5)->get();
             $masters = DB::table('users')
                 ->join('masters', 'users.id', '=', 'masters.user_id')
-                ->select('masters.id', 'users.name')->where('users.name', 'LIKE', "%$search%")->where('users.ban', 0)->take(5)->get();
+                ->select('masters.id', 'users.name', 'masters.imagen_logo')->where('users.name', 'LIKE', "%$search%")->where('users.ban', 0)->take(5)->get();
             foreach ($juegos as $juego) {
-                $temp = ['id' => $juego->id, 'nombre' => $juego->nombre, 'tipo' => 'Juego'];
+                $temp = ['id' => $juego->id, 'nombre' => $juego->nombre, 'imagen_caratula' => $juego->imagen_caratula, 'desarrolladora' => $juego->desarrolladora->nombre, 'tipo' => 'Juego'];
                 array_push($data, $temp);
             }
             foreach ($campanias as $juego) {
-                $temp = ['id' => $juego->campania->id, 'nombre' => $juego->nombre, 'tipo' => 'Campaña'];
+                $temp = ['id' => $juego->campania->id, 'nombre' => $juego->nombre, 'imagen_caratula' => $juego->imagen_caratula, 'desarrolladora' => $juego->desarrolladora->nombre, 'tipo' => 'Campaña'];
                 array_push($data, $temp);
             }
             foreach ($desarrolladoras as $desarrolladora) {
-                $temp = ['id' => $desarrolladora->id, 'nombre' => $desarrolladora->nombre, 'tipo' => 'Desarrolladora'];
+                $temp = ['id' => $desarrolladora->id, 'nombre' => $desarrolladora->nombre, 'imagen_logo' => $desarrolladora->imagen_logo, 'tipo' => 'Desarrolladora'];
                 array_push($data, $temp);
             }
             foreach ($masters as $master) {
-                $temp = ['id' => $master->id, 'nombre' => $master->name, 'tipo' => 'Master'];
+                $temp = ['id' => $master->id, 'nombre' => $master->name, 'imagen_logo' => $master->imagen_logo, 'tipo' => 'Master'];
                 array_push($data, $temp);
             }
         }

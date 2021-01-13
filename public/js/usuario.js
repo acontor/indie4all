@@ -56,13 +56,14 @@ $(function () {
                                     if (html.indexOf("<h4 class='d-inline'>Juegos</h4>") == -1) {
                                         html += `<div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Juegos</h4><a class="btn btn-dark btn-sm float-right" href="/juegos/lista">Ver todos</a></div><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.desarrolladora.nombre }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
+                                    console.log(element)
+                                    img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.desarrolladora }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
                                     html += `<div class="item"><a href="/juego/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Campaña") {
                                     if (html.indexOf("<h4 class='d-inline'>Campañas</h4>") == -1) {
                                         html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline"><h4 class='d-inline'>Campañas</h4><a class="btn btn-dark btn-sm float-right" href="/juegos/lista">Ver todas</a></div><div class="owl-carousel owl-theme 1">`;
                                     }
-                                    img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.desarrolladora.nombre }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
+                                    img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.desarrolladora }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
                                     html += `<div class="item"><a href="/campania/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                 } else if (element.tipo == "Desarrolladora") {
                                     if (html.indexOf("<h4 class='d-inline'>Desarrolladoras</h4>") == -1) {
@@ -408,14 +409,12 @@ function mousewheel(owl) {
 
 function nuevoEstado(csrf, config) {
     Swal.fire({
-        showCloseButton: true,
         position: 'bottom',
         title: 'Nuevo estado',
         html: `<form action="/master/estado/nuevo" method="post">${csrf}<textarea class="form-control nuevo-estado" name="estado" id="editor" autofocus></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button></form>`,
         showCancelButton: false,
         showConfirmButton: false,
-        backdrop: false,
-        allowOutsideClick: false,
+        showCloseButton: false,
         showClass: {
             popup: 'animate__animated animate__bounceInUp'
         },

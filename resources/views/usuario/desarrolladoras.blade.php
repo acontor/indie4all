@@ -49,10 +49,12 @@
                                             <p>{!! $resumen[0] !!}</p>
                                             <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold pop-info"
+                                                data-content="Haz click aquí para ver la noticia, leer los comentarios y participar en ella" rel="popover" data-placement="bottom" data-trigger="hover">Leer más</a>
                                             </form>
                                             <div class="footer-noticias">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none" href="{{ route('usuario.desarrolladora.show', $post->desarrolladora->id) }}">{{ $post->desarrolladora->nombre }}</a></small>
+                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver el perfil de la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.desarrolladora.show', $post->desarrolladora->id) }}">{{ $post->desarrolladora->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
                                             </div>
                                         </div>

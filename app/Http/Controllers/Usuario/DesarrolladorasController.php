@@ -58,12 +58,13 @@ class DesarrolladorasController extends Controller
             return redirect()->back();
         }
 
-        $campanias = Campania::join('juegos', 'juegos.id', 'campanias.juego_id')
+        $campanias = Campania::select('campanias.*')
+            ->join('juegos', 'juegos.id', 'campanias.juego_id')
             ->join('desarrolladoras', 'desarrolladoras.id', 'juegos.desarrolladora_id')
             ->where('desarrolladoras.id', $id)
             ->where('campanias.ban', 0)->get();
 
-        return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora , 'campanias'=> $campanias]);
+        return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora, 'campanias' => $campanias]);
     }
 
     public function follow($id)

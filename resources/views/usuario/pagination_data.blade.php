@@ -28,7 +28,7 @@
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
                 @if ($juego->imagen_caratula != null)
-                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juego->nombre }}">
+                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/' . $juego->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_caratula) }}" alt="{{ $juego->nombre }}">
                 @else
                     <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juego->nombre }}">
                 @endif
@@ -122,7 +122,7 @@
         <div class="col-md-3 col-sm-6 mt-4 item">
             <div class="card item-card card-block">
                 @if ($campania->juego->imagen_caratula != null)
-                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/' . $campania->juego->first()->desarrolladora->nombre . '/' . $campania->juego->nombre . '/' . $campania->juego->imagen_caratula) }}" alt="{{ $campania->juego->nombre }}">
+                    <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/' . $campania->juego->desarrolladora->nombre . '/' . $campania->juego->nombre . '/' . $campania->juego->imagen_caratula) }}" alt="{{ $campania->juego->nombre }}">
                 @else
                     <img class="w-100 h-100" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $campania->juego->nombre }}">
                 @endif

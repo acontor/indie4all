@@ -10,6 +10,7 @@
             <h1>Vista general</h1>
         </div>
         <div class="box mt-5">
+            <a href="{{ route('admin.actualizacion.diaria') }}" class="btn btn-success btn-sm mb-4 mt-2">Enviar resumen diario</a>
             <div class="row">
                 <div class="col-sm-6 col-12">
                     <h2 class="mb-4">Mensajes últimos 5 días</h2>

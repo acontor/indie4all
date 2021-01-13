@@ -9,7 +9,7 @@
         <div class="container bg-white p-5 shadow">
             <div class="row">
                 <div class="col-md-6">
-                    <img class="img-fluid" src="{{ asset('images/logo.png') }}" alt="">
+                    <img class="img-fluid" src="{{ asset('images/login-logo.png') }}" alt="">
                 </div>
                 <div class="col-md-6 contents">
                     <div class="row justify-content-center">

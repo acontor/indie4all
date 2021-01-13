@@ -25,32 +25,44 @@
                                     @if (Auth::user()->masters->where('id', $master->id)->count() == 0)
                                         <form method="post" action="{{ route('usuario.master.follow', $master->id) }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-light text-primary"><i class="far fa-check-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-primary pop-info"
+                                            data-content="Haz click aquí para seguir a este Master" rel="popover"
+                                            data-placement="bottom" data-trigger="hover"><i class="far fa-check-circle"></i></button>
                                         </form>
                                     @else
                                         <form method="post" action="{{ route('usuario.master.unfollow', $master->id) }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-light text-danger"><i class="far fa-times-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-danger pop-info"
+                                            data-content="Haz click aquí para dejar de seguir a este Master" rel="popover"
+                                            data-placement="bottom" data-trigger="hover"><i class="far fa-times-circle"></i></button>
                                         </form>
                                         @if (Auth::user()->masters->where('id', $master->id)->first()->pivot->notificacion == 0)
                                             <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 1]) }}">
                                                 @csrf
-                                                <button type="submit" class="btn btn-light text-primary"><i class="far fa-bell"></i></i></button>
+                                                <button type="submit" class="btn btn-light text-primary pop-info"
+                                                data-content="Haz click aquí para desactivar las notificaciones" rel="popover"
+                                                data-placement="bottom" data-trigger="hover"><i class="far fa-bell"></i></i></button>
                                             </form>
                                         @else
                                             <form method="post" action="{{ route('usuario.master.notificacion', [$master->id, 0]) }}">
                                                 @csrf
-                                                <button type="submit" class=" btn btn-light text-danger"><i class="far fa-bell-slash"></i></button>
+                                                <button type="submit" class=" btn btn-light text-danger pop-info"
+                                                data-content="Haz click aquí para desactivar las notificaciones" rel="popover"
+                                                data-placement="bottom" data-trigger="hover"><i class="far fa-bell-slash"></i></button>
                                             </form>
                                         @endif
                                     @endif
                                 @endauth
                             @endif
                         @endauth
-                        <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
+                        <button class="btn btn-warning compartir ml-2 pop-info"
+                        data-content="Haz click aquí para compartir este perfil en tus redes sociales" rel="popover"
+                        data-placement="bottom" data-trigger="hover"><i class="fas fa-share-alt"></i></button>
                         @auth
                             @if(Auth::user() && !Auth::user()->master && !Auth::user()->ban && Auth::user()->email_verified_at != null)
-                                <a class="btn btn-danger ml-2" id='reporteMaster'><i class="fas fa-exclamation-triangle mt-1"></i></a>
+                                <a class="btn btn-danger ml-2 pop-info"
+                                data-content="Haz click aquí para reportar este perfil" rel="popover"
+                                data-placement="bottom" data-trigger="hover" id='reporteMaster'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth
                     </div>
@@ -100,8 +112,10 @@
                                     @foreach ($master->posts->where('juego_id', '!=', null)->where('ban', 0)->sortByDesc('created_at') as $post)
                                         <div class="col-12 berber col-md-6">
                                             <div class="pildoras mb-3">
-                                                <span class="badge badge-pill badge-danger"><a class="text-white font-weight-bold text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-light"><a class="text-dark font-weight-bold text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-danger"><a class="text-white font-weight-bold text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver el perfil del juego" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark font-weight-bold text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white font-weight-bold">Análisis</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -112,10 +126,12 @@
                                             <p>{!! $resumen[0] !!}</p>
                                             <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold pop-info"
+                                                data-content="Haz click aquí para ver el análisis, leer comentarios y participar en ella" rel="popover" data-placement="bottom" data-trigger="hover">Leer más</a>
                                             </form>
                                             <div class="footer-noticias">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small class="text-uppercase font-weight-bold"><a class="text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver el perfil del Master" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
                                             </div>
                                         </div>
@@ -144,10 +160,12 @@
                                             @endif
                                         </div>
                                         <div class="circle-lista float-right">{{$post->calificacion}}</div>
-                                        <div class="berber-fullname"><a href="/juego/{{$post->juego->id}}">{{$post->juego->nombre}}</a></div>
+                                        <div class="berber-fullname"><a class="pop-info"
+                                            data-content="Haz click aquí para ver el juego" rel="popover" data-placement="bottom" data-trigger="hover"href="/juego/{{$post->juego->id}}">{{$post->juego->nombre}}</a></div>
                                         <div class="berber-dukkan">
                                             <input type="hidden" name="id" value="{{ $post->id }}" />
-                                            <a type="submit" class="more">{{$post->titulo}}</a>
+                                            <a type="submit" class="more pop-info"
+                                            data-content="Haz click aquí para ver el análisis, leer los comentarios y participar en el" rel="popover" data-placement="bottom" data-trigger="hover">{{$post->titulo}}</a>
                                         </div>
                                     </div>
                                 @endforeach
