@@ -49,7 +49,7 @@
                         @endauth
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
                         @auth
-                            @if(Auth::user() && !Auth::user()->master)
+                            @if(Auth::user() && !Auth::user()->master && !Auth::user()->ban && Auth::user()->email_verified_at != null)
                                 <a class="btn btn-danger ml-2" id='reporteMaster'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth

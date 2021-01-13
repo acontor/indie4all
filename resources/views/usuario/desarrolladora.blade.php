@@ -58,7 +58,7 @@
                         <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
                         <a class="btn btn-dark web ml-2" href="{{ $desarrolladora->url }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
                         @auth
-                            @if(Auth::user() && !Auth::user()->cm)
+                            @if(Auth::user() && !Auth::user()->cm && !Auth::user()->ban && Auth::user()->email_verified_at != null)
                                 <a class="btn btn-danger ml-2" id='reporteDesarrolladora'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth
@@ -321,8 +321,11 @@
 
             $(".more").on('click', function () {
                 let checkUser = false;
-                let user = "{{{ (Auth::user()) ? Auth::user() : null }}}";
-                if(user != '' && user.ban == 0 && user.email_verified_at != null) {
+                let user = {
+                    ban: "{{{ (Auth::user()) ? Auth::user()->ban : 1 }}}",
+                    email_verified_at: "{{{ (Auth::user()) ? Auth::user()->email_verified_at : null }}}"
+                };
+                if(user.ban == 0 && user.email_verified_at != null) {
                     checkUser = true;
                 }
                 let url = '{{ route("usuario.post.show") }}';

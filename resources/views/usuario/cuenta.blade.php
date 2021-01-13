@@ -185,19 +185,19 @@
                                     <div class="row float-right">
                                         <form action="{{ route('usuario.desarrolladora.unfollow', $desarrolladora->id) }}" method="post">
                                             @csrf
-                                            <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-danger"><i class="far fa-times-circle"></i></button>
                                         </form>
                                         @if ($desarrolladora->pivot->notificacion == 0)
                                             <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 1]) }}"
                                                 method="post">
                                                 @csrf
-                                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
+                                                <button type="submit" class="btn btn-light text-primary text-primary mr-1"><i class="far fa-bell"></i></button>
                                             </form>
                                         @else
                                             <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 0]) }}"
                                                 method="post">
                                                 @csrf
-                                                <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
+                                                <button type="submit" class="btn btn-light text-danger ml-2 mr-1"><i class="far fa-bell-slash"></i></button>
                                             </form>
                                         @endif
                                     </div>
@@ -225,14 +225,35 @@
                                             @endif
                                             <div class="p-3">
                                                 <h5><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></h5>
+                                                <a href="/juegos/lista/{{$juego->genero_id}}"><small class="badge badge-danger badge-pill ml-2">{{App\Models\Genero::find($juego->genero_id)->nombre}}</small></a><br>
                                                 <small class="float-right"> {{$juego->fecha_lanzamiento}}</small><br>
-                                                <a href="">{{App\Models\Genero::find($juego->genero_id)->nombre}}</a><br>
                                                 Popularidad:<small class="float-right"> {{$juego->compras->count()}}</small><br>
-                                                Precio:<small class="float-right"> {{$juego->precio}}</small>
-                                                <form action="{{ route('usuario.juego.unfollow', $juego->id) }}" method="post">
-                                                    @csrf
-                                                    <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
-                                                </form>
+                                                Precio:<small class="float-right"> {{$juego->precio}}</small><br>
+                                                <div class="row float-right">
+                                                    <form method="post" action="{{ route('usuario.juego.unfollow', $juego->id) }}">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-light text-danger">
+                                                            <i class="far fa-times-circle"></i>
+                                                        </button>
+                                                    </form>
+                                                    @if (Auth::user()->juegos->where('id', $juego->id)->first()->pivot->notificacion == 0)
+                                                        <form method="post"
+                                                            action="{{ route('usuario.juego.notificacion', [$juego->id, 1]) }}">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-light text-primary text-primary mr-1">
+                                                                <i class="far fa-bell"></i></i>
+                                                            </button>
+                                                        </form>
+                                                    @else
+                                                        <form method="post"
+                                                            action="{{ route('usuario.juego.notificacion', [$juego->id, 0]) }}">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-light text-danger ml-2 mr-1">
+                                                                <i class="far fa-bell-slash"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -262,19 +283,19 @@
                                             <div class="row float-right">
                                             <form action="{{ route('usuario.master.unfollow', $master->id) }}" method="post">
                                                 @csrf
-                                                <button type="submit" class="btn text-danger"><i class="far fa-times-circle"></i></button>
+                                                <button type="submit" class="btn btn-light text-danger"><i class="far fa-times-circle"></i></button>
                                             </form>
                                             @if ($master->pivot->notificacion == 0)
                                                 <form action="{{ route('usuario.master.notificacion', [$master->id, 1]) }}"
                                                     method="post">
                                                     @csrf
-                                                <button type="submit" class="btn text-primary"><i class="far fa-bell"></i></button>
+                                                <button type="submit" class="btn btn-light text-primary"><i class="far fa-bell"></i></button>
                                                 </form>
                                             @else
                                                 <form action="{{ route('usuario.master.notificacion', [$master->id, 0]) }}"
                                                     method="post">
                                                     @csrf
-                                                <button type="submit" class="btn text-danger"><i class="far fa-bell-slash"></i></button>
+                                                <button type="submit" class="btn btn-light text-danger ml-2 mr-1"><i class="far fa-bell-slash"></i></button>
                                                 </form>
                                             @endif
                                             </div>
