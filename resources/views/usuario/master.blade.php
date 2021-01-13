@@ -5,7 +5,7 @@
         <div class="container bg-light p-3 shadow-lg rounded mt-4">
             <header class="header-imagen">
                 @if ($master->imagen_portada != null)
-                    <img class="img-fluid" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}" alt="{{ $desarrolladora->nombre }}" style="filter: brightness(0.2)">
+                    <img class="img-fluid" src="{{ asset('/images/masters/' . $master->nombre . '/' . $master->imagen_portada) }}" alt="{{ $master->nombre }}" style="filter: brightness(0.2)">
                 @else
                     <img class="img-fluid" src="{{ asset('/images/masters/default-portada.png') }}" alt="{{ $master->nombre }}" style="filter: brightness(0.2)">
                 @endif
