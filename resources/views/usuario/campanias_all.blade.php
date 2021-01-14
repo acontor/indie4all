@@ -91,7 +91,7 @@
 
         function fetch_data(page){
             $.ajax({
-                url:"/campanias/lista?page="+page,
+                url:"http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campanias/lista?page="+page,
 
                 success:function(data){
                     $('#campanias_data').html(data);
@@ -100,7 +100,7 @@
         }
         function buscar(nombre,ordenarPor,ordenarDe,aporteMinMin,aporteMinMax){
             $.ajax({
-                url:"/campanias/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe+'&aporteMinMin='+aporteMinMin+'&aporteMinMax='+aporteMinMax,
+                url:"http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campanias/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe+'&aporteMinMin='+aporteMinMin+'&aporteMinMax='+aporteMinMax,
 
                 success:function(data){
                     $('#campanias_data').html(data);

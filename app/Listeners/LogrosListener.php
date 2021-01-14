@@ -19,9 +19,9 @@ class LogrosListener
             $logros = $user->logros->count();
 
             if ($logros == 7) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     8
-                ]);
+                ], false);
             }
         }
     }

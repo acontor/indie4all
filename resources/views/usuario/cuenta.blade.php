@@ -85,7 +85,7 @@
                         </div>
                     </form>
                     <div class="align-items-center mt-4">
-                        <h5 class="mb-3">Géneros</h5>
+                        <h3 class="mb-3">Géneros</h3>
                         <form action="{{ route('usuario.cuenta.generos') }}" method="post">
                             @csrf
                             <select class="form-control select2" name="generos[]" id="generos" multiple>
@@ -97,12 +97,13 @@
                         </form>
                     </div>
                     <div class="mt-4">
-                        <h5 class="mb-3">Logros</h5>
+                        <h3 class="mb-3">Logros</h3>
                         <div class="row">
                             @foreach ($logros as $logro)
-                                <div class="col-6 col-md-4">
-                                    <h5 class="text-center @if (!$logro->usuarios->contains(Auth::id())) text-muted @else text-primary @endif"><i class="{{ $logro->icono }}"></i> {{ $logro->nombre }}</h5>
-                                    <p class="@if (!$logro->usuarios->contains(Auth::id())) text-muted @else text-primary @endif">{{ $logro->descripcion }}</p>
+                                <div class="col-6 col-md-4 p-3 berber @if ($logro->usuarios->contains(Auth::id())) bg-primary @endif">
+                                    <h4 class="text-center text-white"><i class="{{ $logro->icono }}"></i></h4>
+                                    <h5 class="text-center text-white">{{ $logro->nombre }}</h5>
+                                    <span class="text-white">{{ $logro->descripcion }}</span>
                                 </div>
                             @endforeach
                         </div>
@@ -179,9 +180,9 @@
                                 @endif
                                 <div class="p-3">
                                     <h5><a href="{{ route('usuario.desarrolladora.show', $desarrolladora->id) }}">{{ $desarrolladora->nombre }}</a></h5>
-                                    Sequidores:<small class="float-right"> {{$desarrolladora->seguidores_count}}</small><br>
-                                    Juegos:<small class="float-right"> {{$desarrolladora->juegos_count}}</small><br>
-                                    Actividad:<small class="float-right"> {{$desarrolladora->posts_count}}</small><br>
+                                    Sequidores:<small class="float-right"> {{$desarrolladora->seguidores->count()}}</small><br>
+                                    Juegos:<small class="float-right"> {{$desarrolladora->juegos->count()}}</small><br>
+                                    Actividad:<small class="float-right"> {{$desarrolladora->posts->count()}}</small><br>
                                     <div class="row float-right">
                                         <form action="{{ route('usuario.desarrolladora.unfollow', $desarrolladora->id) }}" method="post">
                                             @csrf
@@ -225,7 +226,7 @@
                                             @endif
                                             <div class="p-3">
                                                 <h5><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></h5>
-                                                <a href="/juegos/lista/{{$juego->genero_id}}"><small class="badge badge-danger badge-pill ml-2">{{App\Models\Genero::find($juego->genero_id)->nombre}}</small></a><br>
+                                                <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{$juego->genero_id}}"><small class="badge badge-danger badge-pill ml-2">{{App\Models\Genero::find($juego->genero_id)->nombre}}</small></a><br>
                                                 <small class="float-right"> {{$juego->fecha_lanzamiento}}</small><br>
                                                 Popularidad:<small class="float-right"> {{$juego->compras->count()}}</small><br>
                                                 Precio:<small class="float-right"> {{$juego->precio}}</small><br>

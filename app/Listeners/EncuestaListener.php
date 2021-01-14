@@ -16,12 +16,12 @@ class EncuestaListener
     {
         if(Auth::user()->logros->where('logro_id', 6)->count() == 0) {
 
-            $encuestas = $user->encuestas->count();
+            $encuestas = $user->opciones->count();
 
             if ($encuestas >= 5) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     6
-                ]);
+                ], false);
 
                 event(new LogrosListener($user));
             }

@@ -50,7 +50,7 @@ function verSolicitud(tipo, fila, id, comentario) {
         preConfirm: function (result) {
             if (result != '') {
                 $.ajax({
-                    url: `/admin/solicitud/${tipo}/rechazar`,
+                    url: `http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/admin/solicitud/${tipo}/rechazar`,
                     type: 'delete',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
@@ -75,7 +75,7 @@ function verSolicitud(tipo, fila, id, comentario) {
     }).then((result) => {
         if (result.isDismissed) {
             $.ajax({
-                url: `/admin/solicitud/${tipo}/aceptar`,
+                url: `http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/admin/solicitud/${tipo}/aceptar`,
                 type: 'post',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

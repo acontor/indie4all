@@ -24,42 +24,50 @@
                     <div class="d-flex">
                         @auth
                             @if(Auth::user() && Auth::user()->cm()->count() != 0 && Auth::user()->cm->desarrolladora_id == $desarrolladora->id)
-                                <a class="btn btn-primary ml-2" href="{{ route('cm.desarrolladora.index') }}"><i class="fas fa-user-edit"></i></a>
+                                <a class="btn btn-primary ml-2 pop-info"
+                                data-content="Haz click aquí para editar el perfil de la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('cm.desarrolladora.index') }}"><i class="fas fa-user-edit"></i></a>
                             @else
                                 @auth
                                     @if (Auth::user()->desarrolladoras->where('id', $desarrolladora->id)->count() == 0)
                                         <form action="{{ route('usuario.desarrolladora.follow', $desarrolladora->id) }}" method="post">
                                             @csrf
-                                            <button type="submit" class="btn btn-light text-primary"><i class="far fa-check-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-primary pop-info"
+                                            data-content="Haz click aquí para seguir a la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover"><i class="far fa-check-circle"></i></button>
                                         </form>
                                     @else
                                         <form action="{{ route('usuario.desarrolladora.unfollow', $desarrolladora->id) }}"
                                             method="post">
                                             @csrf
-                                            <button type="submit" class="btn btn-light text-danger"><i class="far fa-times-circle"></i></button>
+                                            <button type="submit" class="btn btn-light text-danger pop-info"
+                                            data-content="Haz click aquí para dejar de seguir a la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover"><i class="far fa-times-circle"></i></button>
                                         </form>
                                         @if (Auth::user()->desarrolladoras->where('id', $desarrolladora->id)->first()->pivot->notificacion == 0)
                                             <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 1]) }}"
                                                 method="post">
                                                 @csrf
-                                                <button type="submit" class="btn btn-light text-primary"><i class="far fa-bell"></i></button>
+                                                <button type="submit" class="btn btn-light text-primary pop-info"
+                                                data-content="Haz click aquí para activar las notificaciones de la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover"><i class="far fa-bell"></i></button>
                                             </form>
                                         @else
                                             <form action="{{ route('usuario.desarrolladora.notificacion', [$desarrolladora->id, 0]) }}"
                                                 method="post">
                                                 @csrf
-                                                <button type="submit" class="btn btn-light text-danger"><i class="far fa-bell-slash"></i></button>
+                                                <button type="submit" class="btn btn-light text-danger pop-info"
+                                                data-content="Haz click aquí para desactivar las notificaciones de la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover"><i class="far fa-bell-slash"></i></button>
                                             </form>
                                         @endif
                                     @endif
                                 @endauth
                             @endif
                         @endauth
-                        <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
-                        <a class="btn btn-dark web ml-2" href="{{ $desarrolladora->url }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                        <button class="btn btn-warning compartir ml-2 pop-info"
+                        data-content="Haz click aquí para compratir el perfil por tus redes sociales" rel="popover" data-placement="bottom" data-trigger="hover"><i class="fas fa-share-alt"></i></button>
+                        <a class="btn btn-dark web ml-2 pop-info"
+                        data-content="Haz click aquí para ver la web de la desarrolladora, se le redirigirá a su página web externa a la plataforma" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ $desarrolladora->url }}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
                         @auth
                             @if(Auth::user() && !Auth::user()->cm && !Auth::user()->ban && Auth::user()->email_verified_at != null)
-                                <a class="btn btn-danger ml-2" id='reporteDesarrolladora'><i class="fas fa-exclamation-triangle mt-1"></i></a>
+                                <a class="btn btn-danger ml-2 pop-info"
+                                data-content="Haz click aquí para reportar el perfil de la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover" id='reporteDesarrolladora'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth
                     </div>
@@ -99,7 +107,8 @@
                                             <p>{!! $resumen[0] !!}</p>
                                             <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold pop-info"
+                                                data-content="Haz click aquí para ver la noticia, leer comentarios y participar en ella" rel="popover" data-placement="bottom" data-trigger="hover">Leer más</a>
                                             </form>
                                             <div class="footer-noticias ">
                                                 <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none" href="{{ route('usuario.desarrolladora.show', $post->desarrolladora->id) }}">{{ $post->desarrolladora->nombre }}</a></small>
@@ -142,7 +151,8 @@
                                                         Ya has participado
                                                     @else
                                                         <div class="participar-sorteo-div">
-                                                            <button type="submit" class="participar-sorteo btn btn-success">Participar</button>
+                                                            <button type="submit" class="participar-sorteo btn btn-success pop-info"
+                                                            data-content="Haz click aquí para participar en el sorteo" rel="popover" data-placement="bottom" data-trigger="hover">Participar</button>
                                                         </div>
                                                     @endif
                                                 @endisset
@@ -202,7 +212,7 @@
                                                                             </div>
                                                                             <div class="col-12">
                                                                                 <div class="progress progress-bar-vertical">
-                                                                                    <div class="progress-bar bg-dark" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
+                                                                                    <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $porcentaje }}" aria-valuemin="0" aria-valuemax="100" style="height: {{ $porcentaje }}%;"></div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -211,16 +221,17 @@
                                                             @endforeach
                                                             <div class="encuesta-info mt-3 ml-3">
                                                                 <span class="badge badge-danger">Opción escogida</span>
-                                                                <span class="badge badge-light">Optras opciones</span>
+                                                                <span class="badge badge-primary">Otras opciones</span>
                                                             </div>
                                                         </div>
                                                     @endif
                                                 @else
                                                     <div class="opciones">
                                                         @foreach ($encuesta->opciones as $opcion)
-                                                            <label class="radio-button mod-label-below ">
+                                                            <label class="radio-button mod-label-below">
                                                                 <input type="radio" name="respuesta{{ $encuesta->id }}" id="respuesta" value="{{ $opcion->id }}" style="appearance: none;" />
-                                                                <div class="btn btn-light font-weight-bold">{{ $opcion->descripcion }}</div>
+                                                                <div class="btn btn-light font-weight-bold pop-info"
+                                                                data-content="Haz click aquí para escoger esta opcion" rel="popover" data-placement="bottom" data-trigger="hover">{{ $opcion->descripcion }}</div>
                                                             </label>
                                                         @endforeach
                                                     </div>
@@ -231,7 +242,8 @@
                                                         Tu cuenta no está verificada
                                                     @else
                                                         <div class="participar-encuesta-div mt-4">
-                                                            <button type="submit" class="participar-encuesta btn btn-success">Participar</button>
+                                                            <button type="submit" class="participar-encuesta btn btn-success pop-info"
+                                                            data-content="Haz click aquí para participar en la encuesta" rel="popover" data-placement="bottom" data-trigger="hover">Participar</button>
                                                         </div>
                                                     @endif
                                                 @endif
@@ -284,8 +296,11 @@
                             @foreach ($campanias as $campania)
                                 <div class="item">
                                     <a href="{{ route('usuario.campania.show', $campania->id) }}">
-                                        <img src="https://spdc.ulpgc.es/media/ulpgc/images/thumbs/edition-44827-200x256.jpg"
-                                            alt="{{ $campania->juego->nombre }}">
+                                        @if ($campania->juego->imagen_caratula != null)
+                                            <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/' . $desarrolladora->nombre . '/' . $campania->juego->nombre . '/' . $campania->juego->imagen_caratula) }}" alt="{{ $campania->juego->nombre }}">
+                                        @else
+                                            <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $campania->juego->nombre }}">
+                                        @endif
                                         <div class="carousel-caption d-none">
                                             <h6>{{ $campania->juego->nombre }}</h6>
                                             <small>
@@ -311,10 +326,10 @@
             let desarrolladora = {!! json_encode($desarrolladora) !!};
 
             html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
-            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20la%20desarrolladora%20${desarrolladora.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
-            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
-            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20la%desarrolladora%20${desarrolladora.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
-            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/desarrolladora/${desarrolladora.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
+            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20la%20desarrolladora%20${desarrolladora.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
+            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
+            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20la%desarrolladora%20${desarrolladora.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladora/${desarrolladora.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
+            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladora/${desarrolladora.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
             `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
 
             $(".compartir").on('click', {html: html}, compartir);
@@ -344,6 +359,11 @@
 
             crearOwl($('.owl-carousel.campanias'), false, 2, 2, 2);
 
+            $('.mod-label-below').on('click', function() {
+                $('.mod-label-below').children().removeClass('btn-primary').addClass('btn-light');
+                $(this).children().removeClass('btn-light').addClass('btn-primary');
+            });
+
             $(".participar-encuesta").on('click', function (e) {
                 e.preventDefault();
                 let encuesta = $(this).parent().prev().val();
@@ -369,13 +389,18 @@
                                 data: {
                                     opcion: opcion,
                                 },
-                                success: function (data) {
-                                    $(".participar-encuesta-div").html("Ya has participado.");
+                                success: function () {
+                                    $(".participar-encuesta-div").html("Gracias por participar");
+                                    notificacionEstado('success', 'Participación registrada')
+                                },
+                                error: function () {
+                                    notificacionEstado('error', 'No ha podido participar')
                                 }
                             });
                         }
                     }
                 });
+                $('.opciones').remove();
             });
 
             $(".participar-sorteo").on('click', function (e) {
@@ -402,8 +427,12 @@
                                 data: {
                                     id: id,
                                 },
-                                success: function (data) {
-                                    $(".participar-sorteo-div").html("Ya has participado.");
+                                success: function () {
+                                    $(".participar-sorteo-div").html("Participación registrada");
+                                    notificacionEstado('success', 'Participación registrada')
+                                },
+                                error: function () {
+                                    notificacionEstado('error', 'No ha podido participar')
                                 }
                             });
                         }

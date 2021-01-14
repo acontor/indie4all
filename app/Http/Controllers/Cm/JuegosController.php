@@ -47,6 +47,11 @@ class JuegosController extends Controller
     {
         $juego = Juego::find($id);
         $generos = Genero::All();
+
+        if($juego === null) {
+            session()->flash('error', 'El juego no existe');
+            return redirect()->back();
+        }
         return view('cm.juego', ['juego' => $juego, 'generos' => $generos]);
     }
 
@@ -86,7 +91,7 @@ class JuegosController extends Controller
             'genero_id' => $request->genero_id,
         ]);
 
-        if ($juego->exists) {
+        if ($juego->exists()) {
             session()->flash('success', 'El juego se ha creado.');
         } else {
             session()->flash('error', 'El juego no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
@@ -154,7 +159,7 @@ class JuegosController extends Controller
 
         $juego->delete();
 
-        if (!$juego->exists) {
+        if (!$juego->exists()) {
             session()->flash('success', 'El juego se ha retirado.');
         } else {
             session()->flash('error', 'El juego no se ha podido retirar. Si sigue fallando contacte con soporte@indie4all.com');

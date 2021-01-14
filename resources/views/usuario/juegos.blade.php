@@ -11,7 +11,7 @@
                             <div class="item m-2 shadow">
                                 <a href="{{ route('usuario.juego.show', $juego->id) }}">
                                     @if ($juego->imagen_caratula != null)
-                                        <img src="{{ asset('/images/desarrolladoras/' . $juegos->first()->desarrolladora->nombre . '/' . $juegos->first()->nombre . '/' . $juegos->first()->imagen_caratula) }}" alt="{{ $juego->nombre }}">
+                                        <img src="{{ asset('/images/desarrolladoras/' . $juego->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_caratula) }}" alt="{{ $juego->nombre }}">
                                     @else
                                         <img src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" alt="{{ $juego->nombre }}">
                                     @endif
@@ -62,8 +62,10 @@
                 <div class="col-12 col-md-9">
                     <div class="list-group">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                            <a href="" id="noticias" class="list-group-item list-buttons-2 bg-dark text-white text-decoration-none">Últimas noticias</a>
-                            <a href="" id="analisis-div" class="list-group-item list-buttons-2 text-dark text-decoration-none">Análisis</a>
+                            <a href="" id="noticias" class="list-group-item list-buttons-2 bg-dark text-white text-decoration-none pop-info"
+                            data-content="Muestra todas las noticias de los juegos" rel="popover" data-placement="bottom" data-trigger="hover">Últimas noticias</a>
+                            <a href="" id="analisis-div" class="list-group-item list-buttons-2 text-dark text-decoration-none pop-info"
+                            data-content="Muestra todos los análisis de juegos" rel="popover" data-placement="bottom" data-trigger="hover"">Análisis</a>
                         </ul>
                         <div class="list-group-item flex-column align-items-start listado-2 noticias">
                             <div class="items row mt-4">
@@ -71,8 +73,10 @@
                                     @foreach ($posts as $post)
                                         <div class="col-12 col-md-6 berber">
                                             <div class="pildoras mb-3">
-                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver el perfil del juego" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Noticia</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -83,7 +87,8 @@
                                             <p>{!! $resumen[0] !!}</p>
                                             <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold pop-info"
+                                                data-content="Haz click aquí para ver la noticia del juego, leer los comentarios y participar en ella" rel="popover" data-placement="bottom" data-trigger="hover">Leer más</a>
                                             </form>
                                             <div class="footer-noticias mt-3">
                                                 <small>{{ $post->created_at }}</small>
@@ -108,8 +113,10 @@
                                     @foreach ($analisis as $post)
                                         <div class="col-12 col-md-6 berber">
                                             <div class="pildoras mb-3">
-                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver el perfil del juego" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -120,10 +127,12 @@
                                             <p>{!! $resumen[0] !!}</p>
                                             <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold pop-info"
+                                                data-content="Haz click aquí para ver el análisis, leer comentarios y participar en ella" rel="popover" data-placement="bottom" data-trigger="hover">Leer más</a>
                                             </form>
                                             <div class="footer-noticias mt-3">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver el perfil del Master" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
                                             </div>
                                         </div>
@@ -145,11 +154,15 @@
                 <div class="col-12 col-md-3 mt-3 mt-md-0">
                     <div class="list-group shadow">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
-                            <a href="" id="nuevos" class="list-group-item list-group-item-action list-buttons bg-dark text-white">Nuevo</a>
-                            <a href="" id="ventas" class="list-group-item list-group-item-action list-buttons">Venta</a>
-                            <a href="" id="proximo" class="list-group-item list-group-item-action list-buttons">Próximo</a>
+                            <a href="" id="nuevos" class="list-group-item list-group-item-action list-buttons bg-dark text-white pop-info"
+                            data-content="Últimos juegos añadidos a la plataforma" rel="popover" data-placement="bottom" data-trigger="hover">Nuevo</a>
+                            <a href="" id="ventas" class="list-group-item list-group-item-action list-buttons pop-info"
+                            data-content="Los juegos con más ventas" rel="popover" data-placement="bottom" data-trigger="hover">Venta</a>
+                            <a href="" id="proximo" class="list-group-item list-group-item-action list-buttons pop-info"
+                            data-content="Los juegos que aún no se han lanzado al mercado." rel="popover" data-placement="bottom" data-trigger="hover">Próximo</a>
                         </ul>
-                        <a href="/juegos/lista" class="btn btn-danger rounded-0">Ver todos</a>
+                        <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista" class="btn btn-danger rounded-0 pop-info"
+                        data-content="Haz click aquí para ver todos los juegos y filtrarlos a tu gusto" rel="popover" data-placement="bottom" data-trigger="hover">Ver todos</a>
                         @php
                             $fechaHoy = date('Y-m-d');
                         @endphp

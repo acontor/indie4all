@@ -92,11 +92,11 @@
                                     <input type="file" name="imagen_portada" onchange="readURL('portada', this);">
                                 </label>
                                 <br>
-                                @isset($juego)
-                                    @if($juego->imagen_portada)
-                                        <img class="img-fluid p-2" src="{{ asset('/images/desarrolladoras/' . $juego->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_portada) }}" height="512" width="1024" id="imagen-portada" alt="Portada del juego" />
+                                @isset($campania)
+                                    @if($campania->juego->imagen_portada)
+                                        <img class="img-fluid" src="{{ asset('/images/desarrolladoras/' . $campania->juego->desarrolladora->nombre . '/' . $campania->juego->nombre . '/' . $campania->juego->imagen_portada) }}" id="imagen-portada" alt="Portada del juego" />
                                     @else
-                                        <img class="img-fluid p-2" src="{{ asset('/images/desarrolladoras/default-portada-juego.png') }}" height="512" width="1024" id="imagen-portada" alt="Portada del juego" />
+                                        <img class="img-fluid" src="{{ asset('/images/desarrolladoras/default-portada-juego.png') }}" id="imagen-portada" alt="Portada del juego" />
                                     @endif
                                 @else
                                     <img class="img-fluid p-2" src="{{ asset('/images/desarrolladoras/default-portada-juego.png') }}" height="512" width="1024" id="imagen-portada" alt="Portada del juego" />
@@ -113,9 +113,9 @@
                                     <input type="file" class="btn btn-primary" name="imagen_caratula" onchange="readURL('caratula', this);">
                                 </label>
                                 <br>
-                                @isset($juego)
-                                    @if($juego->imagen_caratula)
-                                        <img class="img-fluid" src="{{ asset('/images/desarrolladoras/' . $juego->desarrolladora->nombre . '/' . $juego->nombre . '/' . $juego->imagen_caratula) }}" height="100" width="100" id="imagen-logo" alt="Logo del juego" />
+                                @isset($campania)
+                                    @if($campania->juego->imagen_caratula)
+                                        <img class="img-fluid" src="{{ asset('/images/desarrolladoras/' . $campania->juego->desarrolladora->nombre . '/' . $campania->juego->nombre . '/' . $campania->juego->imagen_caratula) }}" height="100" width="100" id="imagen-logo" alt="Logo del juego" />
                                     @else
                                         <img class="img-fluid" src="{{ asset('/images/desarrolladoras/default-logo-juego.png') }}" width="100" id="imagen-caratula" alt="Logo del juego" />
                                     @endif

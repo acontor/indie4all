@@ -37,7 +37,7 @@ class EstadosController extends Controller
             'master_id' => Auth::user()->master->id,
         ]);
 
-        if ($post->exists) {
+        if ($post->exists()) {
             session()->flash('success', 'El estado ha sido publicado');
         } else {
             session()->flash('error', 'El estado no se ha publicado. Si sigue fallando contacte con soporte@indie4all.com');

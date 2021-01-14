@@ -19,9 +19,9 @@ class ComprarListener
             $compras = $user->compras->count();
 
             if ($compras >= 5) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     3
-                ]);
+                ], false);
 
                 event(new LogrosListener($user));
             }

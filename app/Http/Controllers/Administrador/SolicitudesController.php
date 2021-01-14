@@ -75,7 +75,7 @@ class SolicitudesController extends Controller
         $admin = Auth::user()->name;
         Mail::to($user->email)->send(new AceptarSolicitud($url, $user->name, $admin));
 
-        if ($desarrolladora->exists) {
+        if ($desarrolladora->exists()) {
             return array('estado' => 'success', 'mensaje' => 'La solicitud ha sido aceptada');
         } else {
             return array('estado' => 'error', 'mensaje' => 'La solicitud no ha podido ser aceptada');
@@ -133,7 +133,7 @@ class SolicitudesController extends Controller
         $admin = Auth::user()->name;
         Mail::to($user->email)->send(new AceptarSolicitud($url, $user->name, $admin));
 
-        if ($master->exists) {
+        if ($master->exists()) {
             return array('estado' => 'success', 'mensaje' => 'La solicitud ha sido aceptada');
         } else {
             return array('estado' => 'error', 'mensaje' => 'La solicitud no ha podido ser aceptada');

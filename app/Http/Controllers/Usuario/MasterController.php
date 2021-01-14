@@ -48,6 +48,11 @@ class MasterController extends Controller
     {
         $master = Master::find($id);
 
+        if ($master === null){
+            session()->flash('error', 'No existe este Master');
+            return redirect()->back();
+        }
+
         if ($master->usuario->ban) {
             session()->flash('error', 'La desarrolladora está suspendida');
             return redirect()->back();

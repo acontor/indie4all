@@ -30,7 +30,7 @@ class DesarrolladorasSeeder extends Seeder
 
             <p>&nbsp;</p>
 
-            <p><img alt="" src="http://127.0.0.1:8000/images/posts/banner05-1024x256_1606837024.png" style="height:125px; width:500px" /></p>
+            <p><img alt="" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/posts/banner05-1024x256_1606837024.png" style="height:125px; width:500px" /></p>
 
             <p>&nbsp;</p>
 

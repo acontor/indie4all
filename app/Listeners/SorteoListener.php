@@ -19,9 +19,9 @@ class SorteoListener
             $sorteos = $user->sorteos->count();
 
             if ($sorteos >= 5) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     7
-                ]);
+                ], false);
 
                 event(new LogrosListener($user));
             }

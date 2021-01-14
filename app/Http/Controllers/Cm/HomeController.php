@@ -43,9 +43,9 @@ class HomeController extends Controller
             array_push($juegos, $juego->nombre);
             array_push($datosVentas, $juego->compras->count());
         }
-        foreach ($campaniasList as $campania) {
+        foreach ($campaniasList as $juego) {
             array_push($campanias, $juego->nombre);
-            array_push($datosCampania, $juego->compras->count());
+            array_push($datosCampania, $juego->campania->compras->count());
         }
         foreach ($encuestasList as $encuesta) {
             array_push($encuestas, $encuesta->pregunta);

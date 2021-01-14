@@ -65,7 +65,7 @@ class GenerosController extends Controller
 
         $generos = Genero::create($request->all());
 
-        if ($generos->exists) {
+        if ($generos->exists()) {
             session()->flash('success', 'El género ha sido creado');
         } else {
             session()->flash('error', 'El género no se ha podido crear');

@@ -13,7 +13,6 @@ use App\Models\Post;
 use App\Models\Solicitud;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -86,7 +85,7 @@ class HomeController extends Controller
      */
     public function actualizacionDiaria()
     {
-        $usuario = User::find(1);
+        $usuario = User::find(3);
 
         $juegos = $usuario->select('juego_user.juego_id as id')
             ->join('juego_user', 'users.id', 'juego_user.user_id')

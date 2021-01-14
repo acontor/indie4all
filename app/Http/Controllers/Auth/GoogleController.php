@@ -47,7 +47,7 @@ class GoogleController extends Controller
                 Auth::login($newUser);
                 // MAIL CON CONTRASEÑA
             }
-            return redirect('/');
+            return redirect('/portal#');
         } catch (Exception $e) {
             return redirect('/login');
         }

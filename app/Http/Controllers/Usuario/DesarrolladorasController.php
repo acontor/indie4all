@@ -53,17 +53,23 @@ class DesarrolladorasController extends Controller
     {
         $desarrolladora = Desarrolladora::find($id);
 
+        if ($desarrolladora === null) {
+            session()->flash('error', 'No se encuentra esa desarrolladora');
+            return redirect()->back();
+        }
+
         if ($desarrolladora->ban) {
             session()->flash('error', 'La desarrolladora está suspendida');
             return redirect()->back();
         }
 
-        $campanias = Campania::join('juegos', 'juegos.id', 'campanias.juego_id')
+        $campanias = Campania::select('campanias.*')
+            ->join('juegos', 'juegos.id', 'campanias.juego_id')
             ->join('desarrolladoras', 'desarrolladoras.id', 'juegos.desarrolladora_id')
             ->where('desarrolladoras.id', $id)
             ->where('campanias.ban', 0)->get();
 
-        return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora , 'campanias'=> $campanias]);
+        return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora, 'campanias' => $campanias]);
     }
 
     public function follow($id)
@@ -126,7 +132,7 @@ class DesarrolladorasController extends Controller
     {
         $user = User::find(Auth::id());
 
-        $user->opciones()->attach([$request->opcion => ['opcion_id' => $request->opcion]]);
+        $user->opciones()->sync([$request->opcion => ['opcion_id' => $request->opcion]], false);
 
         event(new EncuestaListener($user));
     }

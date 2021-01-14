@@ -1,7 +1,7 @@
 <body>
     <h4>Hola</h4>
     <!-- Logo corporativo -->
-    <img src="{{ asset('/images/default.png') }}" height="100" />
+    <img src="{{ asset('/images/logo.png') }}" height="100" />
     <p>Está recibiendo este correo electrónico porque recibimos una solicitud de restablecimiento de contraseña para su cuenta.</p>
     <a href="{{ $url }}">Restablecer Contraseña</a>
     <br>

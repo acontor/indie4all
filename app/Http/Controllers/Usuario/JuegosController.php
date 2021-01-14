@@ -61,6 +61,16 @@ class JuegosController extends Controller
     {
         $juego = Juego::find($id);
 
+        if ($juego === null){
+            session()->flash('error', 'Ese juego no éxiste');
+            return redirect()->back();
+        }
+
+        if ($juego->ban) {
+            session()->flash('error', 'El juego está suspendido');
+            return redirect()->back();
+        }
+
         $coleccion = Auth::user() ? Auth::user()->juegos : null;
 
         $juegos_id = [];
@@ -81,6 +91,7 @@ class JuegosController extends Controller
             ->where('genero_id', $juego->genero_id)
             ->where('ban', 0)
             ->orWhere('desarrolladora_id', $juego->desarrolladora_id)
+            ->doesnthave('campania')
             ->where('id', '!=', $juego->id)
             ->where('ban', 0)
             ->orderBy('compras_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
@@ -89,12 +100,8 @@ class JuegosController extends Controller
             $recomendados->whereNotIn('id', $juegos_id);
         }
 
-        if ($juego->ban) {
-            session()->flash('error', 'El juego está suspendido');
-            return redirect()->back();
-        }
-
-        $analisis = Post::where('master_id', '!=', null)
+        $analisis = Post::select('posts.*')
+            ->where('master_id', '!=', null)
             ->where('juego_id', $id)
             ->join('masters', 'masters.id', '=', 'posts.master_id')
             ->join('users', 'users.id', '=', 'masters.user_id')

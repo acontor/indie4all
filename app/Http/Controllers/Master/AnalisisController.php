@@ -73,7 +73,7 @@ class AnalisisController extends Controller
                 'juego_id' => $request->juego,
             ]);
 
-            if ($analisis->exists) {
+            if ($analisis->exists()) {
                 session()->flash('success', 'El análisis se ha creado.');
             } else {
                 session()->flash('error', 'El análisis no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
@@ -93,7 +93,12 @@ class AnalisisController extends Controller
     {
         $juegos = Juego::doesntHave('campania')->count();
         $analisis = Post::find($id);
-        return view('master.analisis_editor', ['analisis' => $analisis, 'juegos' => $juegos, 'id' => $analisis->juego_id]);
+        if($analisis->exists()) {
+            return view('master.analisis_editor', ['analisis' => $analisis, 'juegos' => $juegos, 'id' => $analisis->juego_id]);
+        } else {
+            session()->flash('error', 'El analisis no existe');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -138,7 +143,7 @@ class AnalisisController extends Controller
 
         $analisis->delete();
 
-        if (!$analisis->exists) {
+        if (!$analisis->exists()) {
             session()->flash('success', 'El análisis se ha eliminado.');
         } else {
             session()->flash('error', 'El análisis no se ha podido eliminar. Si sigue fallando contacte con soporte@indie4all.com');

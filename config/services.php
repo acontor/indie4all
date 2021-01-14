@@ -33,13 +33,13 @@ return [
     'google' => [
         'client_id' => '1084160846551-hrgsrf4ra9orkmh2d8fnefj30asr3l2g.apps.googleusercontent.com',
         'client_secret' => 'g6mDSs4N95sv7teEUXlAiW96',
-        'redirect' => 'http://127.0.0.1:8000/auth/google/callback',
+        'redirect' => 'http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/auth/google/callback',
     ],
 
     'facebook' => [
         'client_id' => '242615713953725',
         'client_secret' => '60d7ed7bd9acb1c653c35d4adf23e8bd',
-        'redirect' => 'http://127.0.0.1:8000/auth/facebook/callback'
+        'redirect' => 'http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/auth/facebook/callback'
     ]
 
 ];

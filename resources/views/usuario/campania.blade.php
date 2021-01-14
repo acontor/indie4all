@@ -12,7 +12,7 @@
                     @if (!$campania->juego->imagen_portada)
                         <img class="img-fluid h-auto" src="{{ asset('/images/desarrolladoras/default-portada-juego.png') }}">
                     @else
-                        <img class="img-fluid h-auto animate__animated animate__fadeIn" src="{{ asset('/images/desarrolladoras/' . $campania->juego->desarrolladora->nombre . '/' . $campania->juego->imagen_portada) }}">
+                        <img class="img-fluid h-auto animate__animated animate__fadeIn" src="{{ asset('/images/desarrolladoras/' . $campania->juego->desarrolladora->nombre . '/' . $campania->juego->nombre . '/' . $campania->juego->imagen_portada) }}">
                     @endif
                 </div>
                 <div class="col-12 col-md-4">
@@ -26,7 +26,8 @@
                         </li>
                         <li class="list-group-item">
                             <h5>GÉNERO</h5>
-                            <small>{{ $campania->juego->genero->nombre }}</small>
+                            <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{$campania->juego->genero->id}}" class="pop-info"
+                            data-content="Haz click aquí para ver todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover"> <small>{{ $campania->juego->genero->nombre }}</small></a>
                         </li>
                         <li class="list-group-item">
                             <h5>PARTICIPANTES</h5>
@@ -41,14 +42,18 @@
                 <div class="navbar-nav float-right-sm">
                     <div class="d-flex">
                         @if(Auth::user() && Auth::user()->cm()->count() != 0 && Auth::user()->cm->desarrolladora_id == $campania->juego->desarrolladora_id)
-                                <a class="btn btn-primary" href="{{ route('cm.campania.show', $campania->id) }}"><i class="fas fa-user-edit mt-1"></i></a>
+                                <a class="btn btn-primary pop-info"
+                                data-content="Haz click aquí para editar la página de la campaña" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('cm.campania.show', $campania->id) }}"><i class="fas fa-user-edit mt-1"></i></a>
                         @endif
                         @auth
-                            <button class="btn btn-primary participar ml-2"><i class="fab fa-paypal"></i></button>
+                            <button class="btn btn-primary participar ml-2 pop-info"
+                            data-content="Haz click aquí para participar en la campaña" rel="popover" data-placement="bottom" data-trigger="hover"><i class="fab fa-paypal"></i></button>
                         @endauth
-                        <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
+                        <button class="btn btn-warning compartir ml-2 pop-info"
+                        data-content="Haz click aquí para compartir la campaña por tus redes sociales" rel="popover" data-placement="bottom" data-trigger="hover"><i class="fas fa-share-alt"></i></button>
                         @if(Auth::user() && !Auth::user()->cm && !Auth::user()->ban && Auth::user()->email_verified_at != null)
-                            <a class="btn btn-danger ml-2" id='reporteCampania'><i class="fas fa-exclamation-triangle mt-1"></i></a>
+                            <a class="btn btn-danger ml-2 pop-info"
+                            data-content="Haz click aquí para reportar este perfil" rel="popover" data-placement="bottom" data-trigger="hover" id='reporteCampania'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                         @endif
                     </div>
                 </div>
@@ -61,7 +66,8 @@
                         <li class="nav-item"><a class="nav-link" id="actualizaciones" href="">Actualizaciones</a></li>
                         <li class="nav-item"><a class="nav-link" id="foro" href="">Foro</a></li>
                         <li class="nav-item"><a class="nav-link" id="faq" href="">FAQ</a></li>
-                        <a class="btn btn-dark" id="contacto" href="{{ route('usuario.desarrolladora.show', $campania->juego->desarrolladora_id) }}">Desarrolladora</a>
+                        <a class="btn btn-dark pop-info"
+                        data-content="Haz click aquí para ver la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover" id="contacto" href="{{ route('usuario.desarrolladora.show', $campania->juego->desarrolladora_id) }}">Desarrolladora</a>
                     </ul>
                 </div>
             </nav>
@@ -85,7 +91,8 @@
                                             <p>{!! $resumen[0] !!}</p>
                                             <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold pop-info"
+                                                data-content="Haz click aquí para ver las actualizaciones, leer comentarios y participar en ellas" rel="popover" data-placement="bottom" data-trigger="hover">Leer más</a>
                                             </form>
                                         </div>
                                     @endforeach
@@ -103,7 +110,7 @@
                         </div>
                         @auth
                             <div class="foro px-md-4 mt-3 d-none">
-                                @if(Auth::user()->compras->where('campania_id', $campania->id)->count() > 0)
+                                @if(Auth::user()->compras->where('campania_id', $campania->id)->count() > 0 || Auth::user()->administrador || Auth::user()->cm && Auth::user()->cm->desarrolladora_id == $campania->juego->desarrolladora_id)
                                     <textarea class="form-control" name="mensaje" id="editor"></textarea>
                                     <input type="hidden" name="id" value="{{ $campania->id }}">
                                     <button class="btn btn-success mt-3 mb-3" id="mensaje-form">Comentar</button>
@@ -112,7 +119,8 @@
                                             <div class="items">
                                                 @foreach ($campania->mensajes as $mensaje)
                                                     <div class="berber">
-                                                        <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small>@if($mensaje->user->cm && $mensaje->user->cm->desarrolladora_id == $campania->juego->desarrolladora_id)<small class="badge badge-danger badge-pill ml-2">CM</small>@endif @if($mensaje->user->administrador)<small class="badge badge-primary badge-pill ml-2">Admin</small>  @endif</h5><a class="text-danger float-right" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
+                                                        <h5> {{$mensaje->user->name}}<small class="float-right">{{date_format($mensaje->created_at,"d-m-Y H:i")}}</small>@if($mensaje->user->cm && $mensaje->user->cm->desarrolladora_id == $campania->juego->desarrolladora_id)<small class="badge badge-danger badge-pill ml-2">CM</small>@endif @if($mensaje->user->administrador)<small class="badge badge-primary badge-pill ml-2">Admin</small>  @endif</h5><a class="text-danger float-right pop-info"
+                                                        data-content="Haz click aquí para reportar este mensaje" rel="popover" data-placement="bottom" data-trigger="hover" id='reporteMensaje' dataset="{{$mensaje->id}}"><i class="fas fa-exclamation-triangle"></i></a>
                                                         <p class="mensaje">{!! $mensaje->contenido !!}</p>
                                                     </div>
                                                 @endforeach
@@ -245,10 +253,10 @@
             });
 
             html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
-            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!?&url=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
-            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
-            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!%20http://127.0.0.1:8000/campania/${campania.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
-            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/campania/${campania.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
+            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!?&url=http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campania/${campania.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
+            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campania/${campania.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
+            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20juego%20${campania.juego.nombre}%20en%20indie4all.%20¡Mira%20su%20campaña!%20http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campania/${campania.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
+            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campania/${campania.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
             `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
 
             $(".compartir").on('click', {html: html}, compartir);

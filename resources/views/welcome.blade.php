@@ -54,7 +54,7 @@
                             <a href="" id="tops-juegos" class="list-group-item list-group-item-action list-buttons-juegos">Tops</a>
                             <a href="" id="proximo-juegos" class="list-group-item list-group-item-action list-buttons-juegos">Próximo</a>
                         </ul>
-                        <a href="/juegos/lista" class="btn btn-danger rounded-0">Ver todos</a>
+                        <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista" class="btn btn-danger rounded-0">Ver todos</a>
                         @php
                             $fechaHoy = date('Y-m-d');
                         @endphp
@@ -106,7 +106,7 @@
                             <a href="" id="tops-campanias" class="list-group-item list-group-item-action list-buttons-campanias">Tops</a>
                             <a href="" id="proximo-campanias" class="list-group-item list-group-item-action list-buttons-campanias">Próximo</a>
                         </ul>
-                        <a href="/campanias/lista" class="btn btn-danger rounded-0">Ver todos</a>
+                        <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campanias/lista" class="btn btn-danger rounded-0">Ver todos</a>
                         @php
                             $fechaHoy = date('Y-m-d');
                         @endphp
@@ -169,25 +169,29 @@
                             <a href="" id="nuevos-masters" class="list-group-item list-group-item-action list-buttons-masters bg-dark text-white">Nuevo</a>
                             <a href="" id="tops-masters" class="list-group-item list-group-item-action list-buttons-masters">Top</a>
                         </ul>
-                        <a href="/masters/lista" class="btn btn-danger rounded-0">Ver todos</a>
+                        <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/masters/lista" class="btn btn-danger rounded-0">Ver todos</a>
                         @php
                             $fechaHoy = date('Y-m-d');
                         @endphp
                         @foreach ($masters->sortByDesc('created_at') as $master)
-                            <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado-masters nuevos-masters">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1"><b>{{$master->nombre}}</b></h6>
-                                    <small>{{$master->created_at}}</small>
-                                </div>
-                            </a>
+                            @if ($master->usuario->ban != 1)
+                                <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado-masters nuevos-masters">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$master->nombre}}</b></h6>
+                                        <small>{{$master->created_at}}</small>
+                                    </div>
+                                </a>
+                            @endif
                         @endforeach
                         @foreach ($masters as $master)
-                            <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado-masters tops-masters d-none">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1"><b>{{$master->nombre}}</b></h6>
-                                    <small>{{$master->created_at}}</small>
-                                </div>
-                            </a>
+                            @if ($master->usuario->ban != 1)
+                                <a href="{{route('usuario.master.show', $master->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado-masters tops-masters d-none">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1"><b>{{$master->nombre}}</b></h6>
+                                        <small>{{$master->created_at}}</small>
+                                    </div>
+                                </a>
+                            @endif
                         @endforeach
                     </div>
                 </div>

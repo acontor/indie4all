@@ -15,10 +15,12 @@
                 @else
                     <img class="img-fluid shadow" src="{{ asset('/images/desarrolladoras/default-portada-juego.png') }}" alt="{{ $juego->nombre }}" style="filter: brightness(0.2)">
                 @endif
-                <div class="carousel-caption ">
+                <div class="carousel-caption">
                     <h1><strong>{{ $juego->nombre }}</strong></h1>
-                    <a class="nav-link mb-0" href="{{ route('usuario.desarrolladora.show', $juego->desarrolladora->id) }}"><small>{{ $juego->desarrolladora->nombre }}</small></a>
-                    <a class="nav-link mb-0" href="/juegos/lista/{{$juego->genero->id}}"><small class="badge badge-danger">{{ $juego->genero->nombre }}</small></a>
+                    <a class="nav-link mb-0 pop-info"
+                    data-content="Haz click aquí para ver el perfil de la desarrolladora" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.desarrolladora.show', $juego->desarrolladora->id) }}"><small>{{ $juego->desarrolladora->nombre }}</small></a>
+                    <a class="nav-link mb-0 pop-info"
+                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{$juego->genero->id}}"><small class="badge badge-danger">{{ $juego->genero->nombre }}</small></a>
                 </div>
             </header>
             <div class="row mb-5">
@@ -32,18 +34,20 @@
                                 <span>{{ number_format($juego->seguidores->avg('pivot.calificacion'), 2, '.', '') }}</span>
                             @endif
                             @if (Auth::user() != null && Auth::user()->email_verified_at != null && !Auth::user()->ban && !Auth::user()->master)
-                                <select class="btn btn-dark btn-circle select-nota" name="" id="">
+                                <select class="btn btn-dark btn-circle select-nota pop-info"
+                                data-content="Haz click aquí para calificar el juego" rel="popover" data-placement="bottom" data-trigger="hover" name="" id="">
                                     <option value="null">-</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
+                                    @php
+                                        $calificacion = Auth::user()->juegos->where('id', $juego->id)->first();
+                                        if($calificacion !== null) {
+                                            $nota = $calificacion->pivot->calificacion;
+                                        } else {
+                                            $nota = null;
+                                        }
+                                    @endphp
+                                    @for ($i = 1; $i <= 10; $i++)
+                                        <option value="{{$i}}" @if($nota == $i) selected @endif>{{$i}}</option>
+                                    @endfor
                                 </select>
                             @endif
                         </div>
@@ -68,19 +72,22 @@
                     <div class="d-flex">
                         @auth
                             @if(Auth::user() && Auth::user()->cm()->count() != 0 && Auth::user()->cm->desarrolladora_id == $juego->desarrolladora_id)
-                                <a class="btn btn-primary ml-2" href="{{ route('cm.juego.show', $juego->id) }}"><i class="fas fa-user-edit"></i></a>
+                                <a class="btn btn-primary ml-2 pop-info"
+                                data-content="Haz click aquí para editar el juego" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('cm.juego.show', $juego->id) }}"><i class="fas fa-user-edit"></i></a>
                             @else
                                 @if (Auth::user()->juegos->where('id', $juego->id)->count() == 0)
                                     <form method="post" action="{{ route('usuario.juego.follow', $juego->id) }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-light text-primary">
+                                        <button type="submit" class="btn btn-light text-primary pop-info"
+                                        data-content="Haz click aquí para seguir al juego" rel="popover" data-placement="bottom" data-trigger="hover">
                                             <i class="far fa-check-circle"></i>
                                         </button>
                                     </form>
                                 @else
                                     <form method="post" action="{{ route('usuario.juego.unfollow', $juego->id) }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-light text-danger">
+                                        <button type="submit" class="btn btn-light text-danger pop-info"
+                                        data-content="Haz click aquí para dejar de seguir el juego" rel="popover" data-placement="bottom" data-trigger="hover">
                                             <i class="far fa-times-circle"></i>
                                         </button>
                                     </form>
@@ -88,7 +95,8 @@
                                         <form method="post"
                                             action="{{ route('usuario.juego.notificacion', [$juego->id, 1]) }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-light text-primary text-primary ml-2">
+                                            <button type="submit" class="btn btn-light text-primary text-primary ml-2 pop-info"
+                                            data-content="Haz click aquí para activar las notificaciones del juego" rel="popover" data-placement="bottom" data-trigger="hover">
                                                 <i class="far fa-bell"></i></i>
                                             </button>
                                         </form>
@@ -96,7 +104,8 @@
                                         <form method="post"
                                             action="{{ route('usuario.juego.notificacion', [$juego->id, 0]) }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-light text-danger ml-2">
+                                            <button type="submit" class="btn btn-light text-danger ml-2 pop-info"
+                                            data-content="Haz click aquí para desactivar las notificaciones del juego" rel="popover" data-placement="bottom" data-trigger="hover">
                                                 <i class="far fa-bell-slash"></i>
                                             </button>
                                         </form>
@@ -104,10 +113,12 @@
                                 @endif
                             @endif
                         @endauth
-                        <button class="btn btn-warning compartir ml-2"><i class="fas fa-share-alt"></i></button>
+                        <button class="btn btn-warning compartir ml-2 pop-info"
+                        data-content="Haz click aquí para compartir el juego por tus redes sociales" rel="popover" data-placement="bottom" data-trigger="hover"><i class="fas fa-share-alt"></i></button>
                         @auth
                             @if(Auth::user() && !Auth::user()->cm && !Auth::user()->ban && Auth::user()->email_verified_at != null)
-                                <a class="btn btn-danger ml-2" id='reporteJuego'><i class="fas fa-exclamation-triangle mt-1"></i></a>
+                                <a class="btn btn-danger ml-2 pop-info"
+                                data-content="Haz click aquí para reportar el perfil de este juego" rel="popover" data-placement="bottom" data-trigger="hover" id='reporteJuego'><i class="fas fa-exclamation-triangle mt-1"></i></a>
                             @endif
                         @endauth
                     </div>
@@ -142,7 +153,8 @@
                                     <input type="hidden" name="tipo" value="0" />
                                     <input type="hidden" name="precio" value="{{ $juego->precio }}">
                                     <input type="hidden" name="juegoId" value="{{ $juego->id }}">
-                                    <button type="submit" class="btn btn-primary"><i class="fab fa-paypal"></i></button>
+                                    <button type="submit" class="btn btn-primary pop-info"
+                                    data-content="Haz click aquí para comprar el juego. te redirigirá a la plataforma de pago PayPal" rel="popover" data-placement="bottom" data-trigger="hover"><i class="fab fa-paypal"></i></button>
                                     @else
                                     <p class="text-danger">No hay stock en estos momentos</p>
                                     @endif
@@ -158,7 +170,8 @@
                                         <div class="col-12 col-md-6 berber">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Noticia</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -169,7 +182,8 @@
                                             <p>{!! $resumen[0] !!}</p>
                                             <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold pop-info"
+                                                data-content="Haz click aquí para ver la noticia, leer c omentarios y participar en ella" rel="popover" data-placement="bottom" data-trigger="hover">Leer más</a>
                                             </form>
                                             <div class="footer-noticias mt-3">
                                                 <small>{{ $post->created_at }}</small>
@@ -195,7 +209,8 @@
                                         <div class="col-12 col-md-6 berber">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -206,10 +221,12 @@
                                             <p>{!! $resumen[0] !!}</p>
                                             <form class="mb-3">
                                                 <input type="hidden" name="id" value="{{ $post->id }}" />
-                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold">Leer más</a>
+                                                <a type="submit" class="btn btn-light btn-sm more text-dark font-weight-bold pop-info"
+                                                data-content="Haz click aquí para ver el análisis, leer comentarios y participar en el" rel="popover" data-placement="bottom" data-trigger="hover">Leer más</a>
                                             </form>
                                             <div class="footer-noticias mt-3">
-                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
+                                                <small class="text-uppercase font-weight-bold"><a class="text-white text-decoration-none pop-info"
+                                                    data-content="Haz click aquí para ver el perfil de este Master" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.master.show', $post->master->id) }}">{{ $post->master->nombre }}</a></small>
                                                 <small>{{ $post->created_at }}</small>
                                             </div>
                                         </div>
@@ -234,7 +251,8 @@
                             <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
                                 <li class="list-group-item list-buttons bg-dark text-light">Recomendados</a>
                             </ul>
-                            <a href="/juegos/lista" class="btn btn-danger rounded-0">Ver todos</a>
+                            <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista" class="btn btn-danger rounded-0 pop-info"
+                            data-content="Haz click aquí ver todos los juegos de la plataforma y poder filtrarlos a tu gusto" rel="popover" data-placement="bottom" data-trigger="hover">Ver todos</a>
                             @if ($recomendados->count() > 0)
                                 @foreach ($recomendados->take('5') as $recomendado)
                                     <a href="{{route('usuario.juego.show', $recomendado->id)}}" class="list-group-item list-group-item-action flex-column align-items-start listado nuevos">
@@ -265,10 +283,10 @@
             let juego = {!! $juego !!};
 
             html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
-            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20juego%20${juego.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://127.0.0.1:8000/juego/${juego.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
-            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/juego/${juego.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
-            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20juego%20${juego.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://127.0.0.1:8000/juego/${juego.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
-            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/juego/${juego.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
+            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20juego%20${juego.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juego/${juego.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
+            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juego/${juego.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
+            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20juego%20${juego.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juego/${juego.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
+            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juego/${juego.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
             `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
 
             $(".compartir").on('click', {html: html}, compartir);
@@ -297,7 +315,7 @@
             $('.select-nota').on('change', function() {
                 let nota = $('.select-nota option:selected').val();
                 $.ajax({
-                    url: `/juego/calificar`,
+                    url: `http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juego/calificar`,
                     type: 'post',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

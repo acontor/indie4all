@@ -123,14 +123,14 @@
             $(".btn-ban").on('click', function() {
                 let elemento = $(this);
                 let id = elemento.prev().val();
-                let url = `/admin/usuario/${id}/ban`;
+                let url = `http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/admin/usuario/${id}/ban`;
                 ban(elemento, url, "Indica el motivo");
             });
 
             $(".btn-unban").on('click', function() {
                 let elemento = $(this);
                 let id = $(this).prev().prev().val();
-                let url = `/admin/usuario/${id}/unban`;
+                let url = `http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/admin/usuario/${id}/unban`;
                 let motivo = $(this).prev().val();
                 unban(elemento, url, motivo, "¿Quieres quitarle el ban al usuario?");
             });

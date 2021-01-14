@@ -32,6 +32,11 @@ class CampaniasController extends Controller
     {
         $campania = Campania::find($id);
 
+        if ($campania === null){
+            session()->flash('error', 'No se encuentra esa campaña');
+            return redirect()->back();
+        }
+
         if($campania->ban) {
             session()->flash('error', 'La campaña está suspendida');
             return redirect()->back();

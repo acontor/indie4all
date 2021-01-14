@@ -36,7 +36,7 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (NotFoundHttpException $exception) {
             if($exception->getStatusCode() == '404') {
-                return redirect('/');
+                return redirect('/portal');
             }
         });
     }

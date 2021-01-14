@@ -26,14 +26,6 @@
                     @endphp
                     @if ($tipo == 'Participación')
                         <p>Lleva un total de: {{ $precio }} en esta campaña.</p>
-                    @else
-                        <p>¿Quiere activar las notificaciones para dicho juego?</p>
-                        <form method="post" action="{{ route('usuario.juego.notificacion', [$id, 1]) }}">
-                            @csrf
-                            <button type="submit" class="btn btn-light text-primary">
-                                <i class="far fa-check-circle"></i> Activar
-                            </button>
-                        </form>
                     @endif
                     <p class="mt-4">Recibirá un correo electrónico con más información a {{ Auth::user()->email }} </p>
                     <p> Gracias. </p>

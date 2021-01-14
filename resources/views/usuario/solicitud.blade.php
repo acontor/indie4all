@@ -17,7 +17,7 @@
                 <div class="row">
                     <div class="col-12 col-md-6 mb-3">
                         <label for="nombre">Nombre: <i class="fas fa-info-circle pop-info text-danger"
-                                data-content="Nombre que tendrá la desarrolladora<br><span class='text-danger'>Requerido</span>"
+                                data-content="Nombre que tendrá la @if(collect(request()->segments())->last() == "Desarrolladora") desarrolladora @else master @endif<br><span class='text-danger'>Requerido</span>"
                                 data-html="true" rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
                         <input type="text" class="form-control" name="nombre" value="{{ old('nombre') }}" autofocus />
                         @error('nombre')
@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-12 col-md-6 mb-3">
                         <label for="email">Email de contacto: <i class="fas fa-info-circle pop-info text-danger"
-                                data-content="Email de soporte de la desarrolladora<br><span class='text-danger'>Requerido</span>"
+                                data-content="Email de soporte de la @if(collect(request()->segments())->last() == "Desarrolladora") desarrolladora @else master @endif<br><span class='text-danger'>Requerido</span>"
                                 data-html="true" rel="popover" data-placement="bottom" data-trigger="hover"></i></label>
                         <input type="email" class="form-control" name="email" value="{{ old('email') }}" />
                         @error('email')
@@ -67,7 +67,7 @@
                 @endif
                 <div class="form-group">
                     <label for="comentario">@if(collect(request()->segments())->last() == "Desarrolladora") Comentario: @else Análisis: @endif <i class="fas fa-info-circle pop-info text-danger"
-                            data-content="@if(collect(request()->segments())->last() == "Desarrolladora") Agrega un comentario si y cuéntanos algo más @else Realiza un breve análisis para ver tus aptitudes @endif<br><span class='text-danger'>Requerido</span>" rel="popover"
+                            data-content="@if(collect(request()->segments())->last() == "Desarrolladora") Agrega un comentario y cuéntanos algo más @else Realiza un breve análisis para ver tus aptitudes @endif<br><span class='text-danger'>Requerido</span>" rel="popover"
                             data-html="true" data-placement="bottom" data-trigger="hover"></i></label>
                     <textarea name="comentario" class="form-control" id="comentario"
                         rows="5">{{ old('comentario') }}</textarea>
