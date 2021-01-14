@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Listeners\ComprarListener;
+use App\Listeners\FollowListener;
 use App\Listeners\InvertirListener;
 use App\Mail\Compras\CompraRealizada;
 use App\Mail\Compras\InversionRealizada;
@@ -98,6 +99,7 @@ class PaymentController extends Controller
         $payerID = $request->input('PayerID');
         $token = $request->input('token');
 
+
         if (!$paymentId || !$payerID || !$token) {
             $status = 0;
             return view('usuario.informePago', ['status' => $status]);
@@ -133,7 +135,15 @@ class PaymentController extends Controller
                     'juego_id' => $id,
                 ]);
                 event(new ComprarListener($user));
+
                 Mail::to($user->email)->send(new CompraRealizada($clave, $user->name, $mensaje));
+
+                $user = User::find(Auth::id());
+                $user->juegos()->sync([$id => ['notificacion' => true]]);
+
+                event(new FollowListener($user));
+
+                return view('usuario.informePago', ['id' => $id, 'precio' => $precio, 'mensaje' => $mensaje, 'status' => $status]);
             } else {
                 $participacion = Compra::where('user_id', Auth::id())->where('campania_id', $id)->get();
                 if ($participacion->count() == 0) {
@@ -154,9 +164,9 @@ class PaymentController extends Controller
 
                 event(new InvertirListener($user));
                 Mail::to($user->email)->send(new InversionRealizada($participacion->precio, $user->name, $mensaje));
-            }
 
-            return view('usuario.informePago', ['precio' => $participacion->precio, 'mensaje' => $mensaje, 'status' => $status]);
+                return view('usuario.informePago', ['precio' => $participacion->precio, 'mensaje' => $mensaje, 'status' => $status]);
+            }
         }
 
         $status = 0;

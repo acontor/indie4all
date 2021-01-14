@@ -18,7 +18,6 @@ class Juego extends Model
         'nombre',
         'imagen_portada',
         'imagen_caratula',
-        'sinopsis',
         'fecha_lanzamiento',
         'precio',
         'desarrolladora_id',
@@ -58,7 +57,7 @@ class Juego extends Model
     }
 
     // Juegos - N:N - Usuarios
-    public function usuarios()
+    public function seguidores()
     {
         return $this->belongsToMany("App\Models\User")->withPivot('calificacion');
     }
@@ -67,5 +66,11 @@ class Juego extends Model
     public function claves()
     {
         return $this->hasMany("App\Models\Clave");
+    }
+
+    // Compras - 1:N - Juegos
+    public function compras()
+    {
+        return $this->hasMany("App\Models\Compra");
     }
 }

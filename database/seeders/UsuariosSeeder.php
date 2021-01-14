@@ -34,13 +34,14 @@ class UsuariosSeeder extends Seeder
         DB::table('administradors')->insert([
             'user_id' => 2,
         ]);
-        DB::table('users')->insert([
+        /* DB::table('users')->insert([
             'name' => 'pepe',
             'username' => 'pepito',
             'email' => 'pepe@mail.com',
             'password' => Hash::make('password'),
         ]);
         DB::table('masters')->insert([
+            'nombre' => 'Pepón',
             'email' => 'master@email.com',
             'user_id' => 3,
         ]);
@@ -85,6 +86,6 @@ class UsuariosSeeder extends Seeder
             'username' => 'palomita',
             'email' => 'paloma@mail.com',
             'password' => Hash::make('password'),
-        ]);
+        ]); */
     }
 }

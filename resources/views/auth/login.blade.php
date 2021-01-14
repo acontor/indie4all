@@ -1,154 +1,139 @@
 @extends('layouts.usuario.base')
+
 @section('styles')
-    <link href="{{ asset('css/login_signup.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
 @endsection
+
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center ">
-            <div class="user_options-container ">
-                <div class="user_options-text">
-                    <div class="user_options-unregistered">
-                        <h2 class="user_unregistered-title">¿No tienes cuenta?</h2>
-                        <p class="user_unregistered-text">Registrate ahora para para ver todo el contenido de la web.</p>
-                        <button class="user_unregistered-signup" id="signup-button">Registrarse</button>
-                    </div>
-                    <div class="user_options-registered">
-                        <h2 class="user_registered-title">¿Tienes ya una cuenta?</h2>
-                        <p class="user_registered-text">Identifícate para poder disfrutar de todo el contenido de la web.
-                        </p>
-                        <button class="user_registered-login" id="login-button">Identificarse</button>
-                    </div>
+    <div class="content">
+        <div class="container bg-white p-5 shadow">
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="img-fluid" src="{{ asset('images/login-logo.png') }}" alt="">
                 </div>
-                <div class="user_options-forms  mt-5" id="user_options-forms">
-                    <div class="user_forms-login">
-                        <h2 class="forms_title">Identificación</h2>
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <fieldset class="forms_fieldset">
-                                <div class="forms_field">
-                                    <input id="email" type="email"
-                                        class="forms_field-input @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="forms_field">
-                                    <input id="password" type="password" class="forms_field-input"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="current-password">
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-md-6 offset-md-4">
-                                        <div class="form-check">
-                                            <input class="form-check-input forms_buttons-forgot" type="checkbox"
-                                                name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                            <label class="form-check-label forms_buttons-forgot" for="remember">
-                                                {{ __('Remember Me') }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="forms_buttons">
-                                @if (Route::has('password.request'))
-                                    <a class="forms_buttons-forgot" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                                <button type="submit" class="forms_buttons-action">
-                                    {{ __('Login') }}
-                                </button>
+                <div class="col-md-6 contents">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <h3>Bienvenido a indie4all</h3>
+                                <p>Tu plataforma para disfrutar de los juegos indies.</p>
                             </div>
-                        </form>
-                    </div>
-                    <div class="user_forms-signup">
-                        <h2 class="forms_title">Registro</h2>
-                        <form class="forms_form" method="POST" action="{{ route('register') }}">
-                            @csrf
-                            <fieldset class="forms_fieldset">
-                                <div class="forms_field">
-                                    <input id="name" type="text" placeholder="Nombre"
-                                        class="forms_field-input @error('name') is-invalid @enderror" name="name"
-                                        value="{{ old('name') }}" required autocomplete="name" autofocus>
+                            <p class="text-center header-login">¿Aún no estás <a
+                                href="" class="btn-change">registrado</a>?.</p>
+                            <p class="text-center header-register d-none">Si ya estás registrado, <a href="" class="btn-change">inicia sesión</a>.</p>
+                            <form method="POST" action="{{ route('login') }}" class="login-form">
+                                @csrf
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                                <div class="form-group first">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" class="form-control" required
+                                        autocomplete="email" autofocus>
                                 </div>
-                                <div class="forms_field">
-                                    <input id="username" type="text" placeholder="Nick"
-                                        class="forms_field-input @error('username') is-invalid @enderror" name="username"
-                                        value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                <div class="form-group last mb-4">
+                                    <label for="password">Contraseña</label>
+                                    <input type="password" name="password" class="form-control" required
+                                        autocomplete="current-password">
                                 </div>
-                                <div class="forms_field">
-                                    <input id="email" type="email" placeholder="Email"
-                                        class="forms_field-input @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email">
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <div class="d-flex mb-4 align-items-center mt-4">
+                                    <input type="submit" value="Iniciar" class="btn btn-primary">
+                                    <span class="ml-auto"><a href="#" class="forgot-pass">
+                                        @if (Route::has('password.request'))
+                                            <a class="forms_buttons-forgot" href="{{ route('password.request') }}">
+                                                Recuperar Contraseña
+                                            </a>
+                                        @endif
+                                    </span>
                                 </div>
-                                <div class="forms_field">
-                                    <input id="password" type="password" placeholder="Password"
-                                        class="forms_field-input @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="new-password">
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                            </form>
+                            <form method="POST" action="{{ route('register') }}" class="register-form d-none">
+                                @csrf
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                                <div class="form-group first">
+                                    <label for="name">Nombre</label>
+                                    <input type="text" name="name" class="form-control" required
+                                        autocomplete="name">
                                 </div>
-                                <div class="forms_field">
-                                    <input id="password-confirm" type="password" placeholder="password-confirm"
-                                        class="forms_field-input @error('password') is-invalid @enderror"
-                                        name="password_confirmation" required autocomplete="new-password">
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <div class="form-group first">
+                                    <label for="username">Nombre de usuario</label>
+                                    <input type="text" name="username" class="form-control" required
+                                        autocomplete="username">
                                 </div>
-                            </fieldset>
-                            <div class="forms_buttons">
-                                <input type="submit" value="Sign up" class="forms_buttons-action">
+                                <div class="form-group first">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" class="form-control" required
+                                        autocomplete="email">
+                                </div>
+                                <div class="form-group first">
+                                    <label for="password">Contraseña</label>
+                                    <input type="password" name="password" class="form-control" required>
+                                </div>
+                                <div class="form-group last mb-4">
+                                    <label for="password_confirmation">Repetir contraseña</label>
+                                    <input type="password" name="password_confirmation" class="form-control" required>
+                                </div>
+                                <div class="d-flex mb-4 align-items-center mt-4">
+                                    <input type="submit" value="Registrar" class="btn btn-primary">
+                                </div>
+                            </form>
+                            <div id="recaptcha"></div>
+                            <span class="error-recaptcha text-danger"></span>
+                            <span class="d-block text-left my-4 text-muted">&mdash; o iniciar con &mdash;</span>
+                            <div class="social-login">
+                                <a href="{{ url('auth/facebook') }}" class="facebook">
+                                    <span class="fab fa-facebook-f mr-3"></span>
+                                </a>
+                                <a href="{{ url('auth/google') }}" class="google">
+                                    <span class="fab fa-google mr-3"></span>
+                                </a>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+@endsection
 
+@section('scripts')
     <script>
-        /**
-         * Variables
-         */
-        const signupButton = document.getElementById('signup-button'),
-            loginButton = document.getElementById('login-button'),
-            userForms = document.getElementById('user_options-forms')
+        $(function() {
+            'use strict';
 
-        /**
-         * Add event listener to the "Sign Up" button
-         */
-        signupButton.addEventListener('click', () => {
-            userForms.classList.remove('bounceRight')
-            userForms.classList.add('bounceLeft')
-        }, false)
+            var interval = setInterval(function(){
+                grecaptcha.render('recaptcha', {
+                    'sitekey': '6Lc2ufwZAAAAAFtjN9fasxuJc0OEf670ruHSTEfP'
+                });
+                clearInterval(interval);
+            }, 100);
 
-        /**
-         * Add event listener to the "Login" button
-         */
-        loginButton.addEventListener('click', () => {
-            userForms.classList.remove('bounceLeft')
-            userForms.classList.add('bounceRight')
-        }, false)
+            $('form').on('submit', function(e) {
+                if (grecaptcha.getResponse().length === 0) {
+                    e.preventDefault();
+                    $('.error-recaptcha').text('Completa el captcha');
+                }
+            });
+
+            $('.form-control').on('input', function() {
+                var $field = $(this).closest('.form-group');
+                if (this.value) {
+                    $field.addClass('field--not-empty');
+                } else {
+                    $field.removeClass('field--not-empty');
+                }
+            });
+
+            $('.btn-change').on('click', function(e) {
+                e.preventDefault();
+                $('.register-form').toggleClass('d-none');
+                $('.login-form').toggleClass('d-none');
+                $('.header-register').toggleClass('d-none');
+                $('.header-login').toggleClass('d-none');
+            });
+        });
 
     </script>
 @endsection

@@ -18,7 +18,7 @@ class CampaniasController extends Controller
      */
     public function index()
     {
-        $campanias = Campania::all();
+        $campanias = Campania::where('ban', 0)->get();
         return view('usuario.campanias', ['campanias' => $campanias]);
     }
 
@@ -31,6 +31,17 @@ class CampaniasController extends Controller
     public function show($id)
     {
         $campania = Campania::find($id);
+
+        if ($campania === null){
+            session()->flash('error', 'No se encuentra esa campaña');
+            return redirect()->back();
+        }
+
+        if($campania->ban) {
+            session()->flash('error', 'La campaña está suspendida');
+            return redirect()->back();
+        }
+
         return view('usuario.campania', ['campania' => $campania]);
     }
 

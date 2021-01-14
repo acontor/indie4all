@@ -1,54 +1,42 @@
 @extends("layouts.admin.base")
+
 @section("content")
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <br />
-                @endif
-                @if(isset($logro))
-                    <div class="box-header">
-                        <h1>Editar logro</h1>
-                    </div>
-                    <div class="box">
+                <div class="box-header">
+                    <h1>@isset($logro)Editar @else Nuevo @endisset logro</h1>
+                </div>
+                <div class="box">
+                    @isset($logro)
                         <form method="post" action="{{ route('admin.logros.update', $logro->id) }}" enctype="multipart/form-data">
-                        @method("PATCH")
+                            @method("PATCH")
                     @else
-                    <div class="box-header">
-                        <h1>Nuevo logro</h1>
-                    </div>
-                    <div class="box">
                         <form method="post" action="{{ route('admin.logros.store') }}" enctype="multipart/form-data">
-                    @endif
+                    @endisset
                         @csrf
                             <div class="form-group">
                                 <label for="nombre">Nombre:</label>
-                                <input type="text" class="form-control" name="nombre" @if(isset($logro)) value="{{ $logro->nombre }}" @endif />
+                                <input type="text" class="form-control" name="nombre" @isset($logro) value="{{ $logro->nombre }}" @endisset />
+                                @error('nombre')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="descripcion">Descripción:</label>
-                                <input type="text" class="form-control" name="descripcion" @if(isset($logro)) value="{{ $logro->descripcion }}" @endif />
+                                <input type="text" class="form-control" name="descripcion" @isset($logro) value="{{ $logro->descripcion }}" @endisset />
+                                @error('descripcion')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group">
-                                <span class="btn btn-file">
-                                    <i class="fas fa-upload"></i> Icono
-                                    <input type="file" class="inputfile" name="icono" id="icono" />
-                                </span>
+                                <label for="icono">Icono:</label>
+                                <input type="text" class="form-control" name="icono" @isset($logro) value="{{ $logro->icono }}" @endisset />
+                                @error('icono')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                            <button type="submit" class="btn btn-success mb-3">
-                            @if(isset($logro))
-                                Editar
-                            @else
-                                Añadir
-                            @endif
-                            </button>
+                            <button type="submit" class="btn btn-success">@isset($logro) Editar @else Crear @endisset</button>
                         </form>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Usuario;
 use App\Http\Controllers\Controller;
 use App\Models\Genero;
 use App\Models\Logro;
+use App\Models\Solicitud;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,12 +28,13 @@ class CuentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($seccion = null)
     {
         $usuario = User::find(Auth()->id());
         $logros = Logro::all();
         $generos = Genero::all();
-        return view('usuario.cuenta', ['usuario' => $usuario, 'logros' => $logros, 'generos' => $generos]);
+        $solicitudRechazada = Solicitud::where('user_id', Auth()->id())->withTrashed()->get();
+        return view('usuario.cuenta', ['usuario' => $usuario, 'logros' => $logros, 'generos' => $generos, 'solicitudRechazada' => $solicitudRechazada, 'seccion' => $seccion]);
     }
 
     public function usuario(Request $request)

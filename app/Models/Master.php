@@ -17,7 +17,8 @@ class Master extends Model
     protected $fillable = [
         'nombre',
         'email',
-        'imagen',
+        'imagen_portada',
+        'imagen_logo',
         'user_id',
     ];
 
@@ -26,15 +27,15 @@ class Master extends Model
      */
 
     // Fans - N:M - Masters
-    public function usuarios()
+    public function seguidores()
     {
-        return $this->belongsToMany("App\Models\User");
+        return $this->belongsToMany("App\Models\User")->withPivot('created_at');
     }
 
     // user - 1:M - Masters
     public function usuario()
     {
-        return $this->belongsTo("App\Models\User","user_id","id");
+        return $this->belongsTo("App\Models\User", "user_id", "id");
     }
 
     // Masters - 1:N - Posts

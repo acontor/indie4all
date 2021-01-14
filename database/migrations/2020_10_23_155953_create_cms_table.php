@@ -15,7 +15,6 @@ class CreateCmsTable extends Migration
     {
         Schema::create('cms', function (Blueprint $table) {
             $table->id();
-            $table->string('rol')->nullable();
             $table->timestamps();
             $table->bigInteger('desarrolladora_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();

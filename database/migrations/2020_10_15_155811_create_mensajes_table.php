@@ -20,9 +20,9 @@ class CreateMensajesTable extends Migration
             $table->bigInteger('post_id')->unsigned()->nullable();
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('campania_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('campania_id')->references('id')->on('campanias');
-            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('campania_id')->references('id')->on('campanias')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
         });
     }
 

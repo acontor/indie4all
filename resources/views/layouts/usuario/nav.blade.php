@@ -1,49 +1,52 @@
 <nav class="navbar navbar-expand-md navbar-dark shadow-sm">
-    <a class="navbar-brand d-md-none d-inline" href="{{ url('/') }}">
+    <a class="navbar-brand d-inline" href="{{ route('index') }}">
         <img src="{{ asset('images/logo.png') }}" width="50" alt="">
     </a>
-    <button class="btn btn-warning search">
+    <button class="btn btn-warning d-md-none  search">
         <span class="badge badge-dark d-none d-md-inline">ctrl + y</span><i class="fas fa-search d-inline ml-md-2"></i>
     </button>
-    <button class="navbar-toggler ml-1" type="button" data-toggle="collapse" data-target="#collapsingNavbar2">
+    <button class="navbar-toggler ml-1 bg-dark" type="button" data-toggle="collapse" data-target="#collapsingNavbar2">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar2">
-        <ul class="navbar-nav mx-auto text-md-center text-left">
-            <li class="nav-item mt-1">
-                <a class="nav-link" href="{{ url('/') }}">Portal</a>
+        <ul class="navbar-nav mx-auto ml-auto text-md-center text-left align-items-center font-weight-bold">
+            <li class="nav-item mt-1 h-100">
+                <a href="{{ route('index') }}" class="nav-link">
+                    Inicio
+                </a>
             </li>
-            <li class="nav-item mt-1">
-                <a class="nav-link" href="{{ route('home') }}">Home</a>
-            </li>
-            <li class="nav-item mt-1">
+
+            @auth
+                <li class="nav-item mt-1 h-100">
+                    <a class="nav-link" href="{{ route('home') }}">Portal</a>
+                </li>
+            @endauth
+            <li class="nav-item mt-1 h-100">
                 <a class="nav-link" href="{{ route('usuario.masters.index') }}">Masters</a>
             </li>
-            <li class="nav-item ml-3 mr-3">
-                <span class="nav-link navbar-brand mx-0 d-none d-md-inline">
-                    <img src="{{ asset('images/logo.png') }}" class="img-fluid" width="50" alt="">
-                </span>
-            </li>
-            <li class="nav-item mt-1">
+            <li class="nav-item mt-1 h-100">
                 <a class="nav-link" href="{{ route('usuario.desarrolladoras.index') }}">Desarrolladoras</a>
             </li>
-            <li class="nav-item mt-1">
+            <li class="nav-item mt-1 h-100">
                 <a class="nav-link" href="{{ route('usuario.juegos.index') }}">Juegos</a>
             </li>
-            <li class="nav-item mt-1">
-                <a class="nav-link" href="{{ route('usuario.campanias.index') }}">Campañas</a>
+            <li class="nav-item mt-1 h-100">
+                <a class="nav-link" href="{{ route('usuario.campanias.all') }}">Campañas</a>
             </li>
         </ul>
         <ul class="nav navbar-nav">
+            <button class="btn btn-warning d-md-inline d-none search mr-3">
+                <span class="badge badge-dark d-none d-md-inline">ctrl + y</span><i class="fas fa-search d-inline ml-md-2"></i>
+            </button>
             @guest
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">{{ __("Login") }} / {{ __("Register") }}</a>
+                    <a class="nav-link btn btn-dark" href="{{ route('login') }}">Iniciar sesión</a>
                 </li>
             @else
                 <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-dark" href="#" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }}
+                        {{ Auth::user()->username }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('usuario.cuenta.index') }}">
@@ -63,9 +66,8 @@
                             </a>
                         @endif
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            {{ __("Logout") }}
+                            Cerrar sesión
                         </a>
-
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>

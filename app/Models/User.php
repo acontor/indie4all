@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'reportes',
         'ban',
         'motivo',
+        'google_id',
     ];
 
     /**
@@ -84,7 +85,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // Users - N:M - Desarrolladoras
     public function desarrolladoras()
     {
-        return $this->belongsToMany("App\Models\Desarrolladora")->withPivot('notificacion');
+        return $this->belongsToMany("App\Models\Desarrolladora")->withPivot('notificacion')->withTimestamps();;
     }
 
     // Users - 1:N - Compras
@@ -102,13 +103,13 @@ class User extends Authenticatable implements MustVerifyEmail
     // Usuario - N:M - Masters
     public function masters()
     {
-        return $this->belongsToMany("App\Models\Master")->withPivot('notificacion');
+        return $this->belongsToMany("App\Models\Master")->withPivot('notificacion')->withTimestamps();
     }
 
     // Usuario - N:M - Juego
     public function juegos()
     {
-        return $this->belongsToMany("App\Models\Juego")->withPivot('notificacion', 'calificacion');
+        return $this->belongsToMany("App\Models\Juego")->withPivot('notificacion', 'calificacion')->withTimestamps();;
     }
 
     // Usuario - 1:1 - Solicitud

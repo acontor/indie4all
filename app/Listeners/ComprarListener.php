@@ -14,14 +14,14 @@ class ComprarListener
      */
     public function __construct(User $user)
     {
-        if(Auth::user()->logros->where('logro_id', 3)->count() != 0) {
+        if(Auth::user()->logros->where('logro_id', 3)->count() == 0) {
 
             $compras = $user->compras->count();
 
             if ($compras >= 5) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     3
-                ]);
+                ], false);
 
                 event(new LogrosListener($user));
             }

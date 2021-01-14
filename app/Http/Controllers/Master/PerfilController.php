@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Models\Master;
-use App\Models\User;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -22,45 +21,93 @@ class PerfilController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra una vista con los datos del perfil de master del usuario registrado.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $perfil = Master::find(User::find(Auth::id())->master->id);
-        return view('master.perfil', ['perfil' => $perfil]);
+        $perfil = Auth::user()->master;
+        $analisis = Post::where('master_id', Auth::user()->master->id)->where('juego_id', '!=', null)->get();
+        return view('master.perfil', ['perfil' => $perfil, 'analisis' => $analisis]);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Actualizado los datos del perfil de master.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
     {
-        $master = Master::find($id);
+        $master = Auth::user()->master;
 
         $request->validate([
-            'nombre' => 'required',
-            'email' => 'required',
+            'nombre' => $master->nombre !== $request->nombre ? ['required', 'unique:masters', 'max:255'] : ['required', 'max:255'],
+            'email' => ['required', 'max:255'],
+            'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
+            'imagen_logo' => ['mimes:png', 'dimensions:width=256,height=256'],
         ]);
 
-        $fileName = '';
-        $imagen = public_path() . '/images/masters/' . $master->imagen;
-
-        if (@getimagesize($imagen)) {
-            unlink($imagen);
+        if ($master->nombre != $request->nombre) {
+            rename(public_path('/images/masters/' . $master->nombre), public_path('/images/masters/' . $request->nombre));
         }
-        if ($imagen = $request->file('imagen')) {
-            $originName = $request->file('imagen')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('imagen')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $imagen->move('images/masters/', $fileName);
+
+        $ruta = public_path('/images/masters/' . $request->nombre);
+
+        if ($request->file('imagen_portada') != null) {
+            $imagenPortada = $this->guardarImagen($request->file('imagen_portada'), $ruta, 'portada');
+        } else {
+            $imagenPortada = $master->imagen_portada;
+        }
+        if ($request->file('imagen_logo') != null) {
+            $imagenLogo = $this->guardarImagen($request->file('imagen_logo'), $ruta, 'logo');
+        } else {
+            $imagenLogo = $master->imagen_logo;
         }
 
         $master->update([
             'nombre' => $request->nombre,
             'email' => $request->email,
-            'imagen' => $fileName,
+            'imagen_portada' => $imagenPortada,
+            'imagen_logo' => $imagenLogo,
         ]);
 
-        return view('master.perfil', ['perfil' => $master]);
+        Post::where('master_id', Auth::user()->master->id)->where('juego_id', '!=', null)->update([
+            'destacado' => 0,
+        ]);
+
+        if ($request->juegos != null) {
+            foreach ($request->juegos as $value) {
+                Post::where('master_id', Auth::user()->master->id)->where('juego_id', $value)->update([
+                    'destacado' => 1,
+                ]);
+            }
+        }
+
+        session()->flash('success', 'Perfil modificado.');
+
+        return redirect('/master/perfil');
+    }
+
+    /**
+     * Guarda las imágenes en la carpeta public.
+     *
+     * @param  \Illuminate\Http\Request  $imagen
+     * @param  String  $ruta
+     * @param  String  $nombre
+     * @return String
+     */
+    public function guardarImagen($imagen, $ruta, $nombre)
+    {
+        if ($imagen != null) {
+            if (@getimagesize($ruta)) {
+                unlink($ruta);
+            }
+            $extension = $imagen->getClientOriginalExtension();
+            $imagen->move($ruta, $nombre . '.' .  $extension);
+        }
+
+        return $nombre . '.' .  $extension;
     }
 }

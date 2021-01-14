@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
+use App\Listeners\EncuestaListener;
 use App\Listeners\FollowListener;
+use App\Listeners\SorteoListener;
 use App\Mail\Sorteos\SorteoConfirmacion;
+use App\Models\Campania;
 use App\Models\Desarrolladora;
 use App\Models\Post;
-use App\Models\Solicitud;
 use App\Models\Sorteo;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,53 +27,20 @@ class DesarrolladorasController extends Controller
      */
     public function index()
     {
-        $desarrolladoras = Desarrolladora::all();
-        return view('usuario.desarrolladoras', ['desarrolladoras' => $desarrolladoras]);
-    }
+        $desarrolladoras = Desarrolladora::withCount(['seguidores' => function (Builder $query) {
+            $query->where('desarrolladora_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('desarrolladora_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
+        }, 'posts' => function (Builder $query) {
+            $query->where('posts.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('posts.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
+        }])->where('ban', 0)->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-    public function all()
-    {
-        $desarrolladoras = Desarrolladora::all();
-        return view('usuario.desarrolladoras_all', ['desarrolladoras' => $desarrolladoras]);
-    }
+        $posts = Post::select('posts.*')
+            ->where('desarrolladora_id', '!=', null)
+            ->join('desarrolladoras', 'desarrolladoras.id', '=', 'posts.desarrolladora_id')
+            ->where('posts.ban', 0)
+            ->where('desarrolladoras.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('usuario.solicitud_desarrolladora');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required',
-            'email' => 'required',
-            'direccion' => 'required',
-            'telefono' => 'required',
-            'url' => 'required',
-        ]);
-
-        Solicitud::create([
-            'nombre' => $request->nombre,
-            'email' => $request->email,
-            'direccion' => $request->direccion,
-            'telefono' => $request->telefono,
-            'url' => $request->url,
-            'tipo' => 'Desarrolladora',
-            'user_id' => Auth::id(),
-        ]);
-
-        return redirect('/desarrolladoras');
+        return view('usuario.desarrolladoras', ['desarrolladoras' => $desarrolladoras, 'posts' => $posts]);
     }
 
     /**
@@ -82,7 +52,24 @@ class DesarrolladorasController extends Controller
     public function show($id)
     {
         $desarrolladora = Desarrolladora::find($id);
-        return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora]);
+
+        if ($desarrolladora === null) {
+            session()->flash('error', 'No se encuentra esa desarrolladora');
+            return redirect()->back();
+        }
+
+        if ($desarrolladora->ban) {
+            session()->flash('error', 'La desarrolladora está suspendida');
+            return redirect()->back();
+        }
+
+        $campanias = Campania::select('campanias.*')
+            ->join('juegos', 'juegos.id', 'campanias.juego_id')
+            ->join('desarrolladoras', 'desarrolladoras.id', 'juegos.desarrolladora_id')
+            ->where('desarrolladoras.id', $id)
+            ->where('campanias.ban', 0)->get();
+
+        return view('usuario.desarrolladora', ['desarrolladora' => $desarrolladora, 'campanias' => $campanias]);
     }
 
     public function follow($id)
@@ -92,7 +79,7 @@ class DesarrolladorasController extends Controller
 
         event(new FollowListener($user));
 
-        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function unfollow($id)
@@ -101,7 +88,7 @@ class DesarrolladorasController extends Controller
 
         $user->desarrolladoras()->detach($id);
 
-        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function notificacion($id, $notificacion)
@@ -112,7 +99,7 @@ class DesarrolladorasController extends Controller
             $id => ['notificacion' => $notificacion]
         ], false);
 
-        return redirect()->route('usuario.desarrolladora.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function post(Request $request)
@@ -137,12 +124,16 @@ class DesarrolladorasController extends Controller
         $desarrolladora = $sorteo->desarrolladora->nombre;
 
         Mail::to($user->email)->send(new SorteoConfirmacion($user->name, $sorteo, $desarrolladora));
+
+        event(new SorteoListener($user));
     }
 
     public function encuesta(Request $request)
     {
         $user = User::find(Auth::id());
 
-        $user->opciones()->attach([$request->opcion => ['opcion_id' => $request->opcion]]);
+        $user->opciones()->sync([$request->opcion => ['opcion_id' => $request->opcion]], false);
+
+        event(new EncuestaListener($user));
     }
 }

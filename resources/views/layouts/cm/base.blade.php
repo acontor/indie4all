@@ -9,19 +9,21 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config("app.name", "Laravel") }}</title>
+    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/panel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/cm.css') }}" rel="stylesheet">
     @yield("styles")
 </head>
 
@@ -36,6 +38,7 @@
         </main>
     </div>
 
+    <script src="{{ asset('js/cm.js') }}"></script>
     @yield("scripts")
 </body>
 

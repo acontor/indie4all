@@ -1,40 +1,37 @@
 @extends("layouts.admin.base")
+
 @section("styles")
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable/datatable.css') }}" rel="stylesheet">
 @endsection
+
 @section("content")
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm">
                 <div class="box-header">
                     <h1>Reportes (<span id="count">{{ $desarrolladoras->count() + $posts->count() + $mensajes->count() + $juegos->count() + $campanias->count() + $masters->count() }}</span>)</h1>
                 </div>
-                <div class="row box text-center menu mb-4">
-                    @if ($desarrolladoras->count() > 0)
-                        <div class="col-4 col-md-3 mb-2"><a id="desarrolladoras" href="">Desarrolladoras</a></div>
-                    @endif
-                    @if ($juegos->count() > 0)
-                        <div class="col-4 col-md-3 mb-2"><a id="juegos" href="">Juegos</a></div>
-                    @endif
-                    @if ($campanias->count() > 0)
-                        <div class="col-4 col-md-3 mb-2"><a id="campanias" href="">Campañas</a></div>
-                    @endif
-                    @if ($masters->count() > 0)
-                        <div class="col-4 col-md-3 mb-2"><a id="masters" href="">Masters</a></div>
-                    @endif
-                    @if ($posts->count() > 0)
-                        <div class="col-4 col-md-3"><a id="posts" href="">Posts</a></div>
-                    @endif
-                    @if ($mensajes->count() > 0)
-                        <div class="col-4 col-md-3"><a id="mensajes" href="">Mensajes</a></div>
-                    @endif
-                </div>
-                <div id="main">
-                    @if ($desarrolladoras->count() > 0)
-                        <div class="box desarrolladoras">
-                            <h2>Desarrolladoras</h2>
-                            <table class="table table-striped">
+                <nav id="submenu" class="navbar-expand-md navbar-light shadow bg-white mt-4 mb-4 pt-3 pb-3 text-center">
+                    <button class="navbar-toggler ml-1" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                        Menú reportes <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar">
+                        <ul class="navbar-nav mx-auto submenu-items">
+                            <li class="nav-item"><a class="nav-link" id="desarrolladoras" href="">Desarrolladoras <span class="badge badge-pill badge-dark">{{ $desarrolladoras->count() > 0 }}</span></a></li>
+                            <li class="nav-item"><a class="nav-link" id="juegos" href="">Juegos <span class="badge badge-pill badge-dark">{{ $juegos->count() > 0 }}</span></a></li>
+                            <li class="nav-item"><a class="nav-link" id="campanias" href="">Campañas <span class="badge badge-pill badge-dark">{{ $campanias->count() > 0 }}</span></a></li>
+                            <li class="nav-item"><a class="nav-link" id="masters" href="">Masters <span class="badge badge-pill badge-dark">{{ $masters->count() > 0 }}</span></a></li>
+                            <li class="nav-item"><a class="nav-link" id="posts" href="">Posts <span class="badge badge-pill badge-dark">{{ $posts->count() > 0 }}</span></a></li>
+                            <li class="nav-item"><a class="nav-link" id="mensajes" href="">Mensajes <span class="badge badge-pill badge-dark">{{ $mensajes->count() > 0 }}</span></a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <div id="contenido" class="box">
+                    <div class="desarrolladoras">
+                        <h2>Desarrolladoras</h2>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Nombre</td>
@@ -67,11 +64,11 @@
                                 </tbody>
                             </table>
                         </div>
-                    @endif
-                    @if ($posts->count() > 0)
-                        <div class="box posts d-none">
-                            <h2>Posts</h2>
-                            <table class="table table-striped">
+                    </div>
+                    <div class="posts d-none">
+                        <h2>Posts</h2>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Título</td>
@@ -104,11 +101,11 @@
                                 </tbody>
                             </table>
                         </div>
-                    @endif
-                    @if ($mensajes->count() > 0)
-                        <div class="box mensajes d-none">
-                            <h2>Mensajes</h2>
-                            <table class="table table-striped">
+                    </div>
+                    <div class="mensajes d-none">
+                        <h2>Mensajes</h2>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Título</td>
@@ -141,11 +138,11 @@
                                 </tbody>
                             </table>
                         </div>
-                    @endif
-                    @if ($juegos->count() > 0)
-                        <div class="box juegos d-none">
-                            <h2>Juegos</h2>
-                            <table class="table table-striped">
+                    </div>
+                    <div class="juegos d-none">
+                        <h2>Juegos</h2>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Nombre</td>
@@ -178,11 +175,11 @@
                                 </tbody>
                             </table>
                         </div>
-                    @endif
-                    @if ($campanias->count() > 0)
-                        <div class="box campanias d-none">
-                            <h2>Campañas</h2>
-                            <table class="table table-striped">
+                    </div>
+                    <div class="campanias d-none">
+                        <h2>Campañas</h2>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Nombre</td>
@@ -215,11 +212,11 @@
                                 </tbody>
                             </table>
                         </div>
-                    @endif
-                    @if ($masters->count() > 0)
-                        <div class="box masters d-none">
-                            <h2>Masters</h2>
-                            <table class="table table-striped">
+                    </div>
+                    <div class="masters d-none">
+                        <h2>Masters</h2>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped w-100">
                                 <thead>
                                     <tr>
                                         <td>Nombre</td>
@@ -252,30 +249,22 @@
                                 </tbody>
                             </table>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
 @section("scripts")
-    <script src="{{ asset('js/datatable.js') }}"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
     <script type="text/javascript">
         $(function() {
-            $('table').DataTable({
-                "responsive": true
-            });
-
-            $(".menu").children("div").children("a").click(function(e) {
-                console.log($(this).attr("id"))
-                e.preventDefault();
-                let item = $(this).attr("id");
-                $("#main").children("div").addClass("d-none");
-                $(`.${item}`).removeClass("d-none");
-            });
-
-            $(".ver").click(function(e) {
+            $(".ver").on('click', function(e) {
                 e.preventDefault();
                 $.ajax({
                     url: '{{ route("admin.reporte.show") }}',
@@ -300,7 +289,7 @@
                 });
             });
 
-            $(".aceptar").click(function(e) {
+            $(".aceptar").on('click', function(e) {
                 e.preventDefault();
                 let tr = $(this).parents('tr');
                 let table = $(this).parents('table');
@@ -311,24 +300,36 @@
                         tipo: $(this).parent().children().next().val() + '_id',
                         tabla: $(this).parent().children().next().val() + 's',
                     },
-                    success: function(data) {
+                    success: function(mensaje) {
                         $(table).DataTable().row(tr).remove().draw();
                         $("#messages-count").html($("#messages-count").text() - 1);
                         $("#count").html($("#count").text() - 1);
+                        notificacionEstado('success', mensaje);
+                    },
+                    error: function () {
+                        notificacionEstado('error', 'No se ha podido realizar la acción');
                     }
                 });
             });
 
-            $(".rechazar").click(function(e) {
+            $(".rechazar").on('click', function(e) {
                 e.preventDefault();
+                let tr = $(this).parents('tr');
+                let table = $(this).parents('table');
                 $.ajax({
                     url: '{{ route("admin.reporte.cancelar") }}',
                     data: {
                         id: $(this).parent().children().val(),
                         tipo: $(this).parent().children().next().val() + '_id',
                     },
-                    success: function(data) {
-                        // Eliminar el reporte
+                    success: function(mensaje) {
+                        $(table).DataTable().row(tr).remove().draw();
+                        $("#messages-count").html($("#messages-count").text() - 1);
+                        $("#count").html($("#count").text() - 1);
+                        notificacionEstado('success', mensaje);
+                    },
+                    error: function () {
+                        notificacionEstado('error', 'No se ha podido realizar la acción');
                     }
                 });
             });

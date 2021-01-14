@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -33,10 +32,18 @@ class EstadosController extends Controller
             'estado' => 'required',
         ]);
 
-        Post::create([
+        $post = Post::create([
             'contenido' => $request->estado,
-            'master_id' => User::find(Auth::id())->master->id,
+            'master_id' => Auth::user()->master->id,
         ]);
+
+        if ($post->exists()) {
+            session()->flash('success', 'El estado ha sido publicado');
+        } else {
+            session()->flash('error', 'El estado no se ha publicado. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/master/' . Auth::user()->master->id);
     }
 
     /**
@@ -48,6 +55,6 @@ class EstadosController extends Controller
     public function destroy($id)
     {
         Post::find($id)->delete();
-        return redirect('/master/' . User::find(Auth::id())->master->id);
+        return redirect('/master/' . Auth::user()->master->id);
     }
 }

@@ -9,7 +9,6 @@ use App\Models\Campania;
 use App\Models\Compra;
 use App\Models\Genero;
 use App\Models\Juego;
-use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -33,7 +32,7 @@ class CampaniasController extends Controller
      */
     public function index()
     {
-        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->has('campania')->get();
+        $juegos = Desarrolladora::find(Cm::where('user_id', Auth::id())->first()->desarrolladora_id)->juegos()->has('campania')->orderByDesc('ban')->get();
         return view('cm.campanias', ['juegos' => $juegos]);
     }
 
@@ -46,68 +45,72 @@ class CampaniasController extends Controller
     public function show($id)
     {
         $campania = Campania::find($id);
+        if ($campania === null){
+            session()->flash('error', 'No se encuentra esa campaña');
+            return redirect()->back();
+        }
         $generos = Genero::All();
         $compras = Compra::where('campania_id', $id)->get();
+
         return view('cm.campania', ['campania' => $campania, 'generos' => $generos, 'compras' => $compras]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('cm.campania');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'meta' => 'required',
-            'fecha_fin' => 'required',
             'nombre' => 'required',
-            'sinopsis' => 'required',
-            'imagen_portada' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=1024,height=512',
-            'imagen_caratula' => 'required',
-            'sinopsis' => 'required',
-            'fecha_lanzamiento' => 'required',
-            'precio' => 'required',
+            'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
+            'imagen_caratula' => ['mimes:png', 'dimensions:width=200,height=256'],
+            'fecha_fin' => 'required',
+            'aporte_minimo' => 'required',
             'genero_id' => 'required',
         ]);
 
-        if ($portada = $request->file('imagen_portada')) {
-            $originNamePortada = $request->file('imagen_portada')->getClientOriginalName();
-            $fileNamePortada = pathinfo($originNamePortada, PATHINFO_FILENAME);
-            $extensionPortada = $request->file('imagen_portada')->getClientOriginalExtension();
-            $fileNamePortada = $fileNamePortada . '_' . time() . '.' . $extensionPortada;
-            $portada->move('images/juegos/portadas/', $fileNamePortada);
-        }
+        $ruta = public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/' . $request->nombre);
 
-        if ($caratula = $request->file('imagen_caratula')) {
-            $originNameCaratula = $request->file('imagen_caratula')->getClientOriginalName();
-            $fileNameCaratula = pathinfo($originNameCaratula, PATHINFO_FILENAME);
-            $extensionCaratula = $request->file('imagen_caratula')->getClientOriginalExtension();
-            $fileNameCaratula = $fileNameCaratula . '_' . time() . '.' . $extensionCaratula;
-            $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
+        if ($request->file('imagen_portada') != null) {
+            $imagenPortada = $this->guardarImagen($request->file('imagen_portada'), $ruta, 'portada');
+        }
+        if ($request->file('imagen_caratula') != null) {
+            $imagenCaratula = $this->guardarImagen($request->file('imagen_caratula'), $ruta, 'logo');
         }
 
         $juego = Juego::create([
             'nombre' => $request->nombre,
-            'imagen_portada' => $fileNamePortada,
-            'imagen_caratula' => $fileNameCaratula,
-            'sinopsis' => $request->sinopsis,
+            'imagen_portada' => $imagenPortada ?? null,
+            'imagen_caratula' => $imagenCaratula ?? null,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'desarrolladora_id' =>  Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
             'genero_id' => $request->genero_id,
         ]);
 
-        Campania::create([
+        $campania = Campania::create([
             'meta' => $request->meta,
-            'resultado' => $request->imagen_portada,
             'fecha_fin' => $request->fecha_fin,
             'juego_id' => $juego->id,
+            'aporte_minimo' => $request->aporte_minimo,
         ]);
 
-        return redirect('/cm/campanias')->with('success', '¡Campaña creada!');
-    }
+        if ($campania->exists() && $juego->exists()) {
+            session()->flash('success', 'La campaña se ha creado.');
+        } else {
+            session()->flash('error', 'La campaña no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
+        }
 
-    public function edit($campaniaId, $juegoId)
-    {
-        $campania = Campania::find($campaniaId);
-        $juego = Juego::find($juegoId);
-        return view('cm.campanias_crear', ['campania' => $campania, 'juego' => $juego]);
+        return redirect('/cm/campanias');
     }
 
     public function update(Request $request, $id)
@@ -116,11 +119,10 @@ class CampaniasController extends Controller
             'meta' => 'required',
             'fecha_fin' => 'required',
             'nombre' => 'required',
-            'sinopsis' => 'required',
-            'imagen_portada' => 'image|mimes:jpeg,png,jpg,gif,svg|dimensions:width=1024,height=512',
-            'fecha_lanzamiento' => 'required',
-            'precio' => 'required',
+            'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
+            'imagen_caratula' => ['mimes:png', 'dimensions:width=200,height=256'],
             'genero_id' => 'required',
+            'aporte_minimo' => 'required',
         ]);
 
         $campania = Campania::find($id);
@@ -133,38 +135,75 @@ class CampaniasController extends Controller
             'faq' => $request->faq,
         ]);
 
-        if ($portada = $request->file('imagen_portada')) {
-            $originNamePortada = $request->file('imagen_portada')->getClientOriginalName();
-            $fileNamePortada = pathinfo($originNamePortada, PATHINFO_FILENAME);
-            $extensionPortada = $request->file('imagen_portada')->getClientOriginalExtension();
-            $fileNamePortada = $fileNamePortada . '_' . time() . '.' . $extensionPortada;
-            $portada->move('images/juegos/portadas/', $fileNamePortada);
+        $juego = Juego::find($campania->juego_id);
+
+        if ($juego->nombre != $request->nombre) {
+            rename(public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/' . $juego->nombre), public_path('/images/desarrolladoras/' . '/' . Auth::user()->cm->desarrolladora->nombre . '/' . $request->nombre));
         }
 
-        if ($caratula = $request->file('imagen_caratula')) {
-            $originNameCaratula = $request->file('imagen_caratula')->getClientOriginalName();
-            $fileNameCaratula = pathinfo($originNameCaratula, PATHINFO_FILENAME);
-            $extensionCaratula = $request->file('imagen_caratula')->getClientOriginalExtension();
-            $fileNameCaratula = $fileNameCaratula . '_' . time() . '.' . $extensionCaratula;
-            $caratula->move('images/juegos/caratulas/', $fileNameCaratula);
+        $ruta = public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/' . $request->nombre);
+
+        if ($request->file('imagen_portada') != null) {
+            $imagenPortada = $this->guardarImagen($request->file('imagen_portada'), $ruta, 'portada');
+        } else {
+            $imagenPortada = $juego->imagen_portada;
+        }
+        if ($request->file('imagen_caratula') != null) {
+            $imagenLogo = $this->guardarImagen($request->file('imagen_caratula'), $ruta, 'logo');
+        } else {
+            $imagenLogo = $juego->imagen_logo;
         }
 
-        Juego::find($campania->juego_id)->update([
+        $juego->update([
             'nombre' => $request->nombre,
-            'imagen_portada' => $fileNamePortada,
-            'imagen_caratula' => $fileNameCaratula,
-            'sinopsis' => $request->sinopsis,
+            'imagen_portada' => $imagenPortada ?? null,
+            'imagen_caratula' => $imagenLogo ?? null,
             'fecha_lanzamiento' => $request->fecha_lanzamiento,
             'precio' => $request->precio,
             'genero_id' => $request->genero_id,
+            'contenido' => $request->contenido,
         ]);
 
-        return redirect('/cm/campanias')->with('success', '¡Campaña actualizada!');
+        session()->flash('success', 'La campaña se ha actualizado.');
+
+        return redirect('/cm/campanias');
     }
 
     public function destroy($id)
     {
-        Campania::find($id)->delete();
-        return redirect('/cm/campanias')->with('success', '¡Campaña borrada!');
+        $campania = Campania::find($id);
+
+        $campania->delete();
+
+        Juego::where('id', $campania->id)->delete();
+
+        if (!$campania->exists()) {
+            session()->flash('success', 'La campaña se ha retirado.');
+        } else {
+            session()->flash('error', 'La campaña no se ha podido eliminar. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/cm/campanias');
+    }
+
+    /**
+     * Guarda las imágenes en la carpeta public.
+     *
+     * @param  \Illuminate\Http\Request  $imagen
+     * @param  String  $ruta
+     * @param  String  $nombre
+     * @return String
+     */
+    public function guardarImagen($imagen, $ruta, $nombre)
+    {
+        if ($imagen != null) {
+            if (@getimagesize($ruta)) {
+                unlink($ruta);
+            }
+            $extension = $imagen->getClientOriginalExtension();
+            $imagen->move($ruta, $nombre . '.' .  $extension);
+        }
+
+        return $nombre . '.' .  $extension;
     }
 }

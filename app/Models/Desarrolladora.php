@@ -21,6 +21,7 @@ class Desarrolladora extends Model
         'direccion',
         'telefono',
         'url',
+        'imagen_portada',
         'imagen_logo',
         'contenido',
         'ban',
@@ -33,7 +34,7 @@ class Desarrolladora extends Model
      */
 
     // Desarrolladoras - N:M - Users
-    public function users()
+    public function seguidores()
     {
         return $this->belongsToMany("App\Models\User");
     }

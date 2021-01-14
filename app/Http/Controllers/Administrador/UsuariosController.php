@@ -23,7 +23,7 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra el listado de todos los usuarios.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,16 +32,22 @@ class UsuariosController extends Controller
         $usuarios = User::all();
         $numMasters = Master::all()->count();
         $numCms = CM::all()->count();
+
         return view('admin.usuarios', ['usuarios' => $usuarios, 'numMasters' => $numMasters, 'numCms' => $numCms]);
     }
 
+    /**
+     * Muestra el formulario de creación de usuarios.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
         return view('admin.usuarios_editor');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena el usuarios creado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -49,22 +55,42 @@ class UsuariosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        User::create([
+        $usuario = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('/admin/usuarios')->with('success', 'Usuario creado!');
+        if ($usuario->exists()) {
+            session()->flash('success', 'El usuario ha sido creado');
+        } else {
+            session()->flash('error', 'El usuario no se ha podido crear');
+        }
+
+        return redirect('/admin/usuarios');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Muestra el formulario para editar al usuario seleccionado.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $usuario = User::find($id);
+
+        return view('admin.usuarios_editor', ['usuario' => $usuario]);
+    }
+
+    /**
+     * Actualiza el usuario seleccionado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -72,54 +98,81 @@ class UsuariosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $usuario = User::find($id);
+
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'name' => $usuario->name !== $request->name ? ['required', 'string', 'unique:users', 'max:255'] : ['required', 'string', 'max:255'],
+            'username' => $usuario->username !== $request->username ? ['required', 'string', 'unique:users', 'max:255'] : ['required', 'string', 'max:255'],
+            'email' => $usuario->email !== $request->email ? ['required', 'string', 'email', 'max:255', 'unique:users'] : ['required', 'string', 'email', 'max:255'],
         ]);
 
-        User::find($id)->update([
+        $usuario->update([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
         ]);
 
-        return redirect('/admin/usuarios')->with('success', '¡Usuario actualizado!');
-    }
+        session()->flash('success', 'El usuario se ha actualizado');
 
-    public function edit($id)
-    {
-        $usuario = User::find($id);
-        return view('admin.usuarios_editor', ['usuario' => $usuario]);
+        return redirect('/admin/usuarios');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina al usuario seleccionado.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect('/admin/usuarios')->with('success', '¡Usuario borrado!');
+        $usuario = User::find($id);
+
+        $usuario->delete();
+
+        if (!$usuario->exists()) {
+            session()->flash('success', 'El usuario se ha eliminado');
+        } else {
+            session()->flash('error', 'El usuario no se ha podido eliminar');
+        }
+
+        return redirect('/admin/usuarios');
     }
 
+    /**
+     * Banea un usuario.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return String
+     */
     public function ban($id, Request $request)
     {
-        User::find($id)->update([
+        $usuario = User::find($id);
+
+        $usuario->update([
             'ban' => true,
             'motivo' => $request->motivo,
         ]);
 
-        return $request->motivo;
+        return 'El usuario ' . $usuario->nombre . ' ha sido baneado';
     }
 
+    /**
+     * Elimina el ban a un usuario.
+     *
+     * @param  int  $id
+     * @return String
+     */
     public function unban($id)
     {
-        User::find($id)->update([
+        $usuario = User::find($id);
+
+        $usuario->update([
             'ban' => false,
             'motivo' => null,
+            'reportes' => $usuario->reportes + 1,
         ]);
 
-        return "El usuario ya no está baneado";
+        return 'El usuario ' . $usuario->name . ' ya no está baneado';
     }
 }

@@ -28,14 +28,19 @@ class Compra extends Model
      */
 
     // Campanias - 1:N - Compras
-    public function campanias()
+    public function campania()
     {
-        return $this->belongsTo("App\Models\Compra");
+        return $this->belongsTo("App\Models\Campania");
     }
 
     // Compra - 1:N - User
     public function participante()
     {
         return $this->belongsTo("App\Models\User", "user_id", "id");
+    }
+       // Compra - 1:N - Juego
+    public function Juego()
+    {
+        return $this->belongsTo("App\Models\Juego",'juego_id' , 'id');
     }
 }

@@ -70,16 +70,30 @@ class EncuestasController extends Controller
             ]);
         }
 
-        return redirect('/cm/encuestas')->with('success', 'Encuesta creada!');
+        if ($encuesta->exists()) {
+            session()->flash('success', 'La encuesta se ha creado.');
+        } else {
+            session()->flash('error', 'La encuesta no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/cm/encuestas');
     }
 
     public function destroy($id)
     {
         Opcion::where('encuesta_id', $id)->delete();
 
-        Encuesta::find($id)->delete();
+        $encuesta = Encuesta::find($id)->delete();
 
-        return redirect('/cm/encuestas')->with('success', 'Encuesta eliminada!');
+        $encuesta->delete();
+
+        if (!$encuesta->exists()) {
+            session()->flash('success', 'La encuesta se ha eliminado.');
+        } else {
+            session()->flash('error', 'La encuesta no se ha podido eliminar. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/cm/encuestas');
     }
 
     public function finish($id)
@@ -88,6 +102,8 @@ class EncuestasController extends Controller
             'fin' => true
         ]);
 
-        return redirect('/cm/encuestas')->with('success', 'Encuesta finalizada!');
+        session()->flash('success', 'La encuesta ha finalizado');
+
+        return redirect('/cm/encuestas');
     }
 }

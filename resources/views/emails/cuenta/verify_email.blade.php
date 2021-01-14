@@ -1,7 +1,7 @@
 <body>
     <h4>Hola</h4>
     <!-- Logo corporativo -->
-    <img src="{{ asset('/images/default.png') }}" height="100" />
+    <img src="{{ asset('/images/logo.png') }}" height="100" />
     <p>Haga clic en el botón de abajo para verificar su dirección de correo electrónico.</p>
     <a href="{{ $url }}">Verificar Email</a>
     <br>

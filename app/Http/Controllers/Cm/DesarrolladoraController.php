@@ -35,28 +35,29 @@ class DesarrolladoraController extends Controller
     public function update(Request $request, $id)
     {
         $desarrolladora = Desarrolladora::find($id);
+
         $request->validate([
-            'nombre' => 'required',
-            'email' => 'required',
-            'direccion' => 'required',
-            'telefono' => 'required',
-            'url' => 'required',
-            'imagen_logo' => 'required',
+            'nombre' => $desarrolladora->nombre !== $request->nombre ? ['required', 'unique:desarrolladoras', 'max:255'] : ['required', 'max:255'],
+            'email' => $desarrolladora->email !== $request->email ? ['required', 'unique:desarrolladoras', 'max:255'] : ['required', 'max:255'],
+            'imagen_portada' => ['mimes:png', 'dimensions:width=1024,height=512'],
+            'imagen_logo' => ['mimes:png', 'dimensions:width=256,height=256'],
         ]);
 
-        $fileName = '';
-        $imagen = public_path() . '/images/desarrolladoras/' . $desarrolladora->imagen_logo;
-
-        if (@getimagesize($imagen)) {
-            unlink($imagen);
+        if ($desarrolladora->nombre != $request->nombre) {
+            rename(public_path('/images/desarrolladoras/' . $desarrolladora->nombre), public_path('/images/desarrolladoras/' . $request->nombre));
         }
 
-        if ($imagen = $request->file('imagen_logo')) {
-            $originName = $request->file('imagen_logo')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('imagen_logo')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $imagen->move('images/desarrolladoras/', $fileName);
+        $ruta = public_path('/images/desarrolladoras/' . $request->nombre);
+
+        if ($request->file('imagen_portada') != null) {
+            $imagenPortada = $this->guardarImagen($request->file('imagen_portada'), $ruta, 'portada');
+        } else {
+            $imagenPortada = $desarrolladora->imagen_portada;
+        }
+        if ($request->file('imagen_logo') != null) {
+            $imagenLogo = $this->guardarImagen($request->file('imagen_logo'), $ruta, 'logo');
+        } else {
+            $imagenLogo = $desarrolladora->imagen_logo;
         }
 
         $desarrolladora->update([
@@ -65,28 +66,50 @@ class DesarrolladoraController extends Controller
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
             'url' => $request->url,
-            'imagen_logo' => $fileName,
+            'imagen_portada' => $imagenPortada,
+            'imagen_logo' => $imagenLogo,
             'contenido' => $request->contenido,
         ]);
 
-        return redirect('/cm/desarrolladora')->with('success', 'Juego actualizado!');
+        session()->flash('success', 'El perfil se ha actualizado.');
+
+        return redirect('/cm/desarrolladora');
     }
 
     public function upload(Request $request)
     {
-        // Mover imagen a temp
         if ($request->hasFile('upload')) {
-            $originName = $request->file('upload')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $nombreOriginal = $request->file('upload')->getClientOriginalName();
+            $nombreImagen = pathinfo($nombreOriginal, PATHINFO_FILENAME);
             $extension = $request->file('upload')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $request->file('upload')->move(public_path('images/posts'), $fileName);
+            $nombreImagen = $nombreImagen . '_' . time() . '.' . $extension;
+            $request->file('upload')->move(public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/contenido'), $nombreImagen);
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
-            $url = asset('images/posts/' . $fileName);
-            $msg = 'Image successfully uploaded';
-            $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
+            $url = asset('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/contenido/' . $nombreImagen);
+            $respuesta = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url')</script>";
             @header('Content-type: text/html; charset=utf-8');
-            echo $response;
+            echo $respuesta;
         }
+    }
+
+    /**
+     * Guarda las imágenes en la carpeta public.
+     *
+     * @param  \Illuminate\Http\Request  $imagen
+     * @param  String  $ruta
+     * @param  String  $nombre
+     * @return String
+     */
+    public function guardarImagen($imagen, $ruta, $nombre)
+    {
+        if ($imagen != null) {
+            if (@getimagesize($ruta)) {
+                unlink($ruta);
+            }
+            $extension = $imagen->getClientOriginalExtension();
+            $imagen->move($ruta, $nombre . '.' .  $extension);
+        }
+
+        return $nombre . '.' .  $extension;
     }
 }

@@ -17,13 +17,15 @@ class CreateSolicitudesTable extends Migration
             $table->id();
             $table->string('nombre')->nullable();
             $table->string('tipo');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('direccion')->nullable();
             $table->string('telefono')->nullable();
             $table->string('url')->nullable();
+            $table->longText('comentario');
             $table->timestamps();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
         });
     }
 
@@ -34,6 +36,8 @@ class CreateSolicitudesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('solicituds');
+        Schema::table('solicituds', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }

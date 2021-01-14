@@ -7,6 +7,7 @@ use App\Models\Master;
 use App\Models\User;
 use App\Listeners\FollowListener;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,15 +21,21 @@ class MasterController extends Controller
      */
     public function index()
     {
-        $masters = Master::all();
+        $masters = Master::withCount(['seguidores' => function (Builder $query) {
+            $query->where('master_user.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('master_user.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
+        }, 'posts' => function (Builder $query) {
+            $query->where('posts.created_at', '<=', date('Y-m-d', strtotime(date('Y-m-d') . ' +1 days')))->where('posts.created_at', '>=', date('Y-m-d', strtotime(date('Y-m-d') . ' -3 months')));
+        }])->join('users', 'users.id', '=', 'masters.user_id')->where('users.ban', 0)->orderBy('posts_count', 'DESC')->orderBy('seguidores_count', 'DESC')->get();
 
-        return view('usuario.masters', ['masters' => $masters]);
-    }
+        $posts = Post::select('posts.*')
+            ->where('master_id', '!=', null)
+            ->join('masters', 'masters.id', '=', 'posts.master_id')
+            ->join('users', 'users.id', '=', 'masters.user_id')
+            ->where('posts.ban', 0)
+            ->where('users.ban', 0)
+            ->orderBy('posts.created_at', 'DESC')->get();
 
-    public function all()
-    {
-        $masters = Master::all();
-        return view('usuario.masters_all', ['masters' => $masters]);
+        return view('usuario.masters', ['masters' => $masters, 'posts' => $posts]);
     }
 
     /**
@@ -40,6 +47,17 @@ class MasterController extends Controller
     public function show($id)
     {
         $master = Master::find($id);
+
+        if ($master === null){
+            session()->flash('error', 'No existe este Master');
+            return redirect()->back();
+        }
+
+        if ($master->usuario->ban) {
+            session()->flash('error', 'La desarrolladora está suspendida');
+            return redirect()->back();
+        }
+
         return view('usuario.master', ['master' => $master]);
     }
 
@@ -50,7 +68,7 @@ class MasterController extends Controller
 
         event(new FollowListener($user));
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function unfollow($id)
@@ -59,7 +77,7 @@ class MasterController extends Controller
 
         $user->masters()->detach($id);
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function notificacion($id, $notificacion)
@@ -70,7 +88,7 @@ class MasterController extends Controller
             $id => ['notificacion' => $notificacion]
         ], false);
 
-        return redirect()->route('usuario.master.show', ['id' => $id]);
+        return redirect()->back();
     }
 
     public function post(Request $request)
@@ -79,7 +97,7 @@ class MasterController extends Controller
 
         $mensajes = DB::table('mensajes')
             ->join('users', 'users.id', '=', 'mensajes.user_id')
-            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name' ,'mensajes.id')
+            ->select('mensajes.contenido', 'mensajes.created_at', 'users.name', 'mensajes.id')
             ->where('mensajes.post_id', $post->id)->get();
 
         return ['post' => $post, 'mensajes' => $mensajes];

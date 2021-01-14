@@ -9,14 +9,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config("app.name", "Laravel") }}</title>
+    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/es.js"></script>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
@@ -24,174 +23,96 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/usuario.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     @yield("styles")
 </head>
 
 <body>
     <div id="app">
         @include("layouts.usuario.nav")
+        @if(Cookie::get('laravel_cookie_consent') != 1)
+            {{\Cookie::queue(\Cookie::forget('laravel_cookie_consent'))}}
+            <nav class="navbar navbar-expand-md footer fixed-bottom navbar-dark shadow-sm bg-danger text-light nav-alert nav-cookie">
+                <span class="mx-auto">@include('cookieConsent::index')</span>
+            </nav>
+        @endif
         @if (Auth::user() != null && Auth::user()->ban)
-        <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light">
-            <span class="mx-auto">Su cuenta se encuentra baneada. No podrá hacer uso de las funciones sociales de la plataforma. Accede a <a href="{{ route('usuario.cuenta.index') }}">Mi Cuenta</a> para ver el motivo.</span>
-        </nav>
+            <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light nav-alert">
+                <span class="mx-auto">Su cuenta se encuentra baneada. No podrá hacer uso de las funciones sociales de la plataforma. Accede a <a href="{{ route('usuario.cuenta.index') }}">Mi Cuenta</a> para ver el motivo.</span>
+            </nav>
         @endif
         @if (Auth::user() != null && Auth::user()->email_verified_at == null)
-        <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light">
-            <span class="verify-alert mx-auto">Para utilizar las funciones sociales de la plataforma verifique su cuenta. Haz clic <a class="verify-link">aquí</a> para recibir el email de verificación</span>
-        </nav>
+            <nav class="navbar navbar-expand-md navbar-dark shadow-sm bg-dark text-light nav-alert">
+                <span class="verify-alert mx-auto">Para utilizar las funciones sociales de la plataforma verifique su cuenta. Haz clic <a class="verify-link">aquí</a> para recibir el email de verificación</span>
+            </nav>
         @endif
         @yield("content")
         @if(Auth::user() && Auth::user()->master()->count() != 0)
-        <a href="{{ route('usuario.master.show', Auth::user()->master()->first()->id) }}">
-            <div class="perfil">
-                <i class="fas fa-user" aria-hidden="true"></i>
-            </div>
-        </a>
-        <a href="{{ route('master.analisis.create', 0) }}">
-            <div class="analisis">
-                <i class="fas fa-feather-alt" aria-hidden="true"></i>
-            </div>
-        </a>
-        <a href="#">
-            <div class="estado">
-                <i class="fas fa-brain" aria-hidden="true"></i>
-            </div>
-        </a>
+            <a href="{{ route('usuario.master.show', Auth::user()->master()->first()->id) }}">
+                <div class="perfil">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                </div>
+            </a>
+            <a href="{{ route('master.analisis.create', 0) }}">
+                <div class="analisis">
+                    <i class="fas fa-feather-alt" aria-hidden="true"></i>
+                </div>
+            </a>
+            <a href="#">
+                <div class="estado">
+                    <i class="fas fa-brain" aria-hidden="true"></i>
+                </div>
+            </a>
         @endif
         @if(Auth::user() && Auth::user()->cm()->count() != 0)
-        <a href="{{ route('usuario.desarrolladora.show', Auth::user()->cm()->first()->id) }}">
-            <div class="perfil">
-                <i class="fas fa-user" aria-hidden="true"></i>
-            </div>
-        </a>
-        <a href="{{ route('cm.juego.create') }}">
-            <div class="juego">
-                <i class="fas fa-gamepad" aria-hidden="true"></i>
-            </div>
-        </a>
-        <a href="{{ route('cm.campania.create') }}">
-            <div class="campania">
-                <i class="fas fa-bullhorn" aria-hidden="true"></i>
-            </div>
-        </a>
+            <a href="{{ route('usuario.desarrolladora.show', Auth::user()->cm()->first()->id) }}">
+                <div class="perfil">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                </div>
+            </a>
+            <a href="{{ route('cm.juego.create') }}">
+                <div class="juego">
+                    <i class="fas fa-gamepad" aria-hidden="true"></i>
+                </div>
+            </a>
+            <a href="{{ route('cm.campania.create') }}">
+                <div class="campania">
+                    <i class="fas fa-bullhorn" aria-hidden="true"></i>
+                </div>
+            </a>
         @endif
     </div>
-    @yield("scripts")
+    @include("layouts.usuario.footer")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="{{ asset('js/paginga/paginga.jquery.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/usuario.js') }}"></script>
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
+
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
+
+        </script>
+    @endif
     <script>
-        $(function() {
-            $(document).keydown(function(event) {
-                if (event.ctrlKey && event.code == "KeyY") {
-                    busqueda();
-                }
+        $(function () {
+            $(".estado").parent().on("click", function(e) {
+                let csrf = '<input type="hidden" name="_token" value="{{ csrf_token() }}" />';
+                e.preventDefault();
+                nuevoEstado(csrf, '{{ asset("js/ckeditor/config.js") }}');
             });
 
-            $(".search").click(busqueda);
-
-            $(".verify-link").click(verificar);
-
-            $('.estado').parent().click(function() {
-                Swal.fire({
-                    position: 'bottom',
-                    title: 'Nuevo estado',
-                    html: '<textarea class="form-control" name="nuevo-estado" id="editor"></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button>',
-                    showCloseButton: false,
-                    showCancelButton: false,
-                    showConfirmButton: false,
-                    showClass: {
-                        popup: 'animate__animated animate__bounceInUp'
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__backOutDown'
-                    }
-                });
-                CKEDITOR.replace("nuevo-estado", {
-                    customConfig: "{{ asset('js/ckeditor/config.js') }}"
-                });
-                $("#estado-form").click(function(e) {
-                    e.preventDefault();
-                    let estado = CKEDITOR.instances.editor.getData();
-                    CKEDITOR.instances.editor.setData("");
-                    $.ajax({
-                        url: '{{ route("master.estado.store") }}',
-                        type: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            estado: estado
-                        }
-                    });
-                });
-            });
+            $(".verify-link").on("click", verificar);
         });
-
-        function busqueda() {
-            Swal.fire({
-                position: 'top',
-                title: '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text bg-light"><i class="fas fa-search"></i></span></div><input type="text" class="form-control" placeholder="Buscar" id="busqueda" autocomplete="off"></div>',
-                html: '<small><span class="badge badge-secondary d-none d-md-inline">Tab</span> Moverse entre los resultados <span class="badge badge-secondary ml-3">Esc</span> Cerrar búsqueda</small><div></div>',
-                showCloseButton: false,
-                showCancelButton: false,
-                showConfirmButton: false,
-                customClass: 'swal-height',
-                showClass: {
-                    popup: 'animate__animated animate__zoomIn'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__zoomOut'
-                }
-            });
-
-            $("#busqueda").keyup(function() {
-                $(".swal2-html-container>div").html("");
-                if($("#busqueda").val() != "") {
-                    $.ajax({
-                        url: "{{ route('usuario.busqueda') }}",
-                        datatype: "json",
-                        data: {
-                            q: $("#busqueda").val(),
-                        },
-                        success: function(data) {
-                            let html = '<div class="list-group mb-4 mt-2 mr-3">';
-                            if(data.length == 0) {
-                                $(".swal2-html-container>div").append('<p class="mt-3">No se ha encontrado ningún resultado</p>');
-                            } else {
-                                data.forEach(element => {
-                                    if(element.tipo == "Juego") {
-                                        if(html.indexOf("<h4 class='mt-2 mb-2'>Juegos</h4>") == -1) {
-                                            html += `<h4 class='mt-2 mb-2'>Juegos</h4><small><a href="{{ route('usuario.juegos.all') }}">Ver todos</a></small>`;
-                                        }
-                                        let url = '{{ route("usuario.juego.show", ":id") }}';
-                                        url = url.replace(':id', element.id);
-                                        html += `<a href="${url}" class="list-group-item list-group-item-action">${element.nombre}</a>`;
-                                    } else if (element.tipo == "Desarrolladora") {
-                                        if(html.indexOf("<h4 class='mt-2 mb-2'>Desarrolladoras</h4>") == -1) {
-                                            html += `<h4 class='mt-2 mb-2'>Desarrolladoras</h4><small><a href="{{ route('usuario.desarrolladoras.all') }}">Ver todas</a></small>`;
-                                        }
-                                        let url = '{{ route("usuario.desarrolladora.show", ":id") }}';
-                                        url = url.replace(':id', element.id);
-                                        html += `<a href="${url}" class="list-group-item list-group-item-action">${element.nombre}</a>`;
-                                    } else if (element.tipo == "Master") {
-                                        if(html.indexOf("<h4 class='mt-2 mb-2'>Masters</h4>") == -1) {
-                                            html += `<h4 class='mt-2 mb-2'>Masters</h4><small><a href="{{ route('usuario.masters.all') }}">Ver todas</a></small>`;
-                                        }
-                                        let url = '{{ route("usuario.master.show", ":id") }}';
-                                        url = url.replace(':id', element.id);
-                                        html += `<a href="${url}" class="list-group-item list-group-item-action">${element.nombre}</a>`;
-                                    }
-                                });
-                                html += '</ul>';
-                                $(".swal2-html-container>div").append(html);
-                            }
-                        }
-                    });
-                }
-            });
-        }
 
         function verificar() {
             $.ajax({
@@ -207,6 +128,7 @@
         }
 
     </script>
+    @yield("scripts")
 </body>
 
 </html>

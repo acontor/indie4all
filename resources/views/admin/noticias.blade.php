@@ -1,8 +1,10 @@
 @extends("layouts.admin.base")
+
 @section("styles")
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable/datatable.css') }}" rel="stylesheet">
 @endsection
+
 @section("content")
     <div class="container">
         <div class="row">
@@ -12,76 +14,83 @@
                     <a href="{{ route('admin.noticias.create') }}" class="btn btn-success btn-sm round float-right mt-2"><i class="far fa-plus-square"></i></a>
                 </div>
                 <div class="box">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td class="w-75">Título</td>
-                                <td class="w-25 text-center">Acciones</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($noticias as $noticia)
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <td class="align-middle">{{ $noticia->titulo }}</td>
-                                    <td class="align-middle text-center">
-                                        <div class="btn-group">
-                                            <form action="{{ route('admin.noticias.edit', $noticia->id) }}" method="post">
-                                                @csrf
-                                                <button class="btn btn-primary btn-sm round mr-1" type="submit">
-                                                    <i class="far fa-edit"></i>
-                                                </button>
-                                            </form>
-                                            <form action="{{ route('admin.noticias.destroy', $noticia->id) }}" method="post">
-                                                @csrf
-                                                @method("DELETE")
-                                                <button class="btn btn-danger btn-sm round ml-1" type="submit">
-                                                    <i class="far fa-trash-alt"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    <td class="w-75">Título</td>
+                                    <td class="w-25 text-center">Acciones</td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($noticias as $noticia)
+                                    <tr>
+                                        <td class="align-middle">
+                                            @if ($noticia->titulo != '')
+                                                {{ $noticia->titulo }}
+                                            @else
+                                                Mensaje de ayuda para los usuarios
+                                            @endif
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <div class="btn-group">
+                                                @if($noticia->titulo != '')
+                                                    <form action="{{ route('admin.noticias.destacar', $noticia->id) }}" method="post">
+                                                        @method("PATCH")
+                                                        @csrf
+                                                        @if($noticia->destacado)
+                                                            <button class="btn btn-warning btn-sm round" type="submit">
+                                                                <i class="far fa-star"></i>
+                                                            </button>
+                                                        @else
+                                                            <button class="btn btn-success btn-sm round" type="submit">
+                                                                <i class="far fa-star"></i>
+                                                            </button>
+                                                        @endif
+                                                    </form>
+                                                @endif
+                                                <form action="{{ route('admin.noticias.edit', $noticia->id) }}" method="get">
+                                                    @csrf
+                                                    <button class="btn btn-primary btn-sm round mr-1 ml-1" type="submit">
+                                                        <i class="far fa-edit"></i>
+                                                    </button>
+                                                </form>
+                                                @if($noticia->titulo != '')
+                                                    <form action="{{ route('admin.noticias.destroy', $noticia->id) }}" method="post">
+                                                        @csrf
+                                                        @method("DELETE")
+                                                        <button class="btn btn-danger btn-sm round ml-1" type="submit">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
 @section("scripts")
-    <script src="{{ asset('js/datatable.js') }}"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
-    <script>
-        $(function() {
-            $('table').DataTable({
-                "responsive": true
-            });
-
-            let sessionSuccess = {!! json_encode(session()->get("success")) !!}
-
-            if (sessionSuccess != undefined) {
-                notificacion(sessionSuccess)
-            }
-        });
-
-        function notificacion(sessionSuccess) {
-            Swal.fire({
-                position: "top-end",
-                title: sessionSuccess,
-                timer: 3000,
-                showConfirmButton: false,
-                showClass: {
-                    popup: "animate__animated animate__fadeInDown"
-                },
-                hideClass: {
-                    popup: "animate__animated animate__fadeOutUp"
-                },
-                allowOutsideClick: false,
-                backdrop: false,
-                width: "auto",
-            });
-        }
+    <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+    @if (Session::has('success'))
+    <script defer>
+        notificacionEstado('success', "{{ Session::get('success') }}");
 
     </script>
+    @elseif(Session::has('error'))
+    <script defer>
+        notificacionEstado('error', "{{ Session::get('error') }}");
+
+    </script>
+    @endif
 @endsection

@@ -51,7 +51,7 @@ class NoticiasController extends Controller
             'contenido' => 'required',
         ]);
 
-        Post::create([
+        $post = Post::create([
             'titulo' => $request->titulo,
             'contenido' => $request->contenido,
             $tipo . '_id' => $id,
@@ -65,12 +65,22 @@ class NoticiasController extends Controller
             $url = '/cm/noticias';
         }
 
+        if ($post->exists()) {
+            session()->flash('success', 'El post se ha creado.');
+        } else {
+            session()->flash('error', 'El post no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
         return redirect()->to($url);
     }
 
     public function edit($id)
     {
         $noticia = Post::find($id);
+        if ($noticia === null){
+            session()->flash('error', 'La noticia no existe');
+            return redirect()->back();
+        }
         return view('cm.noticia_editor', ['noticia' => $noticia]);
     }
 
@@ -103,6 +113,8 @@ class NoticiasController extends Controller
             $url = '/cm/noticias';
         }
 
+        session()->flash('success', 'El post se ha editado.');
+
         return redirect()->to($url);
     }
 
@@ -120,17 +132,16 @@ class NoticiasController extends Controller
     public function upload(Request $request)
     {
         if ($request->hasFile('upload')) {
-            $originName = $request->file('upload')->getClientOriginalName();
-            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $nombreOriginal = $request->file('upload')->getClientOriginalName();
+            $nombreImagen = pathinfo($nombreOriginal, PATHINFO_FILENAME);
             $extension = $request->file('upload')->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
-            $request->file('upload')->move(public_path('images/posts'), $fileName);
+            $nombreImagen = $nombreImagen . '_' . time() . '.' . $extension;
+            $request->file('upload')->move(public_path('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/noticias'), $nombreImagen);
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
-            $url = asset('images/posts/' . $fileName);
-            $msg = 'Image successfully uploaded';
-            $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
+            $url = asset('/images/desarrolladoras/' . Auth::user()->cm->desarrolladora->nombre . '/noticias/' . $nombreImagen);
+            $respuesta = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url')</script>";
             @header('Content-type: text/html; charset=utf-8');
-            echo $response;
+            echo $respuesta;
         }
     }
 }

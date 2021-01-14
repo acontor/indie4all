@@ -30,14 +30,13 @@ class DesarrolladorasSeeder extends Seeder
 
             <p>&nbsp;</p>
 
-            <p><img alt="" src="http://127.0.0.1:8000/images/posts/banner05-1024x256_1606837024.png" style="height:125px; width:500px" /></p>
+            <p><img alt="" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/posts/banner05-1024x256_1606837024.png" style="height:125px; width:500px" /></p>
 
             <p>&nbsp;</p>
 
             <p>Llevamos en el sector m&aacute;s de 10 a&ntilde;os y nuestro actual grupo se conforma de j&oacute;venes talentos con una visi&oacute;n de los videojuegos &uacute;nica. Intentamos llevar a lo m&aacute;s alto los g&eacute;neros de aventura, rol y terror.</p>',
         ]);
         DB::table('cms')->insert([
-            'rol' => 'Jefe',
             'desarrolladora_id' => 1,
             'user_id' => 5,
         ]);
@@ -49,7 +48,6 @@ class DesarrolladorasSeeder extends Seeder
             'url' => 'www.turismostudios.com',
         ]);
         DB::table('cms')->insert([
-            'rol' => 'Jefe',
             'desarrolladora_id' => 2,
             'user_id' => 6,
         ]);

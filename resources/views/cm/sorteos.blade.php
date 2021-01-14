@@ -1,8 +1,10 @@
 @extends("layouts.cm.base")
+
 @section("styles")
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatable/datatable.css') }}" rel="stylesheet">
 @endsection
+
 @section("content")
     <div class="container">
         <div class="row">
@@ -58,12 +60,21 @@
     </div>
     </div>
 @endsection
-@section("scripts")
-    <script src="{{ asset('js/datatable.js') }}"></script>
-    <script>
-        $(function() {
-            $("table").dataTable();
-        });
 
-    </script>
+@section("scripts")
+    <script src="{{ asset('js/datatable/datatable.js') }}"></script>
+    <script src="{{ asset('js/datatable/script.js') }}"></script>
+    <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+    @if (Session::has('success'))
+        <script defer>
+            notificacionEstado('success', "{{ Session::get('success') }}");
+
+        </script>
+    @elseif(Session::has('error'))
+        <script defer>
+            notificacionEstado('error', "{{ Session::get('error') }}");
+
+        </script>
+    @endif
 @endsection

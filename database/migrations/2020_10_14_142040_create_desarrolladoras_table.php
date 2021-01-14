@@ -17,9 +17,10 @@ class CreateDesarrolladorasTable extends Migration
             $table->id();
             $table->string('nombre')->unique();
             $table->string('email')->unique();
-            $table->string('direccion');
-            $table->string('telefono');
-            $table->string('url');
+            $table->string('direccion')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('url')->nullable();
+            $table->string('imagen_portada')->nullable();
             $table->string('imagen_logo')->nullable();
             $table->longText('contenido')->nullable();
             $table->integer('reportes')->default(0);

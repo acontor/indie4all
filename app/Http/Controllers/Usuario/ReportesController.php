@@ -22,7 +22,7 @@ class ReportesController extends Controller
     public function reporte(Request $request)
     {
         Reporte::create([
-            $request->tipo =>  $request->id,
+            $request->tipo => $request->id,
             'user_id' => Auth::id(),
             'motivo' => $request->motivo,
         ]);

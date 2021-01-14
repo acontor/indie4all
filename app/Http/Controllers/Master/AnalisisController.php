@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Juego;
+use App\Models\Mensaje;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -23,24 +23,30 @@ class AnalisisController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra una vista con los análisis del master del usuario registrado.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $analisis = Post::where('master_id', User::find(Auth::id())->master->id)->get();
+        $analisis = Post::where('master_id', Auth::user()->master->id)->where('juego_id', '!=', null)->get();
         return view('master.analisis', ['analisis' => $analisis]);
     }
 
-    public function create($id)
+    /**
+     * Muestra el formulario para realizar el análisis de un juego.
+     *
+     * @param  Integer  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function create($id = null)
     {
-        $juegos = Juego::all();
-        return view('master.analisis_editor', ['juegos' => $juegos, 'id' => $id || null]);
+        $juegos = Juego::doesntHave('campania')->get();
+        return view('master.analisis_editor', ['juegos' => $juegos, 'id' => $id]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda en la base de datos el análisis realizado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -48,32 +54,55 @@ class AnalisisController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'titulo' => 'required',
-            'calificacion' => 'required',
+            'titulo' => ['required', 'max:255'],
+            'calificacion' => ['required', 'numeric', 'max:10', 'min:1'],
             'contenido' => 'required',
-            'juego_id' => 'required',
+            'juego' => 'required',
         ]);
 
-        Post::create([
-            'titulo' => $request->titulo,
-            'calificacion' => $request->calificacion,
-            'tipo' => 'Análisis',
-            'contenido' => $request->contenido,
-            'master_id' => User::find(Auth::id())->master->id,
-            'juego_id' => $request->juego_id,
-        ]);
+        $analisis = Post::where('master_id', Auth::user()->master->id)->where('juego_id', $request->juego)->count();
 
-        return redirect('/master/analisis')->with('success', '¡Análisis guardado!');
-    }
+        if ($analisis > 0) {
+            session()->flash('error', 'Ya has creado un análisis del juego seleccionado.');
+        } else {
+            $analisis = Post::create([
+                'titulo' => $request->titulo,
+                'calificacion' => $request->calificacion,
+                'contenido' => $request->contenido,
+                'master_id' => Auth::user()->master->id,
+                'juego_id' => $request->juego,
+            ]);
 
-    public function edit($id)
-    {
-        $post = Post::find($id);
-        return view('master.analisis_editor', ['post' => $post]);
+            if ($analisis->exists()) {
+                session()->flash('success', 'El análisis se ha creado.');
+            } else {
+                session()->flash('error', 'El análisis no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
+            }
+        }
+
+        return redirect('/master/analisis');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Muestra el formulario para editar el análisis seleccionado.
+     *
+     * @param  Integer  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $juegos = Juego::doesntHave('campania')->count();
+        $analisis = Post::find($id);
+        if($analisis->exists()) {
+            return view('master.analisis_editor', ['analisis' => $analisis, 'juegos' => $juegos, 'id' => $analisis->juego_id]);
+        } else {
+            session()->flash('error', 'El analisis no existe');
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * Actualiza el análsis seleccionado.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -82,30 +111,66 @@ class AnalisisController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'titulo' => 'required',
-            'calificacion' => 'required',
+            'titulo' => ['required', 'max:255'],
+            'calificacion' => ['required', 'numeric', 'max:10', 'min:1'],
             'contenido' => 'required',
         ]);
 
-        Post::find($id)->update([
+        $analisis = Post::find($id);
+
+        $analisis->update([
             'titulo' => $request->titulo,
             'calificacion' => $request->calificacion,
             'contenido' => $request->contenido,
         ]);
 
-        return redirect('/master/analisis')->with('success', '¡Análisis actualizado!');
+        session()->flash('success', 'El análisis se ha editado.');
+
+        return redirect('/master/analisis');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina el análisis seleccionado y todos sus mensajes.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        Post::find($id)->delete();
+        Mensaje::where('post_id', $id)->delete();
 
-        return redirect('/master/analisis')->with('success', '¡Post borrado!');
+        $analisis = Post::find($id);
+
+        $analisis->delete();
+
+        if (!$analisis->exists()) {
+            session()->flash('success', 'El análisis se ha eliminado.');
+        } else {
+            session()->flash('error', 'El análisis no se ha podido eliminar. Si sigue fallando contacte con soporte@indie4all.com');
+        }
+
+        return redirect('/master/analisis');
+    }
+
+    /**
+     * Sube las fotos al servidor.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $nombreOriginal = $request->file('upload')->getClientOriginalName();
+            $nombreImagen = pathinfo($nombreOriginal, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $nombreImagen = $nombreImagen . '_' . time() . '.' . $extension;
+            $request->file('upload')->move(public_path('/images/masters/' . Auth::user()->master->nombre . '/analisis'), $nombreImagen);
+            $CKEditorFuncNum = $request->input('CKEditorFuncNum');
+            $url = asset('/images/masters/' . Auth::user()->master->nombre . '/analisis/' . $nombreImagen);
+            $respuesta = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url')</script>";
+            @header('Content-type: text/html; charset=utf-8');
+            echo $respuesta;
+        }
     }
 }
