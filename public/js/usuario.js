@@ -38,77 +38,82 @@ $(function () {
 
         $("#busqueda").on("keyup", function () {
             $(".swal2-html-container>div").html("");
-            if ($("#busqueda").val() != "") {
-                $.ajax({
-                    url: "/busqueda",
-                    datatype: "json",
-                    data: {
-                        q: $("#busqueda").val(),
-                    },
-                    success: function (data) {
-                        let html = '<div class="list-group mb-4 mt-2 mr-3">';
-                        if (data.length == 0) {
-                            $(".swal2-html-container>div").append('<p class="mt-3">No se ha encontrado ningún resultado</p>');
-                        } else {
-                            data.forEach(element => {
-                                let img = '';
-                                if (element.tipo == "Juego") {
-                                    if (html.indexOf("<h4 class='d-inline'>Juegos</h4>") == -1) {
-                                        html += `<div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Juegos</h4><a class="btn btn-dark btn-sm float-right" href="/juegos/lista">Ver todos</a></div><div class="owl-carousel owl-theme 1">`;
+            var interval = setInterval(function(){
+                let parametro = $("#busqueda").val();
+                if ($("#busqueda").val() != "") {
+                    $.ajax({
+                        url: "http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/index.php/busqueda",
+                        datatype: "json",
+                        data: {
+                            q: parametro,
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            let html = '<div class="list-group mb-4 mt-2 mr-3">';
+                            if (data.length == 0) {
+                                $(".swal2-html-container>div").append('<p class="mt-3">No se ha encontrado ningún resultado</p>');
+                            } else {
+                                data.forEach(element => {
+                                    let img = '';
+                                    if (element.tipo == "Juego") {
+                                        if (html.indexOf("<h4 class='d-inline'>Juegos</h4>") == -1) {
+                                            html += `<div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Juegos</h4><a class="btn btn-dark btn-sm float-right" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista">Ver todos</a></div><div class="owl-carousel owl-theme 1">`;
+                                        }
+                                        img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/desarrolladoras/${ element.desarrolladora }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
+                                        html += `<div class="item"><a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juego/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    } else if (element.tipo == "Campaña") {
+                                        if (html.indexOf("<h4 class='d-inline'>Campañas</h4>") == -1) {
+                                            html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline"><h4 class='d-inline'>Campañas</h4><a class="btn btn-dark btn-sm float-right" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campanias/lista">Ver todas</a></div><div class="owl-carousel owl-theme 1">`;
+                                        }
+                                        img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/desarrolladoras/${ element.desarrolladora }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
+                                        html += `<div class="item"><a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campania/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    } else if (element.tipo == "Desarrolladora") {
+                                        if (html.indexOf("<h4 class='d-inline'>Desarrolladoras</h4>") == -1) {
+                                            html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Desarrolladoras</h4><a class="btn btn-dark btn-sm float-right" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladoras/lista">Ver todas</a></div><div class="owl-carousel owl-theme 1">`;
+                                        }
+                                        img = element.imagen_logo == null ? `<img class="img-fluid shadow" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/desarrolladoras/default-logo-desarrolladora.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/desarrolladoras/${ element.nombre }/${ element.imagen_logo }" alt="${ element.nombre }"></img>`;
+                                        html += `<div class="item"><a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladora/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
+                                    } else if (element.tipo == "Master") {
+                                        if (html.indexOf("<h4 class='d-inline'>Masters</h4>") == -1) {
+                                            html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Masters</h4><a class="btn btn-dark btn-sm float-right" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/masters/lista">Ver todos</a></div><div class="owl-carousel owl-theme 1">`;
+                                        }
+                                        img = element.imagen_logo == null ? `<img class="img-fluid shadow" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/masters/default-logo.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/public/images/masters/${ element.nombre }/${ element.imagen_logo }" alt="${ element.nombre }"></img>`;
+                                        html += `<div class="item"><a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/master/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
                                     }
-                                    img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.desarrolladora }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
-                                    html += `<div class="item"><a href="/juego/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
-                                } else if (element.tipo == "Campaña") {
-                                    if (html.indexOf("<h4 class='d-inline'>Campañas</h4>") == -1) {
-                                        html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline"><h4 class='d-inline'>Campañas</h4><a class="btn btn-dark btn-sm float-right" href="/campanias/lista">Ver todas</a></div><div class="owl-carousel owl-theme 1">`;
+                                });
+                                html += '</div>';
+                                $(".swal2-html-container>div").append(html);
+                                var owl = $('.1');
+                                owl.owlCarousel({
+                                    center: false,
+                                    items: 2,
+                                    loop: false,
+                                    margin: 10,
+                                    responsive: {
+                                        0: {
+                                            items: 2
+                                        },
+                                        600: {
+                                            items: 3
+                                        },
+                                        1000: {
+                                            items: 4
+                                        }
                                     }
-                                    img = element.imagen_caratula == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-juego.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.desarrolladora }/${ element.nombre }/${ element.imagen_caratula }" alt="${ element.nombre }"></img>`;
-                                    html += `<div class="item"><a href="/campania/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
-                                } else if (element.tipo == "Desarrolladora") {
-                                    if (html.indexOf("<h4 class='d-inline'>Desarrolladoras</h4>") == -1) {
-                                        html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Desarrolladoras</h4><a class="btn btn-dark btn-sm float-right" href="/desarrolladoras/lista">Ver todas</a></div><div class="owl-carousel owl-theme 1">`;
-                                    }
-                                    img = element.imagen_logo == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/desarrolladoras/default-logo-desarrolladora.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/desarrolladoras/${ element.nombre }/${ element.imagen_logo }" alt="${ element.nombre }"></img>`;
-                                    html += `<div class="item"><a href="/desarrolladora/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
-                                } else if (element.tipo == "Master") {
-                                    if (html.indexOf("<h4 class='d-inline'>Masters</h4>") == -1) {
-                                        html += `</div><hr class="mt-4 mb-4 hr-busqueda"><div class="d-inline mt-4 mb-4"><h4 class='d-inline'>Masters</h4><a class="btn btn-dark btn-sm float-right" href="/masters/lista">Ver todos</a></div><div class="owl-carousel owl-theme 1">`;
-                                    }
-                                    img = element.imagen_logo == null ? `<img class="img-fluid shadow" src="http://127.0.0.1:8000/images/masters/default-logo.png" alt="${ element.nombre }">` : `<img class="img-fluid shadow" src="/images/masters/${ element.nombre }/${ element.imagen_logo }" alt="${ element.nombre }"></img>`;
-                                    html += `<div class="item"><a href="/master/${element.id}">${img}<div class="carousel-caption" style="display: none;"><h6><strong>${element.nombre}</strong></h6></div></a></div>`;
-                                }
-                            });
-                            html += '</div>';
-                            $(".swal2-html-container>div").append(html);
-                            var owl = $('.1');
-                            owl.owlCarousel({
-                                center: false,
-                                items: 2,
-                                loop: false,
-                                margin: 10,
-                                responsive: {
-                                    0: {
-                                        items: 2
-                                    },
-                                    600: {
-                                        items: 3
-                                    },
-                                    1000: {
-                                        items: 4
-                                    }
-                                }
-                            });
-                            $('.item').on('mouseenter', function () {
-                                $(this).children('a').children('img').css('filter', 'brightness(0.2)');
-                                $(this).children('a').children('div').fadeToggle(0, "linear");
-                            }).on('mouseleave', function () {
-                                $(this).children('a').children('img').css('filter', 'brightness(1)');
-                                $(this).children('a').children('div').fadeToggle(0, "linear");
-                            });
+                                });
+                                $('.item').on('mouseenter', function () {
+                                    $(this).children('a').children('img').css('filter', 'brightness(0.2)');
+                                    $(this).children('a').children('div').fadeToggle(0, "linear");
+                                }).on('mouseleave', function () {
+                                    $(this).children('a').children('img').css('filter', 'brightness(1)');
+                                    $(this).children('a').children('div').fadeToggle(0, "linear");
+                                });
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+                clearInterval(interval);
+            }, 100);
         });
     }
 
@@ -231,9 +236,9 @@ function compartir(event) {
     });
 
     $(".copiar").on('click', function () {
-        $("#input-link").on('select');
+        $("#input-link").select();
         document.execCommand("copy");
-        $("#input-link").on('blur');
+        $("#input-link").blur();
     });
 }
 
@@ -294,7 +299,7 @@ function more(url, id, config, checkUser) {
                 let mensaje = CKEDITOR.instances.editor.getData();
                 CKEDITOR.instances.editor.setData("");
                 $.ajax({
-                    url: '/mensaje/nuevo',
+                    url: 'http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/mensaje/nuevo',
                     type: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -410,7 +415,7 @@ function nuevoEstado(csrf, config) {
     Swal.fire({
         position: 'bottom',
         title: 'Nuevo estado',
-        html: `<form action="/master/estado/nuevo" method="post">${csrf}<textarea class="form-control nuevo-estado" name="estado" id="editor" autofocus></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button></form>`,
+        html: `<form action="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/master/estado/nuevo" method="post">${csrf}<textarea class="form-control nuevo-estado" name="estado" id="editor" autofocus></textarea><button class="btn btn-success mt-3 mb-3" id="estado-form">Comentar</button></form>`,
         showCancelButton: false,
         showConfirmButton: false,
         showCloseButton: false,

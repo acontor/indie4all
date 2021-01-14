@@ -68,7 +68,7 @@ class UsuariosController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        if ($usuario->exists) {
+        if ($usuario->exists()) {
             session()->flash('success', 'El usuario ha sido creado');
         } else {
             session()->flash('error', 'El usuario no se ha podido crear');
@@ -129,7 +129,7 @@ class UsuariosController extends Controller
 
         $usuario->delete();
 
-        if (!$usuario->exists) {
+        if (!$usuario->exists()) {
             session()->flash('success', 'El usuario se ha eliminado');
         } else {
             session()->flash('error', 'El usuario no se ha podido eliminar');

@@ -30,7 +30,7 @@ class PostsSeeders extends Seeder
 
             <p>&nbsp;</p>
 
-            <p><a href="/desarrolladoras/solicitud">Realizar solicitud</a></p>
+            <p><a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladoras/solicitud">Realizar solicitud</a></p>
 
             <p>&nbsp;</p>
 

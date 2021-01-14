@@ -60,7 +60,7 @@ class NoticiasController extends Controller
             'contenido' => $request->contenido,
         ]);
 
-        if ($post->exists) {
+        if ($post->exists()) {
             session()->flash('success', 'La noticia se ha publicado');
         } else {
             session()->flash('error', 'La noticia no se ha podido publicar');
@@ -118,7 +118,7 @@ class NoticiasController extends Controller
 
         $post->delete();
 
-        if (!$post->exists) {
+        if (!$post->exists()) {
             session()->flash('success', 'La noticia se ha eliminado');
         } else {
             session()->flash('error', 'La noticia no se ha podido eliminar');

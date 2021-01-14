@@ -66,7 +66,7 @@ class LogrosController extends Controller
 
         $logro = Logro::create($request->all());
 
-        if ($logro->exists) {
+        if ($logro->exists()) {
             session()->flash('success', 'El logro ha sido creado');
         } else {
             session()->flash('error', 'El logro no se ha podido crear');

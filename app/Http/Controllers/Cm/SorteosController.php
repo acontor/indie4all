@@ -63,7 +63,7 @@ class SorteosController extends Controller
             'desarrolladora_id' => Cm::where('user_id', Auth::id())->first()->desarrolladora_id,
         ]);
 
-        if ($sorteo->exists) {
+        if ($sorteo->exists()) {
             session()->flash('success', 'El sorteo se ha creado.');
         } else {
             session()->flash('error', 'El sorteo no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
@@ -75,6 +75,10 @@ class SorteosController extends Controller
     public function edit($id)
     {
         $sorteo = Sorteo::find($id);
+        if($sorteo === null) {
+            session()->flash('error', 'El sorteo no existe');
+            return redirect()->back();
+        }
         return view('cm.sorteos_crear', ['sorteo' => $sorteo]);
     }
 

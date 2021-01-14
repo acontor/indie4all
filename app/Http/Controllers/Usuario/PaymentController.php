@@ -99,6 +99,7 @@ class PaymentController extends Controller
         $payerID = $request->input('PayerID');
         $token = $request->input('token');
 
+
         if (!$paymentId || !$payerID || !$token) {
             $status = 0;
             return view('usuario.informePago', ['status' => $status]);
@@ -138,7 +139,7 @@ class PaymentController extends Controller
                 Mail::to($user->email)->send(new CompraRealizada($clave, $user->name, $mensaje));
 
                 $user = User::find(Auth::id());
-                $user->juegos()->sync([$id => ['notificacion' => false]]);
+                $user->juegos()->sync([$id => ['notificacion' => true]]);
 
                 event(new FollowListener($user));
 

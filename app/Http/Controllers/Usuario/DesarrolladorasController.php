@@ -53,6 +53,11 @@ class DesarrolladorasController extends Controller
     {
         $desarrolladora = Desarrolladora::find($id);
 
+        if ($desarrolladora === null) {
+            session()->flash('error', 'No se encuentra esa desarrolladora');
+            return redirect()->back();
+        }
+
         if ($desarrolladora->ban) {
             session()->flash('error', 'La desarrolladora está suspendida');
             return redirect()->back();

@@ -61,7 +61,7 @@
 
         function fetch_data(page){
             $.ajax({
-                url:"/desarrolladoras/lista?page="+page,
+                url:"http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladoras/lista?page="+page,
 
                 success:function(data){
                     $('#desarrolladoras_data').html(data);
@@ -70,7 +70,7 @@
         }
         function buscar(nombre,ordenarPor,ordenarDe){
             $.ajax({
-                url:"/desarrolladoras/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe,
+                url:"http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladoras/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe,
 
                 success:function(data){
                     $('#desarrolladoras_data').html(data);

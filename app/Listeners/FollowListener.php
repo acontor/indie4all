@@ -19,9 +19,9 @@ class FollowListener
             $follows = $user->desarrolladoras->count() + $user->juegos->count() + $user->masters->count();
 
             if ($follows >= 5) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     5
-                ]);
+                ], false);
 
                 event(new LogrosListener($user));
             }

@@ -40,6 +40,6 @@ class FacebookController extends Controller
     public function authAndRedirect($user)
     {
         Auth::login($user);
-        return redirect()->to('/home#');
+        return redirect()->to('/portal');
     }
 }

@@ -226,7 +226,7 @@
                                             @endif
                                             <div class="p-3">
                                                 <h5><a href="{{ route('usuario.juego.show', $juego->id) }}">{{ $juego->nombre }}</a></h5>
-                                                <a href="/juegos/lista/{{$juego->genero_id}}"><small class="badge badge-danger badge-pill ml-2">{{App\Models\Genero::find($juego->genero_id)->nombre}}</small></a><br>
+                                                <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{$juego->genero_id}}"><small class="badge badge-danger badge-pill ml-2">{{App\Models\Genero::find($juego->genero_id)->nombre}}</small></a><br>
                                                 <small class="float-right"> {{$juego->fecha_lanzamiento}}</small><br>
                                                 Popularidad:<small class="float-right"> {{$juego->compras->count()}}</small><br>
                                                 Precio:<small class="float-right"> {{$juego->precio}}</small><br>

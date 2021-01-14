@@ -58,7 +58,7 @@
 
         function fetch_data(page){
             $.ajax({
-                url:"/masters/lista?page="+page,
+                url:"http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/masters/lista?page="+page,
 
                 success:function(data){
                     $('#masters_data').html(data);
@@ -67,7 +67,7 @@
         }
         function buscar(nombre,ordenarPor,ordenarDe){
             $.ajax({
-                url:"/masters/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe,
+                url:"http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/masters/lista?nombre="+nombre+'&ordenarPor='+ordenarPor +'&ordenarDe='+ordenarDe,
 
                 success:function(data){
                     $('#masters_data').html(data);

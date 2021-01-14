@@ -13,6 +13,11 @@ class PostsController extends Controller
     {
         $post = Post::find($request->id);
 
+        if($post === null) {
+            session()->flash('error', 'El post no existe');
+            return redirect()->back();
+        }
+
         $mensajes = DB::table('mensajes')
             ->join('users', 'users.id', '=', 'mensajes.user_id')
             ->select('mensajes.contenido', 'mensajes.created_at', 'users.id as id', 'users.name')

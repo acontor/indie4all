@@ -73,7 +73,7 @@
                                                     href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none pop-info"
                                                     data-content="Haz click aquí para ver todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover"
-                                                    href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                    href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -112,7 +112,7 @@
                     <div class="list-group shadow">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
                             <li class="list-group-item w-100 bg-dark text-white">Nuevo</li>
-                            <a href="/masters/lista" class="list-group-item list-group-item-action bg-danger text-white pop-info"
+                            <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/masters/lista" class="list-group-item list-group-item-action bg-danger text-white pop-info"
                             data-content="Haz click aquí para ver todos los Masters y filtralos a tu gusto" rel="popover" data-placement="bottom" data-trigger="hover">Todos</a>
                         </ul>
                         @if ($masters->count() > 0)

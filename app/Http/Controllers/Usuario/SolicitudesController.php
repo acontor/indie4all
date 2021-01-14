@@ -47,7 +47,7 @@ class SolicitudesController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        if ($solicitud->exists) {
+        if ($solicitud->exists()) {
             session()->flash('success', 'Será procesada en un plazo de 24/48 horas.');
         } else {
             session()->flash('error', 'Su solicitud ha fallado. En caso de que sigua fallando, contacte con soporte@indie4all.com');

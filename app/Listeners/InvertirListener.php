@@ -19,9 +19,9 @@ class InvertirListener
             $inversiones = $user->compras->count();
 
             if ($inversiones >= 5) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     4
-                ]);
+                ], false);
 
                 event(new LogrosListener($user));
             }

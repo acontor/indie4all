@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark shadow-sm">
-    <a class="navbar-brand d-inline" href="{{ url('/') }}">
+    <a class="navbar-brand d-inline" href="{{ route('index') }}">
         <img src="{{ asset('images/logo.png') }}" width="50" alt="">
     </a>
     <button class="btn btn-warning d-md-none  search">
@@ -11,7 +11,7 @@
     <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar2">
         <ul class="navbar-nav mx-auto ml-auto text-md-center text-left align-items-center font-weight-bold">
             <li class="nav-item mt-1 h-100">
-                <a href="{{ url('/') }}" class="nav-link">
+                <a href="{{ route('index') }}" class="nav-link">
                     Inicio
                 </a>
             </li>

@@ -19,9 +19,9 @@ class EncuestaListener
             $encuestas = $user->opciones->count();
 
             if ($encuestas >= 5) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     6
-                ]);
+                ], false);
 
                 event(new LogrosListener($user));
             }

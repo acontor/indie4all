@@ -45,8 +45,13 @@ class CampaniasController extends Controller
     public function show($id)
     {
         $campania = Campania::find($id);
+        if ($campania === null){
+            session()->flash('error', 'No se encuentra esa campaña');
+            return redirect()->back();
+        }
         $generos = Genero::All();
         $compras = Compra::where('campania_id', $id)->get();
+
         return view('cm.campania', ['campania' => $campania, 'generos' => $generos, 'compras' => $compras]);
     }
 
@@ -99,7 +104,7 @@ class CampaniasController extends Controller
             'aporte_minimo' => $request->aporte_minimo,
         ]);
 
-        if ($campania->exists && $juego->exists) {
+        if ($campania->exists() && $juego->exists()) {
             session()->flash('success', 'La campaña se ha creado.');
         } else {
             session()->flash('error', 'La campaña no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
@@ -172,7 +177,7 @@ class CampaniasController extends Controller
 
         Juego::where('id', $campania->id)->delete();
 
-        if (!$campania->exists) {
+        if (!$campania->exists()) {
             session()->flash('success', 'La campaña se ha retirado.');
         } else {
             session()->flash('error', 'La campaña no se ha podido eliminar. Si sigue fallando contacte con soporte@indie4all.com');

@@ -65,7 +65,7 @@ class NoticiasController extends Controller
             $url = '/cm/noticias';
         }
 
-        if ($post->exists) {
+        if ($post->exists()) {
             session()->flash('success', 'El post se ha creado.');
         } else {
             session()->flash('error', 'El post no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
@@ -77,6 +77,10 @@ class NoticiasController extends Controller
     public function edit($id)
     {
         $noticia = Post::find($id);
+        if ($noticia === null){
+            session()->flash('error', 'La noticia no existe');
+            return redirect()->back();
+        }
         return view('cm.noticia_editor', ['noticia' => $noticia]);
     }
 

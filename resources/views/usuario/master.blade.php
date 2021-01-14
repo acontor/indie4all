@@ -115,7 +115,7 @@
                                                 <span class="badge badge-pill badge-danger"><a class="text-white font-weight-bold text-decoration-none pop-info"
                                                     data-content="Haz click aquí para ver el perfil del juego" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-light"><a class="text-dark font-weight-bold text-decoration-none pop-info"
-                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white font-weight-bold">Análisis</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -161,7 +161,7 @@
                                         </div>
                                         <div class="circle-lista float-right">{{$post->calificacion}}</div>
                                         <div class="berber-fullname"><a class="pop-info"
-                                            data-content="Haz click aquí para ver el juego" rel="popover" data-placement="bottom" data-trigger="hover"href="/juego/{{$post->juego->id}}">{{$post->juego->nombre}}</a></div>
+                                            data-content="Haz click aquí para ver el juego" rel="popover" data-placement="bottom" data-trigger="hover"href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juego/{{$post->juego->id}}">{{$post->juego->nombre}}</a></div>
                                         <div class="berber-dukkan">
                                             <input type="hidden" name="id" value="{{ $post->id }}" />
                                             <a type="submit" class="more pop-info"
@@ -179,7 +179,7 @@
                     <div class="list-group shadow">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
                             <li class="list-group-item w-100 bg-dark text-white">Recomendados</li>
-                            <a href="/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
+                            <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
                         </ul>
                         @if ($master->posts->where('juego_id', '!=', null)->where('destacado', 1)->count() != 0)
                             @foreach ($master->posts->where('juego_id', '!=', null)->where('destacado', 1) as $destacado)
@@ -209,10 +209,10 @@
             let master = {!! json_encode($master) !!};
 
             let html = `<h2 class="float-left"><strong>Comparte si te gusta</strong></h2><br><hr>` +
-            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20master%20${master.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
-            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
-            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20master%20${master.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://127.0.0.1:8000/master/${master.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
-            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://127.0.0.1:8000/master/${master.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
+            `<a class="btn btn-primary m-2" href="https://twitter.com/intent/tweet?lang=en&text=He%20descubierto%20el%20master%20${master.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!?&url=http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/master/${master.id}" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>` +
+            `<a class="btn btn-primary m-2" href="https://www.facebook.com/dialog/share?app_id=242615713953725&display=popup&href=http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/master/${master.id}" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>` +
+            `<a class="btn btn-success m-2" href="https://api.whatsapp.com/send?text=He%20descubierto%20el%20master%20${master.nombre}%20en%20indie4all.%20¡Échale%20un%20vistazo!%20http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/master/${master.id}" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>` +
+            `<hr><div class="input-group"><input type="text" id="input-link" class="form-control" value="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/master/${master.id}"><button class="btn btn-dark ml-2 copiar">Copiar</button></div>` +
             `<small class="mt-3 float-left">¡Gracias por compartir!</small>`;
 
             $(".compartir").on('click', {html: html}, compartir);

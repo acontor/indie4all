@@ -14,7 +14,7 @@
             @if (Auth::user() && !Auth::user()->cm && !Auth::user()->master && Auth::user()->reportes == 0 && !Auth::user()->ban && !Auth::user()->solicitud && Auth::user()->hasVerifiedEmail())
                 <p>Rellena el siguiente formulario y te responderemos en 24/48 horas.</p>
                 <a class="btn btn-dark" href="{{route('usuario.solicitud.create', 'Desarrolladora')}}">Realizar solicitud</a>
-            @elseif(Auth::user()->solicitud && Auth::user()->solicitud->tipo == "Desarrolladora")
+            @elseif(Auth::user() && Auth::user()->solicitud && Auth::user()->solicitud->tipo == "Desarrolladora")
                 <p><b>¡Tu solicitud se está procesando!</b></p>
             @else
                 <small>Para realizar una solicitud debes cumplir las siguientes condiciones:

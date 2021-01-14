@@ -19,9 +19,9 @@ class MensajesListener
             $mensajes = $user->mensajes->count();
 
             if ($mensajes >= 5) {
-                $user->logros()->attach([
+                $user->logros()->sync([
                     1
-                ]);
+                ], false);
 
                 event(new LogrosListener($user));
             }

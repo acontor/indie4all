@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://127.0.0.1:8000'),
+    'url' => env('APP_URL', 'http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all'),
 
     'asset_url' => env('ASSET_URL', null),
 

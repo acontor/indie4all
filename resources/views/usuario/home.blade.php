@@ -22,7 +22,7 @@
                                         <div class="col-12 berber col-md-6">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -56,7 +56,7 @@
                                         <div class="col-12 berber col-md-6">
                                             <div class="pildoras mb-3">
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
-                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Noticia</span>
                                                 @if ($post->desarrolladora_id != null)
                                                     <span class="badge badge-pill badge-primary text-white">Noticia</span>
@@ -148,7 +148,7 @@
                                 @endforeach
                             </div>
                         @else
-                            <p>¿Has pensado en participar en alguna <a href="/campanias">campaña</a>?</p>
+                            <p>¿Has pensado en participar en alguna <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/campanias">campaña</a>?</p>
                         @endif
                         <hr class="mb-5 mt-5">
                         <h4 class="text-uppercase font-weight-bold">Enlaces de interés</h4>

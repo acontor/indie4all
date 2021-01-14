@@ -77,7 +77,7 @@
                     <div class="list-group shadow">
                         <ul class="list-group list-group-horizontal text-center text-uppercase font-weight-bold" style="font-size: .5rem;">
                             <li class="list-group-item w-100 bg-dark text-white">Nuevo</li>
-                            <a href="/desarrolladoras/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
+                            <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/desarrolladoras/lista" class="list-group-item list-group-item-action bg-danger text-white">Todos</a>
                         </ul>
                         @if ($desarrolladoras->count() > 0)
                             @foreach ($desarrolladoras->sortByDesc('created_at')->take(5) as $desarrolladora)

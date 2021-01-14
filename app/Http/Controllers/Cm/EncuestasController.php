@@ -70,7 +70,7 @@ class EncuestasController extends Controller
             ]);
         }
 
-        if ($encuesta->exists) {
+        if ($encuesta->exists()) {
             session()->flash('success', 'La encuesta se ha creado.');
         } else {
             session()->flash('error', 'La encuesta no se ha podido crear. Si sigue fallando contacte con soporte@indie4all.com');
@@ -87,7 +87,7 @@ class EncuestasController extends Controller
 
         $encuesta->delete();
 
-        if (!$encuesta->exists) {
+        if (!$encuesta->exists()) {
             session()->flash('success', 'La encuesta se ha eliminado.');
         } else {
             session()->flash('error', 'La encuesta no se ha podido eliminar. Si sigue fallando contacte con soporte@indie4all.com');

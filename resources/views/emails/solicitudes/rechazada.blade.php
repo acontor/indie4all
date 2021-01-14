@@ -1,7 +1,7 @@
 <body>
     <h4>Hola {{ $name }}</h4>
     <!-- Logo corporativo -->
-    <img src="{{ asset('/images/default.png') }}" height="100" />
+    <img src="{{ asset('/images/logo.png') }}" height="100" />
     <p>Su solicitud ha sido rechazada por los siguientes motivos:</p>
     <ul>
         <li style="list-style-type: none;">{{ $motivo }}</li>

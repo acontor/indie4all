@@ -76,7 +76,7 @@
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none pop-info"
                                                     data-content="Haz click aquí para ver el perfil del juego" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none pop-info"
-                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Noticia</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -116,7 +116,7 @@
                                                 <span class="badge badge-pill badge-danger"><a class="text-white text-decoration-none pop-info"
                                                     data-content="Haz click aquí para ver el perfil del juego" rel="popover" data-placement="bottom" data-trigger="hover" href="{{ route('usuario.juego.show', $post->juego->id) }}">{{$post->juego->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-light"><a class="text-dark text-decoration-none pop-info"
-                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
+                                                    data-content="Haz click aquí para todos los juegos de este género" rel="popover" data-placement="bottom" data-trigger="hover" href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista/{{ $post->juego->genero->id }}">{{$post->juego->genero->nombre}}</a></span>
                                                 <span class="badge badge-pill badge-primary text-white">Análisis</span>
                                                 <span class="float-right"><i class="far fa-comment-alt"></i> {{ $post->comentarios->count() }}</span>
                                             </div>
@@ -161,7 +161,7 @@
                             <a href="" id="proximo" class="list-group-item list-group-item-action list-buttons pop-info"
                             data-content="Los juegos que aún no se han lanzado al mercado." rel="popover" data-placement="bottom" data-trigger="hover">Próximo</a>
                         </ul>
-                        <a href="/juegos/lista" class="btn btn-danger rounded-0 pop-info"
+                        <a href="http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista" class="btn btn-danger rounded-0 pop-info"
                         data-content="Haz click aquí para ver todos los juegos y filtrarlos a tu gusto" rel="popover" data-placement="bottom" data-trigger="hover">Ver todos</a>
                         @php
                             $fechaHoy = date('Y-m-d');

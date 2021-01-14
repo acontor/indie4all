@@ -138,7 +138,7 @@
 
         function fetch_data(page){
             $.ajax({
-                url:"/juegos/lista?page="+page,
+                url:"http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista?page="+page,
 
                 success:function(data){
                     $('#juegos_data').html(data);
@@ -147,7 +147,7 @@
         }
         function buscar(nombre,genero,desarrolladora,precioMin,precioMax,fechaDesde,fechaHasta,ordenarPor,ordenarDe){
             $.ajax({
-                url:"/juegos/lista?nombre="+nombre+'&genero='+genero +'&desarrolladora='+desarrolladora+'&precioMin='+precioMin+'&precioMax='+precioMax+'&fechaDesde='+fechaDesde+'&fechaHasta='+fechaHasta+'&ordenarPor='+ordenarPor+'&ordenarDe='+ordenarDe,
+                url:"http://www.iestrassierra.net/alumnado/curso2021/DAWS/daws2021a1/indie4all/juegos/lista?nombre="+nombre+'&genero='+genero +'&desarrolladora='+desarrolladora+'&precioMin='+precioMin+'&precioMax='+precioMax+'&fechaDesde='+fechaDesde+'&fechaHasta='+fechaHasta+'&ordenarPor='+ordenarPor+'&ordenarDe='+ordenarDe,
 
                 success:function(data){
                     $('#juegos_data').html(data);

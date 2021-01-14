@@ -103,7 +103,7 @@ class HomeController extends Controller
         if ($request->has('q')) {
             $search = $request->q;
             $juegos = Juego::where('nombre', 'LIKE', "%$search%")->where('ban', 0)->doesntHave('campania')->take(5)->get();
-            $campanias = Juego::where('nombre', 'LIKE', "%$search%")->where('ban', 0)->has('campania')->take(5)->get();
+            $campanias = Juego::select('juegos.*')->where('juegos.nombre', 'LIKE', "%$search%")->join('campanias', 'juegos.id', 'campanias.juego_id')->where('campanias.ban', 0)->take(5)->get();
             $desarrolladoras = Desarrolladora::select("id", "nombre", "imagen_logo")->where('nombre', 'LIKE', "%$search%")->where('ban', 0)->take(5)->get();
             $masters = DB::table('users')
                 ->join('masters', 'users.id', '=', 'masters.user_id')
